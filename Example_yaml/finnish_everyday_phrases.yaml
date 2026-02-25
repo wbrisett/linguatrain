@@ -1,30 +1,63 @@
-- en: Good morning
-  fi: Hyvää huomenta
-  phon: HUU-vaa HWO-men-ta
-- en: Good afternoon
-  fi: Hyvää päivää
-  phon: HUU-vaa PAEI-vaa
-- en: Good evening
-  fi: Hyvää iltaa
-  phon: HUU-vaa EEL-taa
-- en: Hello
-  fi: Hei
-  phon: HAY
-- en: How are you?
-  fi: Mitä kuuluu?
-  phon: MI-ta KUUL-loo
-- en: I'm fine, thank you.
-  fi: Hyvin, kiitos.
-  phon: HUU-vin KEE-tos
-- en: Pretty good.
-  fi: Ihan hyvää.
-  phon: EE-han HUU-vaa
-- en: And you?
-  fi: Entä sinulle?
-  phon: EN-ta SEE-noo-leh
-- en: Thank you very much.
-  fi: Kiitos paljon.
-  phon: KEE-tos PAL-yon
-- en: Have a nice day.
-  fi: Mukavaa päivää.
-  phon: MOO-ka-vaa PAEI-vaa
+- finnish: "Nyt tämä on hallinnassa."
+  phonetic: "Newt TAH-muh on HAH-leen-nahs-sah"
+  english: "Now this is under control."
+  acceptable_answers:
+    - "Now this is under control."
+    - "We have this under control now."
+
+- finnish: "Kaikki on kunnossa."
+  phonetic: "KAIK-kee on KOON-nohs-sah"
+  english: "Everything is fine."
+  acceptable_answers:
+    - "Everything is fine."
+    - "Everything is okay."
+
+- finnish: "Ei hätää."
+  phonetic: "Ey HAE-taa"
+  english: "No worries."
+  acceptable_answers:
+    - "No worries."
+    - "No problem."
+
+- finnish: "Selvä."
+  phonetic: "SEL-vah"
+  english: "Got it."
+  acceptable_answers:
+    - "Got it."
+    - "Understood."
+    - "Clear."
+
+- finnish: "Katsotaan."
+  phonetic: "KAHT-soh-TAAN"
+  english: "Let's see."
+  acceptable_answers:
+    - "Let's see."
+    - "We will see."
+
+- finnish: "Hyvä juttu."
+  phonetic: "HY-vah YOOT-too"
+  english: "Good thing."
+  acceptable_answers:
+    - "Good thing."
+    - "Nice."
+    - "Great."
+
+- finnish: "Ole hyvä."
+  phonetic: "OH-leh HY-vah"
+  english: "You're welcome."
+  acceptable_answers:
+    - "You're welcome."
+    - "Here you go."
+
+- finnish: "Kiitos."
+  phonetic: "KEE-tohs"
+  english: "Thank you."
+  acceptable_answers:
+    - "Thank you."
+    - "Thanks."
+
+- finnish: "Hyvä päätös."
+  phonetic: "HY-vah PAE-tuhs"
+  english: "Good decision."
+  acceptable_answers:
+    - "Good decision."

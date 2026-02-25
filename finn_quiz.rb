@@ -7,6 +7,8 @@
 require "yaml"
 require "time"
 require "optparse"
+require "securerandom"
+require "rbconfig"
 
 # -----------------------------
 # Utility
@@ -33,6 +35,65 @@ end
 def pct(part, total)
   return 0.0 if total.to_i <= 0
   (part.to_f / total.to_f) * 100.0
+end
+
+# -----------------------------
+# Text-to-Speech (Piper)
+# -----------------------------
+
+def resolve_executable(cmd)
+  return nil if cmd.nil?
+  c = cmd.to_s.strip
+  return nil if c.empty?
+
+  # If an absolute/relative path was provided, trust it.
+  return c if File.exist?(c)
+
+  # Otherwise try PATH lookup.
+  ENV.fetch("PATH", "").split(File::PATH_SEPARATOR).each do |dir|
+    next if dir.nil? || dir.empty?
+    candidate = File.join(dir, c)
+    return candidate if File.exist?(candidate)
+  end
+
+  nil
+end
+
+def ensure_terminal_punct(s)
+  t = s.to_s.strip
+  return t if t.empty?
+  t =~ /[.!?]\z/ ? t : "#{t}."
+end
+
+def piper_speak(text, piper_bin:, piper_model:, volume: nil)
+  resolved_piper = resolve_executable(piper_bin)
+  raise "Piper binary not found: #{piper_bin}.\nPATH=#{ENV.fetch('PATH', '')}" unless resolved_piper
+  raise "Piper model not found: #{piper_model}" unless piper_model && File.exist?(piper_model)
+
+  wav = File.join("/tmp", "finn_quiz_tts_#{Process.pid}_#{SecureRandom.hex(4)}.wav")
+
+  # Piper reads from stdin when no -i is provided.
+  ok = IO.popen([resolved_piper, "-m", piper_model, "-f", wav], "r+") do |io|
+    io.write(text.to_s)
+    io.write("\n")
+    io.close_write
+    io.read
+    true
+  rescue StandardError
+    false
+  end
+
+  raise "Piper failed to generate audio." unless ok && File.exist?(wav)
+
+  # macOS playback
+  system("afplay", wav)
+ensure
+  File.delete(wav) if wav && File.exist?(wav)
+end
+
+def speak_finnish_prompt(fi_text, piper_bin:, piper_model:)
+  # Carrier phrase improves naturalness for short words like "ei".
+  piper_speak("Suomeksi: #{ensure_terminal_punct(fi_text)}", piper_bin: piper_bin, piper_model: piper_model)
 end
 
 # -----------------------------
@@ -117,17 +178,30 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, piper_bin:, piper_model:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
   say
-  say "Finnish Quiz — #{stats[:total]} word(s) (mode: #{match_game ? 'match-game' : 'typing'})"
+  mode = []
+  mode << (match_game ? "match-game" : "typing")
+  if listen
+    mode << (listen_no_english ? "listen-no-english" : "listen")
+  end
+  say "Finnish Quiz — #{stats[:total]} word(s) (mode: #{mode.join(', ')})"
   say "-" * 50
 
   selected.each_with_index do |w, idx|
     say
-    say "[#{idx + 1}/#{stats[:total]}] English: #{w[:en]}"
+    say "[#{idx + 1}/#{stats[:total]}]"
+    if listen
+      say "Audible Finnish: (listening…)"
+      spoken = w[:fi].sample
+      speak_finnish_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model)
+      say "English: #{w[:en]}" unless listen_no_english
+    else
+      say "English: #{w[:en]}"
+    end
     answer_ok = false
 
     1.upto(2) do |attempt|
@@ -141,7 +215,7 @@ def run_quiz(selected, pool:, lenient:, match_game:)
         say "Options:"
         options.each { |opt| say "  - #{opt}" }
 
-        input = prompt("Type the Finnish word: ")
+        input = prompt(listen ? "Type what you heard (Finnish): " : "Type the Finnish word: ")
         kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
 
         if ok
@@ -164,7 +238,7 @@ def run_quiz(selected, pool:, lenient:, match_game:)
         end
 
       else
-        input = prompt("Finnish: ")
+        input = prompt(listen ? "Type what you heard (Finnish): " : "Finnish: ")
         kind, ok, matched = match_answer(input, w[:fi], lenient: lenient)
 
         if ok
@@ -229,6 +303,10 @@ end
 options = {
   lenient: false,
   match_game: false,
+  listen: false,
+  listen_no_english: false,
+  piper_bin: ENV["PIPER_BIN"],
+  piper_model: ENV["PIPER_MODEL"],
   count: nil
 }
 
@@ -242,12 +320,33 @@ parser = OptionParser.new do |opts|
   opts.on("--match-game", "Enable multiple choice mode") do
     options[:match_game] = true
   end
+
+  opts.on("--listen", "Listening mode: speak Finnish (Piper) and type what you heard") do
+    options[:listen] = true
+  end
+
+  opts.on("--listen-no-english", "Listening mode without showing English translation") do
+    options[:listen] = true
+    options[:listen_no_english] = true
+  end
+
+  opts.on("--piper-bin PATH", "Path to piper executable (or set PIPER_BIN env var)") do |v|
+    options[:piper_bin] = v
+  end
+
+  opts.on("--piper-model PATH", "Path to Piper .onnx model (or set PIPER_MODEL env var)") do |v|
+    options[:piper_model] = v
+  end
 end
 
 parser.parse!
 
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
+
+if options[:listen]
+  abort("--listen requires --piper-bin (or PIPER_BIN) and --piper-model (or PIPER_MODEL)") unless options[:piper_bin] && options[:piper_model]
+end
 
 words = load_words(yaml_path)
 selected = choose_words(words, options[:count])
@@ -256,7 +355,11 @@ stats, missed = run_quiz(
   selected,
   pool: words,
   lenient: options[:lenient],
-  match_game: options[:match_game]
+  match_game: options[:match_game],
+  listen: options[:listen],
+  listen_no_english: options[:listen_no_english],
+  piper_bin: options[:piper_bin],
+  piper_model: options[:piper_model]
 )
 
 say

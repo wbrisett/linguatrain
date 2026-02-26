@@ -9,6 +9,200 @@ A tiny command-line Finnish vocabulary quizzer that reads words from a YAML file
   - `--listen` : Finnish is spoken, English is shown
   - `--listen-no-english` : Finnish is spoken, English is hidden (hard mode)
 
+---
+
+## Mode Examples (Weather YAML)
+
+Below are example interactions using the weather vocabulary file.
+
+### Typing mode (default)
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: typing)
+--------------------------------------------------
+
+[1/5] English: It’s cloudy.
+Type the Finnish word: on pilvistä
+✅ Oikein!
+   (phonetic: On PIL-vis-ta)
+```
+
+---
+
+### Reverse mode (fi → en)
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml --reverse
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: reverse)
+--------------------------------------------------
+
+[1/5] Finnish: On pakkasta.
+Type the English meaning: It’s below zero.
+✅ Correct!
+```
+
+---
+
+### Match-game mode
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml --match-game
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: match-game)
+--------------------------------------------------
+
+[1/5] English: It’s snowing.
+Hints:
+  - Sataa lunta.
+  - On pilvistä.
+  - On kuuma.
+Type the Finnish word: sataa lunta
+✅ Oikein!
+   (phonetic: SA-taa LUN-ta)
+```
+
+---
+
+### Listening mode (`--listen`)
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml all --listen
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: listen)
+--------------------------------------------------
+
+[1/5]
+Audible Finnish: (listening…)
+English: ["It’s windy."]
+(Type 'r' to replay audio)
+Type what you heard (Finnish): tuulee
+✅ Oikein!
+   (phonetic: TUU-lee)
+```
+
+---
+
+### Listening mode (hard mode: `--listen-no-english`)
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml all --listen-no-english
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: listen-no-english)
+--------------------------------------------------
+
+[1/5]
+Audible Finnish: (listening…)
+(Type 'r' to replay audio)
+Type what you heard (Finnish): on kylmä
+✅ Oikein!
+   (phonetic: On KÜL-mä)
+```
+
+---
+
+### Combined example (reverse + listening + match-game)
+
+This is the “full stack” drill: you **hear Finnish**, get **3 hints**, and you must type the **English** meaning.
+
+**Tip**: in reverse + match-game, use `--match-options both` to show each hint as a Finnish → English mapping (otherwise you may only see Finnish hints).
+
+Command:
+
+```bash
+ruby finn_quiz.rb weather.yaml all --reverse --listen --match-game --match-options both
+```
+
+Example session:
+
+```text
+Finnish Quiz — 5 word(s) (mode: reverse + match-game + listen)
+--------------------------------------------------
+
+[1/5]
+Audible Finnish: (listening…)
+Hints (fi → en):
+  - On pakkasta. → It’s below zero.
+  - On kuuma. → It’s hot.
+  - On pilvistä. → It’s cloudy.
+(Type 'r' to replay audio)
+Type the English meaning: It’s below zero.
+✅ Correct!
+```
+
+---
+
+## Architecture Overview
+
+At a high level, the script is a pipeline:
+
+1) Load vocabulary (YAML) → normalize entries  
+2) Choose mode + question/answer direction  
+3) (Optional) speak Finnish via Piper  
+4) Prompt → validate input → score attempts  
+5) Write “missed” YAML only if needed
+
+### Dataflow (conceptual)
+
+```mermaid
+flowchart TD
+  A[YAML file] --> B[Loader / Normalizer]
+  B --> C[Mode & Direction<br/>(typing / reverse / match-game)]
+  C --> D{Listening enabled?}
+  D -- yes --> E[Piper speak<br/>carrier phrase + fi]
+  D -- no --> F[Skip audio]
+  E --> G[Prompt user]
+  F --> G[Prompt user]
+  G --> H[Answer normalization<br/>(case, umlauts leniency)]
+  H --> I[Validate vs accepted answers]
+  I --> J[Attempt scoring<br/>(1st / 2nd / failed)]
+  J --> K{Any misses?}
+  K -- yes --> L[Write missed YAML + meta/stats]
+  K -- no --> M[Print “Ei virheitä”]
+```
+
+### Mode layering (how flags combine)
+
+```text
+Base loop:            prompt → validate → score
++ --match-game:       add 3 hints (distractors) to each prompt
++ --reverse:          swap Q/A direction (fi→en)
++ --listen / --listen-no-english:
+                      speak Finnish (and optionally hide English)
+```
+
 It tracks how many you got correct on the **1st** vs **2nd** try, and writes a “missed words” YAML file **only if you missed something**.
 
 ---
@@ -147,6 +341,18 @@ That improves naturalness and intelligibility.
 
 ## Options
 
+### Word count / subsets
+
+By default, the quiz uses the **entire** YAML set. You can also quiz a **subset** by passing a second argument:
+
+```bash
+ruby finn_quiz.rb path/to/words.yaml 5    # quiz 5 random entries
+ruby finn_quiz.rb path/to/words.yaml 20   # quiz 20 random entries
+ruby finn_quiz.rb path/to/words.yaml all  # explicit: use all entries
+```
+
+The word count argument works with any mode and can be combined with flags such as --match-game, --reverse, and --listen.
+
 ## Options Summary
 
 | Flag | Purpose | Works With | Default |
@@ -204,7 +410,7 @@ ruby finn_quiz.rb words.yaml --listen-no-english --piper-bin ... --piper-model .
 Provide Piper and model paths explicitly:
 
 ```bash
-ruby finn_quiz.rb words.yaml all --listen   --piper-bin /Users/you/venvs/piper/bin/piper   --piper-model /Users/you/tools/piper/models/fi_FI-harri-medium.onnx
+ruby finn_quiz.rb words.yaml all --listen   --piper-bin /Users/you/venvs/piper/bin/piper   --piper-model /Users/you/tools/piper/models/fi_FI/harri/medium/fi_FI-harri-medium.onnx
 ```
 
 You can also set environment variables instead of passing flags every time:

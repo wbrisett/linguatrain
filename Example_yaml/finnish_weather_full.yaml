@@ -1,99 +1,150 @@
 - en: What’s the weather like today?
   fi:
-  - Millainen sää tänään on?
-  - Millainen ilma tänään on?
-  phon: MIL-lai-nen SAE TAE-naen on / MIL-lai-nen IL-ma TAE-naen on
+    - Millainen sää tänään on?
+    - Millainen ilma tänään on?
+  phon:
+    - MIL-lai-nen SAE TAE-naen on
+    - MIL-lai-nen IL-ma TAE-naen on
+
 - en: How many degrees is it outside?
   fi:
-  - Kuinka monta astetta ulkona on?
-  phon: KUIN-ka MON-ta AS-tet-ta UL-ko-na on
+    - Kuinka monta astetta ulkona on?
+  phon:
+    - KUIN-ka MON-ta AS-tet-ta UL-ko-na on
+
 - en: It’s nice weather.
   fi:
-  - On kaunis ilma.
-  - On hyvä ilma.
-  phon: On KAU-nis IL-ma / On HUU-vae IL-ma
+    - On kaunis ilma.
+    - On hyvä ilma.
+  phon:
+    - On KAU-nis IL-ma
+    - On HUU-vae IL-ma
+
 - en: It’s bad weather.
   fi:
-  - On huono ilma.
-  phon: On HUO-no IL-ma
+    - On huono ilma.
+  phon:
+    - On HUO-no IL-ma
+
 - en: It’s +30 degrees. It’s hot.
   fi:
-  - On +30 astetta.
-  - On kuuma.
-  - On helle.
-  phon: On KUU-ma / On HEL-le
+    - On +30 astetta.
+    - On kuuma.
+    - On helle.
+  phon:
+    - On KUU-ma
+    - On HEL-le
+
 - en: It’s +20 degrees. It’s warm.
   fi:
-  - On +20 astetta.
-  - On lämmin.
-  phon: On LAEM-min
+    - On +20 astetta.
+    - On lämmin.
+  phon:
+    - On LAEM-min
+
 - en: It’s +2 degrees. It’s cool.
   fi:
-  - On +2 astetta.
-  - On viileä.
-  phon: On VEE-le-ae
+    - On +2 astetta.
+    - On viileä.
+  phon:
+    - On VEE-le-ae
+
 - en: It’s -15 degrees. It’s cold.
   fi:
-  - On -15 astetta.
-  - On kylmä.
-  - On pakkanen.
-  phon: On KUEL-ma / On PAK-ka-nen
+    - On -15 astetta.
+    - On kylmä.
+    - On pakkasta.
+  phon:
+    - On miinus viisitoista astetta.
+    - On KÜL-mä.
+    - On PAK-kas-ta
+
 - en: It’s sunny.
   fi:
-  - Aurinko paistaa.
-  - On aurinkoista.
-  phon: AU-rin-ko PAI-staa / On AU-rin-kois-ta
+    - Aurinko paistaa.
+    - On aurinkoista.
+  phon:
+    - AU-rin-ko PAI-staa
+    - On AU-rin-kois-ta
+
 - en: It’s cloudy.
   fi:
-  - On pilvistä.
-  phon: On PIL-vis-ta
+    - On pilvistä.
+  phon:
+    - On PIL-vis-ta
+
 - en: It’s partly cloudy.
   fi:
-  - On puolipilvistä.
-  phon: On PUO-li-pil-vis-ta
+    - On puolipilvistä.
+  phon:
+    - On PUO-li-pil-vis-ta
+
 - en: It’s foggy.
   fi:
-  - On sumuista.
-  phon: On SU-muis-ta
+    - On sumuista.
+  phon:
+    - On SU-muis-ta
+
 - en: It’s raining.
   fi:
-  - Sataa.
-  - On sateista.
-  phon: SA-taa / On SA-teis-ta
+    - Sataa.
+    - On sateista.
+  phon:
+    - SA-taa
+    - On SA-teis-ta
+
 - en: It’s sleeting.
   fi:
-  - Sataa räntää.
-  phon: SA-taa RAEN-taa
+    - Sataa räntää.
+  phon:
+    - SA-taa RAEN-taa
+
 - en: It’s snowing.
   fi:
-  - Sataa lunta.
-  phon: SA-taa LUN-ta
+    - Sataa lunta.
+  phon:
+    - SA-taa LUN-ta
+
 - en: It’s windy.
   fi:
-  - Tuulee.
-  - On tuulista.
-  phon: TUU-lee / On TUU-lis-ta
+    - Tuulee.
+    - On tuulista.
+  phon:
+    - TUU-lee
+    - On TUU-lis-ta
+
 - en: It’s stormy.
   fi:
-  - On myrsky.
-  phon: On MUER-sky
+    - On myrsky.
+  phon:
+    - On MUER-sky
+
 - en: There is thunder.
   fi:
-  - On ukkonen.
-  phon: On UK-ko-nen
+    - On ukkonen.
+  phon:
+    - On UK-ko-nen
+
 - en: Wow, the weather is awful today!
   fi:
-  - Uh, onpa kamala ilma tänään!
-  phon: UH ON-pa KA-ma-la IL-ma TAE-naen
+    - Uh, onpa kamala ilma tänään!
+  phon:
+    - UH ON-pa KA-ma-la IL-ma TAE-naen
+
 - en: It sure is!
   fi:
-  - No niin on!
-  phon: NO NIIN on
+    - No niin on!
+  phon:
+    - NO NIIN on
+
 - en: Lovely that the sun is shining!
   fi:
-  - Ihanaa, että aurinko paistaa!
-  phon: EE-ha-naa ET-ta AU-rin-ko PAI-staa
+    - Ihanaa, että aurinko paistaa!
+  phon:
+    - EE-ha-naa ET-ta AU-rin-ko PAI-staa
+
 - en: Yes, and it’s really warm!
   fi:
-  - Joo, ja on tosi lämmin!
-  phon: YOO ya on TO-si LAEM-min
+    - Joo, ja on tosi lämmin!
+  phon:
+    - YOO ya on TO-si LAEM-min

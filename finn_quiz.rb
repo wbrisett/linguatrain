@@ -2,13 +2,12 @@
 # frozen_string_literal: true
 
 # finn_quiz.rb
-# Finnish vocabulary quizzer (typing / match-game / listening via Piper)
+# Language quiz CLI (typing / match-game / listening via Piper)
 
 require "yaml"
 require "time"
 require "optparse"
 require "securerandom"
-require "rbconfig"
 
 # -----------------------------
 # Utility
@@ -26,6 +25,10 @@ end
 
 def normalize_basic(s)
   s.to_s.strip.downcase
+end
+
+def strip_terminal_punct(s)
+  s.to_s.strip.sub(/[.!?]+\z/, "")
 end
 
 def normalize_lenient_umlauts(s)
@@ -65,7 +68,7 @@ def resolve_executable(cmd)
   nil
 end
 
-def piper_speak(text, piper_bin:, piper_model:, volume: nil)
+def piper_speak(text, piper_bin:, piper_model:)
   resolved_piper = resolve_executable(piper_bin)
   raise "Piper binary not found: #{piper_bin}.\nPATH=#{ENV.fetch('PATH', '')}" unless resolved_piper
   raise "Piper model not found: #{piper_model}" unless piper_model && File.exist?(piper_model)
@@ -84,26 +87,27 @@ def piper_speak(text, piper_bin:, piper_model:, volume: nil)
 
   raise "Piper failed to generate audio." unless ok && File.exist?(wav)
 
-  # macOS playback (Windows/Linux can be added later)
-  system("afplay", wav)
+  # macOS playback
+  ok_play = system("afplay", wav)
+  raise "Audio playback failed (afplay)." unless ok_play
 ensure
   File.delete(wav) if wav && File.exist?(wav)
 end
 
-def speak_finnish_prompt(fi_text, piper_bin:, piper_model:)
-  # Carrier phrase improves naturalness for short words like "ei".
-  piper_speak("Suomeksi: #{ensure_terminal_punct(fi_text)}", piper_bin: piper_bin, piper_model: piper_model)
+def speak_target_prompt(text, piper_bin:, piper_model:, template: "Suomeksi: {text}.")
+  spoken = template.gsub("{text}", ensure_terminal_punct(text.to_s.strip))
+  piper_speak(spoken, piper_bin: piper_bin, piper_model: piper_model)
 end
 
 # In listen modes, allow the user to type 'r' to replay the audio.
 # Returns the user's non-replay input (may be nil on EOF).
-def prompt_with_replay(msg, spoken_fi, piper_bin:, piper_model:)
+def prompt_with_replay(msg, spoken_text, piper_bin:, piper_model:, template:)
   loop do
     input = prompt(msg)
     return nil if input.nil?
 
     if input.strip.casecmp("r").zero?
-      speak_finnish_prompt(spoken_fi, piper_bin: piper_bin, piper_model: piper_model)
+      speak_target_prompt(spoken_text, piper_bin: piper_bin, piper_model: piper_model, template: template)
       next
     end
 
@@ -118,22 +122,61 @@ end
 def load_words(path)
   data = YAML.load_file(path)
 
-  words =
+  raw_entries =
     if data.is_a?(Array)
       data
     elsif data.is_a?(Hash)
-      data.map do |en, v|
-        v ||= {}
-        { "en" => en, "fi" => v["fi"] || v[:fi], "phon" => v["phon"] || v[:phon] }
+      # Support multiple top-level shapes:
+      # A) {items: [ ... ], meta: {...}}  -> use items
+      # B) {pairs: [ {a:{fi,en,phon}, b:{fi,en,phon}}, ... ], meta:{...}} -> expand pairs
+      # C) Mapping form: "English" => {fi:, phon:}
+      # D) Grouped form: "Group name" => [ {english/en:, finnish/fi:, ...}, ... ]
+
+      items = data["items"] || data[:items]
+      if items.is_a?(Array)
+        items
+      else
+        pairs = data["pairs"] || data[:pairs]
+        if pairs.is_a?(Array)
+          pairs.flat_map do |p|
+            a = p["a"] || p[:a] || {}
+            b = p["b"] || p[:b] || {}
+
+            [a, b].map do |side|
+              {
+                "en" => side["en"] || side[:en] || side["english"] || side[:english],
+                "fi" => side["fi"] || side[:fi] || side["finnish"] || side[:finnish],
+                "phon" => side["phon"] || side[:phon] || side["phonetic"] || side[:phonetic]
+              }
+            end
+          end
+        else
+          data.flat_map do |key, v|
+            # Ignore metadata blocks commonly named 'meta'
+            next [] if key.to_s.strip.downcase == "meta"
+
+            v ||= {}
+
+            if v.is_a?(Array)
+              v
+            elsif v.is_a?(Hash)
+              fi_val = v["fi"] || v[:fi] || v["finnish"] || v[:finnish]
+              phon_val = v["phon"] || v[:phon] || v["phonetic"] || v[:phonetic]
+              fi_val.nil? ? [] : [{ "en" => key, "fi" => fi_val, "phon" => phon_val }]
+            else
+              []
+            end
+          end
+        end
       end
     else
       raise "Unsupported YAML structure."
     end
 
-  words.map do |w|
-    en = w["en"] || w[:en]
-    fi = w["fi"] || w[:fi]
-    phon = w["phon"] || w[:phon]
+  raw_entries.map do |w|
+    en = w["en"] || w[:en] || w["english"] || w[:english]
+    fi = w["fi"] || w[:fi] || w["finnish"] || w[:finnish]
+    phon = w["phon"] || w[:phon] || w["phonetic"] || w[:phonetic]
 
     raise "Invalid word entry: #{w.inspect}" if en.to_s.strip.empty? || fi.nil?
 
@@ -151,6 +194,7 @@ def load_words(path)
   end
 end
 
+
 def choose_words(words, count)
   return words.shuffle if count.nil? || count == "all"
 
@@ -163,16 +207,16 @@ end
 # -----------------------------
 
 def match_answer(user, expected_list, lenient:)
-  user_n = normalize_basic(user)
-  exp_norms = expected_list.map { |e| normalize_basic(e) }
+  user_n = normalize_basic(strip_terminal_punct(user))
+  exp_norms = expected_list.map { |e| normalize_basic(strip_terminal_punct(e)) }
 
   if (idx = exp_norms.index(user_n))
     return [:exact, true, expected_list[idx]]
   end
   return [:no, false, nil] unless lenient
 
-  user_l = normalize_lenient_umlauts(user)
-  exp_len = expected_list.map { |e| normalize_lenient_umlauts(e) }
+  user_l = normalize_lenient_umlauts(strip_terminal_punct(user))
+  exp_len = expected_list.map { |e| normalize_lenient_umlauts(strip_terminal_punct(e)) }
 
   if (idx = exp_len.index(user_l))
     return [:umlaut_lenient, true, expected_list[idx]]
@@ -193,7 +237,7 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, piper_bin:, piper_model:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
@@ -210,11 +254,11 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     say
     say "[#{idx + 1}/#{stats[:total]}]"
 
-    spoken_fi = nil
+    spoken = nil
     if listen
       say "Audible Finnish: (listening…)"
-      spoken_fi = w[:fi].sample
-      speak_finnish_prompt(spoken_fi, piper_bin: piper_bin, piper_model: piper_model)
+      spoken = w[:fi].sample
+      speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
       say "English: #{w[:en]}" unless listen_no_english
       say "(Type 'r' to replay audio)"
     else
@@ -234,11 +278,12 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
         say "Options:"
         options.each { |opt| say "  - #{opt}" }
 
-        if listen
-          input = prompt_with_replay("Type what you heard (Finnish): ", spoken_fi, piper_bin: piper_bin, piper_model: piper_model)
-        else
-          input = prompt("Type the Finnish word: ")
-        end
+        input = if listen
+                  prompt_with_replay("Type what you heard (Finnish): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+                else
+                  prompt("Type the Finnish word: ")
+                end
+
         kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
 
         if ok
@@ -260,11 +305,12 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           say "Yritä uudelleen." if attempt < 2
         end
       else
-        if listen
-          input = prompt_with_replay("Type what you heard (Finnish): ", spoken_fi, piper_bin: piper_bin, piper_model: piper_model)
-        else
-          input = prompt("Finnish: ")
-        end
+        input = if listen
+                  prompt_with_replay("Type what you heard (Finnish): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+                else
+                  prompt("Finnish: ")
+                end
+
         kind, ok, matched = match_answer(input, w[:fi], lenient: lenient)
 
         if ok
@@ -334,36 +380,25 @@ options = {
   listen_no_english: false,
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
+  tts_template: ENV["TTS_TEMPLATE"] || "Suomeksi: {text}.",
   count: nil
 }
 
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: ruby finn_quiz.rb <yaml_file> [count|all] [options]"
 
-  opts.on("--lenient-umlauts", "Allow a for ä and o for ö") do
-    options[:lenient] = true
-  end
-
-  opts.on("--match-game", "Enable multiple choice mode") do
-    options[:match_game] = true
-  end
-
-  opts.on("--listen", "Listening mode: speak Finnish (Piper) and type what you heard") do
-    options[:listen] = true
-  end
+  opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
+  opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
+  opts.on("--listen", "Listening mode: speak Finnish (Piper) and type what you heard") { options[:listen] = true }
 
   opts.on("--listen-no-english", "Listening mode without showing English translation") do
     options[:listen] = true
     options[:listen_no_english] = true
   end
 
-  opts.on("--piper-bin PATH", "Path to piper executable (or set PIPER_BIN env var)") do |v|
-    options[:piper_bin] = v
-  end
-
-  opts.on("--piper-model PATH", "Path to Piper .onnx model (or set PIPER_MODEL env var)") do |v|
-    options[:piper_model] = v
-  end
+  opts.on("--piper-bin PATH", "Path to piper executable (or set PIPER_BIN env var)") { |v| options[:piper_bin] = v }
+  opts.on("--piper-model PATH", "Path to Piper .onnx model (or set PIPER_MODEL env var)") { |v| options[:piper_model] = v }
+  opts.on("--tts-template STR", "TTS template, e.g. 'Suomeksi: {text}.' (or set TTS_TEMPLATE)") { |v| options[:tts_template] = v }
 end
 
 parser.parse!
@@ -386,7 +421,8 @@ stats, missed = run_quiz(
   listen: options[:listen],
   listen_no_english: options[:listen_no_english],
   piper_bin: options[:piper_bin],
-  piper_model: options[:piper_model]
+  piper_model: options[:piper_model],
+  tts_template: options[:tts_template]
 )
 
 say

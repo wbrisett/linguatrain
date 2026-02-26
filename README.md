@@ -47,7 +47,6 @@ ruby finn_quiz.rb Example_yaml/finnish_days_of_week.yaml all \
 
 Tip: you can press `r` during listening mode to replay the audio.
 
----
 
 ---
 
@@ -160,15 +159,71 @@ ruby finn_quiz.rb words.yaml all --listen   --piper-bin /Users/you/venvs/piper/b
 You can also set environment variables instead of passing flags every time:
 
 ```bash
-export PIPER_BIN=/Users/you/venvs/piper/bin/piper
-export PIPER_MODEL=/Users/you/tools/piper/models/fi_FI-harri-medium.onnx
+export PIPER_BIN="$HOME/venvs/piper/bin/piper"
+export PIPER_MODEL="$HOME/tools/piper/models/fi_FI/harri/medium/fi_FI-harri-medium.onnx"
 ```
 
-Then:
+Then run:
 
 ```bash
 ruby finn_quiz.rb words.yaml all --listen-no-english --match-game
 ```
+
+---
+
+## macOS: Make Piper Environment Variables Persistent (zsh)
+
+On macOS, the default shell is `/bin/zsh`.
+If you only run `export ...` in a terminal, those variables exist **only for that session**.
+
+To make them available in all new terminal windows/tabs:
+
+### 1. Confirm your shell
+
+```bash
+echo $SHELL
+```
+If it returns `/bin/zsh`, continue.
+
+### 2. Add the variables to your shell config
+
+Edit your zsh configuration:
+
+```code
+nano ~/.zshrc
+```
+add: 
+
+```code
+export PIPER_BIN="$HOME/venvs/piper/bin/piper"
+export PIPER_MODEL="$HOME/tools/piper/models/fi_FI/harri/medium/fi_FI-harri-medium.onnx"
+```
+
+Reload:
+
+```code
+source ~/.zshrc
+```
+Optional: Ensure IDE / login-shell support
+
+Some macOS setups and IDEs (e.g., JetBrains) use login shells.
+
+To ensure the variables are available everywhere, also add the same lines to:
+
+```code
+nano ~/.zprofile
+```
+
+Verify
+
+Open a new terminal and run:
+
+```bash
+echo $PIPER_BIN
+echo $PIPER_MODEL
+```
+
+If both print correctly, your environment is set.
 
 ---
 

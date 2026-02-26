@@ -46,7 +46,6 @@ Notes:
 - `fi` is what the quiz uses by default.
 - `fi_spoken` is optional. If you decide to implement it, listening mode can prefer `fi_spoken` when present.
 - Keep both forms if you want to practice reading and listening separately.
-```
 
 ---
 

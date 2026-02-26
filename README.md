@@ -383,6 +383,8 @@ The word count argument works with any mode and can be combined with flags such 
 
 
 ### `--lenient-umlauts`
+**Warning:** while this mode is currently available, it is not advisable to use it since umlauts have real meaning. However, it is here should you want to use it very early on while learning. 
+
 Allows `a` for `ä` and `o` for `ö` (useful early on). If you use the lenient spelling, you still get credit, but it reminds you that umlauts matter.
 
 ```bash

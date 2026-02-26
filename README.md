@@ -222,18 +222,18 @@ flowchart TD
   S["SRS state file\n(~/.config/finn_quiz/srs/<pack>.yaml)"] --> T["SRS Scheduler\n(due/new selection)"]
   B --> T
 
-  T --> C["Mode & Direction\n(typing / reverse / match-game)"]
+  T --> C["Mode & Direction\\n(typing / reverse / match-game)"]
   C --> D{"Listening enabled?"}
-  D -- yes --> E["Piper speak\ncarrier phrase + fi"]
+  D -- yes --> E["Piper speak\\ncarrier phrase + fi"]
   D -- no --> F["Skip audio"]
   E --> G["Prompt user"]
   F --> G["Prompt user"]
-  G --> H["Answer normalization\n(case, umlauts leniency)"]
+  G --> H["Answer normalization\\n(case, umlauts leniency)"]
   H --> I["Validate vs accepted answers"]
   I --> J["Attempt scoring\n(1st / 2nd / failed)"]
 
   J --> U{"SRS enabled?"}
-  U -- yes --> V["Update scheduling\n(interval/ease/due_at)"]
+  U -- yes --> V["Update scheduling\\n(interval/ease/due_at)"]
   V --> W["Write SRS state file"]
   W --> K{"Any misses?"}
 

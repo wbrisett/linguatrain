@@ -11,7 +11,7 @@ A tiny command-line Finnish vocabulary quizzer that reads words from a YAML file
 
 ---
 
-```markdown
+
 **Important note about listening**
 
 Spoken Finnish often differs from written Finnish. As my Finnish teacher says, written Finnish is always acceptable — but everyday speech can use different words, endings, and phrasing.

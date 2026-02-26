@@ -48,7 +48,7 @@ ruby finn_quiz.rb weather.yaml --reverse
 Example session:
 
 ```text
-Finnish Quiz — 5 word(s) (mode: reverse)
+Finnish Quiz — 5 word(s) (mode: typing, fi→en)
 --------------------------------------------------
 
 [1/5] Finnish: On pakkasta.
@@ -95,7 +95,7 @@ ruby finn_quiz.rb weather.yaml all --listen
 Example session:
 
 ```text
-Finnish Quiz — 5 word(s) (mode: listen)
+Finnish Quiz — 5 word(s) (mode: typing, listen)
 --------------------------------------------------
 
 [1/5]
@@ -120,7 +120,7 @@ ruby finn_quiz.rb weather.yaml all --listen-no-english
 Example session:
 
 ```text
-Finnish Quiz — 5 word(s) (mode: listen-no-english)
+Finnish Quiz — 5 word(s) (mode: typing, listen-no-english)
 --------------------------------------------------
 
 [1/5]
@@ -148,7 +148,7 @@ ruby finn_quiz.rb weather.yaml all --reverse --listen --match-game --match-optio
 Example session:
 
 ```text
-Finnish Quiz — 5 word(s) (mode: reverse + match-game + listen)
+Finnish Quiz — 5 word(s) (mode: match-game, listen, fi→en)
 --------------------------------------------------
 
 [1/5]
@@ -365,6 +365,12 @@ The word count argument works with any mode and can be combined with flags such 
 | `--lenient-umlauts` | Accept `a/o` for `ä/ö` | typing only | off |
 | `--piper-bin PATH` | Path to Piper binary | listen modes | required |
 | `--piper-model PATH` | Path to voice model | listen modes | required |
+| `--srs` | Enable spaced repetition scheduling | any mode | off |
+| `--due` | With `--srs`, only quiz due items | `--srs` | off |
+| `--new N` | With `--srs`, include up to N new items per session | `--srs` | 5 |
+| `--reset-srs` | With `--srs`, reset scheduling state for this pack | `--srs` | off |
+| `--srs-file PATH` | Override SRS state file location | `--srs` | default path |
+
 
 ### `--lenient-umlauts`
 Allows `a` for `ä` and `o` for `ö` (useful early on). If you use the lenient spelling, you still get credit, but it reminds you that umlauts matter.
@@ -709,6 +715,80 @@ Smoke test:
 ```bash
 echo "Ei kiitos." | piper -m ~/tools/piper/models/fi_FI/harri/medium/fi_FI-harri-medium.onnx -f /tmp/test.wav
 afplay /tmp/test.wav
+```
+
+---
+
+## Spaced Repetition System (SRS)
+
+This project includes an optional Spaced Repetition System (SRS) inspired by the SM-2 algorithm used in Anki and SuperMemo.
+
+### What Is SRS?
+
+SRS schedules review of words based on how well you remember them. Words you struggle with appear more frequently. Words you answer easily are shown less often over time.
+
+This prevents over-reviewing easy vocabulary while ensuring difficult words return before you forget them.
+
+### How It Works Here
+
+Each word stores the following data locally:
+
+- `reps` — number of successful reviews in a row
+- `interval_days` — current spacing interval
+- `ease` — growth multiplier
+- `due_at` — next scheduled review time
+- `lapses` — number of times forgotten
+
+Performance rules:
+
+- Correct on 1st try → interval increases
+- Correct on 2nd try → interval increases (slightly less)
+- Failed → reset and scheduled again in ~10 minutes
+
+Intervals typically grow like:
+
+`1 → 6 → 15 → 35 → 80 → 180 days…`
+
+### Where Data Is Stored
+
+By default:
+```text
+~/.config/finn_quiz/srs/<pack_name>.yaml
+```
+
+You can override this location with:
+```text
+--srs-file PATH
+```
+
+### Using SRS
+
+Enable scheduling:
+
+```bash
+ruby finn_quiz.rb pack.yaml all --srs
+```
+Only review due items: 
+
+```bash
+ruby finn_quiz.rb pack.yaml all --srs --due
+```
+
+Limit new words per session:
+
+```bash
+ruby finn_quiz.rb pack.yaml all --srs --new 10
+```
+Reset scheduling for a pack:
+
+```bash
+ruby finn_quiz.rb pack.yaml all --srs --reset-srs
+```
+### Session Header
+
+When SRS is enabled, the session begins with a status summary:
+```text
+SRS Status — Due: 12 | New: 5
 ```
 
 ---

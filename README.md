@@ -11,6 +11,45 @@ A tiny command-line Finnish vocabulary quizzer that reads words from a YAML file
 
 ---
 
+```markdown
+**Important note about listening**
+
+Spoken Finnish often differs from written Finnish. As my Finnish teacher says, written Finnish is always acceptable — but everyday speech can use different words, endings, and phrasing.
+
+Listening mode uses Piper for text-to-speech. Piper reads the Finnish text exactly as written; it does not attempt to convert written Finnish into colloquial spoken Finnish.
+
+If you want the audio to reflect colloquial speech, you can choose to put a spoken-style version into your YAML. That decision is yours — this tool does not transform written forms into spoken forms automatically.
+
+For example, you might explicitly store both forms in your data if desired.
+
+### Optional: store a colloquial “spoken” form
+
+If you want listening mode to use a more colloquial form, you can store both a standard written form and a separate spoken form.
+
+```yaml
+# Example: one entry with both written and spoken Finnish
+- en: "I am." 
+  fi: "Minä olen."        # written / standard
+  fi_spoken: "Mä oon."     # colloquial / spoken
+  phon: "MI-nä O-len / Mä oon"
+```
+
+```yaml
+# Example (mapping/hash form): keys are the English prompts
+I am.:
+  fi: "Minä olen."        # written / standard
+  fi_spoken: "Mä oon."     # colloquial / spoken
+  phon: "MI-nä O-len / Mä oon"
+```
+
+Notes:
+- `fi` is what the quiz uses by default.
+- `fi_spoken` is optional. If you decide to implement it, listening mode can prefer `fi_spoken` when present.
+- Keep both forms if you want to practice reading and listening separately.
+```
+
+---
+
 ## Mode Examples (Weather YAML)
 
 Below are example interactions using the weather vocabulary file.
@@ -765,7 +804,7 @@ Intervals typically grow like:
 
 By default:
 ```text
-~/.config/finn_quiz/srs/<pack_name>.yaml
+~/.config/finn_quiz/srs/<pack>.yaml
 ```
 
 You can override this location with:

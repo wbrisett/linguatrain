@@ -178,19 +178,29 @@ At a high level, the script is a pipeline:
 
 ```mermaid
 flowchart TD
-  A[YAML file] --> B[Loader / Normalizer]
-  B --> C[Mode & Direction<br/>(typing / reverse / match-game)]
-  C --> D{Listening enabled?}
-  D -- yes --> E[Piper speak<br/>carrier phrase + fi]
-  D -- no --> F[Skip audio]
-  E --> G[Prompt user]
-  F --> G[Prompt user]
-  G --> H[Answer normalization<br/>(case, umlauts leniency)]
-  H --> I[Validate vs accepted answers]
-  I --> J[Attempt scoring<br/>(1st / 2nd / failed)]
-  J --> K{Any misses?}
-  K -- yes --> L[Write missed YAML + meta/stats]
-  K -- no --> M[Print “Ei virheitä”]
+  A["YAML file"] --> B["Loader / Normalizer"]
+
+  S["SRS state file\n(~/.config/finn_quiz/srs/<pack>.yaml)"] --> T["SRS Scheduler\n(due/new selection)"]
+  B --> T
+
+  T --> C["Mode & Direction\n(typing / reverse / match-game)"]
+  C --> D{"Listening enabled?"}
+  D -- yes --> E["Piper speak\ncarrier phrase + fi"]
+  D -- no --> F["Skip audio"]
+  E --> G["Prompt user"]
+  F --> G["Prompt user"]
+  G --> H["Answer normalization\n(case, umlauts leniency)"]
+  H --> I["Validate vs accepted answers"]
+  I --> J["Attempt scoring\n(1st / 2nd / failed)"]
+
+  J --> U{"SRS enabled?"}
+  U -- yes --> V["Update scheduling\n(interval/ease/due_at)"]
+  V --> W["Write SRS state file"]
+  W --> K{"Any misses?"}
+
+  U -- no --> K
+  K -- yes --> L["Write missed YAML + meta/stats"]
+  K -- no --> M["Print Ei virheitä"]
 ```
 
 ### Mode layering (how flags combine)

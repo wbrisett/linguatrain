@@ -1,0 +1,37 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: milk
+  answer:
+  - maito
+  phonetic: MAI-to
+- id: '002'
+  prompt: sour milk / buttermilk
+  answer:
+  - piimä
+  phonetic: PEE-mae
+- id: '003'
+  prompt: yogurt
+  answer:
+  - jogurtti
+  phonetic: YO-gur-tee
+- id: '004'
+  prompt: cheese
+  answer:
+  - juusto
+  phonetic: YOO-sto
+- id: '005'
+  prompt: butter
+  answer:
+  - voi
+  phonetic: VOY
+- id: '006'
+  prompt: cream
+  answer:
+  - kerma
+  phonetic: KER-ma

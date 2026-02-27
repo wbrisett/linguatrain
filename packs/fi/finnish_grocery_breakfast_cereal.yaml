@@ -1,0 +1,27 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: oatmeal
+  answer:
+  - kaurapuuro
+  phonetic: KOW-ra-POO-ro
+- id: '002'
+  prompt: oats
+  answer:
+  - kaurahiutaleet
+  phonetic: KOW-ra-HYOO-ta-leet
+- id: '003'
+  prompt: cereal
+  answer:
+  - murot
+  phonetic: MOO-rot
+- id: '004'
+  prompt: porridge
+  answer:
+  - puuro
+  phonetic: POO-ro

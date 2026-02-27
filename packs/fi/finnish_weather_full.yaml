@@ -1,0 +1,106 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: What’s the weather like today?
+  answer:
+  - Millainen sää tänään on?
+  - Millainen ilma tänään on?
+- id: '002'
+  prompt: How many degrees is it outside?
+  answer:
+  - Kuinka monta astetta ulkona on?
+- id: '003'
+  prompt: It’s nice weather.
+  answer:
+  - On kaunis ilma.
+  - On hyvä ilma.
+- id: '004'
+  prompt: It’s bad weather.
+  answer:
+  - On huono ilma.
+- id: '005'
+  prompt: It’s +30 degrees. It’s hot.
+  answer:
+  - On +30 astetta.
+  - On kuuma.
+  - On helle.
+- id: '006'
+  prompt: It’s +20 degrees. It’s warm.
+  answer:
+  - On +20 astetta.
+  - On lämmin.
+- id: '007'
+  prompt: It’s +2 degrees. It’s cool.
+  answer:
+  - On +2 astetta.
+  - On viileä.
+- id: '008'
+  prompt: It’s -15 degrees. It’s cold.
+  answer:
+  - On -15 astetta.
+  - On kylmä.
+  - On pakkasta.
+- id: '009'
+  prompt: It’s sunny.
+  answer:
+  - Aurinko paistaa.
+  - On aurinkoista.
+- id: '010'
+  prompt: It’s cloudy.
+  answer:
+  - On pilvistä.
+- id: '011'
+  prompt: It’s partly cloudy.
+  answer:
+  - On puolipilvistä.
+- id: '012'
+  prompt: It’s foggy.
+  answer:
+  - On sumuista.
+- id: '013'
+  prompt: It’s raining.
+  answer:
+  - Sataa.
+  - On sateista.
+- id: '014'
+  prompt: It’s sleeting.
+  answer:
+  - Sataa räntää.
+- id: '015'
+  prompt: It’s snowing.
+  answer:
+  - Sataa lunta.
+- id: '016'
+  prompt: It’s windy.
+  answer:
+  - Tuulee.
+  - On tuulista.
+- id: '017'
+  prompt: It’s stormy.
+  answer:
+  - On myrsky.
+- id: '018'
+  prompt: There is thunder.
+  answer:
+  - On ukkonen.
+- id: '019'
+  prompt: Wow, the weather is awful today!
+  answer:
+  - Uh, onpa kamala ilma tänään!
+- id: '020'
+  prompt: It sure is!
+  answer:
+  - No niin on!
+- id: '021'
+  prompt: Lovely that the sun is shining!
+  answer:
+  - Ihanaa, että aurinko paistaa!
+- id: '022'
+  prompt: Yes, and it’s really warm!
+  answer:
+  - Joo, ja on tosi lämmin!

@@ -1,0 +1,47 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: chicken
+  answer:
+  - kana
+  phonetic: KAH-na
+- id: '002'
+  prompt: beef
+  answer:
+  - naudanliha
+  phonetic: NOW-dahn-lee-ha
+- id: '003'
+  prompt: pork
+  answer:
+  - sianliha
+  phonetic: SEE-ahn-lee-ha
+- id: '004'
+  prompt: minced meat
+  answer:
+  - jauheliha
+  phonetic: YOW-heh-lee-ha
+- id: '005'
+  prompt: fish
+  answer:
+  - kala
+  phonetic: KAH-la
+- id: '006'
+  prompt: salmon
+  answer:
+  - lohi
+  phonetic: LOH-hee
+- id: '007'
+  prompt: sausage
+  answer:
+  - makkara
+  phonetic: MAK-kah-ra
+- id: '008'
+  prompt: eggs
+  answer:
+  - kananmunat
+  phonetic: KAH-nahn-moo-naht

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# finn_quiz.rb
+# linguatrain.rb
 # Language quiz CLI (typing / match-game / listening via Piper)
 
 require "yaml"
@@ -22,6 +22,130 @@ def say(msg = "")
   puts msg
 end
 
+# -----------------------------
+# Configuration (user config + pack metadata)
+# -----------------------------
+
+DEFAULT_USER_CONFIG_PATHS = [
+  File.join(Dir.home, ".config", "linguatrain", "config.yaml"),
+  # Back-compat with earlier naming/location
+  File.join(Dir.home, ".config", "finn_quiz", "config.yaml")
+].freeze
+
+DEFAULT_UI = {
+  language_name: "Language",
+  quiz_label: "Quiz",
+  correct: "✅ Correct!",
+  try_again: "Try again.",
+  correct_answer_prefix: "❌ Correct answer:",
+  correct_word_prefix: "❌ Correct word:",
+  replay_hint: "(Type 'r' to replay audio)",
+  also_accepted_prefix: "Also accepted:",
+  phonetic_prefix: "phonetic",
+  prompt_prefix: "Prompt",
+  source_language_name: "Source",
+  target_language_name: "Target",
+  target_prefix: "Answer",
+  quit_message: "👋 Exiting quiz."
+}.freeze
+
+DEFAULT_TTS_TEMPLATE = "Target language: {text}."
+DEFAULT_AUDIO_PLAYER = "afplay" # macOS default
+
+def symbolize_keys_deep(obj)
+  case obj
+  when Hash
+    obj.each_with_object({}) do |(k, v), out|
+      key = k.is_a?(String) ? k.to_sym : k
+      out[key] = symbolize_keys_deep(v)
+    end
+  when Array
+    obj.map { |v| symbolize_keys_deep(v) }
+  else
+    obj
+  end
+end
+
+def load_yaml_hash(path)
+  return {} if path.nil?
+  p = path.to_s.strip
+  return {} if p.empty?
+  return {} unless File.exist?(p)
+
+  data = YAML.load_file(p)
+  data = {} unless data.is_a?(Hash)
+  symbolize_keys_deep(data)
+rescue StandardError
+  {}
+end
+
+def first_existing_path(paths)
+  Array(paths).find { |p| p && !p.to_s.strip.empty? && File.exist?(p.to_s) }
+end
+
+def deep_merge_hash(a, b)
+  a = (a || {}).dup
+  (b || {}).each do |k, v|
+    if a[k].is_a?(Hash) && v.is_a?(Hash)
+      a[k] = deep_merge_hash(a[k], v)
+    else
+      a[k] = v
+    end
+  end
+  a
+end
+
+def resolve_user_config_path(cli_path)
+  return cli_path if cli_path && !cli_path.to_s.strip.empty?
+  env_path = ENV["LINGUATRAIN_CONFIG"]
+  return env_path if env_path && !env_path.to_s.strip.empty?
+  first_existing_path(DEFAULT_USER_CONFIG_PATHS)
+end
+
+def resolve_piper_model(options, user_cfg, pack_meta)
+  # CLI/ENV already landed in options[:piper_model]. If present, keep it.
+  return options[:piper_model] if options[:piper_model] && !options[:piper_model].to_s.strip.empty?
+
+  # Prefer per-language model mapping if we know the target language code.
+  target_code = pack_meta.dig(:languages, :target, :code)
+  mapped = user_cfg.dig(:piper, :models, target_code.to_sym) || user_cfg.dig(:piper, :models, target_code) if target_code
+  return mapped if mapped && !mapped.to_s.strip.empty?
+
+  # Fallback single model if provided.
+  fallback = user_cfg.dig(:piper, :model)
+  return fallback if fallback && !fallback.to_s.strip.empty?
+
+  nil
+end
+
+def resolve_settings!(options, user_cfg, pack_meta)
+  # Runtime
+  options[:audio_player] ||= user_cfg.dig(:runtime, :audio_player) || DEFAULT_AUDIO_PLAYER
+
+  # Piper
+  options[:piper_bin] ||= user_cfg.dig(:piper, :bin)
+  options[:piper_model] = resolve_piper_model(options, user_cfg, pack_meta)
+
+  # TTS template: pack overrides user defaults
+  options[:tts_template] ||= user_cfg.dig(:defaults, :tts_template)
+  options[:tts_template] = pack_meta.dig(:tts, :template) || options[:tts_template] || DEFAULT_TTS_TEMPLATE
+
+  # UI strings: defaults < user < pack
+  ui = deep_merge_hash(DEFAULT_UI, user_cfg.dig(:ui))
+  ui = deep_merge_hash(ui, pack_meta.dig(:ui))
+
+  # Provide language name if pack has it.
+  ui[:language_name] = pack_meta.dig(:languages, :target, :name) if pack_meta.dig(:languages, :target, :name)
+
+  ui[:source_language_name] = pack_meta.dig(:languages, :source, :name) if pack_meta.dig(:languages, :source, :name)
+  ui[:target_language_name] = pack_meta.dig(:languages, :target, :name) if pack_meta.dig(:languages, :target, :name)
+  ui[:target_prefix] ||= ui[:target_language_name] || ui[:language_name] || "Answer"
+
+  options[:ui] = ui
+
+  options
+end
+
 def prompt(msg)
   print msg
   STDOUT.flush
@@ -38,7 +162,7 @@ def prompt(msg)
 
     if confirm && confirm.strip.downcase == "y"
       puts
-      puts "👋 Exiting quiz. Kiitos!"
+      puts((defined?($UI) && $UI[:quit_message]) ? $UI[:quit_message] : "👋 Exiting quiz.")
       raise QuitQuiz
     else
       return ""  # Return empty input so quiz continues
@@ -107,7 +231,7 @@ def piper_speak(text, piper_bin:, piper_model:)
   raise "Piper binary not found: #{piper_bin}.\nPATH=#{ENV.fetch('PATH', '')}" unless resolved_piper
   raise "Piper model not found: #{piper_model}" unless piper_model && File.exist?(piper_model)
 
-  wav = File.join("/tmp", "finn_quiz_tts_#{Process.pid}_#{SecureRandom.hex(4)}.wav")
+  wav = File.join("/tmp", "linguatrain_tts_#{Process.pid}_#{SecureRandom.hex(4)}.wav")
 
   ok = IO.popen([resolved_piper, "-m", piper_model, "-f", wav], "r+") do |io|
     io.write(text.to_s)
@@ -122,13 +246,14 @@ def piper_speak(text, piper_bin:, piper_model:)
   raise "Piper failed to generate audio." unless ok && File.exist?(wav)
 
   # macOS playback
-  ok_play = system("afplay", wav)
-  raise "Audio playback failed (afplay)." unless ok_play
+  player = (defined?($AUDIO_PLAYER) && $AUDIO_PLAYER) ? $AUDIO_PLAYER : DEFAULT_AUDIO_PLAYER
+  ok_play = system(player.to_s, wav)
+  raise "Audio playback failed (#{player})." unless ok_play
 ensure
   File.delete(wav) if wav && File.exist?(wav)
 end
 
-def speak_target_prompt(text, piper_bin:, piper_model:, template: "Suomeksi: {text}.")
+def speak_target_prompt(text, piper_bin:, piper_model:, template: DEFAULT_TTS_TEMPLATE)
   spoken = template.gsub("{text}", ensure_terminal_punct(text.to_s.strip))
   piper_speak(spoken, piper_bin: piper_bin, piper_model: piper_model)
 end
@@ -153,52 +278,61 @@ end
 # YAML Loading
 # -----------------------------
 
-def load_words(path)
+def load_pack(path)
   data = YAML.load_file(path)
 
   raw_entries =
     if data.is_a?(Array)
       data
     elsif data.is_a?(Hash)
-      # Support multiple top-level shapes:
-      # A) {items: [ ... ], meta: {...}}  -> use items
-      # B) {pairs: [ {a:{fi,en,phon}, b:{fi,en,phon}}, ... ], meta:{...}} -> expand pairs
-      # C) Mapping form: "English" => {fi:, phon:}
-      # D) Grouped form: "Group name" => [ {english/en:, finnish/fi:, ...}, ... ]
-
-      items = data["items"] || data[:items]
-      if items.is_a?(Array)
-        items
+      # New Linguatrain schema:
+      #   metadata: {...}
+      #   entries:  [ {id:, prompt:, alternate_prompts:, answer:, phonetic:}, ... ]
+      pack_meta = data["metadata"] || data[:metadata] || {}
+      entries = data["entries"] || data[:entries]
+      if entries.is_a?(Array)
+        entries
       else
-        pairs = data["pairs"] || data[:pairs]
-        if pairs.is_a?(Array)
-          pairs.flat_map do |p|
-            a = p["a"] || p[:a] || {}
-            b = p["b"] || p[:b] || {}
+        # Legacy support (kept for backward compatibility):
+        # A) {items: [ ... ], meta: {...}}  -> use items
+        # B) {pairs: [ {a:{fi,en,phon}, b:{fi,en,phon}}, ... ], meta:{...}} -> expand pairs
+        # C) Mapping form: "English" => {fi:, phon:}
+        # D) Grouped form: "Group name" => [ {english/en:, finnish/fi:, ...}, ... ]
 
-            [a, b].map do |side|
-              {
-                "en" => side["en"] || side[:en] || side["english"] || side[:english],
-                "fi" => side["fi"] || side[:fi] || side["finnish"] || side[:finnish],
-                "phon" => side["phon"] || side[:phon] || side["phonetic"] || side[:phonetic]
-              }
-            end
-          end
+        items = data["items"] || data[:items]
+        if items.is_a?(Array)
+          items
         else
-          data.flat_map do |key, v|
-            # Ignore metadata blocks commonly named 'meta'
-            next [] if key.to_s.strip.downcase == "meta"
+          pairs = data["pairs"] || data[:pairs]
+          if pairs.is_a?(Array)
+            pairs.flat_map do |p|
+              a = p["a"] || p[:a] || {}
+              b = p["b"] || p[:b] || {}
 
-            v ||= {}
+              [a, b].map do |side|
+                {
+                  "en" => side["en"] || side[:en] || side["english"] || side[:english],
+                  "fi" => side["fi"] || side[:fi] || side["finnish"] || side[:finnish],
+                  "phon" => side["phon"] || side[:phon] || side["phonetic"] || side[:phonetic]
+                }
+              end
+            end
+          else
+            data.flat_map do |key, v|
+              # Ignore metadata blocks commonly named 'meta'
+              next [] if key.to_s.strip.downcase == "meta"
 
-            if v.is_a?(Array)
-              v
-            elsif v.is_a?(Hash)
-              fi_val = v["fi"] || v[:fi] || v["finnish"] || v[:finnish]
-              phon_val = v["phon"] || v[:phon] || v["phonetic"] || v[:phonetic]
-              fi_val.nil? ? [] : [{ "en" => key, "fi" => fi_val, "phon" => phon_val }]
-            else
-              []
+              v ||= {}
+
+              if v.is_a?(Array)
+                v
+              elsif v.is_a?(Hash)
+                fi_val = v["fi"] || v[:fi] || v["finnish"] || v[:finnish]
+                phon_val = v["phon"] || v[:phon] || v["phonetic"] || v[:phonetic]
+                fi_val.nil? ? [] : [{ "en" => key, "fi" => fi_val, "phon" => phon_val }]
+              else
+                []
+              end
             end
           end
         end
@@ -207,10 +341,32 @@ def load_words(path)
       raise "Unsupported YAML structure."
     end
 
+  pack_meta ||= {}
+
   raw_entries.map do |w|
+    # Legacy keys
     en = w["en"] || w[:en] || w["english"] || w[:english]
     fi = w["fi"] || w[:fi] || w["finnish"] || w[:finnish]
     phon = w["phon"] || w[:phon] || w["phonetic"] || w[:phonetic]
+
+    # New schema keys
+    prompt_v = w["prompt"] || w[:prompt]
+    alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
+    answer_v = w["answer"] || w[:answer]
+    phonetic_v = w["phonetic"] || w[:phonetic]
+
+    # If we have new-schema fields, map them into the legacy variables used below.
+    if en.nil? && !prompt_v.nil?
+      en = prompt_v
+    end
+
+    if fi.nil? && !answer_v.nil?
+      fi = answer_v
+    end
+
+    if (phon.nil? || phon.to_s.strip.empty?) && !phonetic_v.nil?
+      phon = phonetic_v
+    end
 
     raise "Invalid word entry: #{w.inspect}" if en.nil? || fi.nil?
 
@@ -221,6 +377,15 @@ def load_words(path)
       else
         [en.to_s.strip]
       end
+
+    # New schema: include alternate_prompts as additional accepted English variants.
+    if alt_prompts_v.is_a?(Array)
+      en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
+    elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
+      en_list << alt_prompts_v.strip
+    end
+
+    en_list = en_list.uniq
 
     fi_list =
       case fi
@@ -233,6 +398,8 @@ def load_words(path)
     raise "Invalid word entry: #{w.inspect}" if en_list.empty? || fi_list.empty?
 
     { en: en_list, fi: fi_list, phon: phon.to_s.strip }
+  end.then do |words|
+    { meta: symbolize_keys_deep(pack_meta), words: words }
   end
 end
 
@@ -411,7 +578,7 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, srs_enabled:, srs:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
@@ -421,8 +588,12 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
   if listen
     mode << (listen_no_english ? "listen-no-english" : "listen")
   end
-  mode << "fi→en" if reverse
-  say "Finnish Quiz — #{stats[:total]} word(s) (mode: #{mode.join(', ')})"
+  src_name = ui[:source_language_name] || "Source"
+  tgt_name = ui[:target_language_name] || ui[:language_name] || "Target"
+
+  # Direction hint (belt and braces): show the active translation direction in mode list.
+  mode << (reverse ? "#{tgt_name}→#{src_name}" : "#{src_name}→#{tgt_name}")
+  say "#{ui[:source_language_name] || 'Source'} → #{ui[:target_language_name] || ui[:language_name] || 'Target'} #{ui[:quiz_label] || 'Quiz'} — #{stats[:total]} word(s) (mode: #{mode.join(', ')})"
   say "-" * 50
 
   selected.each_with_index do |w, idx|
@@ -434,24 +605,24 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     if reverse
       # Finnish → English mode
       if listen
-        say "Audible Finnish: (listening…)"
+        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
         spoken = w[:fi].sample
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-        say "(Type 'r' to replay audio)"
+        say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
         spoken = w[:fi].sample
-        say "Finnish: #{spoken}"
+        say "#{ui[:target_language_name] || ui[:language_name] || 'Target'}: #{spoken}"
       end
     else
       # Normal English → Finnish mode
       if listen
-        say "Audible Finnish: (listening…)"
+        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
         spoken = w[:fi].sample
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-        say "English: #{w[:en]}" unless listen_no_english
-        say "(Type 'r' to replay audio)"
+        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:en].join(' / ')}" unless listen_no_english
+        say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
-        say "English: #{w[:en]}"
+        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:en].join(' / ')}"
       end
     end
 
@@ -531,23 +702,23 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           input = if listen
                     prompt_with_replay("Type the English meaning: ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                   else
-                    prompt("English: ")
+                    prompt("#{ui[:source_language_name] || ui[:prompt_prefix] || 'Prompt'}: ")
                   end
 
           kind, ok, matched = match_answer(input, correct_list, lenient: false)
 
           if ok
             stats[:"correct_#{attempt}"] += 1
-            say "✅ Oikein!"
+            say(ui[:correct] || "✅ Correct!")
             others = correct_list - [matched]
-            say "   Also accepted: #{others.join(' / ')}" unless others.empty?
-            say "   (phonetic: #{w[:phon]})" unless w[:phon].empty?
-            say "   (English: #{w[:en].join(' / ')})"
+            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+            say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phon]})" unless w[:phon].empty?
+            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:en].join(' / ')})"
             update_srs!(srs, wid, attempt == 1 ? 4 : 3) if srs_enabled
             answer_ok = true
             break
           else
-            say "Yritä uudelleen." if attempt < 2
+            say(ui[:try_again] || "Try again.") if attempt < 2
           end
 
         else
@@ -561,7 +732,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           input = if listen
                     prompt_with_replay("Type what you heard (Finnish): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                   else
-                    prompt("Type the Finnish word: ")
+                    prompt("#{ui[:target_prefix] || 'Answer'}: ")
                   end
 
           kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
@@ -570,27 +741,27 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             stats[:"correct_#{attempt}"] += 1
 
             if kind == :umlaut_lenient
-              say "✅ Hyvä! Muista: ä ja ö ovat tärkeitä 😉"
+              say(ui[:correct] || "✅ Correct!")
             else
-              say "✅ Oikein!"
+              say(ui[:correct] || "✅ Correct!")
             end
 
             others = correct_list - [matched]
-            say "   Also accepted: #{others.join(' / ')}" unless others.empty?
-            say "   (phonetic: #{w[:phon]})" unless w[:phon].empty?
-            say "   (English: #{w[:en].join(' / ')})"
+            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+            say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phon]})" unless w[:phon].empty?
+            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:en].join(' / ')})"
             update_srs!(srs, wid, attempt == 1 ? 4 : 3) if srs_enabled
             answer_ok = true
             break
           else
-            say "Yritä uudelleen." if attempt < 2
+            say(ui[:try_again] || "Try again.") if attempt < 2
           end
         end
       else
         input = if listen
                   prompt_with_replay(reverse ? "Type the English meaning: " : "Type what you heard (Finnish): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                 else
-                  prompt(reverse ? "English: " : "Finnish: ")
+                  prompt(reverse ? "#{ui[:source_language_name] || ui[:prompt_prefix] || 'Prompt'}: " : "#{ui[:target_prefix] || 'Answer'}: ")
                 end
 
         if reverse
@@ -604,35 +775,36 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           stats[:"correct_#{attempt}"] += 1
 
           if kind == :umlaut_lenient
-            say "✅ Hyvä! Muista: ä ja ö ovat tärkeitä 😉"
+            say(ui[:correct] || "✅ Correct!")
           else
-            say "✅ Oikein!"
+            say(ui[:correct] || "✅ Correct!")
           end
 
           if reverse
             others = expected - [matched]
-            say "   Also accepted: #{others.join(' / ')}" unless others.empty?
+            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
           else
             others = w[:fi] - [matched]
-            say "   Also accepted: #{others.join(' / ')}" unless others.empty?
-            say "   (English: #{w[:en].join(' / ')})"
+            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:en].join(' / ')})"
           end
 
-          say "   (phonetic: #{w[:phon]})" unless w[:phon].empty?
+          say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phon]})" unless w[:phon].empty?
           update_srs!(srs, wid, attempt == 1 ? 4 : 3) if srs_enabled
           answer_ok = true
           break
         else
-          say "Yritä uudelleen." if attempt < 2
+          say(ui[:try_again] || "Try again.") if attempt < 2
         end
       end
     end
 
     unless answer_ok
+      stats[:failed] += 1
       if reverse
-        say "❌ Correct answer: #{w[:en].join(' / ')}"
+        say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{w[:en].join(' / ')}"
       else
-        say "❌ Oikea sana: #{w[:fi].join(' / ')}#{w[:phon].empty? ? '' : " (#{w[:phon]})"}"
+        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{w[:fi].join(' / ')}#{w[:phon].empty? ? '' : " (#{w[:phon]})"}"
       end
       update_srs!(srs, wid, 1) if srs_enabled
       missed << w
@@ -672,6 +844,7 @@ end
 # -----------------------------
 
 options = {
+  config: nil,
   lenient: false,
   match_game: false,
   listen: false,
@@ -680,7 +853,9 @@ options = {
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
-  tts_template: ENV["TTS_TEMPLATE"] || "Suomeksi: {text}.",
+  audio_player: ENV["AUDIO_PLAYER"],
+  tts_template: ENV["TTS_TEMPLATE"],
+  ui: nil,
   count: nil,
   srs: false,
   srs_due_only: false,
@@ -690,11 +865,14 @@ options = {
 }
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: ruby finn_quiz.rb <yaml_file> [count|all] [options]"
+  opts.banner = "Usage: ruby linguatrain.rb <yaml_file> [count|all] [options]"
+
+  opts.on("--config PATH", "Path to user config YAML (or set LINGUATRAIN_CONFIG)") { |v| options[:config] = v }
+  opts.on("--audio-player CMD", "Audio player command (default from config; macOS: afplay)") { |v| options[:audio_player] = v }
 
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
-  opts.on("--listen", "Listening mode: speak Finnish (Piper) and type what you heard") { options[:listen] = true }
+  opts.on("--listen", "Listening mode: speak target language (Piper) and type what you heard") { options[:listen] = true }
 
   opts.on("--listen-no-english", "Listening mode without showing English translation") do
     options[:listen] = true
@@ -724,11 +902,22 @@ parser.parse!
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
 
-if options[:listen]
-  abort("--listen requires --piper-bin (or PIPER_BIN) and --piper-model (or PIPER_MODEL)") unless options[:piper_bin] && options[:piper_model]
-end
+pack = load_pack(yaml_path)
+pack_meta = pack[:meta] || {}
+words = pack[:words] || []
 
-words = load_words(yaml_path)
+user_cfg_path = resolve_user_config_path(options[:config])
+user_cfg = load_yaml_hash(user_cfg_path)
+
+resolve_settings!(options, user_cfg, pack_meta)
+
+# Provide globals for small helpers.
+$UI = options[:ui] || DEFAULT_UI
+$AUDIO_PLAYER = options[:audio_player]
+
+if options[:listen]
+  abort("--listen requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
+end
 
 srs_enabled = options[:srs]
 srs_path = options[:srs_file] || default_srs_path(yaml_path)
@@ -787,6 +976,8 @@ begin
     piper_bin: options[:piper_bin],
     piper_model: options[:piper_model],
     tts_template: options[:tts_template],
+    audio_player: options[:audio_player],
+    ui: options[:ui] || DEFAULT_UI,
     srs_enabled: srs_enabled,
     srs: srs
   )
@@ -814,7 +1005,7 @@ begin
     say "Missed words saved to: #{outfile}"
   else
     say
-    say "😊 Ei virheitä — hienoa työtä!"
+    say "😊 No mistakes — nice work!"
   end
 rescue QuitQuiz
   say "SRS progress saved." if srs_enabled

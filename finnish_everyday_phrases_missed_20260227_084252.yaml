@@ -1,0 +1,44 @@
+---
+:meta:
+  :generated_at: '2026-02-27T08:42:52+02:00'
+  :source_file: "/Users/wayneb/Documents/github/linguatrain/packs/fi/finnish_everyday_phrases.yaml"
+  :lenient_umlauts: false
+  :match_game: false
+  :listen: false
+  :listen_no_english: false
+:stats:
+  :total: 5
+  :correct_1: 0
+  :correct_2: 0
+  :failed: 5
+:missed:
+- :en:
+  - Please forgive me.
+  - Forgive me.
+  :fi:
+  - Suokaa anteeksi.
+  :phon: SWOH-kah AHN-tehk-see
+- :en:
+  - Thank you.
+  - Thanks.
+  :fi:
+  - Kiitos.
+  :phon: KEE-tohs
+- :en:
+  - Now this is under control.
+  - We have this under control now.
+  :fi:
+  - Nyt tämä on hallinnassa.
+  :phon: Newt TAH-muh on HAH-leen-nahs-sah
+- :en:
+  - See you again.
+  - See you later.
+  :fi:
+  - Nähdään taas.
+  :phon: NAEH-daan tahs
+- :en:
+  - You're welcome.
+  - Here you go.
+  :fi:
+  - Ole hyvä.
+  :phon: OH-leh HY-vah

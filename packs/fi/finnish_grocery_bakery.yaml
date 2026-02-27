@@ -1,0 +1,27 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: bread
+  answer:
+  - leipä
+  phonetic: LAY-pae
+- id: '002'
+  prompt: rye bread
+  answer:
+  - ruisleipä
+  phonetic: RUIS-LAY-pae
+- id: '003'
+  prompt: crispbread
+  answer:
+  - näkkileipä
+  phonetic: NAEK-kee-LAY-pae
+- id: '004'
+  prompt: bun
+  answer:
+  - pulla
+  phonetic: POOL-la

@@ -1,0 +1,27 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: frozen vegetables
+  answer:
+  - pakastevihannekset
+  phonetic: PAH-kahs-teh-vee-hahn-nek-set
+- id: '002'
+  prompt: frozen berries
+  answer:
+  - pakastemarjat
+  phonetic: PAH-kahs-teh-mar-yaht
+- id: '003'
+  prompt: ice cream
+  answer:
+  - jäätelö
+  phonetic: YAE-teh-loe
+- id: '004'
+  prompt: frozen pizza
+  answer:
+  - pakastepizza
+  phonetic: PAH-kahs-teh-peet-tsa

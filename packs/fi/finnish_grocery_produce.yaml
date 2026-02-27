@@ -1,0 +1,62 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: potato
+  answer:
+  - peruna
+  phonetic: PEH-roo-na
+- id: '002'
+  prompt: carrot
+  answer:
+  - porkkana
+  phonetic: POR-kah-na
+- id: '003'
+  prompt: onion
+  answer:
+  - sipuli
+  phonetic: SEE-poo-lee
+- id: '004'
+  prompt: cucumber
+  answer:
+  - kurkku
+  phonetic: KOORK-koo
+- id: '005'
+  prompt: tomato
+  answer:
+  - tomaatti
+  phonetic: TOH-maht-tee
+- id: '006'
+  prompt: bell pepper
+  answer:
+  - paprika
+  phonetic: PAH-pree-kah
+- id: '007'
+  prompt: lettuce
+  answer:
+  - salaatti
+  phonetic: SAH-laht-tee
+- id: '008'
+  prompt: apple
+  answer:
+  - omena
+  phonetic: OH-meh-na
+- id: '009'
+  prompt: banana
+  answer:
+  - banaani
+  phonetic: BAH-naa-nee
+- id: '010'
+  prompt: orange
+  answer:
+  - appelsiini
+  phonetic: AH-pel-see-nee
+- id: '011'
+  prompt: berries
+  answer:
+  - marjat
+  phonetic: MAR-yaht

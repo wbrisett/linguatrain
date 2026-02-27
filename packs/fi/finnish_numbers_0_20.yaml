@@ -1,0 +1,112 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: '0'
+  answer:
+  - nolla
+  phonetic: NOHLL-AH
+- id: '002'
+  prompt: '1'
+  answer:
+  - yksi
+  phonetic: UEKS-EE
+- id: '003'
+  prompt: '2'
+  answer:
+  - kaksi
+  phonetic: KAHKS-EE
+- id: '004'
+  prompt: '3'
+  answer:
+  - kolme
+  phonetic: KOHLM-EH
+- id: '005'
+  prompt: '4'
+  answer:
+  - neljä
+  phonetic: NEHLJ-AE
+- id: '006'
+  prompt: '5'
+  answer:
+  - viisi
+  phonetic: VEEEES-EE
+- id: '007'
+  prompt: '6'
+  answer:
+  - kuusi
+  phonetic: KOOOOS-EE
+- id: '008'
+  prompt: '7'
+  answer:
+  - seitsemän
+  phonetic: SEHEETS-EHM-AEN
+- id: '009'
+  prompt: '8'
+  answer:
+  - kahdeksan
+  phonetic: KAHHD-EHKS-AHN
+- id: '010'
+  prompt: '9'
+  answer:
+  - yhdeksän
+  phonetic: UEHD-EHKS-AEN
+- id: '011'
+  prompt: '10'
+  answer:
+  - kymmenen
+  phonetic: KUEMM-EHN-EHN
+- id: '012'
+  prompt: '11'
+  answer:
+  - yksitoista
+  phonetic: UEKS-EET-OHEEST-AH
+- id: '013'
+  prompt: '12'
+  answer:
+  - kaksitoista
+  phonetic: KAHKS-EET-OHEEST-AH
+- id: '014'
+  prompt: '13'
+  answer:
+  - kolmetoista
+  phonetic: KOHLM-EHT-OHEEST-AH
+- id: '015'
+  prompt: '14'
+  answer:
+  - neljätoista
+  phonetic: NEHLJ-AET-OHEEST-AH
+- id: '016'
+  prompt: '15'
+  answer:
+  - viisitoista
+  phonetic: VEEEES-EET-OHEEST-AH
+- id: '017'
+  prompt: '16'
+  answer:
+  - kuusitoista
+  phonetic: KOOOOS-EET-OHEEST-AH
+- id: '018'
+  prompt: '17'
+  answer:
+  - seitsemäntoista
+  phonetic: SEHEETS-EHM-AENT-OHEEST-AH
+- id: '019'
+  prompt: '18'
+  answer:
+  - kahdeksantoista
+  phonetic: KAHHD-EHKS-AHNT-OHEEST-AH
+- id: '020'
+  prompt: '19'
+  answer:
+  - yhdeksäntoista
+  phonetic: UEHD-EHKS-AENT-OHEEST-AH
+- id: '021'
+  prompt: '20'
+  answer:
+  - kaksikymmentä
+  phonetic: KAHKS-EEK-UEMM-EHNT-AE

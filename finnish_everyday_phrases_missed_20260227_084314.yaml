@@ -1,0 +1,46 @@
+---
+:meta:
+  :generated_at: '2026-02-27T08:43:14+02:00'
+  :source_file: "/Users/wayneb/Documents/github/linguatrain/packs/fi/finnish_everyday_phrases.yaml"
+  :lenient_umlauts: false
+  :match_game: false
+  :listen: false
+  :listen_no_english: false
+:stats:
+  :total: 5
+  :correct_1: 0
+  :correct_2: 0
+  :failed: 5
+:missed:
+- :en:
+  - Good day. My name is Antti Virtanen.
+  - Hello. My name is Antti Virtanen.
+  :fi:
+  - Hyvää päivää. Minun nimeni on Antti Virtanen.
+  :phon: HY-vah PAI-vah. MI-noon NEE-meh-nee on AHN-tee VEER-tah-nen
+- :en:
+  - Good thing.
+  - Nice.
+  - Great.
+  :fi:
+  - Hyvä juttu.
+  :phon: HY-vah YOOT-too
+- :en:
+  - No worries.
+  - No problem.
+  :fi:
+  - Ei hätää.
+  :phon: Ey HAE-taa
+- :en:
+  - I am sorry.
+  - I'm sorry.
+  :fi:
+  - Olen pahoillani.
+  :phon: OH-len PAH-hoyl-lah-nee
+- :en:
+  - Pretty good.
+  - Quite good.
+  - Doing pretty well.
+  :fi:
+  - Ihan hyvää.
+  :phon: EE-hahn HY-vah

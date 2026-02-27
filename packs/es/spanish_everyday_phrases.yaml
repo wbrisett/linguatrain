@@ -1,0 +1,48 @@
+metadata:
+  pack_name: "Everyday phrases (Spanish)"
+  version: 1
+  source_lang: "en"
+  target_lang: "es"
+  description: "Small 5-entry pack for engine validation across a second language."
+
+entries:
+  - id: "001"
+    prompt: "Hello."
+    alternate_prompts:
+      - "Hi."
+    answer:
+      - "Hola."
+    phonetic: "OH-lah"
+
+  - id: "002"
+    prompt: "Good morning."
+    alternate_prompts:
+      - "Morning."
+    answer:
+      - "Buenos días."
+    phonetic: "BWAY-nohs DEE-ahs"
+
+  - id: "003"
+    prompt: "Thank you."
+    alternate_prompts:
+      - "Thanks."
+    answer:
+      - "Gracias."
+    phonetic: "GRAH-syahs"
+
+  - id: "004"
+    prompt: "You're welcome."
+    alternate_prompts:
+      - "No problem."
+    answer:
+      - "De nada."
+    phonetic: "deh NAH-dah"
+
+  - id: "005"
+    prompt: "Excuse me."
+    alternate_prompts:
+      - "Sorry."
+    answer:
+      - "Perdón."
+      - "Disculpe."
+    phonetic: "pehr-DOHN / dees-KOOL-peh"

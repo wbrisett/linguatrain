@@ -1,0 +1,47 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: Monday
+  answer:
+  - maanantai
+  phonetic: MAAN-AHN-TAI
+- id: '002'
+  prompt: Tuesday
+  answer:
+  - tiistai
+  phonetic: TEES-TAI
+- id: '003'
+  prompt: Wednesday
+  answer:
+  - keskiviikko
+  phonetic: KES-KEE-VEEK-KO
+- id: '004'
+  prompt: Thursday
+  answer:
+  - torstai
+  phonetic: TORS-TAI
+- id: '005'
+  prompt: Friday
+  answer:
+  - perjantai
+  phonetic: PER-YAHN-TAI
+- id: '006'
+  prompt: Saturday
+  answer:
+  - lauantai
+  phonetic: LOW-AHN-TAI
+- id: '007'
+  prompt: Sunday
+  answer:
+  - sunnuntai
+  phonetic: SOON-NOON-TAI
+- id: '008'
+  prompt: Weekend
+  answer:
+  - viikonloppu
+  phonetic: VEE-KON-LOP-PU

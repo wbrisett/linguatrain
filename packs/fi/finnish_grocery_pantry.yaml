@@ -1,0 +1,52 @@
+---
+metadata:
+  pack_name: legacy pack
+  version: 1
+  source_lang: en
+  target_lang: fi
+entries:
+- id: '001'
+  prompt: rice
+  answer:
+  - riisi
+  phonetic: REE-see
+- id: '002'
+  prompt: pasta
+  answer:
+  - pasta
+  phonetic: PAH-sta
+- id: '003'
+  prompt: flour
+  answer:
+  - jauho
+  phonetic: YOW-ho
+- id: '004'
+  prompt: sugar
+  answer:
+  - sokeri
+  phonetic: SOH-keh-ree
+- id: '005'
+  prompt: salt
+  answer:
+  - suola
+  phonetic: SOO-oh-la
+- id: '006'
+  prompt: coffee
+  answer:
+  - kahvi
+  phonetic: KAH-vee
+- id: '007'
+  prompt: tea
+  answer:
+  - tee
+  phonetic: TEH
+- id: '008'
+  prompt: oil
+  answer:
+  - öljy
+  phonetic: OEL-yoo
+- id: '009'
+  prompt: vinegar
+  answer:
+  - etikka
+  phonetic: EH-tik-kah

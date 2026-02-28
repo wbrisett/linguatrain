@@ -30,12 +30,11 @@ It is designed to be:
 
 ------------------------------------------------------------------------
 
-# 1. Overview
+# Overview
 
 A typical session works like this:
 
 1.  Load a YAML pack
-1.  Getting Started
 1.  Normalize entries
 1.  Select direction (source→target or target→source)
 1.  Layer optional behaviors (match‑game, listening, SRS)
@@ -507,7 +506,7 @@ organized.
 
 ---
 
-# 2. YAML Pack Schema
+# YAML Pack Schema
 
 ## Top-Level Structure
 
@@ -1100,7 +1099,7 @@ The engine may use this value to:
 
 ------------------------------------------------------------------------
 
-# 3. Mode Layering (How the Flags Work Together)
+# Mode Layering (How the Flags Work Together)
 
 All modes build on the same base loop:
 
@@ -1516,7 +1515,7 @@ Each flag layers behavior independently.
 
 ------------------------------------------------------------------------
 
-# 4. Complete Options Reference
+# Complete Options Reference
 
   ------------------------------------------------------------------------------------------------
   Flag                                       Purpose                    Default
@@ -1559,7 +1558,7 @@ Each flag layers behavior independently.
 
   ----------------------------------------------------------------------------------
 
-# 5. Listening & Spoken Variants
+# Listening & Spoken Variants
 
 By default:
 
@@ -1599,7 +1598,7 @@ ruby bin/linguatrain.rb pack.yaml 10 --show-variants
 
 ------------------------------------------------------------------------
 
-# 6. Piper TTS Setup
+# Piper TTS Setup
 
 Listening modes require:
 
@@ -1631,7 +1630,7 @@ afplay /tmp/test.wav
 
 ------------------------------------------------------------------------
 
-# 7. Spaced Repetition System (SRS)
+# Spaced Repetition System (SRS)
 
 Inspired by SM‑2 (Anki / SuperMemo).
 
@@ -1649,7 +1648,7 @@ Performance rules:
 
 -   Correct 1st try → larger interval growth
 -   Correct 2nd try → smaller growth
--   Failure → reset + \~10 minute retry
+-   Failure → reset + ~10 minute retry
 
 ## Storage Location
 
@@ -1689,7 +1688,7 @@ ruby bin/linguatrain.rb pack.yaml all --srs --reset-srs
 
 ------------------------------------------------------------------------
 
-# 8. Missed Pack Generation
+# Missed Pack Generation
 
 At the end of a session, missed words are written to a timestamped YAML
 file containing:
@@ -1703,7 +1702,7 @@ This allows focused follow‑up drilling.
 
 ------------------------------------------------------------------------
 
-# 9. System Architecture
+# System Architecture
 
 ``` mermaid
 flowchart TD
@@ -1727,7 +1726,7 @@ flowchart TD
 
 ------------------------------------------------------------------------
 
-# 10. License
+# License
 
 Copyright © 2026 Wayne F. Brissette
 

@@ -1635,6 +1635,8 @@ afplay /tmp/test.wav
 
 Inspired by SM‑2 (Anki / SuperMemo).
 
+**Note**: The implementation is simplified and not identical to Anki.
+
 Each word stores:
 
 -   `reps`
@@ -1682,6 +1684,8 @@ Reset scheduling:
 ``` bash
 ruby bin/linguatrain.rb pack.yaml all --srs --reset-srs
 ```
+
+**Important**: When --srs is enabled, SRS state is updated as each entry is graded and is saved on exit. If the session ends early (quit, interrupt, or error), progress up to the last completed item is preserved.
 
 ------------------------------------------------------------------------
 

@@ -288,6 +288,7 @@ piper:
   bin: "C:\Users\<YourUser>\venvs\piper\Scripts\piper.exe"
   models:
     fi-FI: "C:\Users\<YourUser>\models\fi_FI-harri-medium.onnx"
+```
 
 ---
 

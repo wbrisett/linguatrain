@@ -120,7 +120,7 @@ ruby bin/linguatrain.rb ~/linguatrain/packs/finnish_everyday_phrases.yaml 5
 
 ## Optional: User Configuration
 
-User configuration is optional but recommended.
+User configuration is optional but it is highly recommended.
 
 ------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ notepad $env:APPDATA\linguatrain\config.yaml
 
 ------------------------------------------------------------------------
 
-### Minimal Example Configuration
+### Example Configuration
 
 ``` yaml
 runtime:
@@ -169,10 +169,60 @@ piper:
     fi-FI: "/path/to/fi_FI-harri-medium.onnx"
 
 defaults:
-  tts_template: "Target language: {text}."
+  tts_template: "Target language: {text}."      # safe generic default
+  ui_locale: "en"                               # optional; for your own UI defaults
 ```
 
 ------------------------------------------------------------------------
+
+Default config location:
+
+- Linux / macOS: `~/.config/linguatrain/config.yaml`
+- Windows: `%APPDATA%\linguatrain\config.yaml`
+
+---
+
+# Configuration Structure
+
+```yaml
+runtime:
+  audio_player: "afplay"
+
+piper:
+  bin: "/path/to/piper"
+  models:
+    fi-FI: "/path/to/fi_FI-harri-medium.onnx"
+
+defaults:
+  tts_template: "Target language: {text}."
+  ui_locale: "en"
+```
+
+All sections are optional.  
+
+If omitted, engine defaults are used.
+
+---
+
+# `runtime`
+
+The `runtime` block defines execution-time behavior that is not
+language-specific.
+
+## `runtime.audio_player`
+
+**Type:** string  
+**Required:** No  
+**Default:** platform-dependent
+
+Defines the command used to play generated `.wav` files.
+
+The command must:
+
+- Accept a file path
+- Be available on the system PATH (or use a full absolute path)
+
+If the player cannot be executed, listening mode fails with an error.
 
 ### Audio Player Options by Platform
 
@@ -238,7 +288,104 @@ piper:
   bin: "C:\Users\<YourUser>\venvs\piper\Scripts\piper.exe"
   models:
     fi-FI: "C:\Users\<YourUser>\models\fi_FI-harri-medium.onnx"
+
+---
+
+# `piper`
+
+The `piper` block configures the Text-to-Speech backend.
+
+Listening modes require Piper to be installed and configured.
+
+## `piper.bin`
+
+**Type:** string  
+**Required:** Yes (for listening mode)
+
+Absolute path to the Piper executable.
+
+If omitted and listening is enabled, the program exits with an error.
+
+Environment variable alternative:
+
+- `PIPER_BIN`
+
+---
+
+## `piper.models`
+
+**Type:** mapping of language code → file path  
+**Required:** Yes (for listening mode)
+
+Maps language codes (matching `metadata.languages.target.code`)
+to `.onnx` model files.
+
+The key must match the pack’s target language code exactly.
+
+If no matching model is found:
+
+- A fallback model may be used (if configured elsewhere)
+- Otherwise, listening mode exits with an error
+
+Environment variable alternative:
+
+- `PIPER_MODEL` (single-model fallback)
+
+---
+
+# `defaults`
+
+The `defaults` block defines global fallback values used when packs do
+not specify overrides.
+
+## `defaults.tts_template`
+
+**Type:** string  
+**Required:** No
+
+Defines a global TTS carrier phrase.
+
+The template must contain:
+
 ```
+{text}
+```
+
+Precedence order:
+
+1. Command-line flags (if provided)
+2. Pack `metadata.tts.template`
+3. `defaults.tts_template`
+4. Engine internal default
+
+This value affects speech output only.
+
+---
+
+## `defaults.ui_locale`
+
+**Type:** string  
+**Required:** No  
+**Default:** "en"
+
+Defines a preferred UI language for default labels when packs do not
+provide `metadata.ui` overrides.
+
+This setting does not alter pack metadata.
+
+---
+
+# Configuration Precedence
+
+When the same behavior is defined in multiple places, the following
+precedence applies (highest to lowest):
+
+1. Command-line flags
+2. Environment variables
+3. Pack metadata
+4. User configuration (`config.yaml`)
+5. Engine internal defaults
+
 
 ------------------------------------------------------------------------
 

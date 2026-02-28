@@ -1245,6 +1245,265 @@ suomeksi: mitä kuuluu
 
 ------------------------------------------------------------------------
 
+### `--lenient-umlauts`
+
+**Warning:** while this mode is currently available, it is not advisable
+to use it since umlauts have real meaning. However, it is here should
+you want to use it very early on while learning.
+
+Allows `a` for `ä` and `o` for `ö` (useful early on). If you use the
+lenient spelling, you still get credit, but it reminds you that umlauts
+matter.
+
+------------------------------------------------------------------------
+
+# `--match-options MODE`
+
+--match-options is a fine-tuning control for edge cases, not a required setting for normal use.
+
+## When should you use --match-options?
+
+In most cases, you do not need to set this option. The default (auto) works well for typical packs and general drilling.
+
+You should consider using --match-options only when your pack contains:
+
+- Many entries with the same source prompt (for example, multiple translations of “Hi.” or “How are you?”)
+- Many near-synonymous target answers
+- Clusters of similar phrases where hints feel either too easy or unintentionally revealing
+- Large community-contributed packs where structure and consistency vary
+
+If match-game starts to feel “too obvious” or “too confusing,” that’s the signal to experiment with this flag.
+
+In short:
+
+- If hints feel too easy → try --match-options source
+- If hints feel unhelpful or misleading → try --match-options target
+- Otherwise → leave it on auto
+
+For most people and most packs, auto is the correct setting.
+
+— Real Examples Using `fi_everyday_phrases.yaml`
+
+The examples in this readme come from the included finnish pack:
+/packs/fi/finnish_everyday_phrases.yaml
+
+This pack contains useful edge cases for match-game behavior:
+
+- Multiple greetings ("Hi." → *Hei.*, *Moi.*)
+- Multiple “How are you?” variants
+- Near-synonymous phrases
+- Formal vs informal constructions
+
+---
+
+# 1️⃣ Default: `--match-options auto`
+
+```bash
+ruby bin/linguatrain.rb finnish_everyday_phrases.yaml 5 --match-game
+```
+
+### Behavior
+
+Hints are drawn from the side you are expected to type.
+
+## Example (Source → Target)
+
+Prompt:
+
+```
+How are you?
+```
+
+Possible hints:
+
+```
+  - Mitä kuuluu?
+  - Kuinka voit?
+  - Hyvin, kiitos.
+```
+
+Why this works:
+
+- Both entries 020 and 021 share the same English prompt.
+- The distractor is a plausible conversational response.
+- You still must type the full Finnish answer.
+
+This feels production-oriented while remaining supportive.
+
+---
+
+# 2️⃣ Force Hints from `source`
+
+```bash
+ruby bin/linguatrain.rb finnish_everyday_phrases.yaml 5 --match-game --match-options source
+```
+
+Hints are always drawn from the English prompt side.
+
+## Example (Reverse Mode)
+
+```bash
+ruby bin/linguatrain.rb finnish_everyday_phrases.yaml 5 --reverse --match-game --match-options source
+```
+
+You see:
+
+```
+Hyvä päätös.
+```
+
+Hints:
+
+```
+  - Good decision.
+  - Good thing.
+  - Good day.
+```
+
+Why this matters:
+
+- Entries 006 and 009 both begin with “Hyvä …”
+- Seeing similar English options forces semantic discrimination
+- Prevents simply recognizing Finnish shape patterns
+
+This mode strengthens meaning recall rather than pattern recognition.
+
+---
+
+# 3️⃣ Force Hints from `target`
+
+```bash
+ruby bin/linguatrain.rb finnish_everyday_phrases.yaml 5 --match-game --match-options target
+```
+
+Hints always come from the Finnish answer side.
+
+## Example (Greetings cluster)
+
+Prompt:
+
+```
+Hi.
+```
+
+Possible hints:
+
+```
+  - Hei.
+  - Moi.
+  - Hyvää päivää.
+```
+
+Relevant entries:
+
+- 014 → Hei.
+- 018 → Moi.
+- 015 → Hyvää päivää.
+
+Why this is powerful:
+
+- All are plausible greetings.
+- Forces you to recall the exact register (casual vs formal).
+- Reduces accidental cueing from English synonyms.
+
+This mode is ideal for:
+
+- High-overlap vocabulary
+- Register drills
+- Early fluency building
+
+---
+
+# 4️⃣ Listening + Match-Game + Target Hints
+
+```bash
+ruby bin/linguatrain.rb finnish_everyday_phrases.yaml 5 --listen --match-game --match-options target
+```
+
+You hear:
+
+```
+(Suomeksi: Mitä kuuluu?)
+```
+
+Visible hints:
+
+```
+  - Mitä kuuluu?
+  - Kuinka voit?
+  - Hyvin, kiitos.
+```
+
+Why this combination works:
+
+- Audio first → recognition
+- Constrained Finnish hint list → reduces overload
+- Full typing required → active recall
+- Replay available
+
+This is an ideal beginner-to-intermediate bridge mode.
+
+---
+
+# 5️⃣ Where `--match-options` Makes the Biggest Difference
+
+### Case A: Duplicate English Prompts
+
+Entries 020 and 021:
+
+```
+"How are you?"
+→ Mitä kuuluu?
+→ Kuinka voit?
+```
+
+Using `source` hints would not help here (same English string).
+Using `target` hints makes the contrast clear.
+
+---
+
+### Case B: Greeting Density
+
+Your pack contains:
+
+- Hei.
+- Moi.
+- Moi moi.
+- Hyvää päivää.
+- Hyvästi.
+
+Target-side hints create meaningful discrimination.
+Source-side hints would collapse to similar English meanings.
+
+---
+
+# Practical Guidance
+
+| Mode | Best Use |
+|------|----------|
+| auto | General drilling |
+| source | Meaning precision |
+| target | Register / production precision |
+| target + listen | Recognition → recall bridge |
+| source + reverse | Hard semantic discrimination |
+
+---
+
+# Summary
+
+`--match-options` does not change validation logic.
+It changes *how cognitive load is shaped* during match-game.
+
+In packs like `fi_everyday_phrases.yaml`, where:
+
+- greetings overlap,
+- English prompts duplicate,
+- register matters,
+
+explicit control over hint origin meaningfully changes learning outcomes.
+
+---
+
 ## Stacking Example
 
 Full stacked drill:

@@ -74,7 +74,7 @@ RVM, asdf) or your system package manager.
 ## Clone the Repository
 
 ``` bash
-git clone <your-repo-url>
+git clone https://github.com/wbrisett/linguatrain.git
 cd linguatrain
 ```
 
@@ -103,12 +103,17 @@ mkdir -p ~/linguatrain/packs
 
 Example pack location:
 
-    ~/linguatrain/packs/finnish_basics.yaml
+    ~/linguatrain/packs/fi/
+
+template pack location: 
+
+    ~/linguatrain/packs/templates/linguatrain_pack_complete_template.yaml
+
 
 Run it:
 
 ``` bash
-ruby bin/linguatrain.rb ~/linguatrain/packs/finnish_basics.yaml 5
+ruby bin/linguatrain.rb ~/linguatrain/packs/finnish_everyday_phrases.yaml 5
 ```
 
 ------------------------------------------------------------------------
@@ -356,7 +361,7 @@ organized.
 
 # 2. YAML Pack Schema
 
-## metadata
+## Top-Level Structure
 
 ``` yaml
 metadata:
@@ -372,237 +377,77 @@ metadata:
   tts:
     template: "Suomeksi: {text}."
   ui:
-    prompt_prefix: "englanniksi"
-    target_prefix: "suomeksi"
     quiz_label: "Quiz"
-    correct: "✅ Oikein!"
-    try_again: "Yritä uudelleen."
-    replay_hint: "(Kirjoita 'r' toistaaksesi äänen)"
-    also_accepted_prefix: 'Myös käy:'
-    phonetic_prefix: ääntämys
-    correct_answer_prefix: "❌ Oikea vastaus:"
-    correct_word_prefix: "❌ Oikea sana:"
-    quit_message: "👋🏻 Lopetetaan. Kiitos!"
-    quiz_label: Quiz
+    prompt_prefix: "Prompt"
+    target_prefix: "Answer"
+    correct: "✅ Correct!"
+    try_again: "Try again."
+    replay_hint: "(Type 'r' to replay audio)"
+    also_accepted_prefix: "Also accepted:"
+    phonetic_prefix: "phonetic"
+    correct_answer_prefix: "❌ Correct answer:"
+    correct_word_prefix: "❌ Correct word:"
+    quit_message: "Session ended."
+
+entries:
+  - id: "001"
+    prompt: "Example prompt"
+    answer:
+      - "Example answer"
+    phonetic: ""
+    notes: ""
+    tags: []
+    audio:
+      tts: true
+    srs:
+      difficulty: 1
 ```
-## TTS Template
 
-Some Text-to-Speech engines (including Piper) can sound unnatural when
-speaking isolated words, for example `ei`.
+------------------------------------------------------------------------
 
-To improve clarity and natural prosody, `linguatrain` wraps the spoken
-text in a configurable template during listening mode.
+# Metadata (`metadata`)
 
-The template must include the placeholder:
+The `metadata` block defines pack-wide configuration and behavior.
 
-    {text}
+## `id`
 
-Example:
+**Type:** string\
+**Required:** Yes
+
+Unique identifier for the pack.
+
+-   Must be unique within your collection of packs.
+-   Used internally for tracking and future extensibility.
+-   Should remain stable once published.
+
+------------------------------------------------------------------------
+
+## `version`
+
+**Type:** integer\
+**Required:** Yes\
+**Current supported value:** `1`
+
+Defines the schema version.\
+Until a schema revision is announced, this should always be set to `1`.
+
+------------------------------------------------------------------------
+
+## `languages`
+
+Defines the source and target languages used in the pack.
 
 ``` yaml
-tts:
-  template: "Suomeksi: {text}."
+languages:
+  source:
+    code: "en"
+    name: "English"
+  target:
+    code: "fi-FI"
+    name: "Finnish"
 ```
 
-When listening mode runs, the engine replaces `{text}` with the word or
-phrase being practiced.
-
-This helps:
-
--   Improve rhythm and natural intonation
--   Reduce clipped or abrupt pronunciation
--   Increase intelligibility for short words
-
-The engine does not modify the stored word or phrase. The template only
-affects speech output and does not change answer validation.
-
-If no template is specified, a default template is used.
-
-## UI Metadata (`metadata.ui`)
-
-The `ui` block allows packs to customize display labels used during a
-quiz session.
-
-These values affect console output only. They do not change validation
-logic, scoring, SRS behavior, or language processing.
-
-Example:
-
-``` yaml
-
-ui:
-  prompt_prefix: "englanniksi"
-  target_prefix: "suomeksi"
-  quiz_label: "Quiz"
-  correct: "✅ Oikein!"
-  try_again: "Yritä uudelleen."
-  replay_hint: "(Kirjoita 'r' toistaaksesi äänen)"
-  also_accepted_prefix: "Myös käy:"
-  phonetic_prefix: "ääntämys"
-  correct_answer_prefix: "❌ Oikea vastaus:"
-  correct_word_prefix: "❌ Oikea sana:"
-  quit_message: "👋🏻 Lopetetaan. Kiitos!"
-    
-```
-
-------------------------------------------------------------------------
-
-## Supported UI Fields
-
-All UI fields are optional. If omitted, the default values shown below
-are used.
-
-------------------------------------------------------------------------
-
-### `quiz_label`
-
-**Description**\
-Text displayed in the session header.
-
-**Default**\
-`"Quiz"`
-
-**Example**
-
-Header output:
-
-    English → Finnish Quiz — 10 word(s) (mode: typing)
-
-If configured as:
-
-``` yaml
-quiz_label: "Drill"
-```
-
-Header becomes:
-
-    English → Finnish Drill — 10 word(s) (mode: typing)
-
-Cosmetic only.
-
-------------------------------------------------------------------------
-
-### `prompt_prefix`
-
-**Description**\
-Label displayed before the source-language prompt.
-
-**Default**\
-`"Prompt"`
-
-------------------------------------------------------------------------
-
-### `target_prefix`
-
-**Description**\
-Label displayed when requesting the target-language answer.
-
-**Default**\
-`"Answer"`\
-(Or the language name if defined in the pack metadata.)
-
-------------------------------------------------------------------------
-
-### `correct`
-
-**Description**\
-Message displayed when the user provides a correct answer.
-
-**Default**\
-`"✅ Correct!"`
-
-------------------------------------------------------------------------
-
-### `try_again`
-
-**Description**\
-Message displayed after an incorrect first attempt (when retries are
-allowed).
-
-**Default**\
-`"Try again."`
-
-------------------------------------------------------------------------
-
-### `correct_answer_prefix`
-
-**Description**\
-Prefix displayed when revealing the correct source-language answer in
-reverse mode.
-
-**Default**\
-`"❌ Correct answer:"`
-
-------------------------------------------------------------------------
-
-### `correct_word_prefix`
-
-**Description**\
-Prefix displayed when revealing the correct target-language answer.
-
-**Default**\
-`"❌ Correct word:"`
-
-------------------------------------------------------------------------
-
-### `also_accepted_prefix`
-
-**Description**\
-Prefix displayed before alternate accepted answers.
-
-**Default**\
-`"Also accepted:"`
-
-------------------------------------------------------------------------
-
-### `phonetic_prefix`
-
-**Description**\
-Label displayed before phonetic output (if phonetics are enabled in the
-pack).
-
-**Default**\
-`"phonetic"`
-
-------------------------------------------------------------------------
-
-### `replay_hint`
-
-**Description**\
-Instructional text shown in listening mode explaining how to replay
-audio.
-
-Displayed only when `--listen` mode is active.
-
-**Default**\
-`"(Type 'r' to replay audio)"`
-
-------------------------------------------------------------------------
-
-### `quit_message`
-
-**Description**\
-Message displayed when the user exits the session early (for example by
-pressing `q`).
-
-Displayed once at termination.
-
-**Default**\
-`"Session ended."`
-
-------------------------------------------------------------------------
-
-
-### Notes
-
--   All UI values are optional.
--   If omitted, engine defaults are used.
--   Pack-level UI overrides user configuration defaults.
--   UI settings affect display only and never change scoring or
-    validation.
-
-
-## Language Codes (`languages.source.code` / `languages.target.code`)
+### `code`
 
 The `code` fields identify the source and target languages.
 
@@ -610,14 +455,11 @@ They are used for:
 
 -   Mapping Piper models via `config.yaml`
 -   Organizing multi-language setups
--   Future extensibility (for example, per-language defaults)
+-   Future extensibility
 
-------------------------------------------------------------------------
+#### Expected Format
 
-### Expected Format
-
-`linguatrain` expects language codes in one of the following standard
-forms:
+Linguatrain accepts:
 
 **ISO 639-1 (two-letter)**
 
@@ -629,17 +471,12 @@ forms:
 **BCP-47 language tags (recommended)**
 
     en-US
-    en-GB
     fi-FI
-    es-ES
+    es-MX
     pt-BR
 
-BCP-47 is the same format used by:
-
--   Web browsers
--   Many TTS engines
--   Piper voice model directories
--   IETF language tagging standards
+BCP-47 is preferred because it aligns with browsers, TTS engines, and
+Piper model directories.
 
 If unsure, use:
 
@@ -655,8 +492,6 @@ Examples:
     fi-FI
     es-MX
     en-GB
-
-------------------------------------------------------------------------
 
 ### Where to Find Language Codes
 
@@ -679,11 +514,10 @@ French     fr
 
 Official reference: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-------------------------------------------------------------------------
 
-### How `linguatrain` Uses These Codes
+#### Model Resolution Behavior
 
-If you configure Piper models like this:
+If Piper models are configured as:
 
 ``` yaml
 piper:
@@ -691,7 +525,7 @@ piper:
     fi-FI: "/path/to/fi_FI-harri-medium.onnx"
 ```
 
-Then your pack must use:
+Then the pack must use:
 
 ``` yaml
 languages:
@@ -703,49 +537,416 @@ The `code` must match the key used in `config.yaml`.
 
 If no matching model is found:
 
--   The fallback `piper.model` value is used (if defined)
--   Otherwise, `--listen` will exit with an error
+-   A fallback model may be used (if defined)
+-   Otherwise, `--listen` exits with an error
+
+#### Notes
+
+-   `code` is required for proper TTS resolution.
+-   `name` is cosmetic and used for UI display only.
+-   Codes are not validated against an official registry.
+-   Consistency matters more than strict compliance.
 
 ------------------------------------------------------------------------
 
-### Important Notes
+# Text-to-Speech Configuration (`metadata.tts`)
 
--   `code` is required for proper TTS model resolution.
--   `name` is cosmetic and used only for UI display.
--   The engine does not validate codes against an official registry.
--   Consistency matters more than strict compliance.
+## TTS Template
 
+Some Text-to-Speech engines (including Piper) can sound unnatural when
+speaking isolated words, for example `ei`.
 
-## entries
+To improve clarity and natural prosody, Linguatrain wraps spoken text in
+a configurable template during listening mode.
+
+The template must include the placeholder:
+
+    {text}
+
+Example:
 
 ``` yaml
-entries:
-  - id: "001"
-    prompt: "How are you?"
-    alternate_prompts:
-      - "How's it going?"
-      - "How have you been?"
-    answer:
-      - "Mitä kuuluu?"
-      - "Kuinka voit?"
-    spoken:
-      - "Mites menee?"
-    phonetic: "MI-tah KOO-loo"
+tts:
+  template: "Suomeksi: {text}."
 ```
 
-### Field Summary
+At runtime, `{text}` is replaced with the word or phrase being
+practiced.
 
--   `prompt` --- source‑language text (string or array)
--   `alternate_prompts` --- additional accepted source variants
--   `answer` --- canonical (usually written/standard) target form
--   `spoken` --- optional colloquial/spoken variant
--   `phonetic` --- optional pronunciation guide
+This helps:
 
-`answer` is always the canonical reference form.\
-`spoken` is optional and never used unless explicitly enabled via flags.
+-   Improve rhythm and intonation
+-   Reduce clipped pronunciation
+-   Increase intelligibility for short words
 
-Legacy schemas and mapping styles remain supported for backward
-compatibility.
+The template affects speech output only. It does not modify stored
+content or change validation logic.
+
+If no template is specified, a default template is used.
+
+------------------------------------------------------------------------
+
+# UI Configuration
+
+The `ui` block allows packs to override console labels and messages.
+
+UI settings affect display only.\
+They do not change validation, scoring, SRS behavior, or language logic.
+
+All UI fields are optional. Engine defaults are used if omitted.
+
+------------------------------------------------------------------------
+
+## Supported UI Fields
+
+### `quiz_label`
+
+Displayed in the session header.
+
+Default:
+
+    "Quiz"
+
+Example header:
+
+    English → Finnish Quiz — 10 word(s) (mode: typing)
+
+------------------------------------------------------------------------
+
+### `prompt_prefix`
+
+Label before the source-language prompt.
+
+Default:
+
+    "Prompt"
+
+------------------------------------------------------------------------
+
+### `target_prefix`
+
+Label before the target-language answer input.
+
+Default:
+
+    "Answer"
+
+If language metadata is defined, the engine may use the language name
+instead.
+
+------------------------------------------------------------------------
+
+### `correct`
+
+Message displayed after a correct answer.
+
+Default:
+
+    "✅ Correct!"
+
+------------------------------------------------------------------------
+
+### `try_again`
+
+Displayed after an incorrect first attempt (if retries are enabled).
+
+Default:
+
+    "Try again."
+
+------------------------------------------------------------------------
+
+### `correct_answer_prefix`
+
+Prefix used when revealing the correct source-language answer.
+
+Default:
+
+    "❌ Correct answer:"
+
+------------------------------------------------------------------------
+
+### `correct_word_prefix`
+
+Prefix used when revealing the correct target-language word.
+
+Default:
+
+    "❌ Correct word:"
+
+------------------------------------------------------------------------
+
+### `also_accepted_prefix`
+
+Displayed before alternate accepted answers.
+
+Default:
+
+    "Also accepted:"
+
+------------------------------------------------------------------------
+
+### `phonetic_prefix`
+
+Label before phonetic output.
+
+Default:
+
+    "phonetic"
+
+------------------------------------------------------------------------
+
+### `replay_hint`
+
+Instruction shown in listening mode explaining how to replay audio.
+
+Default:
+
+    "(Type 'r' to replay audio)"
+
+Displayed only when `--listen` mode is active.
+
+------------------------------------------------------------------------
+
+### `quit_message`
+
+Displayed when the session ends early.
+
+Default:
+
+    "Session ended."
+
+------------------------------------------------------------------------
+
+# Entries Schema
+
+The `entries` array defines individual learning units.
+
+Each entry represents one atomic prompt/answer pair with optional
+pronunciation, tagging, audio, and SRS metadata.
+
+------------------------------------------------------------------------
+
+## Entry Structure
+
+``` yaml
+- id: "001"
+  prompt: "Example prompt in source language."
+  answer:
+    - "Example answer in target language."
+  phonetic: ""
+  notes: ""
+  tags: []
+  audio:
+    tts: true
+  srs:
+    difficulty: 1
+```
+
+------------------------------------------------------------------------
+
+## Field Reference
+
+### `id`
+
+**Type:** string
+**Required:** Yes
+
+Unique identifier within the pack.
+
+-   Must not be duplicated.
+-   Used for SRS tracking and missed-pack generation.
+-   Recommended format: zero-padded strings (`"001"`, `"002"`).
+
+------------------------------------------------------------------------
+
+### `prompt`
+
+**Type:** string
+**Required:** Yes
+**Purpose:** The text shown to the user in the *source language*.
+
+Behavior depends on mode:
+
+-   In `typing` mode: prompt is shown; user types target language.
+-   In `reverse` mode: target language is shown or spoken; user types
+    source.
+-   In `match-game`: prompt anchors hint selection.
+-   In `listen` mode: prompt may be spoken if TTS is enabled.
+
+This field should contain natural, learner-facing text.
+
+------------------------------------------------------------------------
+
+### `answer`
+
+**Type:** list of strings\
+**Required:** Yes (must always be a list)
+
+Even if only one accepted answer exists, it must be defined as a YAML
+list:
+
+``` yaml
+answer:
+  - "Hyvää huomenta"
+```
+
+Multiple accepted answers:
+
+``` yaml
+answer:
+  - "Hei"
+  - "Moi"
+```
+
+The engine will accept any string in the list as correct input.
+
+------------------------------------------------------------------------
+
+### `phonetic`
+
+**Type:** string\
+**Required:** No\
+**Purpose:** Provides pronunciation guidance.
+
+Displayed only if:
+
+-   The UI configuration includes phonetic display
+-   Or when showing correct answers
+
+Example:
+
+``` yaml
+phonetic: "HY-vah"
+```
+
+If empty or omitted, no pronunciation guidance is shown.
+
+------------------------------------------------------------------------
+
+### `notes`
+
+**Type:** string\
+**Required:** No\
+**Purpose:** Supplemental learning context.
+
+Use this for:
+
+-   Grammar explanations
+-   Usage notes
+-   Cultural context
+-   Formal vs informal distinctions
+
+Displayed when reviewing correct answers or when configured in the UI
+layer.
+
+Example:
+
+``` yaml
+notes: "Formal greeting used in emails."
+```
+
+
+------------------------------------------------------------------------
+
+### `tags`
+
+**Type:** list of strings\
+**Required:** No\
+**Purpose:** Logical grouping and filtering.
+
+Used for:
+
+-   Subset selection
+-   Thematic drilling
+-   Future expansion features
+
+Example:
+
+``` yaml
+tags:
+  - "greeting"
+  - "formal"
+```
+
+If unused, define as:
+
+``` yaml
+tags: []
+```
+
+
+------------------------------------------------------------------------
+
+### `audio`
+
+**Type:** object
+**Required:** No
+**Purpose:** Controls speech behavior per entry.
+
+``` yaml
+audio:
+  tts: true
+```
+
+#### `tts`
+
+**Type:** boolean
+**Default:** false if omitted
+
+When `true`, this entry is eligible for Text-to-Speech playback when:
+
+-   `--listen` mode is active
+-   Reverse + listening is active
+-   Any speech-triggering mode is enabled
+
+If omitted or false, the entry will never trigger TTS.
+
+------------------------------------------------------------------------
+
+### `srs`
+
+**Type:** object\
+**Required:** No\
+**Purpose:** Spaced Repetition scheduling metadata.
+
+``` yaml
+srs:
+  difficulty: 1
+```
+
+#### `difficulty`
+
+**Type:** integer\
+**Recommended Range:** 1--5\
+**Default:** 1 if omitted
+
+Represents relative learning difficulty.
+
+Value   Meaning
+  ------- --------------------------------
+1       Very easy / high frequency
+2       Easy
+3       Moderate
+4       Difficult
+5       Very difficult / low frequency
+
+The engine may use this value to:
+
+-   Adjust initial review intervals
+-   Bias session selection
+-   Modify repetition frequency
+
+------------------------------------------------------------------------
+
+# Design Principles
+
+-   All optional fields may be omitted safely.
+-   Schema is forward-compatible.
+-   Each entry is self-contained.
+-   UI fields affect display only.
+-   TTS templates affect speech output only.
+-   SRS metadata influences scheduling only.
 
 ------------------------------------------------------------------------
 

@@ -7,12 +7,29 @@
 # - `answer` is always a YAML list, even if there is only one accepted answer.
 
 metadata:
-  pack_name: "Starter Pack Name"
-  version: 1
-  source_lang: "en"          # ISO 639-1 code
-  target_lang: "fi"          # ISO 639-1 code
-  author: "Your Name"
-  description: "Short description of what this pack contains."
+  id:
+  version: 1      # 1 (until noted this should always be '1'
+  languages:
+    source:
+      code:
+      name:
+    target:
+      code:
+      name:
+  tts:
+    template:
+  ui:
+    correct:
+    try_again:
+    replay_hint:
+    also_accepted_prefix:
+    phonetic_prefix:
+    prompt_prefix:
+    target_prefix:
+    correct_answer_prefix:
+    correct_word_prefix:
+    quit_message:
+    quiz_label:
 
 entries:
   - id: "001"

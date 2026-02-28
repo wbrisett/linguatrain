@@ -17,16 +17,16 @@ It is designed to be:
 # Table of Contents
 
 1.  Overview
-2.  Getting Started
-2.  YAML Pack Schema
-3.  Mode Layering (How the Flags Work Together)
-4.  Complete Options Reference
-5.  Listening & Spoken Variants
-6.  Piper TTS Setup
-7.  Spaced Repetition System (SRS)
-8.  Missed Pack Generation
-9.  System Architecture
-10. License
+1.  Getting Started
+1.  YAML Pack Schema
+1.  Mode Layering (How the Flags Work Together)
+1.  Complete Options Reference
+1.  Listening & Spoken Variants
+1.  Piper TTS Setup
+1.  Spaced Repetition System (SRS)
+1.  Missed Pack Generation
+1.  System Architecture
+1. License
 
 ------------------------------------------------------------------------
 
@@ -35,13 +35,13 @@ It is designed to be:
 A typical session works like this:
 
 1.  Load a YAML pack
-2.  Getting Started
-2.  Normalize entries
-3.  Select direction (source→target or target→source)
-4.  Layer optional behaviors (match‑game, listening, SRS)
-5.  Prompt → validate → score attempts
-6.  Optionally update SRS state
-7.  Optionally write a missed‑entries pack
+1.  Getting Started
+1.  Normalize entries
+1.  Select direction (source→target or target→source)
+1.  Layer optional behaviors (match‑game, listening, SRS)
+1.  Prompt → validate → score attempts
+1.  Optionally update SRS state
+1.  Optionally write a missed‑entries pack
 
 All UI labels, language names, and TTS carrier phrases are defined in
 pack metadata or user configuration.

@@ -81,7 +81,7 @@ cd linguatrain
 Run the CLI directly:
 
 ``` bash
-ruby bin/linguatrain.rb pack.yaml
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml
 ```
 
 No additional gems are required beyond the Ruby standard library.
@@ -424,11 +424,12 @@ Unique identifier for the pack.
 
 ## `version`
 
-**Type:** integer\
-**Required:** Yes\
+**Type:** integer
+**Required:** Yes
 **Current supported value:** `1`
 
-Defines the schema version.\
+Defines the schema version.
+
 Until a schema revision is announced, this should always be set to `1`.
 
 ------------------------------------------------------------------------
@@ -590,7 +591,8 @@ If no template is specified, a default template is used.
 
 The `ui` block allows packs to override console labels and messages.
 
-UI settings affect display only.\
+UI settings affect display only.
+
 They do not change validation, scoring, SRS behavior, or language logic.
 
 All UI fields are optional. Engine defaults are used if omitted.
@@ -805,8 +807,8 @@ The engine will accept any string in the list as correct input.
 
 ### `phonetic`
 
-**Type:** string\
-**Required:** No\
+**Type:** string
+**Required:** No
 **Purpose:** Provides pronunciation guidance.
 
 Displayed only if:
@@ -826,8 +828,8 @@ If empty or omitted, no pronunciation guidance is shown.
 
 ### `notes`
 
-**Type:** string\
-**Required:** No\
+**Type:** string
+**Required:** No
 **Purpose:** Supplemental learning context.
 
 Use this for:
@@ -851,8 +853,8 @@ notes: "Formal greeting used in emails."
 
 ### `tags`
 
-**Type:** list of strings\
-**Required:** No\
+**Type:** list of strings
+**Required:** No
 **Purpose:** Logical grouping and filtering.
 
 Used for:
@@ -906,8 +908,8 @@ If omitted or false, the entry will never trigger TTS.
 
 ### `srs`
 
-**Type:** object\
-**Required:** No\
+**Type:** object
+**Required:** No
 **Purpose:** Spaced Repetition scheduling metadata.
 
 ``` yaml
@@ -917,8 +919,8 @@ srs:
 
 #### `difficulty`
 
-**Type:** integer\
-**Recommended Range:** 1--5\
+**Type:** integer
+**Recommended Range:** 1--5
 **Default:** 1 if omitted
 
 Represents relative learning difficulty.
@@ -956,7 +958,8 @@ All modes build on the same base loop:
 
     prompt → validate → score
 
-Flags layer behavior on top of that loop.\
+Flags layer behavior on top of that loop.
+
 Stacking modes increases difficulty without changing core validation
 logic.
 
@@ -984,7 +987,8 @@ Direction swaps. Everything else stays the same.
 
 ## Match‑Game (`--match-game`)
 
-Adds three distractor hints.\
+Adds three distractor hints.
+
 You still type the full answer.
 
 ``` bash
@@ -1003,7 +1007,8 @@ Hints adapt to direction automatically.
 
 ## Listening (`--listen`)
 
-Target language is spoken via Piper.\
+Target language is spoken via Piper.
+
 Source remains visible.
 
 ``` bash
@@ -1027,6 +1032,68 @@ ruby bin/linguatrain.rb pack.yaml 5 --listen-no-source
 ```
 
 Alias: `--listen-no-english`
+
+------------------------------------------------------------------------
+
+## Listening + Match-Game (Recommended Beginner Mode)
+
+This combination layers listening with guided recall.\
+The learner hears the target language first, sees constrained hints, and
+must still type the full answer.
+
+``` bash
+ruby bin/linguatrain.rb pack.yaml 5 --listen --match-game
+```
+
+Example:
+
+``` text
+English → Finnish Quiz — 5 word(s) (mode: match-game, listen, English→Finnish)
+--------------------------------------------------
+
+[1/5]
+Audible Finnish: (listening…)
+Prompt: How are you?
+Hints:
+  - Mitä kuuluu?
+  - Kuinka voit?
+  - Mites menee?
+(Type 'r' to replay audio)
+Answer: mitä kuuluu
+✅ Correct!
+   Also accepted: kuinka voit? / mites menee?
+   (phonetic: MI-tah KOO-loo)
+```
+
+### Why This Mode Is Powerful
+
+-   The word or phrase is heard first
+-   Hints reduce cognitive overload
+-   The learner must still type the full answer
+-   Audio can be replayed
+-   Encourages recognition → recall progression
+
+------------------------------------------------------------------------
+
+### Localized UI Example (Finnish)
+
+``` text
+Englanti → Suomi Harjoitus — 5 word(s) (mode: match-game, listen, Englanti→Suomi)
+--------------------------------------------------
+
+[1/5]
+Audible Suomi: (kuuntelu…)
+englanniksi: How are you?
+Vihjeet:
+  - Mitä kuuluu?
+  - Kuinka voit?
+  - Mites menee?
+(Type 'r' to replay audio)
+suomeksi: mitä kuuluu
+✅ Oikein!
+   Hyväksytään myös: kuinka voit? / mites menee?
+   (ääntämys: MI-tah KOO-loo)
+```
 
 ------------------------------------------------------------------------
 
@@ -1082,9 +1149,8 @@ Each flag layers behavior independently.
   `--reset-srs`                              Reset scheduling state     off
 
   `--srs-file PATH`                          Override SRS state file    pack‑derived
-  ------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------
 
 # 5. Listening & Spoken Variants
 
@@ -1143,7 +1209,7 @@ pip install piper-tts
 
 Models are available at:
 
-https://huggingface.co/rhasspy/piper-voices
+https://huggingface.co/rhasspy/piper-voices/tree/main
 
 Example model path:
 

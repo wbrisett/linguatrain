@@ -17,16 +17,16 @@ It is designed to be:
 # Table of Contents
 
 1.  Overview
-1.  Getting Started
-1.  YAML Pack Schema
-1.  Mode Layering (How the Flags Work Together)
-1.  Complete Options Reference
-1.  Listening & Spoken Variants
-1.  Piper TTS Setup
-1.  Spaced Repetition System (SRS)
-1.  Missed Pack Generation
-1.  System Architecture
-1. License
+2.  Getting Started
+3.  YAML Pack Schema
+4.  Mode Layering (How the Flags Work Together)
+5.  Complete Options Reference
+6.  Listening & Spoken Variants
+7.  Piper TTS Setup
+8.  Spaced Repetition System (SRS)
+9.  Missed Pack Generation
+10. System Architecture
+11. License
 
 ------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ A typical session works like this:
 1.  Optionally write a missed‑entries pack
 
 All UI labels, language names, and TTS carrier phrases are defined in
-pack metadata or user configuration.
+localisation files or user configuration.
 
 There is no language‑specific logic in the engine.
 
@@ -52,6 +52,32 @@ There is no language‑specific logic in the engine.
 
 This section explains the minimal setup required to run `linguatrain`,
 where files live, and what must be configured.
+
+## linguatrain folder structure
+```text
+linguatrain
+├── bin
+│   ├── covert_legacy_pack.rb
+│   ├── linguatrain.rb
+│   └── validate_pack.rb
+├── docs
+│   └── YAML_SPEC.md
+├── LICENSE
+├── linguatrain.rb
+├── localisation
+│   └── en-US_fi-FI.yaml
+├── NOTICE
+├── packs
+│   ├── es
+│   │   └── spanish_everyday_phrases.yaml
+│   ├── fi
+│   │   ├── finnish_days_of_week.yaml
+│   │   ├── finnish_everyday_phrases.yaml
+│   └── templates
+│       ├── linguatrain_pack_complete_template.yaml
+│       └── linguatrain_pack_minimum_template.yaml
+└── README.md
+```
 
 ------------------------------------------------------------------------
 
@@ -119,7 +145,9 @@ ruby bin/linguatrain.rb ~/linguatrain/packs/finnish_everyday_phrases.yaml 5
 
 ## Optional: User Configuration
 
-User configuration is optional but it is highly recommended.
+** Optional, but highly recommended ** 
+
+User configuration is optional, however it's best to use to one in order to have all the details in a single file and not have to manually specify locations.
 
 ------------------------------------------------------------------------
 
@@ -156,7 +184,7 @@ notepad $env:APPDATA\linguatrain\config.yaml
 
 ------------------------------------------------------------------------
 
-### Example Configuration
+# Configuration structure
 
 ``` yaml
 runtime:
@@ -169,7 +197,8 @@ piper:
 
 defaults:
   tts_template: "Target language: {text}."      # safe generic default
-  ui_locale: "en"                               # optional; for your own UI defaults
+
+localisation: "localisation/<localisation_file.yaml>"
 ```
 
 ------------------------------------------------------------------------
@@ -181,20 +210,22 @@ Default config location:
 
 ---
 
-# Configuration Structure
+## Configuration example
 
 ```yaml
 runtime:
   audio_player: "afplay"
 
 piper:
-  bin: "/path/to/piper"
+  bin: "/Users/wayneb/venvs/piper/bin/piper"
+
   models:
-    fi-FI: "/path/to/fi_FI-harri-medium.onnx"
+    fi-FI: "/Users/wayneb/tools/piper/models/fi_FI/harri/medium/fi_FI-harri-medium.onnx"
 
 defaults:
-  tts_template: "Target language: {text}."
-  ui_locale: "en"
+  tts_template: "Target language: {text}."   # safe generic default
+
+localisation: "localisation/fi-FI_en-US.yaml"
 ```
 
 All sections are optional.  
@@ -331,6 +362,46 @@ Environment variable alternative:
 
 - `PIPER_MODEL` (single-model fallback)
 
+### Installing piper models
+
+When installing piper models, always choose medium or high versions. 
+
+####  Download Voice Models
+
+Official Piper voices are hosted here:
+
+https://huggingface.co/rhasspy/piper-voices/tree/main
+
+Each voice requires:
+
+-   A `.onnx` model file
+-   A matching `.onnx.json` configuration file
+
+#### Example: Finnish (Harri Medium)
+
+Navigate to:
+
+    fi/fi_FI/harri/medium/
+
+Download:
+
+-   `fi_FI-harri-medium.onnx`
+-   `fi_FI-harri-medium.onnx.json`
+
+Place them in a directory such as:
+
+    ~/models/piper/fi-FI/
+
+------------------------------------------------------------------------
+
+### Test the Voice Model
+
+From your activated environment:
+
+``` bash
+echo "Hei maailma." | piper -m ~/models/piper/fi-FI/fi_FI-harri-medium.onnx -f test.wav
+```
+
 ---
 
 # `defaults`
@@ -362,16 +433,27 @@ This value affects speech output only.
 
 ---
 
-## `defaults.ui_locale`
+## `localisation`
 
 **Type:** string  
 **Required:** No  
-**Default:** "en"
+**Default:** none
 
-Defines a preferred UI language for default labels when packs do not
-provide `metadata.ui` overrides.
+Relative path to the default localisation YAML that defines:
 
-This setting does not alter pack metadata.
+- Source and target language codes and display names
+- UI labels/messages
+- The default TTS template (carrier phrase)
+
+Localisation files are normally kept in the repository `localisation/` directory, but you can reference any path. This value can be overridden with the command-line switch:
+
+```bash
+--localisation /path_to_localised_labels.yaml
+```
+
+Environment variable alternative:
+
+- `LINGUATRAIN_LOCALISATION`
 
 ---
 
@@ -382,9 +464,10 @@ precedence applies (highest to lowest):
 
 1. Command-line flags
 2. Environment variables
-3. Pack metadata
-4. User configuration (`config.yaml`)
-5. Engine internal defaults
+3. Localisation file
+4. Pack metadata (pack-specific behavior only)
+5. User configuration (`config.yaml`)
+6. Engine internal defaults
 
 
 ------------------------------------------------------------------------
@@ -514,28 +597,6 @@ organized.
 metadata:
   id: "pack_id"
   version: 1
-  languages:
-    source:
-      code: "en"
-      name: "English"
-    target:
-      code: "fi-FI"
-      name: "Finnish"
-  tts:
-    template: "Suomeksi: {text}."
-  ui:
-    quiz_label: "Quiz"
-    prompt_prefix: "Prompt"
-    target_prefix: "Answer"
-    correct: "✅ Correct!"
-    try_again: "Try again."
-    replay_hint: "(Type 'r' to replay audio)"
-    also_accepted_prefix: "Also accepted:"
-    phonetic_prefix: "phonetic"
-    correct_answer_prefix: "❌ Correct answer:"
-    correct_word_prefix: "❌ Correct word:"
-    quit_message: "Session ended."
-
 entries:
   - id: "001"
     prompt: "Example prompt"
@@ -578,6 +639,284 @@ Unique identifier for the pack.
 Defines the schema version.
 
 Until a schema revision is announced, this should always be set to `1`.
+
+------------------------------------------------------------------------
+
+
+# Entries Schema
+
+The `entries` array defines individual learning units.
+
+Each entry represents one atomic prompt/answer pair with optional
+pronunciation, tagging, audio, and SRS metadata.
+
+------------------------------------------------------------------------
+
+## Entry Structure
+
+``` yaml
+- id: "001"
+  prompt: "Example prompt in source language."
+  answer:
+    - "Example answer in target language."
+  phonetic: ""
+  notes: ""
+  tags: []
+  audio:
+    tts: true
+  srs:
+    difficulty: 1
+```
+
+------------------------------------------------------------------------
+
+## Field Reference
+
+### `id`
+
+**Type:** string
+**Required:** Yes
+
+Unique identifier within the pack.
+
+-   Must not be duplicated.
+-   Used for SRS tracking and missed-pack generation.
+-   Recommended format: zero-padded strings (`"001"`, `"002"`).
+
+------------------------------------------------------------------------
+
+### `prompt`
+
+**Type:** string
+**Required:** Yes
+**Purpose:** The text shown to the user in the *source language*.
+
+Behavior depends on mode:
+
+-   In `typing` mode: prompt is shown; user types target language.
+-   In `reverse` mode: target language is shown or spoken; user types
+    source.
+-   In `match-game`: prompt anchors hint selection.
+-   In `listen` mode: prompt may be spoken if TTS is enabled.
+
+This field should contain natural, learner-facing text.
+
+------------------------------------------------------------------------
+
+### `answer`
+
+**Type:** list of strings\
+**Required:** Yes (must always be a list)
+
+Even if only one accepted answer exists, it must be defined as a YAML
+list:
+
+``` yaml
+answer:
+  - "Hyvää huomenta"
+```
+
+Multiple accepted answers:
+
+``` yaml
+answer:
+  - "Hei"
+  - "Moi"
+```
+
+The engine will accept any string in the list as correct input.
+
+------------------------------------------------------------------------
+
+### `phonetic`
+
+**Type:** string
+**Required:** No
+**Purpose:** Provides pronunciation guidance.
+
+Displayed only if:
+
+-   The UI configuration includes phonetic display
+-   Or when showing correct answers
+
+Example:
+
+``` yaml
+phonetic: "HY-vah"
+```
+
+If empty or omitted, no pronunciation guidance is shown.
+
+------------------------------------------------------------------------
+
+### `notes`
+
+**Type:** string
+**Required:** No
+**Purpose:** Supplemental learning context.
+
+Use this for:
+
+-   Grammar explanations
+-   Usage notes
+-   Cultural context
+-   Formal vs informal distinctions
+
+Displayed when reviewing correct answers or when configured in the UI
+layer.
+
+Example:
+
+``` yaml
+notes: "Formal greeting used in emails."
+```
+
+
+------------------------------------------------------------------------
+
+### `tags`
+
+**Type:** list of strings
+**Required:** No
+**Purpose:** Logical grouping and filtering.
+
+Used for:
+
+-   Subset selection
+-   Thematic drilling
+-   Future expansion features
+
+Example:
+
+``` yaml
+tags:
+  - "greeting"
+  - "formal"
+```
+
+If unused, define as:
+
+``` yaml
+tags: []
+```
+
+
+------------------------------------------------------------------------
+
+### `audio`
+
+**Type:** object
+**Required:** No
+**Purpose:** Controls speech behavior per entry.
+
+``` yaml
+audio:
+  tts: true
+```
+
+#### `tts`
+
+**Type:** boolean
+**Default:** false if omitted
+
+When `true`, this entry is eligible for Text-to-Speech playback when:
+
+-   `--listen` mode is active
+-   Reverse + listening is active
+-   Any speech-triggering mode is enabled
+
+If omitted or false, the entry will never trigger TTS.
+
+------------------------------------------------------------------------
+
+### `srs`
+
+**Type:** object
+**Required:** No
+**Purpose:** Spaced Repetition scheduling metadata.
+
+``` yaml
+srs:
+  difficulty: 1
+```
+
+#### `difficulty`
+
+**Type:** integer
+**Recommended Range:** 1--5
+**Default:** 1 if omitted
+
+Represents relative learning difficulty.
+
+Value   Meaning
+  ------- --------------------------------
+1       Very easy / high frequency
+2       Easy
+3       Moderate
+4       Difficult
+5       Very difficult / low frequency
+
+The engine may use this value to:
+
+-   Adjust initial review intervals
+-   Bias session selection
+-   Modify repetition frequency
+
+------------------------------------------------------------------------
+
+# localisation YAML
+
+The localisation YAML files contain the labels used in linguatrain when you want language-specific labels.
+
+## Localisation YAML format
+
+```yaml
+meta:
+  id: "en-US_fi-FI"  # languages
+  name: "English → Finnish (Finnish UI)"
+
+languages:
+  source:
+    code: "en-US"
+    name: "English"
+  target:
+    code: "fi-FI"
+    name: "Finnish"
+
+tts:
+  template: "Suomeksi: {text}."
+
+ui:
+  quiz_label: "Quiz"
+  correct: "✅ Oikein!"
+  try_again: "Yritä uudelleen."
+  replay_hint: "(Kirjoita 'r' toistaaksesi äänen)"
+  also_accepted_prefix: "Myös käy:"
+  phonetic_prefix: "ääntämys"
+  prompt_prefix: "englanniksi"
+  target_prefix: "suomeksi"
+  correct_answer_prefix: "❌ Oikea vastaus:"
+  correct_word_prefix: "❌ Oikea sana:"
+  quit_message: "👋 Lopetetaan. Kiitos!"
+  no_mistakes: "😊 Ei virheitä — hienoa!"
+
+```
+
+## Metadata (`meta`)
+
+The `meta` block defines localisation configuration and behavior.
+
+## `id`
+
+**Type:** string\
+**Required:** Yes
+
+Unique identifier for the localisation file.
+
+-   Must be unique within your collection of packs.
+    - Use the format <lang-LANG_lang-LANG>
+-   Used internally for tracking and future extensibility.
+-   Should remain stable once published.
 
 ------------------------------------------------------------------------
 
@@ -867,226 +1206,16 @@ Default:
 
 ------------------------------------------------------------------------
 
-# Entries Schema
+### `no_mistakes`
 
-The `entries` array defines individual learning units.
+Displayed when there are no mistakes made.
 
-Each entry represents one atomic prompt/answer pair with optional
-pronunciation, tagging, audio, and SRS metadata.
+Default:
 
-------------------------------------------------------------------------
-
-## Entry Structure
-
-``` yaml
-- id: "001"
-  prompt: "Example prompt in source language."
-  answer:
-    - "Example answer in target language."
-  phonetic: ""
-  notes: ""
-  tags: []
-  audio:
-    tts: true
-  srs:
-    difficulty: 1
-```
+    "😊 No mistakes — nice work!"
 
 ------------------------------------------------------------------------
 
-## Field Reference
-
-### `id`
-
-**Type:** string
-**Required:** Yes
-
-Unique identifier within the pack.
-
--   Must not be duplicated.
--   Used for SRS tracking and missed-pack generation.
--   Recommended format: zero-padded strings (`"001"`, `"002"`).
-
-------------------------------------------------------------------------
-
-### `prompt`
-
-**Type:** string
-**Required:** Yes
-**Purpose:** The text shown to the user in the *source language*.
-
-Behavior depends on mode:
-
--   In `typing` mode: prompt is shown; user types target language.
--   In `reverse` mode: target language is shown or spoken; user types
-    source.
--   In `match-game`: prompt anchors hint selection.
--   In `listen` mode: prompt may be spoken if TTS is enabled.
-
-This field should contain natural, learner-facing text.
-
-------------------------------------------------------------------------
-
-### `answer`
-
-**Type:** list of strings\
-**Required:** Yes (must always be a list)
-
-Even if only one accepted answer exists, it must be defined as a YAML
-list:
-
-``` yaml
-answer:
-  - "Hyvää huomenta"
-```
-
-Multiple accepted answers:
-
-``` yaml
-answer:
-  - "Hei"
-  - "Moi"
-```
-
-The engine will accept any string in the list as correct input.
-
-------------------------------------------------------------------------
-
-### `phonetic`
-
-**Type:** string
-**Required:** No
-**Purpose:** Provides pronunciation guidance.
-
-Displayed only if:
-
--   The UI configuration includes phonetic display
--   Or when showing correct answers
-
-Example:
-
-``` yaml
-phonetic: "HY-vah"
-```
-
-If empty or omitted, no pronunciation guidance is shown.
-
-------------------------------------------------------------------------
-
-### `notes`
-
-**Type:** string
-**Required:** No
-**Purpose:** Supplemental learning context.
-
-Use this for:
-
--   Grammar explanations
--   Usage notes
--   Cultural context
--   Formal vs informal distinctions
-
-Displayed when reviewing correct answers or when configured in the UI
-layer.
-
-Example:
-
-``` yaml
-notes: "Formal greeting used in emails."
-```
-
-
-------------------------------------------------------------------------
-
-### `tags`
-
-**Type:** list of strings
-**Required:** No
-**Purpose:** Logical grouping and filtering.
-
-Used for:
-
--   Subset selection
--   Thematic drilling
--   Future expansion features
-
-Example:
-
-``` yaml
-tags:
-  - "greeting"
-  - "formal"
-```
-
-If unused, define as:
-
-``` yaml
-tags: []
-```
-
-
-------------------------------------------------------------------------
-
-### `audio`
-
-**Type:** object
-**Required:** No
-**Purpose:** Controls speech behavior per entry.
-
-``` yaml
-audio:
-  tts: true
-```
-
-#### `tts`
-
-**Type:** boolean
-**Default:** false if omitted
-
-When `true`, this entry is eligible for Text-to-Speech playback when:
-
--   `--listen` mode is active
--   Reverse + listening is active
--   Any speech-triggering mode is enabled
-
-If omitted or false, the entry will never trigger TTS.
-
-------------------------------------------------------------------------
-
-### `srs`
-
-**Type:** object
-**Required:** No
-**Purpose:** Spaced Repetition scheduling metadata.
-
-``` yaml
-srs:
-  difficulty: 1
-```
-
-#### `difficulty`
-
-**Type:** integer
-**Recommended Range:** 1--5
-**Default:** 1 if omitted
-
-Represents relative learning difficulty.
-
-Value   Meaning
-  ------- --------------------------------
-1       Very easy / high frequency
-2       Easy
-3       Moderate
-4       Difficult
-5       Very difficult / low frequency
-
-The engine may use this value to:
-
--   Adjust initial review intervals
--   Bias session selection
--   Modify repetition frequency
-
-------------------------------------------------------------------------
 
 # Design Principles
 

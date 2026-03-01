@@ -23,6 +23,45 @@ def say(msg = "")
 end
 
 # -----------------------------
+# Deprecation warnings
+# -----------------------------
+
+$DEPRECATION_WARNED ||= {}
+
+def warn_once(key, msg)
+  return if ENV["LINGUATRAIN_NO_WARNINGS"]
+  return if $DEPRECATION_WARNED[key]
+
+  $DEPRECATION_WARNED[key] = true
+  warn msg
+end
+
+# Emit a single formatted deprecation warning block per pack file.
+def warn_pack_deprecations(pack_path, messages)
+  return if ENV["LINGUATRAIN_NO_WARNINGS"]
+  return if messages.nil? || messages.empty?
+
+  key = "pack_deprecations_#{File.expand_path(pack_path)}"
+  return if $DEPRECATION_WARNED[key]
+
+  $DEPRECATION_WARNED[key] = true
+
+  sep = "*" * 48
+  warn sep
+  warn "* DEPRECATION"
+  warn "*"
+  warn "* Pack file '#{pack_path}'"
+  warn "*"
+  warn "* Contains:"
+  messages.each do |m|
+    warn "* #{m}"
+  end
+  warn "*"
+  warn sep
+  warn ""
+end
+
+# -----------------------------
 # Configuration (user config + pack metadata)
 # -----------------------------
 
@@ -110,11 +149,83 @@ def deep_merge_hash(a, b)
   a
 end
 
+# Helper to strip localisation-owned metadata from pack metadata when generating missed packs.
+def strip_localisation_meta(pack_meta)
+  m = (pack_meta || {}).dup
+  m.delete(:ui)
+  m.delete(:languages)
+  m.delete(:tts)
+  m
+end
+
 def resolve_user_config_path(cli_path)
   return cli_path if cli_path && !cli_path.to_s.strip.empty?
   env_path = ENV["LINGUATRAIN_CONFIG"]
   return env_path if env_path && !env_path.to_s.strip.empty?
   first_existing_path(DEFAULT_USER_CONFIG_PATHS)
+end
+
+def resolve_localisation_path(cli_path, user_cfg, user_cfg_path)
+  # Precedence: CLI > ENV > config.yaml
+  return cli_path if cli_path && !cli_path.to_s.strip.empty?
+
+  env_path = ENV["LINGUATRAIN_LOCALISATION"]
+  return env_path if env_path && !env_path.to_s.strip.empty?
+
+  cfg_path = user_cfg.dig(:localisation)
+  return nil if cfg_path.nil? || cfg_path.to_s.strip.empty?
+
+  raw = cfg_path.to_s.strip
+
+  # Absolute path: use as-is.
+  return raw if raw.start_with?("/") || raw =~ /^[A-Za-z]:[\\\/]/
+
+  # Relative path: try from current working directory first (repo-friendly),
+  # then relative to the config.yaml directory (user-config-friendly).
+  cwd_candidate = File.expand_path(raw, Dir.pwd)
+  return cwd_candidate if File.exist?(cwd_candidate)
+
+  if user_cfg_path && !user_cfg_path.to_s.strip.empty?
+    cfg_dir = File.dirname(File.expand_path(user_cfg_path))
+    cfg_candidate = File.expand_path(raw, cfg_dir)
+    return cfg_candidate if File.exist?(cfg_candidate)
+  end
+
+  # Fall back to CWD-expanded path (caller validates existence)
+  cwd_candidate
+end
+
+def load_localisation(path)
+  return {} if path.nil? || path.to_s.strip.empty?
+  raise "Localisation file not found: #{path}" unless File.exist?(path)
+
+  data = YAML.load_file(path)
+  data = {} unless data.is_a?(Hash)
+  loc = symbolize_keys_deep(data)
+
+  # One file = one UI language. Validate required keys.
+  missing = []
+  missing << "languages.source.code" if loc.dig(:languages, :source, :code).to_s.strip.empty?
+  missing << "languages.target.code" if loc.dig(:languages, :target, :code).to_s.strip.empty?
+  missing << "ui" unless loc[:ui].is_a?(Hash)
+
+  unless missing.empty?
+    raise "Invalid localisation YAML (#{path}). Missing/invalid: #{missing.join(', ')}"
+  end
+
+  loc
+end
+
+def effective_meta(pack_meta, localisation)
+  # Languages come from localisation; pack may still contain other metadata (back-compat).
+  merged = deep_merge_hash({ languages: localisation[:languages] }, (pack_meta || {}))
+
+  # If pack doesn't specify a TTS template, take localisation's default.
+  if merged.dig(:tts, :template).to_s.strip.empty? && localisation.dig(:tts, :template)
+    merged = deep_merge_hash(merged, { tts: { template: localisation.dig(:tts, :template) } })
+  end
+
+  merged
 end
 
 def resolve_piper_model(options, user_cfg, pack_meta)
@@ -145,9 +256,8 @@ def resolve_settings!(options, user_cfg, pack_meta)
   options[:tts_template] ||= user_cfg.dig(:defaults, :tts_template)
   options[:tts_template] = pack_meta.dig(:tts, :template) || options[:tts_template] || DEFAULT_TTS_TEMPLATE
 
-  # UI strings: defaults < user < pack
-  ui = deep_merge_hash(DEFAULT_UI, user_cfg.dig(:ui))
-  ui = deep_merge_hash(ui, pack_meta.dig(:ui))
+  # UI strings: defaults < localisation (one file = one UI language)
+  ui = deep_merge_hash(DEFAULT_UI, options[:localisation_ui])
 
   # Provide language name if pack has it.
   ui[:language_name] = pack_meta.dig(:languages, :target, :name) if pack_meta.dig(:languages, :target, :name)
@@ -316,6 +426,28 @@ def load_pack(path)
       #   metadata: {...}
       #   entries:  [ {id:, prompt:, alternate_prompts:, answer:, phonetic:}, ... ]
       pack_meta = data["metadata"] || data[:metadata] || {}
+
+      # Deprecation: localisation now owns UI strings and language metadata.
+      # Packs should contain only pack identity + entries (and optional overrides).
+      if pack_meta.is_a?(Hash)
+        deprecations = []
+
+        if (pack_meta.key?("ui") || pack_meta.key?(:ui))
+          deprecations << "metadata.ui. Move UI strings into a localisation file (localisation/*.yaml) and reference it via config.yaml 'localisation:' or --localisation."
+        end
+
+        if (pack_meta.key?("languages") || pack_meta.key?(:languages))
+          deprecations << "metadata.languages. Move language codes/names into the localisation file (localisation/*.yaml)."
+        end
+
+        tts = pack_meta["tts"] || pack_meta[:tts]
+        if tts.is_a?(Hash) && (tts.key?("template") || tts.key?(:template))
+          deprecations << "metadata.tts.template. Move the default template into localisation (tts.template). Keep pack-level overrides only if truly pack-specific."
+        end
+
+        warn_pack_deprecations(path, deprecations)
+      end
+
       entries = data["entries"] || data[:entries]
       if entries.is_a?(Array)
         entries
@@ -346,7 +478,7 @@ def load_pack(path)
             end
           else
             data.flat_map do |key, v|
-              # Ignore metadata blocks commonly named 'meta'
+              # Ignore top-level metadata blocks commonly named 'meta'
               next [] if key.to_s.strip.downcase == "meta"
 
               v ||= {}
@@ -954,21 +1086,27 @@ def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game
 
   # Build metadata for the missed pack by copying the original pack metadata,
   # then adding a small generation block.
-  missed_meta = deep_merge_hash(pack_meta || {}, {
+  base_meta = strip_localisation_meta(pack_meta)
+  missed_meta = deep_merge_hash(base_meta || {}, {
     id: "#{base}_missed",
-    generated: {
-      generated_at: Time.now.iso8601,
-      source_pack_id: (pack_meta || {}).dig(:id),
-      source_file: File.expand_path(input_path),
-      stats: stats,
-      options: {
-        lenient_umlauts: lenient,
-        match_game: match_game,
-        listen: listen,
-        listen_no_source: listen_no_english,
-        reverse: reverse
+    generated: begin
+      g = {
+        generated_at: Time.now.iso8601,
+        source_pack_id: (pack_meta || {}).dig(:id),
+        source_file: File.expand_path(input_path),
+        localisation: (defined?($LOCALISATION_ID) ? $LOCALISATION_ID : nil),
+        stats: stats,
+        options: {
+          lenient_umlauts: lenient,
+          match_game: match_game,
+          listen: listen,
+          listen_no_source: listen_no_english,
+          reverse: reverse
+        }
       }
-    }
+      g.delete_if { |_, v| v.nil? }
+      g
+    end
   })
 
   entries = missed.map do |w|
@@ -1005,6 +1143,7 @@ end
 
 options = {
   config: nil,
+  localisation: nil,
   lenient: false,
   match_game: false,
   listen: false,
@@ -1031,6 +1170,7 @@ parser = OptionParser.new do |opts|
   opts.banner = "Usage: ruby linguatrain.rb <yaml_file> [count|all] [options]"
 
   opts.on("--config PATH", "Path to user config YAML (or set LINGUATRAIN_CONFIG)") { |v| options[:config] = v }
+  opts.on("--localisation PATH", "Path to localisation YAML (overrides config.yaml localisation)") { |v| options[:localisation] = v }
   opts.on("--audio-player CMD", "Audio player command (default from config; macOS: afplay)") { |v| options[:audio_player] = v }
 
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
@@ -1088,7 +1228,19 @@ words = pack[:words] || []
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
 
-resolve_settings!(options, user_cfg, pack_meta)
+loc_path = resolve_localisation_path(options[:localisation], user_cfg, user_cfg_path)
+localisation = load_localisation(loc_path)
+$LOCALISATION_ID = localisation.dig(:meta, :id)
+
+# Make localisation UI available to resolve_settings!
+options[:localisation_ui] = localisation[:ui] || {}
+
+# Effective meta includes localisation languages + (optional) localisation TTS template.
+effective_pack_meta = effective_meta(pack_meta, localisation)
+
+resolve_settings!(options, user_cfg, effective_pack_meta)
+pack_meta = effective_pack_meta
+
 
 # Provide globals for small helpers.
 $UI = options[:ui] || DEFAULT_UI
@@ -1189,7 +1341,7 @@ begin
     say "Missed words saved to: #{outfile}"
   else
     say
-    say "😊 No mistakes — nice work!"
+    puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
   end
 rescue QuitQuiz
   say "SRS progress saved." if srs_enabled

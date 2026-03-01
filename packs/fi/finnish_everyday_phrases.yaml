@@ -1,27 +1,6 @@
 metadata:
   id: "fi_everyday_phrases"
   version: 1
-  languages:
-    source:
-      code: "en"
-      name: "English"
-    target:
-      code: "fi-FI"
-      name: "Finnish"
-  tts:
-    template: "Suomeksi: {text}."
-  ui:
-    correct: "✅ Oikein!"
-    try_again: "Yritä uudelleen."
-    replay_hint: "(Kirjoita 'r' toistaaksesi äänen)"
-    also_accepted_prefix: "Myös käy:"
-    phonetic_prefix: "ääntämys"
-    prompt_prefix: "englanniksi"
-    target_prefix: "suomeksi"
-    correct_answer_prefix: "❌ Oikea vastaus:"
-    correct_word_prefix: "❌ Oikea sana:"
-    quit_message: "👋 Lopetetaan. Kiitos!"
-    quiz_label: "Quiz"
 
 entries:
 

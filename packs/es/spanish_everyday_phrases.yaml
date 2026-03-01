@@ -1,9 +1,6 @@
 metadata:
   pack_name: "Everyday phrases (Spanish)"
   version: 1
-  source_lang: "en"
-  target_lang: "es"
-  description: "Small 5-entry pack for engine validation across a second language."
 
 entries:
   - id: "001"

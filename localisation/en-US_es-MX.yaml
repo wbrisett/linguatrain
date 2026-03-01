@@ -1,0 +1,28 @@
+meta:
+  id: "en-US_es-MX"
+  name: "English → Spanish (Mexico) (Spanish UI)"
+
+languages:
+  source:
+    code: "en-US"
+    name: "English"
+  target:
+    code: "es-MX"
+    name: "Español (México)"
+
+tts:
+  template: "En español: {text}."
+
+ui:
+  quiz_label: "Quiz"
+  correct: "✅ ¡Correcto!"
+  try_again: "Inténtalo de nuevo."
+  replay_hint: "(Escribe 'r' para repetir el audio)"
+  also_accepted_prefix: "También se acepta:"
+  phonetic_prefix: "fonética"
+  prompt_prefix: "en inglés"
+  target_prefix: "en español"
+  correct_answer_prefix: "❌ Respuesta correcta:"
+  correct_word_prefix: "❌ Palabra correcta:"
+  quit_message: "👋 Terminamos. ¡Gracias!"
+  no_mistakes: "😊 Sin errores — ¡muy bien!"

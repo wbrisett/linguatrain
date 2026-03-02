@@ -969,7 +969,13 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             say(ui[:correct] || "✅ Correct!")
             others = correct_list - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-            say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
+            # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
+            if listen
+              say_reverse_listen_reveal(w, ui)
+            else
+              say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
+            end
+
             say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
             update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
             answer_ok = true
@@ -1050,14 +1056,19 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           if reverse
             others = expected - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+
+            # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
+            say_reverse_listen_reveal(w, ui) if listen
+
+            # Always show the source-side variants (English) for reverse mode after a correct response.
+            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
           else
             # Use the same answer set we validated against (written/spoken/either).
             others = expected - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
             say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+            say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
           end
-
-          say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
           update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
           answer_ok = true
           break

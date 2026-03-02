@@ -809,6 +809,13 @@ def format_variants_for_display(word)
   "#{written} / #{spoken}"
 end
 
+def say_reverse_listen_reveal(w, ui)
+  fi = (w[:answer] || []).first.to_s.strip
+  phon = w[:phonetic].to_s.strip
+  return if fi.empty?
+  say phon.empty? ? "   #{fi}" : "   #{fi} - (#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})"
+end
+
 # -----------------------------
 # Quiz Engine
 # -----------------------------

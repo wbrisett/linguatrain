@@ -1,106 +1,119 @@
+---
 metadata:
-  pack_name: "Millainen? — opposites"
+  id: Millainen? — opposites
   version: 1
-  source_lang: "en"
-  target_lang: "fi"
-  description: "Opposites practice (adjectives)"
-
+  description: Opposites practice (adjectives)
 entries:
-  - id: "001"
-    prompt: "good"
-    answer:
-      - "hyvä"
-    phonetic: "HOO-vah"
-    tags: ["opposites", "adjectives"]
-
-  - id: "002"
-    prompt: "bad"
-    answer:
-      - "huono"
-    phonetic: "HOO-oh-noh"
-    tags: ["opposites", "adjectives"]
-
-  - id: "003"
-    prompt: "new"
-    answer:
-      - "uusi"
-    phonetic: "OO-see"
-    tags: ["opposites", "adjectives"]
-
-  - id: "004"
-    prompt: "old"
-    answer:
-      - "vanha"
-    phonetic: "VAHN-hah"
-    tags: ["opposites", "adjectives"]
-
-  - id: "005"
-    prompt: "big"
-    answer:
-      - "iso"
-      - "suuri"
-    phonetic: "EE-soh / SOO-ree"
-    tags: ["opposites", "adjectives"]
-
-  - id: "006"
-    prompt: "small"
-    answer:
-      - "pieni"
-    phonetic: "PIEH-nee"
-    tags: ["opposites", "adjectives"]
-
-  - id: "007"
-    prompt: "beautiful"
-    answer:
-      - "kaunis"
-    phonetic: "KOW-nis"
-    tags: ["opposites", "adjectives"]
-
-  - id: "008"
-    prompt: "ugly"
-    answer:
-      - "ruma"
-    phonetic: "ROO-mah"
-    tags: ["opposites", "adjectives"]
-
-  - id: "009"
-    prompt: "expensive"
-    answer:
-      - "kallis"
-    phonetic: "KAH-lis"
-    tags: ["opposites", "adjectives"]
-
-  - id: "010"
-    prompt: "cheap"
-    answer:
-      - "halpa"
-    phonetic: "HAHL-pah"
-    tags: ["opposites", "adjectives"]
-
-  - id: "011"
-    prompt: "easy"
-    answer:
-      - "helppo"
-    phonetic: "HEL-poh"
-    tags: ["opposites", "adjectives"]
-
-  - id: "012"
-    prompt: "difficult"
-    answer:
-      - "vaikea"
-    phonetic: "VAI-keh-ah"
-    tags: ["opposites", "adjectives"]
-
-  - id: "013"
-    prompt: "interesting"
-    answer:
-      - "mielenkiintoinen"
-    phonetic: "MEE-eh-len-KEEN-toy-nen"
-    tags: ["opposites", "adjectives"]
-
-  - id: "014"
-    prompt: "boring"
-    answer:
-      - "tylsä"
-    phonetic: "TÜL-sah"
-    tags: ["opposites", "adjectives"]
+- id: '001'
+  prompt: good
+  answer:
+  - hyvä
+  phonetic: HOO-vah
+  tags:
+  - opposites
+  - adjectives
+- id: '002'
+  prompt: bad
+  answer:
+  - huono
+  phonetic: HOO-oh-noh
+  tags:
+  - opposites
+  - adjectives
+- id: '003'
+  prompt: new
+  answer:
+  - uusi
+  phonetic: OO-see
+  tags:
+  - opposites
+  - adjectives
+- id: '004'
+  prompt: old
+  answer:
+  - vanha
+  phonetic: VAHN-hah
+  tags:
+  - opposites
+  - adjectives
+- id: '005'
+  prompt: big
+  answer:
+  - iso
+  - suuri
+  phonetic: EE-soh / SOO-ree
+  tags:
+  - opposites
+  - adjectives
+- id: '006'
+  prompt: small
+  answer:
+  - pieni
+  phonetic: PIEH-nee
+  tags:
+  - opposites
+  - adjectives
+- id: '007'
+  prompt: beautiful
+  answer:
+  - kaunis
+  phonetic: KOW-nis
+  tags:
+  - opposites
+  - adjectives
+- id: '008'
+  prompt: ugly
+  answer:
+  - ruma
+  phonetic: ROO-mah
+  tags:
+  - opposites
+  - adjectives
+- id: '009'
+  prompt: expensive
+  answer:
+  - kallis
+  phonetic: KAH-lis
+  tags:
+  - opposites
+  - adjectives
+- id: '010'
+  prompt: cheap
+  answer:
+  - halpa
+  phonetic: HAHL-pah
+  tags:
+  - opposites
+  - adjectives
+- id: '011'
+  prompt: easy
+  answer:
+  - helppo
+  phonetic: HEL-poh
+  tags:
+  - opposites
+  - adjectives
+- id: '012'
+  prompt: difficult
+  answer:
+  - vaikea
+  phonetic: VAI-keh-ah
+  tags:
+  - opposites
+  - adjectives
+- id: '013'
+  prompt: interesting
+  answer:
+  - mielenkiintoinen
+  phonetic: MEE-eh-len-KEEN-toy-nen
+  tags:
+  - opposites
+  - adjectives
+- id: '014'
+  prompt: boring
+  answer:
+  - tylsä
+  phonetic: TÜL-sah
+  tags:
+  - opposites
+  - adjectives

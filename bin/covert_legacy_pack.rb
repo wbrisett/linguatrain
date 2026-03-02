@@ -11,30 +11,20 @@ def die(msg, code = 1)
 end
 
 options = {
-  pack_name: nil,
-  source_lang: "en",
-  target_lang: "fi",
+  id: nil,
+  version: 1,
   author: nil,
   description: nil,
-  version: 1,
   out: nil,
   in_place: false,
   batch: nil
 }
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: convert_legacy_pack.rb [options] path/to/legacy_pack.yaml"
+  opts.banner = "Usage: convert_legacy_pack.rb [options] path/to/pack.yaml"
 
-  opts.on("--pack-name=NAME", "Name of the pack") do |v|
-    options[:pack_name] = v
-  end
-
-  opts.on("--source-lang=CODE", "Source language (ISO 639-1), default: en") do |v|
-    options[:source_lang] = v
-  end
-
-  opts.on("--target-lang=CODE", "Target language (ISO 639-1), default: fi") do |v|
-    options[:target_lang] = v
+  opts.on("--id=ID", "Pack id for metadata.id (defaults to input filename stem)") do |v|
+    options[:id] = v
   end
 
   opts.on("--author=NAME", "Author name") do |v|
@@ -116,11 +106,22 @@ def convert_one_file(in_path, options, batch_root: nil)
     die("YAML syntax error in #{in_path}: #{e.message}", 2)
   end
 
-  unless legacy_data.is_a?(Array)
-    die("Legacy pack file must start with a YAML list. File: #{in_path}", 2)
+  entries_source = nil
+  legacy_meta = {}
+
+  if legacy_data.is_a?(Array)
+    entries_source = legacy_data
+  elsif legacy_data.is_a?(Hash)
+    # Legacy wrapper format: { metadata: {pack_name:, version:, source_lang:, target_lang:, ...}, entries: [...] }
+    legacy_meta = (legacy_data["metadata"] || legacy_data[:metadata] || {})
+    entries_source = legacy_data["entries"] || legacy_data[:entries]
   end
 
-  entries = legacy_data.map.with_index do |raw_entry, idx|
+  unless entries_source.is_a?(Array)
+    die("Legacy pack must be a YAML list OR an object with an entries list. File: #{in_path}", 2)
+  end
+
+  entries = entries_source.map.with_index do |raw_entry, idx|
     unless raw_entry.is_a?(Hash)
       die("Entry at index #{idx} is not an object/map. File: #{in_path}", 2)
     end
@@ -174,18 +175,31 @@ def convert_one_file(in_path, options, batch_root: nil)
     new_entry
   end
 
+  derived_id = File.basename(in_path).sub(/\.(ya?ml)\z/i, "")
+  pack_id = options[:id]
+  pack_id = legacy_meta["id"] || legacy_meta[:id] if pack_id.nil? || pack_id.to_s.strip.empty?
+  pack_id = legacy_meta["pack_name"] || legacy_meta[:pack_name] if pack_id.nil? || pack_id.to_s.strip.empty?
+  pack_id = derived_id if pack_id.nil? || pack_id.to_s.strip.empty?
+
   out = {
     "metadata" => {
-      "pack_name" => options[:pack_name],
-      "version" => options[:version],
-      "source_lang" => options[:source_lang],
-      "target_lang" => options[:target_lang]
+      "id" => pack_id.to_s,
+      "version" => options[:version]
     },
     "entries" => entries
   }
 
-  out["metadata"]["author"] = options[:author] if options[:author] && !options[:author].to_s.strip.empty?
-  out["metadata"]["description"] = options[:description] if options[:description] && !options[:description].to_s.strip.empty?
+  if options[:version].nil? && (legacy_meta["version"] || legacy_meta[:version])
+    out["metadata"]["version"] = legacy_meta["version"] || legacy_meta[:version]
+  end
+
+  author = options[:author]
+  author = legacy_meta["author"] || legacy_meta[:author] if author.nil? || author.to_s.strip.empty?
+  out["metadata"]["author"] = author.to_s if author && !author.to_s.strip.empty?
+
+  desc = options[:description]
+  desc = legacy_meta["description"] || legacy_meta[:description] if desc.nil? || desc.to_s.strip.empty?
+  out["metadata"]["description"] = desc.to_s if desc && !desc.to_s.strip.empty?
 
   yaml_text = YAML.dump(out)
 
@@ -214,8 +228,6 @@ def convert_one_file(in_path, options, batch_root: nil)
 
   0
 end
-
-die("Missing required option: --pack-name", 2) if options[:pack_name].nil? || options[:pack_name].strip.empty?
 
 if options[:in_place] && options[:out]
   die("Cannot use --out and --in-place together", 2)

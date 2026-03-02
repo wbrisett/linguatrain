@@ -816,6 +816,99 @@ def say_reverse_listen_reveal(w, ui)
   say phon.empty? ? "   #{fi}" : "   #{fi} - (#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})"
 end
 
+def centered_prompt(indent, text)
+  prompt("#{indent}#{text}")
+end
+
+# ----------------------------
+# Study Engine
+# ----------------------------
+def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:, ui:, tts_variant:, answer_variant:, show_variants:)
+  say
+
+  src_name = ui[:source_language_name] || "Source"
+  tgt_name = ui[:target_language_name] || ui[:language_name] || "Target"
+
+  title_dir = reverse ? "#{tgt_name} → #{src_name}" : "#{src_name} → #{tgt_name}"
+  mode = ["study"]
+  mode << "listen" if listen
+  mode << (reverse ? "#{tgt_name}→#{src_name}" : "#{src_name}→#{tgt_name}")
+
+  say "#{title_dir} #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: #{mode.join(', ')})"
+  say "-" * 50
+
+  width = (IO.console.winsize[1] rescue 80)
+  indent = " " * [((width - 40) / 2), 0].max
+
+  selected.each_with_index do |w, idx|
+    say
+    say "[#{idx + 1}/#{selected.length}]"
+    say
+
+    prompt_text = w[:prompt].join(" / ")
+    answer_text =
+      if show_variants
+        format_variants_for_display(w)
+      else
+        expected_answer_list(w, answer_variant).join(" / ")
+      end
+    phon = w[:phonetic].to_s.strip
+
+    # Audio always speaks the TARGET side (tgt language).
+    spoken_target = choose_tts_text(w, tts_variant)
+
+    if reverse
+      # Target → Source: show target first (Finnish), then reveal source (English)
+      front_label = ui[:target_prefix] || tgt_name
+      say "#{front_label}: #{answer_text}"
+      say
+
+      if listen
+        speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+        say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
+      end
+
+      centered_prompt(indent, "(Enter to reveal; q to quit): ")
+      say
+
+      back_label = ui[:prompt_prefix] || src_name
+      say "#{back_label}: #{prompt_text}"
+      say "(#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})" unless phon.empty?
+      say
+
+      if listen
+        prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+      else
+        prompt("(Enter for next; q to quit): ")
+      end
+    else
+      # Source → Target: show source first (English), then reveal target (Finnish)
+      front_label = ui[:prompt_prefix] || src_name
+      say "#{front_label}: #{prompt_text}" unless listen_no_english
+      say
+
+      centered_prompt(indent, "(Enter to reveal; q to quit): ")
+      say
+
+      back_label = ui[:target_prefix] || tgt_name
+      say "#{back_label}: #{answer_text}"
+      say "(#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})" unless phon.empty?
+      say
+
+      if listen
+        speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+        say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
+        prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+      else
+        prompt("(Enter for next; q to quit): ")
+      end
+    end
+  end
+
+  say
+  say "Done."
+end
+
 # -----------------------------
 # Quiz Engine
 # -----------------------------
@@ -1167,6 +1260,7 @@ options = {
   listen: false,
   listen_no_english: false,
   reverse: false,
+  study: false,
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
@@ -1220,6 +1314,10 @@ parser = OptionParser.new do |opts|
     options[:reverse] = true
   end
 
+  opts.on("--study", "Study mode: show one side, then reveal the other (no scoring)") do
+    options[:study] = true
+  end
+
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
     options[:match_options] = v.to_s.strip.downcase
   end
@@ -1238,6 +1336,16 @@ parser.parse!
 
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
+
+# Study mode is intentionally simple: ignore match-game, lenient umlauts, and SRS.
+if options[:study]
+  abort("--study cannot be combined with --match-game") if options[:match_game]
+  abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--study ignores SRS. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
 
 pack = load_pack(yaml_path)
 pack_meta = pack[:meta] || {}
@@ -1268,7 +1376,7 @@ if options[:listen]
   abort("--listen requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
 end
 
-srs_enabled = options[:srs]
+srs_enabled = options[:srs] && !options[:study]
 srs_path = options[:srs_file] || default_srs_path(yaml_path, pack_meta)
 
 srs = srs_enabled ? load_srs(srs_path) : { "meta" => {}, "items" => {} }
@@ -1312,6 +1420,25 @@ if srs_enabled
   say
 end
 begin
+
+  if options[:study]
+    run_study(
+      selected,
+      reverse: options[:reverse],
+      listen: options[:listen],
+      listen_no_english: options[:listen_no_english],
+      piper_bin: options[:piper_bin],
+      piper_model: options[:piper_model],
+      tts_template: options[:tts_template],
+      ui: options[:ui] || DEFAULT_UI,
+      tts_variant: options[:tts_variant],
+      answer_variant: options[:answer_variant],
+      show_variants: options[:show_variants]
+    )
+
+    # Study mode has no scoring/missed packs.
+    exit(0)
+  end
 
   stats, missed = run_quiz(
     selected,

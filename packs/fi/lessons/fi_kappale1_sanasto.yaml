@@ -1,0 +1,246 @@
+metadata:
+  id: "fi_kappale1_sanasto"
+  version: 1
+
+entries:
+
+  - id: "001"
+    prompt: "Hi"
+    alternate_prompts:
+      - "Hello"
+    answer:
+      - "Hei"
+    phonetic: "HAY"
+
+  - id: "002"
+    prompt: "and"
+    answer:
+      - "ja"
+    phonetic: "yah"
+
+  - id: "003"
+    prompt: "Welcome"
+    answer:
+      - "Tervetuloa"
+    phonetic: "TEHR-veh-too-loh-ah"
+
+  - id: "004"
+    prompt: "Excuse me"
+    alternate_prompts:
+      - "Sorry"
+    answer:
+      - "Anteeksi"
+    phonetic: "AHN-tehk-see"
+
+  - id: "005"
+    prompt: "Is"
+    answer:
+      - "on"
+    phonetic: "ohn"
+
+  - id: "006"
+    prompt: "here"
+    answer:
+      - "täällä"
+    phonetic: "TAE-llah"
+
+  - id: "007"
+    prompt: "Finnish course"
+    answer:
+      - "suomen kurssi"
+    phonetic: "SOO-men KOOR-see"
+
+  - id: "008"
+    prompt: "already"
+    answer:
+      - "jo"
+    phonetic: "yoh"
+
+  - id: "009"
+    prompt: "to be"
+    answer:
+      - "olla"
+    phonetic: "OHL-lah"
+
+  - id: "010"
+    prompt: "this"
+    answer:
+      - "tämä"
+    phonetic: "TAH-mah"
+
+  - id: "011"
+    prompt: "place"
+    answer:
+      - "paikka"
+    phonetic: "PIKE-kah"
+
+  - id: "012"
+    prompt: "free"
+    answer:
+      - "vapaa"
+    phonetic: "VAH-pah"
+
+  - id: "013"
+    prompt: "nice"
+    alternate_prompts:
+      - "pleasant"
+    answer:
+      - "kiva"
+    phonetic: "KEE-vah"
+
+  - id: "014"
+    prompt: "I"
+    answer:
+      - "minä"
+    phonetic: "MI-nah"
+
+  - id: "015"
+    prompt: "who"
+    answer:
+      - "kuka"
+    phonetic: "KOO-kah"
+
+  - id: "016"
+    prompt: "you"
+    answer:
+      - "sinä"
+    phonetic: "SEE-nah"
+
+  - id: "017"
+    prompt: "Nice to meet you"
+    answer:
+      - "Hauska tutustua"
+    phonetic: "HOWS-kah TOO-toos-too-ah"
+
+  - id: "018"
+    prompt: "Likewise"
+    answer:
+      - "Kiitos samoin"
+    phonetic: "KEE-tohs SAH-moyn"
+
+  - id: "019"
+    prompt: "Hi"
+    alternate_prompts:
+      - "Hey"
+    answer:
+      - "Moi"
+    phonetic: "MOY"
+
+  - id: "020"
+    prompt: "What do you hear?"
+    alternate_prompts:
+      - "How are you?"
+      - "What's up?"
+    answer:
+      - "Mitä kuuluu?"
+    phonetic: "MI-tah KOO-loo?"
+
+  - id: "021"
+    prompt: "Hello"
+    answer:
+      - "Terve"
+    phonetic: "TEHR-veh"
+
+  - id: "022"
+    prompt: "Thank you"
+    answer:
+      - "Kiitos"
+    phonetic: "KEE-tohs"
+
+  - id: "023"
+    prompt: "I am doing well"
+    answer:
+      - "Minulle kuuluu hyvää"
+    phonetic: "MI-noo-leh KOO-loo HY-vah"
+
+  - id: "024"
+    prompt: "How about you?"
+    answer:
+      - "Entä sinulle?"
+    phonetic: "EN-tah SEE-noo-leh?"
+
+  - id: "025"
+    prompt: "Very good, thank you"
+    answer:
+      - "Ihan hyvää, kiitos"
+    phonetic: "EE-hahn HY-vah, KEE-tohs"
+
+  - id: "026"
+    prompt: "here"
+    answer:
+      - "tässä"
+    phonetic: "TAEH-ssah"
+
+  - id: "027"
+    prompt: "my"
+    answer:
+      - "minun"
+    phonetic: "MI-noon"
+
+  - id: "028"
+    prompt: "name"
+    answer:
+      - "nimi"
+    phonetic: "NEE-mee"
+
+  - id: "029"
+    prompt: "teacher"
+    answer:
+      - "opettaja"
+    phonetic: "OH-peh-TAH-yah"
+
+  - id: "030"
+    prompt: "How is it written?"
+    answer:
+      - "Miten se kirjoitetaan?"
+    phonetic: "MI-ten seh KEER-yoh-ee-teh-TAAN?"
+
+  - id: "031"
+    prompt: "first name"
+    answer:
+      - "etunimi"
+    phonetic: "EH-too-NEE-mee"
+
+  - id: "032"
+    prompt: "last name"
+    answer:
+      - "sukunimi"
+    phonetic: "SOO-koo-NEE-mee"
+
+  - id: "033"
+    prompt: "Okay"
+    answer:
+      - "Okei"
+    phonetic: "OH-kay"
+
+  - id: "034"
+    prompt: "course day"
+    answer:
+      - "kurssipäivä"
+    phonetic: "KOOR-see-PAI-vah"
+
+  - id: "035"
+    prompt: "Monday"
+    answer:
+      - "maanantai"
+    phonetic: "MAAN-ahn-tie"
+
+  - id: "036"
+    prompt: "Wednesday"
+    answer:
+      - "keskiviikko"
+    phonetic: "KES-kee-vee-kko"
+
+  - id: "037"
+    prompt: "Thursday"
+    answer:
+      - "torstai"
+    phonetic: "TORS-tie"
+
+  - id: "038"
+    prompt: "time"
+    alternate_prompts:
+      - "clock"
+    answer:
+      - "kello"
+    phonetic: "KEL-loh"

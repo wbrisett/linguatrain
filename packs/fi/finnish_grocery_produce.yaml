@@ -1,9 +1,7 @@
 ---
 metadata:
-  pack_name: legacy pack
+  id: legacy pack
   version: 1
-  source_lang: en
-  target_lang: fi
 entries:
 - id: '001'
   prompt: potato

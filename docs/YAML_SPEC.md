@@ -1,6 +1,6 @@
 # Linguatrain YAML Specification
 
-Version 0.1 (Draft)
+Version 1.0 (Current)
 
 ## 1. Overview
 
@@ -9,13 +9,13 @@ content.
 
 Each pack defines:
 
--   A source language\
--   A target language\
--   A collection of recall entries\
+-   A source language
+-   A target language
+-   A collection of recall entries
 -   Optional metadata for learning behavior
 
-The engine operates on structured recall between `source_lang` and
-`target_lang`.
+The engine operates on structured recall between the source and target
+languages defined in localisation configuration.
 
 ------------------------------------------------------------------------
 
@@ -25,17 +25,15 @@ Each YAML file MUST define a `metadata` block and an `entries` list.
 
 ### Example
 
-``` yaml
+```yaml
 metadata:
-  pack_name: "Finnish Basics"
+  id: "fi_basics"
   version: 1
-  source_lang: "en"
-  target_lang: "fi"
-  author: "Wayne Brissette"
+  name: "Finnish Basics"
   description: "Core beginner vocabulary"
 
 entries:
-  - id: 001
+  - id: "001"
     prompt: "It is cold."
     answer:
       - "On kylmä."
@@ -47,12 +45,12 @@ entries:
 
 ### 3.1 Metadata Fields
 
-  Field         Required   Description
-  ------------- ---------- ---------------------------------
-  pack_name     Yes        Human-readable name of the pack
-  version       Yes        Integer schema version number
-  source_lang   Yes        ISO 639-1 language code
-  target_lang   Yes        ISO 639-1 language code
+  Field        Required   Description
+  ------------ ---------- ---------------------------------
+  id           Yes        Unique pack identifier
+  version      Yes        Integer schema version number
+  name         No         Human-readable display name
+  description  No         Pack description
 
 ### 3.2 Entry Fields
 
@@ -67,8 +65,8 @@ Each entry MUST contain:
 
 Requirements:
 
--   `id` must be unique within the file\
--   `prompt` must be a string\
+-   `id` must be unique within the file
+-   `prompt` must be a string
 -   `answer` must be a list (even if only one answer)
 
 ------------------------------------------------------------------------
@@ -103,15 +101,25 @@ Entries MAY include additional structured metadata.
   notes      string   Learning context
   tags       list     Categorization labels
   audio      object   Audio playback options
-  srs        object   Spaced repetition hints
+  srs        object   Spaced repetition metadata
 
 ------------------------------------------------------------------------
 
 ## 5. Answer Handling
 
--   Answers are evaluated case-insensitively by default.\
--   Multiple accepted answers must be defined as a list.\
+-   Answers are evaluated case-insensitively by default.
+-   Multiple accepted answers must be defined as a list.
 -   Future versions may support strict matching modes.
+
+Answers MUST always be defined as a YAML list, even when only one
+accepted answer exists.
+
+Example:
+
+```yaml
+answer:
+  - "Hyvää huomenta"
+```
 
 ### Example
 
@@ -125,15 +133,17 @@ answer:
 
 ## 6. Directionality
 
-The engine may operate in multiple modes:
+Direction is controlled at runtime via command-line flags
+(for example, `--reverse`).
 
--   source → target\
--   target → source\
--   guided recall\
--   listening mode
+Packs are direction-agnostic. The same entry must support:
 
-Packs must support bidirectional recall unless explicitly restricted in
-metadata.
+- Source → Target recall
+- Target → Source recall
+- Listening modes
+- Study mode
+
+Language codes are defined in localisation files, not in the pack itself.
 
 ------------------------------------------------------------------------
 
@@ -153,9 +163,10 @@ Each file should contain one `metadata` block and one `entries` list.
 
 ## 8. Versioning
 
--   `version` refers to the data pack schema version.\
--   Breaking schema changes must increment the version number.\
--   The engine must validate compatibility before loading a pack.
+- `version` refers to the YAML pack schema version.
+- The current supported schema version is `1`.
+- Breaking schema changes must increment the version number.
+- The engine validates compatibility before loading a pack.
 
 ------------------------------------------------------------------------
 
@@ -163,10 +174,10 @@ Each file should contain one `metadata` block and one `entries` list.
 
 The specification reserves space for:
 
--   Grammar drills\
--   Multi-field prompts\
--   Cloze deletions\
--   Morphological variations\
+-   Grammar drills
+-   Multi-field prompts
+-   Cloze deletions
+-   Morphological variations
 -   Regional dialect variants
 
 Future additions should remain backward-compatible whenever possible.

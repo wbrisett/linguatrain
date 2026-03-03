@@ -1,259 +1,308 @@
+---
 metadata:
-  pack_name: "Finnish numbers"
+  id: Finnish numbers
   version: 1
-  source_lang: "en"
-  target_lang: "fi"
-  description: "Numbers with English variants (digits + word forms)"
-
+  description: Numbers with English variants (digits + word forms)
 entries:
-  - id: "001"
-    prompt: "zero"
-    alternate_prompts: ["0"]
-    answer: ["nolla"]
-    phonetic: "NOHLL-AH"
-
-  - id: "002"
-    prompt: "one"
-    alternate_prompts: ["1"]
-    answer: ["yksi"]
-    phonetic: "UEKS-EE"
-
-  - id: "003"
-    prompt: "two"
-    alternate_prompts: ["2"]
-    answer: ["kaksi"]
-    phonetic: "KAHKS-EE"
-
-  - id: "004"
-    prompt: "three"
-    alternate_prompts: ["3"]
-    answer: ["kolme"]
-    phonetic: "KOHLM-EH"
-
-  - id: "005"
-    prompt: "four"
-    alternate_prompts: ["4"]
-    answer: ["neljä"]
-    phonetic: "NEHLJ-AE"
-
-  - id: "006"
-    prompt: "five"
-    alternate_prompts: ["5"]
-    answer: ["viisi"]
-    phonetic: "VEEEES-EE"
-
-  - id: "007"
-    prompt: "six"
-    alternate_prompts: ["6"]
-    answer: ["kuusi"]
-    phonetic: "KOOOOS-EE"
-
-  - id: "008"
-    prompt: "seven"
-    alternate_prompts: ["7"]
-    answer: ["seitsemän"]
-    phonetic: "SEHEETS-EHM-AEN"
-
-  - id: "009"
-    prompt: "eight"
-    alternate_prompts: ["8"]
-    answer: ["kahdeksan"]
-    phonetic: "KAHHD-EHKS-AHN"
-
-  - id: "010"
-    prompt: "nine"
-    alternate_prompts: ["9"]
-    answer: ["yhdeksän"]
-    phonetic: "UEHD-EHKS-AEN"
-
-  - id: "011"
-    prompt: "ten"
-    alternate_prompts: ["10"]
-    answer: ["kymmenen"]
-    phonetic: "KUEMM-EHN-EHN"
-
-  - id: "012"
-    prompt: "eleven"
-    alternate_prompts: ["11"]
-    answer: ["yksitoista"]
-    phonetic: "UEKS-EET-OHEEST-AH"
-
-  - id: "013"
-    prompt: "twelve"
-    alternate_prompts: ["12"]
-    answer: ["kaksitoista"]
-    phonetic: "KAHKS-EET-OHEEST-AH"
-
-  - id: "014"
-    prompt: "thirteen"
-    alternate_prompts: ["13"]
-    answer: ["kolmetoista"]
-    phonetic: "KOHLM-EHT-OHEEST-AH"
-
-  - id: "015"
-    prompt: "fourteen"
-    alternate_prompts: ["14"]
-    answer: ["neljätoista"]
-    phonetic: "NEHLJ-AET-OHEEST-AH"
-
-  - id: "016"
-    prompt: "fifteen"
-    alternate_prompts: ["15"]
-    answer: ["viisitoista"]
-    phonetic: "VEEEES-EET-OHEEST-AH"
-
-  - id: "017"
-    prompt: "sixteen"
-    alternate_prompts: ["16"]
-    answer: ["kuusitoista"]
-    phonetic: "KOOOOS-EET-OHEEST-AH"
-
-  - id: "018"
-    prompt: "seventeen"
-    alternate_prompts: ["17"]
-    answer: ["seitsemäntoista"]
-    phonetic: "SEHEETS-EHM-AENT-OHEEST-AH"
-
-  - id: "019"
-    prompt: "eighteen"
-    alternate_prompts: ["18"]
-    answer: ["kahdeksantoista"]
-    phonetic: "KAHHD-EHKS-AHNT-OHEEST-AH"
-
-  - id: "020"
-    prompt: "nineteen"
-    alternate_prompts: ["19"]
-    answer: ["yhdeksäntoista"]
-    phonetic: "UEHD-EHKS-AENT-OHEEST-AH"
-
-  - id: "021"
-    prompt: "twenty"
-    alternate_prompts: ["20"]
-    answer: ["kaksikymmentä"]
-    phonetic: "KAHKS-EEK-UEMM-EHNT-AE"
-
-  - id: "022"
-    prompt: "twenty-one"
-    alternate_prompts: ["21", "twenty one"]
-    answer: ["kaksikymmentäyksi"]
-    phonetic: "KAHKS-EEK-UEMM-EHNT-AE-UEKS-EE"
-
-  - id: "023"
-    prompt: "twenty-two"
-    alternate_prompts: ["22", "twenty two"]
-    answer: ["kaksikymmentäkaksi"]
-    phonetic: "KAHKS-EEK-UEMM-EHNT-AE-KAHKS-EE"
-
-  - id: "024"
-    prompt: "twenty-three"
-    alternate_prompts: ["23", "twenty three"]
-    answer: ["kaksikymmentäkolme"]
-    phonetic: "KAHKS-EEK-UEMM-EHNT-AE-KOHLM-EH"
-
-  - id: "025"
-    prompt: "thirty"
-    alternate_prompts: ["30"]
-    answer: ["kolmekymmentä"]
-    phonetic: "KOHLM-EH-KUEMM-EHNT-AE"
-
-  - id: "026"
-    prompt: "forty"
-    alternate_prompts: ["40"]
-    answer: ["neljäkymmentä"]
-    phonetic: "NEHLJ-AE-KUEMM-EHNT-AE"
-
-  - id: "027"
-    prompt: "fifty"
-    alternate_prompts: ["50"]
-    answer: ["viisikymmentä"]
-    phonetic: "VEEEES-EE-KUEMM-EHNT-AE"
-
-  - id: "028"
-    prompt: "sixty"
-    alternate_prompts: ["60"]
-    answer: ["kuusikymmentä"]
-    phonetic: "KOOOOS-EE-KUEMM-EHNT-AE"
-
-  - id: "029"
-    prompt: "seventy"
-    alternate_prompts: ["70"]
-    answer: ["seitsemänkymmentä"]
-    phonetic: "SEHEETS-EHM-AEN-KUEMM-EHNT-AE"
-
-  - id: "030"
-    prompt: "eighty"
-    alternate_prompts: ["80"]
-    answer: ["kahdeksankymmentä"]
-    phonetic: "KAHHD-EHKS-AHN-KUEMM-EHNT-AE"
-
-  - id: "031"
-    prompt: "ninety"
-    alternate_prompts: ["90"]
-    answer: ["yhdeksänkymmentä"]
-    phonetic: "UEHD-EHKS-AEN-KUEMM-EHNT-AE"
-
-  - id: "032"
-    prompt: "one hundred"
-    alternate_prompts: ["100", "a hundred"]
-    answer: ["sata"]
-    phonetic: "SAH-TAH"
-
-  - id: "033"
-    prompt: "one hundred one"
-    alternate_prompts: ["101", "a hundred one"]
-    answer: ["satayksi"]
-    phonetic: "SAH-TAH-UEKS-EE"
-
-  - id: "034"
-    prompt: "two hundred"
-    alternate_prompts: ["200"]
-    answer: ["kaksisataa"]
-    phonetic: "KAHKS-EE-SAH-TAA"
-
-  - id: "035"
-    prompt: "three hundred"
-    alternate_prompts: ["300"]
-    answer: ["kolmesataa"]
-    phonetic: "KOHLM-EH-SAH-TAA"
-
-  - id: "036"
-    prompt: "one thousand"
-    alternate_prompts: ["1000", "a thousand"]
-    answer: ["tuhat"]
-    phonetic: "TOO-HAHT"
-
-  - id: "037"
-    prompt: "two thousand"
-    alternate_prompts: ["2000"]
-    answer: ["kaksituhatta"]
-    phonetic: "KAHKS-EE-TOO-HAHT-TAH"
-
-  - id: "038"
-    prompt: "five hundred thousand"
-    alternate_prompts: ["500000"]
-    answer: ["viisisataatuhatta"]
-    phonetic: "VEEEES-EE-SAH-TAA-TOO-HAHT-TAH"
-
-  - id: "039"
-    prompt: "one million"
-    alternate_prompts: ["1000000", "a million"]
-    answer: ["miljoona"]
-    phonetic: "MEEL-YOH-NAH"
-
-  - id: "040"
-    prompt: "two million"
-    alternate_prompts: ["2000000"]
-    answer: ["kaksi miljoonaa"]
-    phonetic: "KAHKS-EE-MEEL-YOH-NAH-AH"
-
-  - id: "041"
-    prompt: "one billion"
-    alternate_prompts: ["1000000000", "a billion"]
-    answer: ["miljardi"]
-    phonetic: "MEEL-YAHR-DEE"
-
-  - id: "042"
-    prompt: "five billion"
-    alternate_prompts: ["5000000000"]
-    answer: ["viisi miljardia"]
-    phonetic: "VEEEES-EE-MEEL-YAHR-DEE-AH"
+- id: '001'
+  prompt: zero
+  answer:
+  - nolla
+  alternate_prompts:
+  - '0'
+  phonetic: NOHLL-AH
+- id: '002'
+  prompt: one
+  answer:
+  - yksi
+  alternate_prompts:
+  - '1'
+  phonetic: UEKS-EE
+- id: '003'
+  prompt: two
+  answer:
+  - kaksi
+  alternate_prompts:
+  - '2'
+  phonetic: KAHKS-EE
+- id: '004'
+  prompt: three
+  answer:
+  - kolme
+  alternate_prompts:
+  - '3'
+  phonetic: KOHLM-EH
+- id: '005'
+  prompt: four
+  answer:
+  - neljä
+  alternate_prompts:
+  - '4'
+  phonetic: NEHLJ-AE
+- id: '006'
+  prompt: five
+  answer:
+  - viisi
+  alternate_prompts:
+  - '5'
+  phonetic: VEEEES-EE
+- id: '007'
+  prompt: six
+  answer:
+  - kuusi
+  alternate_prompts:
+  - '6'
+  phonetic: KOOOOS-EE
+- id: '008'
+  prompt: seven
+  answer:
+  - seitsemän
+  alternate_prompts:
+  - '7'
+  phonetic: SEHEETS-EHM-AEN
+- id: '009'
+  prompt: eight
+  answer:
+  - kahdeksan
+  alternate_prompts:
+  - '8'
+  phonetic: KAHHD-EHKS-AHN
+- id: '010'
+  prompt: nine
+  answer:
+  - yhdeksän
+  alternate_prompts:
+  - '9'
+  phonetic: UEHD-EHKS-AEN
+- id: '011'
+  prompt: ten
+  answer:
+  - kymmenen
+  alternate_prompts:
+  - '10'
+  phonetic: KUEMM-EHN-EHN
+- id: '012'
+  prompt: eleven
+  answer:
+  - yksitoista
+  alternate_prompts:
+  - '11'
+  phonetic: UEKS-EET-OHEEST-AH
+- id: '013'
+  prompt: twelve
+  answer:
+  - kaksitoista
+  alternate_prompts:
+  - '12'
+  phonetic: KAHKS-EET-OHEEST-AH
+- id: '014'
+  prompt: thirteen
+  answer:
+  - kolmetoista
+  alternate_prompts:
+  - '13'
+  phonetic: KOHLM-EHT-OHEEST-AH
+- id: '015'
+  prompt: fourteen
+  answer:
+  - neljätoista
+  alternate_prompts:
+  - '14'
+  phonetic: NEHLJ-AET-OHEEST-AH
+- id: '016'
+  prompt: fifteen
+  answer:
+  - viisitoista
+  alternate_prompts:
+  - '15'
+  phonetic: VEEEES-EET-OHEEST-AH
+- id: '017'
+  prompt: sixteen
+  answer:
+  - kuusitoista
+  alternate_prompts:
+  - '16'
+  phonetic: KOOOOS-EET-OHEEST-AH
+- id: '018'
+  prompt: seventeen
+  answer:
+  - seitsemäntoista
+  alternate_prompts:
+  - '17'
+  phonetic: SEHEETS-EHM-AENT-OHEEST-AH
+- id: '019'
+  prompt: eighteen
+  answer:
+  - kahdeksantoista
+  alternate_prompts:
+  - '18'
+  phonetic: KAHHD-EHKS-AHNT-OHEEST-AH
+- id: '020'
+  prompt: nineteen
+  answer:
+  - yhdeksäntoista
+  alternate_prompts:
+  - '19'
+  phonetic: UEHD-EHKS-AENT-OHEEST-AH
+- id: '021'
+  prompt: twenty
+  answer:
+  - kaksikymmentä
+  alternate_prompts:
+  - '20'
+  phonetic: KAHKS-EEK-UEMM-EHNT-AE
+- id: '022'
+  prompt: twenty-one
+  answer:
+  - kaksikymmentäyksi
+  alternate_prompts:
+  - '21'
+  - twenty one
+  phonetic: KAHKS-EEK-UEMM-EHNT-AE-UEKS-EE
+- id: '023'
+  prompt: twenty-two
+  answer:
+  - kaksikymmentäkaksi
+  alternate_prompts:
+  - '22'
+  - twenty two
+  phonetic: KAHKS-EEK-UEMM-EHNT-AE-KAHKS-EE
+- id: '024'
+  prompt: twenty-three
+  answer:
+  - kaksikymmentäkolme
+  alternate_prompts:
+  - '23'
+  - twenty three
+  phonetic: KAHKS-EEK-UEMM-EHNT-AE-KOHLM-EH
+- id: '025'
+  prompt: thirty
+  answer:
+  - kolmekymmentä
+  alternate_prompts:
+  - '30'
+  phonetic: KOHLM-EH-KUEMM-EHNT-AE
+- id: '026'
+  prompt: forty
+  answer:
+  - neljäkymmentä
+  alternate_prompts:
+  - '40'
+  phonetic: NEHLJ-AE-KUEMM-EHNT-AE
+- id: '027'
+  prompt: fifty
+  answer:
+  - viisikymmentä
+  alternate_prompts:
+  - '50'
+  phonetic: VEEEES-EE-KUEMM-EHNT-AE
+- id: '028'
+  prompt: sixty
+  answer:
+  - kuusikymmentä
+  alternate_prompts:
+  - '60'
+  phonetic: KOOOOS-EE-KUEMM-EHNT-AE
+- id: '029'
+  prompt: seventy
+  answer:
+  - seitsemänkymmentä
+  alternate_prompts:
+  - '70'
+  phonetic: SEHEETS-EHM-AEN-KUEMM-EHNT-AE
+- id: '030'
+  prompt: eighty
+  answer:
+  - kahdeksankymmentä
+  alternate_prompts:
+  - '80'
+  phonetic: KAHHD-EHKS-AHN-KUEMM-EHNT-AE
+- id: '031'
+  prompt: ninety
+  answer:
+  - yhdeksänkymmentä
+  alternate_prompts:
+  - '90'
+  phonetic: UEHD-EHKS-AEN-KUEMM-EHNT-AE
+- id: '032'
+  prompt: one hundred
+  answer:
+  - sata
+  alternate_prompts:
+  - '100'
+  - a hundred
+  phonetic: SAH-TAH
+- id: '033'
+  prompt: one hundred one
+  answer:
+  - satayksi
+  alternate_prompts:
+  - '101'
+  - a hundred one
+  phonetic: SAH-TAH-UEKS-EE
+- id: '034'
+  prompt: two hundred
+  answer:
+  - kaksisataa
+  alternate_prompts:
+  - '200'
+  phonetic: KAHKS-EE-SAH-TAA
+- id: '035'
+  prompt: three hundred
+  answer:
+  - kolmesataa
+  alternate_prompts:
+  - '300'
+  phonetic: KOHLM-EH-SAH-TAA
+- id: '036'
+  prompt: one thousand
+  answer:
+  - tuhat
+  alternate_prompts:
+  - '1000'
+  - a thousand
+  phonetic: TOO-HAHT
+- id: '037'
+  prompt: two thousand
+  answer:
+  - kaksituhatta
+  alternate_prompts:
+  - '2000'
+  phonetic: KAHKS-EE-TOO-HAHT-TAH
+- id: '038'
+  prompt: five hundred thousand
+  answer:
+  - viisisataatuhatta
+  alternate_prompts:
+  - '500000'
+  phonetic: VEEEES-EE-SAH-TAA-TOO-HAHT-TAH
+- id: '039'
+  prompt: one million
+  answer:
+  - miljoona
+  alternate_prompts:
+  - '1000000'
+  - a million
+  phonetic: MEEL-YOH-NAH
+- id: '040'
+  prompt: two million
+  answer:
+  - kaksi miljoonaa
+  alternate_prompts:
+  - '2000000'
+  phonetic: KAHKS-EE-MEEL-YOH-NAH-AH
+- id: '041'
+  prompt: one billion
+  answer:
+  - miljardi
+  alternate_prompts:
+  - '1000000000'
+  - a billion
+  phonetic: MEEL-YAHR-DEE
+- id: '042'
+  prompt: five billion
+  answer:
+  - viisi miljardia
+  alternate_prompts:
+  - '5000000000'
+  phonetic: VEEEES-EE-MEEL-YAHR-DEE-AH

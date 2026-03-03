@@ -1,0 +1,125 @@
+metadata:
+  id: "fi_days_and_months"
+  version: 1
+
+entries:
+
+  - id: "001"
+    prompt: "Monday"
+    answer:
+      - "maanantai"
+    phonetic: "MAAN-ahn-tie"
+
+  - id: "002"
+    prompt: "Tuesday"
+    answer:
+      - "tiistai"
+    phonetic: "TEES-tie"
+
+  - id: "003"
+    prompt: "Wednesday"
+    answer:
+      - "keskiviikko"
+    phonetic: "KES-kee-vee-kko"
+
+  - id: "004"
+    prompt: "Thursday"
+    answer:
+      - "torstai"
+    phonetic: "TORS-tie"
+
+  - id: "005"
+    prompt: "Friday"
+    answer:
+      - "perjantai"
+    phonetic: "PER-yan-tie"
+
+  - id: "006"
+    prompt: "Saturday"
+    answer:
+      - "lauantai"
+    phonetic: "LOW-ahn-tie"
+
+  - id: "007"
+    prompt: "Sunday"
+    answer:
+      - "sunnuntai"
+    phonetic: "SOON-noon-tie"
+
+  - id: "008"
+    prompt: "Weekend"
+    answer:
+      - "viikonloppu"
+    phonetic: "VEE-kon-lop-poo"
+
+  - id: "009"
+    prompt: "January"
+    answer:
+      - "tammikuu"
+    phonetic: "TAHM-mee-koo"
+
+  - id: "010"
+    prompt: "February"
+    answer:
+      - "helmikuu"
+    phonetic: "HEL-mee-koo"
+
+  - id: "011"
+    prompt: "March"
+    answer:
+      - "maaliskuu"
+    phonetic: "MAH-lees-koo"
+
+  - id: "012"
+    prompt: "April"
+    answer:
+      - "huhtikuu"
+    phonetic: "HOOH-tee-koo"
+
+  - id: "013"
+    prompt: "May"
+    answer:
+      - "toukokuu"
+    phonetic: "TOH-koh-koo"
+
+  - id: "014"
+    prompt: "June"
+    answer:
+      - "kesäkuu"
+    phonetic: "KEH-sah-koo"
+
+  - id: "015"
+    prompt: "July"
+    answer:
+      - "heinäkuu"
+    phonetic: "HAY-nah-koo"
+
+  - id: "016"
+    prompt: "August"
+    answer:
+      - "elokuu"
+    phonetic: "EH-loh-koo"
+
+  - id: "017"
+    prompt: "September"
+    answer:
+      - "syyskuu"
+    phonetic: "SOOS-koo"
+
+  - id: "018"
+    prompt: "October"
+    answer:
+      - "lokakuu"
+    phonetic: "LOH-kah-koo"
+
+  - id: "019"
+    prompt: "November"
+    answer:
+      - "marraskuu"
+    phonetic: "MAHR-rah-koo"
+
+  - id: "020"
+    prompt: "December"
+    answer:
+      - "joulukuu"
+    phonetic: "YOH-loo-koo"

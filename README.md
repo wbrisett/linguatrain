@@ -37,13 +37,13 @@ A typical session works like this:
 1.  Load a YAML pack
 1.  Normalize entries
 1.  Select direction (source→target or target→source)
-1.  Layer optional behaviors (match‑game, listening, SRS)
+1.  Select study or quiz behavior (study mode or quiz loop)
+1.  Layer optional behaviors (match-game, listening, SRS)
 1.  Prompt → validate → score attempts
 1.  Optionally update SRS state
 1.  Optionally write a missed‑entries pack
 
-All UI labels, language names, and TTS carrier phrases are defined in
-localisation files or user configuration.
+All UI labels, language names, and TTS carrier phrases are defined in localisation files or in user configuration.
 
 There is no language‑specific logic in the engine.
 
@@ -130,7 +130,7 @@ Example pack location:
 
     ~/linguatrain/packs/fi/
 
-template pack location: 
+Template pack location: 
 
     ~/linguatrain/packs/templates/linguatrain_pack_complete_template.yaml
 
@@ -147,7 +147,7 @@ ruby bin/linguatrain.rb ~/linguatrain/packs/finnish_everyday_phrases.yaml 5
 
 ** Optional, but highly recommended ** 
 
-User configuration is optional, however it's best to use to one in order to have all the details in a single file and not have to manually specify locations.
+User configuration is optional. However, it is recommended so you can keep all settings in a single file instead of manually specifying paths each time.
 
 ------------------------------------------------------------------------
 
@@ -1236,8 +1236,46 @@ All modes build on the same base loop:
 
 Flags layer behavior on top of that loop.
 
-Stacking modes increases difficulty without changing core validation
-logic.
+Stacking modes increases difficulty without changing core validation logic.
+
+------------------------------------------------------------------------
+
+## Study Mode (`--study`)
+
+Study mode disables scoring and validation and turns the session into
+a guided review.
+
+Instead of:
+
+    prompt → validate → score
+
+Study mode behaves like:
+
+    show → reveal → optional audio → next
+
+This is ideal for:
+
+- Learning new vocabulary before testing
+- Passive exposure and repetition
+- Reviewing difficult material without pressure
+
+Example:
+
+``` bash
+ruby bin/linguatrain.rb pack.yaml 10 --study
+```
+You may combine study mode with:
+-	`--listen`
+-	`--reverse`
+
+``` bash
+ruby bin/linguatrain.rb pack.yaml 10 --study --listen
+```
+
+In study mode:
+-	Answers are not graded
+-	SRS is not updated
+-	Missed packs are not generated
 
 ## Base Typing Mode (default)
 
@@ -1640,6 +1678,12 @@ Full stacked drill:
 ruby bin/linguatrain.rb pack.yaml 10 --reverse --listen --match-game --srs
 ```
 
+Study with listening (no scoring or SRS updates):
+
+``` bash
+ruby bin/linguatrain.rb pack.yaml 10 --study --listen
+```
+
 Each flag layers behavior independently.
 
 ------------------------------------------------------------------------
@@ -1649,6 +1693,8 @@ Each flag layers behavior independently.
   ------------------------------------------------------------------------------------------------
   Flag                                       Purpose                    Default
   ------------------------------------------ -------------------------- --------------------------
+  `--study`                                  Enable study mode          off
+
   `--reverse`                                Swap direction             off
 
   `--match-game`                             Add 3 hints                off
@@ -1694,14 +1740,14 @@ By default:
 -   `--listen` speaks the canonical `answer` form
 -   Only `answer` is accepted as correct
 
-The engine does not transform written forms into spoken forms
-automatically.\
+The engine does not automatically transform written forms into spoken variants.
+
 Piper reads exactly what is stored.
 
 ## Speak colloquial forms
 
 ``` bash
-ruby bin/linguatrain.rb pack.yaml 10 --listen --tts-variant spoken
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --listen --tts-variant spoken
 ```
 
 If `spoken` exists, it is spoken.\
@@ -1710,19 +1756,19 @@ If missing, it falls back to `answer`.
 ## Practice spoken production
 
 ``` bash
-ruby bin/linguatrain.rb pack.yaml 10 --listen --tts-variant spoken --answer-variant spoken
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --listen --tts-variant spoken --answer-variant spoken
 ```
 
 ## Accept either form
 
 ``` bash
-ruby bin/linguatrain.rb pack.yaml 10 --answer-variant either
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --answer-variant either
 ```
 
 ## Show both variants (display only)
 
 ``` bash
-ruby bin/linguatrain.rb pack.yaml 10 --show-variants
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --show-variants
 ```
 
 ------------------------------------------------------------------------
@@ -1837,20 +1883,27 @@ This allows focused follow‑up drilling.
 flowchart TD
   A["YAML pack"] --> B["Loader / Normalizer"]
   B --> C["Mode & Direction"]
-  C --> D{"Listening enabled?"}
-  D -- yes --> E["Piper speak target"]
-  D -- no --> F["Skip audio"]
-  E --> G["Prompt user"]
-  F --> G
-  G --> H["Validate input"]
-  H --> I["Score attempts"]
-  I --> J{"SRS enabled?"}
-  J -- yes --> K["Update SRS state"]
-  J -- no --> L["Skip SRS"]
-  K --> M{"Misses?"}
+  C --> D{"Study mode?"}
+  D -- yes --> E["Display entry (no scoring)"]
+  E --> F{"Listening enabled?"}
+  F -- yes --> G["Piper speak target"]
+  F -- no --> H["Skip audio"]
+  G --> I["Next entry"]
+  H --> I
+  D -- no --> J{"Listening enabled?"}
+  J -- yes --> K["Piper speak target"]
+  J -- no --> L["Skip audio"]
+  K --> M["Prompt user"]
   L --> M
-  M -- yes --> N["Write missed pack"]
-  M -- no --> O["Finish session"]
+  M --> N["Validate input"]
+  N --> O["Score attempts"]
+  O --> P{"SRS enabled?"}
+  P -- yes --> Q["Update SRS state"]
+  P -- no --> R["Skip SRS"]
+  Q --> S{"Misses?"}
+  R --> S
+  S -- yes --> T["Write missed pack"]
+  S -- no --> U["Finish session"]
 ```
 
 ------------------------------------------------------------------------

@@ -1,0 +1,62 @@
+metadata:
+  id: "sm_kappale1_harjoitus8_dialogue"
+  version: 1
+
+entries:
+
+  - id: "001"
+    prompt: "Kuka sinä olet?"
+    alternate_prompts:
+      - "Who are you?"
+    answer:
+      - "Olen Saija. (I am Saija.)"
+    phonetic: "KOO-kah SEE-nah OH-let?"
+
+  - id: "002"
+    prompt: "Hauska tutustua!"
+    alternate_prompts:
+      - "Nice to meet you!"
+    answer:
+      - "Hauska tutustua! (Nice to meet you!)"
+    phonetic: "HOWS-kah TOO-toos-too-ah"
+
+  - id: "003"
+    prompt: "Onko täällä suomen kurssi?"
+    alternate_prompts:
+      - "Is there a Finnish course here?"
+    answer:
+      - "Joo, on. (Yes, there is.)"
+    phonetic: "ON-koh TAE-llah SOO-men KOOR-see?"
+
+  - id: "004"
+    prompt: "Mitä sinulle kuuluu?"
+    alternate_prompts:
+      - "How are you?"
+    answer:
+      - "Hyvää, kiitos! (Good, thank you!)"
+    phonetic: "MI-tah SEE-noo-leh KOO-loo?"
+
+  - id: "005"
+    prompt: "Mikä päivä tänään on?"
+    alternate_prompts:
+      - "What day is it today?"
+    answer:
+      - "Tänään on tiistai. (Today is Tuesday.)"
+    phonetic: "MI-kah PAI-vah TAE-naan on?"
+
+  - id: "006"
+    prompt: "Tässä on Miriam."
+    alternate_prompts:
+      - "This is Miriam."
+    answer:
+      - "Kiitos samoin! (Likewise!)"
+    phonetic: "TAEH-ssah on MEE-ree-ahm"
+
+  - id: "007"
+    prompt: "Miten se kirjoitetaan?"
+    alternate_prompts:
+      - "How is it written?"
+      - "How do you spell it?"
+    answer:
+      - "S-A-A-R-A  R-E-H-U-L-A. (Saara Rehula.)"
+    phonetic: "MI-ten seh KEER-yoh-ee-teh-TAAN?"

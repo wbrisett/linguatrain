@@ -809,11 +809,28 @@ def format_variants_for_display(word)
   "#{written} / #{spoken}"
 end
 
+
+# Helper for phonetic label
+def phonetic_label(ui)
+  (ui && ui[:phonetic_prefix] ? ui[:phonetic_prefix].to_s : "phonetic").strip
+end
+
+def format_phonetic(ui, phon)
+  label = phonetic_label(ui)
+  label = label.sub(/:\z/, "")
+  "#{label}: #{phon}"
+end
+
 def say_reverse_listen_reveal(w, ui)
   fi = (w[:answer] || []).first.to_s.strip
   phon = w[:phonetic].to_s.strip
   return if fi.empty?
-  say phon.empty? ? "   #{fi}" : "   #{fi} - (#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})"
+
+  if phon.empty?
+    say "   #{fi}"
+  else
+    say "   #{fi} - (#{format_phonetic(ui, phon)})"
+  end
 end
 
 def centered_prompt(indent, text)
@@ -873,7 +890,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
       back_label = ui[:prompt_prefix] || src_name
       say "#{back_label}: #{prompt_text}"
-      say "(#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})" unless phon.empty?
+      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
 
       if listen
@@ -892,7 +909,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
       back_label = ui[:target_prefix] || tgt_name
       say "#{back_label}: #{answer_text}"
-      say "(#{ui[:phonetic_prefix] || 'phonetic'}: #{phon})" unless phon.empty?
+      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
 
       if listen
@@ -1066,7 +1083,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             if listen
               say_reverse_listen_reveal(w, ui)
             else
-              say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
+              say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
             end
 
             say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
@@ -1105,7 +1122,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
 
               others = correct_list - [matched]
               say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-              say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
+              say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
               say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
               update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
               answer_ok = true
@@ -1160,7 +1177,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             others = expected - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
             say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
-            say "   (#{ui[:phonetic_prefix] || 'phonetic'}: #{w[:phonetic]})" unless w[:phonetic].empty?
+            say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
           end
           update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
           answer_ok = true

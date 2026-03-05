@@ -1,0 +1,145 @@
+metadata:
+  pack_name: "Suomen Mestari – Conversation Builder"
+  version: 1
+  source_lang: "en"
+  target_lang: "fi"
+  author: "Wayne Brissette"
+  description: "Core dialogue vocabulary for building a beginner conversation with phonetics"
+
+entries:
+
+  - id: 001
+    prompt: "Hi!"
+    answer:
+      - "Hei!"
+      - "Moi!"
+    phonetic: "Hei / Moi"
+
+  - id: 002
+    prompt: "Welcome!"
+    answer:
+      - "Tervetuloa!"
+    phonetic: "TER-veh-too-loh-ah"
+
+  - id: 003
+    prompt: "Excuse me!"
+    answer:
+      - "Anteeksi!"
+    phonetic: "AHN-tehk-see"
+
+  - id: 004
+    prompt: "What is your name?"
+    answer:
+      - "Mikä sinun nimesi on?"
+    phonetic: "MEE-kah SEE-noon NEE-meh-see on"
+
+  - id: 005
+    prompt: "My name is..."
+    answer:
+      - "Minun nimeni on..."
+      - "Nimeni on..."
+    phonetic: "MEE-noon NEE-meh-nee on"
+
+  - id: 006
+    prompt: "How are you?"
+    answer:
+      - "Mitä kuuluu?"
+    phonetic: "MEE-tah KUU-loo"
+
+  - id: 007
+    prompt: "I am fine, thank you."
+    answer:
+      - "Minulle kuuluu hyvää, kiitos."
+      - "Ihan hyvää, kiitos."
+    phonetic: >
+      MEE-noo-leh KUU-loo HUU-vaa KEE-tos
+      / EE-hahn HUU-vaa KEE-tos
+  - id: 008
+    prompt: "And you?"
+    answer:
+      - "Entä sinulle?"
+    phonetic: "EN-tah SEE-noo-leh"
+
+  - id: 009
+    prompt: "This is a Finnish course."
+    answer:
+      - "Tämä on suomen kurssi."
+    phonetic: "TAE-mah on SUO-men KUR-see"
+
+  - id: 010
+    prompt: "Who are you?"
+    answer:
+      - "Kuka sinä olet?"
+    phonetic: "KOO-kah SEE-nah OH-let"
+
+  - id: 011
+    prompt: "Where are you from?"
+    answer:
+      - "Mistä sinä olet kotoisin?"
+    phonetic: "MEES-tah SEE-nah OH-let KO-toi-sin"
+
+  - id: 012
+    prompt: "First name"
+    answer:
+      - "Etunimi"
+    phonetic: "EH-too-nee-mee"
+
+  - id: 013
+    prompt: "Last name"
+    answer:
+      - "Sukunimi"
+    phonetic: "SOO-koo-nee-mee"
+
+  - id: 014
+    prompt: "Teacher"
+    answer:
+      - "Opettaja"
+    phonetic: "OH-peh-TAH-yah"
+
+  - id: 015
+    prompt: "How is it written?"
+    answer:
+      - "Miten se kirjoitetaan?"
+    phonetic: "MEE-ten seh KIR-yoi-teh-taan"
+
+  - id: 016
+    prompt: "Monday"
+    answer:
+      - "Maanantai"
+    phonetic: "MAA-nan-tai"
+
+  - id: 017
+    prompt: "Wednesday"
+    answer:
+      - "Keskiviikko"
+    phonetic: "KES-kee-veek-ko"
+
+  - id: 018
+    prompt: "Thursday"
+    answer:
+      - "Torstai"
+    phonetic: "TORS-tai"
+
+  - id: 019
+    prompt: "Course day"
+    answer:
+      - "Kurssipäivä"
+    phonetic: "KUR-see-pai-vah"
+
+  - id: 020
+    prompt: "Nice to meet you!"
+    answer:
+      - "Hauska tutustua!"
+    phonetic: "HAUS-kah TOO-toos-too-ah"
+
+  - id: 021
+    prompt: "Likewise!"
+    answer:
+      - "Kiitos samoin!"
+    phonetic: "KEE-tos SA-moin"
+
+  - id: 022
+    prompt: "Okay"
+    answer:
+      - "Okei"
+    phonetic: "OH-kei"

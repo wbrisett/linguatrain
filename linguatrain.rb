@@ -85,7 +85,8 @@ DEFAULT_UI = {
   source_language_name: "Source",
   target_language_name: "Target",
   target_prefix: "Answer",
-  quit_message: "👋 Exiting quiz."
+  quit_message: "👋 Exiting quiz.",
+  printed_voice_prefix: "🗣 Printed voice"
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -217,8 +218,9 @@ def load_localisation(path)
 end
 
 def effective_meta(pack_meta, localisation)
-  # Languages come from localisation; pack may still contain other metadata (back-compat).
-  merged = deep_merge_hash({ languages: localisation[:languages] }, (pack_meta || {}))
+  # Localisation owns languages; packs may still contain other metadata (back-compat).
+  # IMPORTANT: localisation must win for languages so pack-level legacy fields can't silently flip directions.
+  merged = deep_merge_hash((pack_meta || {}), { languages: localisation[:languages] })
 
   # If pack doesn't specify a TTS template, take localisation's default.
   if merged.dig(:tts, :template).to_s.strip.empty? && localisation.dig(:tts, :template)
@@ -333,6 +335,23 @@ def ensure_terminal_punct(s)
   t =~ /[.!?]\z/ ? t : "#{t}."
 end
 
+# Build the exact string we feed to Piper (so printed-voice matches audio).
+def build_tts_spoken(text, template)
+  tpl = template.to_s
+  tpl = DEFAULT_TTS_TEMPLATE if tpl.strip.empty?
+  tpl.gsub("{text}", ensure_terminal_punct(text.to_s.strip))
+end
+
+def maybe_printed_voice(ui, enabled, spoken_text)
+  return unless enabled
+  t = spoken_text.to_s.strip
+  return if t.empty?
+
+  label = (ui && ui[:printed_voice_prefix] ? ui[:printed_voice_prefix].to_s : "🗣 Printed voice").strip
+  label = label.sub(/:\z/, "")
+  say "#{label}: #{t}"
+end
+
 def resolve_executable(cmd)
   return nil if cmd.nil?
   c = cmd.to_s.strip
@@ -427,6 +446,34 @@ def load_pack(path)
       #   entries:  [ {id:, prompt:, alternate_prompts:, answer:, phonetic:}, ... ]
       pack_meta = data["metadata"] || data[:metadata] || {}
 
+      # Back-compat: older packs used metadata.source_lang / metadata.target_lang.
+      # If present, map them into metadata.languages.{source,target}.code so they
+      # can override localisation languages via effective_meta().
+      if pack_meta.is_a?(Hash)
+        src_code = pack_meta["source_lang"] || pack_meta[:source_lang]
+        tgt_code = pack_meta["target_lang"] || pack_meta[:target_lang]
+
+        src_code = src_code.to_s.strip unless src_code.nil?
+        tgt_code = tgt_code.to_s.strip unless tgt_code.nil?
+
+        if (src_code && !src_code.empty?) || (tgt_code && !tgt_code.empty?)
+          pack_meta["languages"] ||= {}
+          pack_meta["languages"] = {} unless pack_meta["languages"].is_a?(Hash)
+
+          if src_code && !src_code.empty?
+            pack_meta["languages"]["source"] ||= {}
+            pack_meta["languages"]["source"] = {} unless pack_meta["languages"]["source"].is_a?(Hash)
+            pack_meta["languages"]["source"]["code"] = src_code
+          end
+
+          if tgt_code && !tgt_code.empty?
+            pack_meta["languages"]["target"] ||= {}
+            pack_meta["languages"]["target"] = {} unless pack_meta["languages"]["target"].is_a?(Hash)
+            pack_meta["languages"]["target"]["code"] = tgt_code
+          end
+        end
+      end
+
       # Deprecation: localisation now owns UI strings and language metadata.
       # Packs should contain only pack identity + entries (and optional overrides).
       if pack_meta.is_a?(Hash)
@@ -438,6 +485,10 @@ def load_pack(path)
 
         if (pack_meta.key?("languages") || pack_meta.key?(:languages))
           deprecations << "metadata.languages. Move language codes/names into the localisation file (localisation/*.yaml)."
+        end
+
+        if (pack_meta.key?("source_lang") || pack_meta.key?(:source_lang) || pack_meta.key?("target_lang") || pack_meta.key?(:target_lang))
+          deprecations << "metadata.source_lang/metadata.target_lang. Move language codes into the localisation file (languages.source.code / languages.target.code)."
         end
 
         tts = pack_meta["tts"] || pack_meta[:tts]
@@ -503,6 +554,8 @@ def load_pack(path)
   pack_meta ||= {}
 
   raw_entries.map do |w|
+    # Optional conversation speaker name (used by --conversation only)
+    speaker_v = w["speaker"] || w[:speaker]
     # Preserve/assign entry id
     entry_id = w["id"] || w[:id]
 
@@ -576,10 +629,52 @@ def load_pack(path)
 
     # Preserve pack entry id when present; otherwise derive a stable short id.
     derived_id = Digest::SHA1.hexdigest("#{en_list.join('|')}::#{fi_list.join('|')}")[0, 8]
-    { id: (entry_id.nil? ? derived_id : entry_id.to_s.strip), prompt: en_list, answer: fi_list, spoken: spoken_list, phonetic: phon.to_s.strip }
+    {
+      id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+      speaker: (speaker_v.nil? ? "" : speaker_v.to_s.strip),
+      prompt: en_list,
+      answer: fi_list,
+      spoken: spoken_list,
+      phonetic: phon.to_s.strip
+    }
   end.then do |words|
     { meta: symbolize_keys_deep(pack_meta), words: words }
   end
+end
+
+def format_phonetic(ui, phon)
+  label = phonetic_label(ui)
+  label = label.sub(/:\z/, "")
+  "#{label}: #{phon}"
+end
+
+# Choose a label for the source/target side.
+# If ui.prompt_prefix/ui.target_prefix is set to "auto" (or left blank),
+# display the resolved language name instead.
+def side_label(ui, side)
+  ui ||= {}
+
+  if side == :source
+    prefix = ui[:prompt_prefix].to_s.strip
+    lang_name = ui[:source_language_name].to_s.strip
+  else
+    prefix = ui[:target_prefix].to_s.strip
+    lang_name = ui[:target_language_name].to_s.strip
+  end
+
+  if prefix.empty? || prefix.downcase == "auto"
+    return lang_name.empty? ? (side == :source ? "Source" : "Target") : lang_name
+  end
+
+  prefix
+end
+
+def source_label(ui)
+  side_label(ui, :source)
+end
+
+def target_label(ui)
+  side_label(ui, :target)
 end
 
 
@@ -840,7 +935,7 @@ end
 # ----------------------------
 # Study Engine
 # ----------------------------
-def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:, ui:, tts_variant:, answer_variant:, show_variants:)
+def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:, ui:, tts_variant:, answer_variant:, show_variants:, printed_voice:)
   say
 
   src_name = ui[:source_language_name] || "Source"
@@ -876,11 +971,12 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
     if reverse
       # Target → Source: show target first (Finnish), then reveal source (English)
-      front_label = ui[:target_prefix] || tgt_name
+      front_label = target_label(ui)
       say "#{front_label}: #{answer_text}"
       say
 
       if listen
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
         speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
       end
@@ -888,7 +984,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       centered_prompt(indent, "(Enter to reveal; q to quit): ")
       say
 
-      back_label = ui[:prompt_prefix] || src_name
+      back_label = source_label(ui)
       say "#{back_label}: #{prompt_text}"
       say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
@@ -900,19 +996,20 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       end
     else
       # Source → Target: show source first (English), then reveal target (Finnish)
-      front_label = ui[:prompt_prefix] || src_name
+      front_label = source_label(ui)
       say "#{front_label}: #{prompt_text}" unless listen_no_english
       say
 
       centered_prompt(indent, "(Enter to reveal; q to quit): ")
       say
 
-      back_label = ui[:target_prefix] || tgt_name
+      back_label = target_label(ui)
       say "#{back_label}: #{answer_text}"
       say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
 
       if listen
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
         speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
         prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
@@ -930,7 +1027,7 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
@@ -962,6 +1059,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       if listen
         say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
@@ -971,19 +1069,20 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           else
             expected_answer_list(w, answer_variant).sample
           end
-        label = ui[:target_prefix] || ui[:target_language_name] || ui[:language_name] || "Target"
-        say "#{label}: #{display_text}"
+        #label = ui[:target_prefix] || ui[:target_language_name] || ui[:language_name] || "Target"
+        say "#{target_label(ui)}: #{display_text}"
       end
     else
       # Normal English → Finnish mode
       if listen
         say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')}" unless listen_no_english
+        say "#{source_label(ui)}: #{w[:prompt].join(' / ')}" unless listen_no_english
         say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
-        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')}"
+        say "#{source_label(ui)}: #{w[:prompt].join(' / ')}"
       end
     end
 
@@ -1103,10 +1202,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             options_list.each { |opt| say "  - #{opt}" }
 
             input = if listen
-                      heard_label = ui[:target_prefix] || tgt_name
+                      heard_label = target_label(ui)
                       prompt_with_replay("Type what you heard (#{heard_label}): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                     else
-                      prompt("#{ui[:target_prefix] || 'Answer'}: ")
+                      prompt("#{target_label(ui)}: ")
                     end
 
             kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
@@ -1123,7 +1222,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               others = correct_list - [matched]
               say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
-              say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
               update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
               answer_ok = true
               break
@@ -1133,8 +1232,8 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           end
       else
         input = if listen
-                  heard_label = ui[:target_prefix] || tgt_name
-                  meaning_label = ui[:prompt_prefix] || src_name
+                  heard_label = target_label(ui)
+                  meaning_label = source_label(ui)
                   prompt_with_replay(
                     reverse ? "Type the #{meaning_label} meaning: " : "Type what you heard (#{heard_label}): ",
                     spoken,
@@ -1143,7 +1242,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
                     template: tts_template
                   )
                 else
-                  prompt(reverse ? "#{ui[:prompt_prefix] || ui[:source_language_name] || 'Prompt'}: " : "#{ui[:target_prefix] || 'Answer'}: ")
+                  prompt(reverse ? "#{source_label(ui)}: " : "#{target_label(ui)}: ")
                 end
 
         if reverse
@@ -1163,7 +1262,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             say(ui[:correct] || "✅ Correct!")
           end
 
-          if reverse
+         if reverse
             others = expected - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
 
@@ -1171,12 +1270,12 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             say_reverse_listen_reveal(w, ui) if listen
 
             # Always show the source-side variants (English) for reverse mode after a correct response.
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
           else
             # Use the same answer set we validated against (written/spoken/either).
             others = expected - [matched]
             say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
             say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
           end
           update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
@@ -1202,6 +1301,76 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
   end
 
   [stats, missed]
+end
+
+def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, listen:, printed_voice:)
+  say
+  say "Conversation — #{entries.length} lines"
+  say "-" * 40
+
+  entries.each do |w|
+    speaker_name = (w[:speaker] || "").to_s.strip
+
+    fi = (w[:answer] || []).first.to_s.strip
+    en = (w[:prompt] || []).first.to_s.strip
+    phon = w[:phonetic].to_s.strip
+
+    next if fi.empty?
+
+    say
+
+    if listen
+      # Conversation mode: send the raw line to Piper (no carrier/template phrase)
+      spoken_text = ensure_terminal_punct(fi)
+      maybe_printed_voice(ui, printed_voice, spoken_text)
+
+      # restore the carrier phrase behavior, switch back to:
+      # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+      piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+      pause = fi.strip.end_with?("?") ? 0.9 : 0.6
+      sleep(pause) # slightly longer pause after questions
+    end
+
+    # Visual cue: always show the label 'Speaker', and if a speaker name exists,
+    # include it before the Finnish line.
+    if speaker_name.empty?
+      say "Speaker: #{fi}"
+    else
+      say "Speaker: #{speaker_name}: #{fi}"
+    end
+    say " - (#{format_phonetic(ui, phon)})" unless phon.empty?
+    say " - #{en}" unless en.empty?
+
+    unless listen
+      # Conversation mode: send the raw line to Piper (no carrier/template phrase)
+      spoken_text = ensure_terminal_punct(fi)
+
+      # restore the carrier phrase behavior, switch back to:
+      # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+      piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+      pause = fi.strip.end_with?("?") ? 0.9 : 0.6
+      sleep(pause) # slightly longer pause after questions
+    end
+
+    # Allow replay with 'r' before advancing
+    loop do
+      input = prompt("(Enter for next; 'r' to replay): ")
+      break if input.nil? || input.strip.empty?
+
+      if input.strip.casecmp("r").zero?
+        # Conversation mode replay: speak the raw line (no carrier/template phrase)
+        spoken_text = ensure_terminal_punct(fi)
+        maybe_printed_voice(ui, printed_voice, spoken_text)
+
+        # restore the carrier phrase behavior, switch back to:
+        # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+        piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+        next
+      end
+
+      break
+    end
+  end
 end
 
 # -----------------------------
@@ -1278,6 +1447,7 @@ options = {
   listen_no_english: false,
   reverse: false,
   study: false,
+  conversation: false,
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
@@ -1286,6 +1456,7 @@ options = {
   tts_variant: "written",          # written|spoken (controls what Piper speaks when --listen)
   answer_variant: "written",       # written|spoken|either (controls what is accepted as correct typed answer)
   show_variants: false,            # show written/spoken together when available
+  printed_voice: false,            # with --listen, also print the exact text sent to Piper
   ui: nil,
   count: nil,
   srs: false,
@@ -1305,6 +1476,10 @@ parser = OptionParser.new do |opts|
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
   opts.on("--listen", "Listening mode: speak target language (Piper) and type what you heard") { options[:listen] = true }
+
+  opts.on("--printed-voice", "With --listen, also print the exact text sent to Piper") do
+    options[:printed_voice] = true
+  end
 
   opts.on("--listen-no-source", "Listening mode without showing source prompt") do
     options[:listen] = true
@@ -1333,6 +1508,10 @@ parser = OptionParser.new do |opts|
 
   opts.on("--study", "Study mode: show one side, then reveal the other (no scoring)") do
     options[:study] = true
+  end
+
+  opts.on("--conversation", "Conversation mode: play lines sequentially with TTS") do
+    options[:conversation] = true
   end
 
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
@@ -1417,6 +1596,14 @@ if srs_enabled
 else
   selected = choose_words(words, options[:count])
 end
+# Conversation mode should always follow the pack order (no shuffling / no SRS ordering).
+if options[:conversation]
+  if options[:count].nil? || options[:count] == "all"
+    selected = words
+  else
+    selected = words.take(Integer(options[:count]))
+  end
+end
 if srs_enabled
   due_count = 0
   new_count = 0
@@ -1438,6 +1625,19 @@ if srs_enabled
 end
 begin
 
+  if options[:conversation]
+    run_conversation(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      piper_bin: options[:piper_bin],
+      piper_model: options[:piper_model],
+      tts_template: options[:tts_template],
+      listen: options[:listen],
+      printed_voice: options[:printed_voice]
+    )
+    exit(0)
+  end
+
   if options[:study]
     run_study(
       selected,
@@ -1450,7 +1650,8 @@ begin
       ui: options[:ui] || DEFAULT_UI,
       tts_variant: options[:tts_variant],
       answer_variant: options[:answer_variant],
-      show_variants: options[:show_variants]
+      show_variants: options[:show_variants],
+      printed_voice: options[:printed_voice]
     )
 
     # Study mode has no scoring/missed packs.
@@ -1475,7 +1676,8 @@ begin
     srs: srs,
     tts_variant: options[:tts_variant],
     answer_variant: options[:answer_variant],
-    show_variants: options[:show_variants]
+    show_variants: options[:show_variants],
+    printed_voice: options[:printed_voice]
   )
 
   say

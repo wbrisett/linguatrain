@@ -1,0 +1,148 @@
+metadata:
+  pack_name: "Suomen Mestari – Chapter 3 – Pedro soittaa Mikolle"
+  version: 1
+
+entries:
+  - id: "001"
+    speaker: "Pedro"
+    prompt:
+      - "Hi Mikko! Are you already at work?"
+    answer:
+      - "Moi Mikko! Oletko jo töissä?"
+    phonetic: "MOY MIK-koh! OH-let-koh yoh TUHISS-sah?"
+
+  - id: "002"
+    speaker: "Mikko"
+    prompt:
+      - "Well hi! Not yet. It's only half past seven here."
+    answer:
+      - "No moi! En vielä. Kello on täällä vasta puoli kahdeksan."
+    phonetic: "NO MOY! EN VYE-lah. KEL-loh on TAE-llah VAS-tah PWOH-lee KAH-dehk-sahn."
+
+  - id: "003"
+    speaker: "Pedro"
+    prompt:
+      - "Oh right, true. So, how are things?"
+    answer:
+      - "Ai niin, totta. No, mitä kuuluu?"
+    phonetic: "AI NEEN TOT-tah. NO MEE-tah KOO-loo?"
+
+  - id: "004"
+    speaker: "Mikko"
+    prompt:
+      - "Pretty good, but the weather is bad now. Even today it’s pouring and windy."
+    answer:
+      - "Ihan hyvää, mutta sää on nyt huono. Tänäänkin sataa kaatamalla ja on tuulista."
+    phonetic: "EE-hahn HOO-vah, MUT-tah SAE on NUT HOO-oh-noh. TAE-naen-keen SAH-tah KAA-tah-mahl-lah yah on TOO-lis-tah."
+
+  - id: "005"
+    speaker: "Pedro"
+    prompt:
+      - "Oh yeah? Here the sun is shining and it’s really warm, +25 degrees. At night it's so light that it's hard to sleep."
+    answer:
+      - "Aijaa! Täällä aurinko paistaa ja on tosi lämmin, +25 astetta. Yöllä on niin valoisaa, että on vaikea nukkua."
+    phonetic: "AI-yah! TAE-llah OW-reen-koh PIE-stah yah on TOH-see LAEM-min. KAK-see-VIISI AS-teht-tah. YOE-llah on NEEN VAH-loy-sah, ET-tah on VAI-keh-ah NOOK-koo-ah."
+
+  - id: "006"
+    speaker: "Mikko"
+    prompt:
+      - "Heh heh, Finland’s bright summer nights! Enjoy it now — in November it will be dark."
+    answer:
+      - "Heh heh, Suomen valoisat kesäyöt! Nauti nyt, marraskuussa on sitten pimeää."
+    phonetic: "HEH HEH, SUOH-men VAH-loy-saht KEH-sah-yuht! NOW-tee NUT, MAHR-rahs-koo-sah on SIT-ten PEE-meh-ah."
+
+  - id: "007"
+    speaker: "Pedro"
+    prompt:
+      - "Yeah, so I’ve heard!"
+    answer:
+      - "No joo, niin kuulemma!"
+    phonetic: "NO YOH, NEEN KOO-lem-mah!"
+
+  - id: "008"
+    speaker: "Mikko"
+    prompt:
+      - "What else is new? Do you already have a job?"
+    answer:
+      - "Mitä muuta kuuluu? Onko sinulla jo työpaikka?"
+    phonetic: "MEE-tah MOO-tah KOO-loo? ON-koh SEE-noo-lah yoh TYUR-pie-kah?"
+
+  - id: "009"
+    speaker: "Pedro"
+    prompt:
+      - "Not yet. I’m looking for work, but it’s not easy. I’m in a Finnish course now."
+    answer:
+      - "Ei vielä. Minä etsin töitä, mutta se ei ole helppoa. Olen nyt suomen kurssilla."
+    phonetic: "EI VYE-lah. MEE-nah ET-sin TUH-ih-tah, MUT-tah seh ei OH-leh HELP-poh-ah. OH-len NUT SUOH-men KOOR-see-lah."
+
+  - id: "010"
+    speaker: "Mikko"
+    prompt:
+      - "Nice! What kind of course is it?"
+    answer:
+      - "Hieno juttu! Millainen kurssi on?"
+    phonetic: "HEE-eh-noh YOOT-too! MIL-lai-nen KOOR-see on?"
+
+  - id: "011"
+    speaker: "Pedro"
+    prompt:
+      - "It’s really good! The teacher is nice and my friends Olga and Alex are on the same course. The course is on Mondays, Wednesdays, and Thursdays."
+    answer:
+      - "Se on tosi hyvä! Opettaja on mukava ja minun ystävät Olga ja Alex ovat samalla kurssilla. Kurssi on maanantaisin, keskiviikkoisin ja torstaisin."
+    phonetic: "SEH on TOH-see HOO-vah! OH-peh-TAH-yah on MOO-kah-vah yah MEE-noon YUS-tah-vaht OL-gah yah A-leks OH-vaht SAH-mahl-lah KOOR-see-lah. KOOR-see on MAA-nahn-tie-seen, KES-kee-VEEK-koy-seen yah TORS-tie-seen."
+
+  - id: "012"
+    speaker: "Mikko"
+    prompt:
+      - "Three times a week! Wow! Soon you’ll speak Finnish as well as I do!"
+    answer:
+      - "Kolme kertaa viikossa! Ohhoh! Kohta sinä puhut suomea yhtä hyvin kuin minä!"
+    phonetic: "KOL-meh KEHR-tah VEE-koh-sah! OH-hoh! KOH-tah SEE-nah POO-hoot SUOH-meh-ah YUK-tah HEE-veen KOO-in MEE-nah!"
+
+  - id: "013"
+    speaker: "Pedro"
+    prompt:
+      - "Heh heh. Yeah, sure."
+    answer:
+      - "Heh heh. Niin varmaan."
+    phonetic: "HEH HEH. NEEN VAR-mahn."
+
+  - id: "014"
+    speaker: "Mikko"
+    prompt:
+      - "Do you still live in Hanna’s student apartment in Espoo?"
+    answer:
+      - "Asutteko te vielä Hannan opiskelija-asunnossa Espoossa?"
+    phonetic: "AH-soot-teh-koh teh VYE-lah HAHN-nahn OP-pis-keh-lee-yah AH-soon-noh-sah ES-pooh-sah?"
+
+  - id: "015"
+    speaker: "Pedro"
+    prompt:
+      - "Yes, but we’re moving in September. Our new home is in Helsinki."
+    answer:
+      - "Joo, mutta me muutamme syyskuussa. Meidän uusi koti on Helsingissä."
+    phonetic: "YOH, MUT-tah meh MOO-tahm-meh SUUS-koo-sah. MEI-dahn OO-see KOH-tee on HEL-sing-gis-sah."
+
+  - id: "016"
+    speaker: "Mikko"
+    prompt:
+      - "Sounds good! But hey, now I have to go to work. Greetings to Hanna!"
+    answer:
+      - "Kuulostaa hyvältä! Mutta hei, nyt minun täytyy lähteä töihin. Terveisiä Hannalle!"
+    phonetic: "KOO-lohs-tah HOO-vahl-tah! MUT-tah HEY, NUT MEE-noon TAEY-too LAEH-teh-ah TUH-yihin. TER-vey-see-ah HAHN-nahl-leh!"
+
+  - id: "017"
+    speaker: "Pedro"
+    prompt:
+      - "Thanks, I’ll tell her! Bye!"
+    answer:
+      - "Kiitos, minä kerron! Moikka!"
+    phonetic: "KEE-tohs, MEE-nah KER-ron! MOY-kah!"
+
+  - id: "018"
+    speaker: "Mikko"
+    prompt:
+      - "Bye bye!"
+    answer:
+      - "Moi moi!"
+    phonetic: "MOY MOY!"

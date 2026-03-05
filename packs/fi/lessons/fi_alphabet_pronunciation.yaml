@@ -1,0 +1,237 @@
+metadata:
+  id: "fi_alphabet_pronunciation"
+  version: 1
+
+entries:
+
+  - id: "001"
+    prompt: "Letter A"
+    alternate_prompts:
+      - "A"
+    answer:
+      - "aa"
+    phonetic: "ah"
+
+  - id: "002"
+    prompt: "Letter B"
+    alternate_prompts:
+      - "B"
+    answer:
+      - "bee"
+    phonetic: "beh"
+
+  - id: "003"
+    prompt: "Letter C"
+    alternate_prompts:
+      - "C"
+    answer:
+      - "cee"
+    phonetic: "seh"
+
+  - id: "004"
+    prompt: "Letter D"
+    alternate_prompts:
+      - "D"
+    answer:
+      - "dee"
+    phonetic: "deh"
+
+  - id: "005"
+    prompt: "Letter E"
+    alternate_prompts:
+      - "E"
+    answer:
+      - "ee"
+    phonetic: "eh"
+
+  - id: "006"
+    prompt: "Letter F"
+    alternate_prompts:
+      - "F"
+    answer:
+      - "äf"
+    phonetic: "aef"
+
+  - id: "007"
+    prompt: "Letter G"
+    alternate_prompts:
+      - "G"
+    answer:
+      - "gee"
+    phonetic: "geh"
+
+  - id: "008"
+    prompt: "Letter H"
+    alternate_prompts:
+      - "H"
+    answer:
+      - "hoo"
+    phonetic: "hoh"
+
+  - id: "009"
+    prompt: "Letter I"
+    alternate_prompts:
+      - "I"
+    answer:
+      - "ii"
+    phonetic: "ee"
+
+  - id: "010"
+    prompt: "Letter J"
+    alternate_prompts:
+      - "J"
+    answer:
+      - "ji"
+    phonetic: "yee"
+
+  - id: "011"
+    prompt: "Letter K"
+    alternate_prompts:
+      - "K"
+    answer:
+      - "koo"
+    phonetic: "koh"
+
+  - id: "012"
+    prompt: "Letter L"
+    alternate_prompts:
+      - "L"
+    answer:
+      - "äl"
+    phonetic: "ael"
+
+  - id: "013"
+    prompt: "Letter M"
+    alternate_prompts:
+      - "M"
+    answer:
+      - "äm"
+    phonetic: "aem"
+
+  - id: "014"
+    prompt: "Letter N"
+    alternate_prompts:
+      - "N"
+    answer:
+      - "än"
+    phonetic: "aen"
+
+  - id: "015"
+    prompt: "Letter O"
+    alternate_prompts:
+      - "O"
+    answer:
+      - "oo"
+    phonetic: "oh"
+
+  - id: "016"
+    prompt: "Letter P"
+    alternate_prompts:
+      - "P"
+    answer:
+      - "pee"
+    phonetic: "peh"
+
+  - id: "017"
+    prompt: "Letter Q"
+    alternate_prompts:
+      - "Q"
+    answer:
+      - "kuu"
+    phonetic: "koo"
+
+  - id: "018"
+    prompt: "Letter R"
+    alternate_prompts:
+      - "R"
+    answer:
+      - "är"
+    phonetic: "aer (rolled r)"
+
+  - id: "019"
+    prompt: "Letter S"
+    alternate_prompts:
+      - "S"
+    answer:
+      - "äs"
+    phonetic: "aes"
+
+  - id: "020"
+    prompt: "Letter T"
+    alternate_prompts:
+      - "T"
+    answer:
+      - "tee"
+    phonetic: "teh"
+
+  - id: "021"
+    prompt: "Letter U"
+    alternate_prompts:
+      - "U"
+    answer:
+      - "uu"
+    phonetic: "oo"
+
+  - id: "022"
+    prompt: "Letter V"
+    alternate_prompts:
+      - "V"
+    answer:
+      - "vee"
+    phonetic: "veh"
+
+  - id: "023"
+    prompt: "Letter W"
+    alternate_prompts:
+      - "W"
+    answer:
+      - "kaksoisvee"
+    phonetic: "KAK-soys-veh"
+
+  - id: "024"
+    prompt: "Letter X"
+    alternate_prompts:
+      - "X"
+    answer:
+      - "äks"
+    phonetic: "aeks"
+
+  - id: "025"
+    prompt: "Letter Y"
+    alternate_prompts:
+      - "Y"
+    answer:
+      - "yy"
+    phonetic: "German ü sound"
+
+  - id: "026"
+    prompt: "Letter Z"
+    alternate_prompts:
+      - "Z"
+    answer:
+      - "tseta"
+    phonetic: "TSEH-tah"
+
+  - id: "027"
+    prompt: "Letter Å"
+    alternate_prompts:
+      - "Å"
+    answer:
+      - "ruotsalainen oo"
+    phonetic: "Swedish 'oh'"
+
+  - id: "028"
+    prompt: "Letter Ä"
+    alternate_prompts:
+      - "Ä"
+    answer:
+      - "ää"
+    phonetic: "ae (cat vowel)"
+
+  - id: "029"
+    prompt: "Letter Ö"
+    alternate_prompts:
+      - "Ö"
+    answer:
+      - "öö"
+    phonetic: "eu (French 'peur')"

@@ -36,3 +36,5 @@ Temporary Items
 
 # Directory for intellij
 .idea
+
+*_missed_*.yaml

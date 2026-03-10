@@ -1,8 +1,6 @@
 metadata:
   pack_name: Finnish Class Transcript – Lesson Pack
   version: 1
-  source_lang: en
-  target_lang: fi
   author: Wayne Brissette
   description: Cleaned phrases from Finnish language class transcript with phonetics.
 
@@ -67,12 +65,6 @@ entries:
   answer:
     - Puhun myös vähän espanjaa.
   phonetic: POO-hoon MYÖS VAH-haen ES-pahn-yah
-
-- id: "011"
-  prompt: If you do not understand something, you can always say.
-  answer:
-    - Voit aina sanoa, jos et ymmärrä jotain.
-  phonetic: VOIT AI-nah SAH-noh-ah yos ET UM-maer-rae JO-tain
 
 - id: "012"
   prompt: Which country are you from?

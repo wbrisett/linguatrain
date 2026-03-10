@@ -1,0 +1,249 @@
+metadata:
+  id: fi_small_talk_class
+  name: Finnish Small Talk for Class
+
+entries:
+  - id: "001"
+    prompt:
+      - "How are you?"
+    answer:
+      - "Mitä kuuluu?"
+    phonetic: "MEE-tah KOO-loo"
+
+  - id: "002"
+    prompt:
+      - "Good, thank you."
+    answer:
+      - "Hyvää, kiitos."
+    phonetic: "HOO-vah KEE-tos"
+
+  - id: "003"
+    prompt:
+      - "What did you do on the weekend?"
+    answer:
+      - "Mitä teit viikonloppuna?"
+    phonetic: "MEE-tah TAYT VEE-kon-lop-poo-nah"
+
+  - id: "004"
+    prompt:
+      - "On the weekend"
+    answer:
+      - "Viikonloppuna"
+    phonetic: "VEE-kon-lop-poo-nah"
+
+  - id: "005"
+    prompt:
+      - "I was at home."
+    answer:
+      - "Olin kotona."
+    phonetic: "OH-lin KO-toh-nah"
+
+  - id: "006"
+    prompt:
+      - "I was at the store."
+    answer:
+      - "Olin kaupassa."
+    phonetic: "OH-lin KOW-pah-sah"
+
+  - id: "007"
+    prompt:
+      - "I studied Finnish."
+    answer:
+      - "Opiskelin suomea."
+    phonetic: "OH-pis-keh-lin SOO-oh-meh-ah"
+
+  - id: "008"
+    prompt:
+      - "I rode my bike."
+    answer:
+      - "Ajoin pyörällä."
+    phonetic: "AH-yoin PYUR-rah-lah"
+
+  - id: "009"
+    prompt:
+      - "I slept a lot."
+    answer:
+      - "Nukuin paljon."
+    phonetic: "NOO-ku-in PAL-yon"
+
+  - id: "010"
+    prompt:
+      - "Where do you live?"
+    answer:
+      - "Missä sinä asut?"
+    phonetic: "MEES-sah SEE-nah AH-soot"
+
+  - id: "011"
+    prompt:
+      - "I live in Helsinki."
+    answer:
+      - "Asun Helsingissä."
+    phonetic: "AH-soon HEL-sing-ee-sah"
+
+  - id: "012"
+    prompt:
+      - "I live in Arabia."
+    answer:
+      - "Asun Arabiassa."
+    phonetic: "AH-soon AH-rah-bee-ah-sah"
+
+  - id: "013"
+    prompt:
+      - "Where are you from?"
+    answer:
+      - "Mistä sinä olet kotoisin?"
+    phonetic: "MEES-tah SEE-nah OH-let KO-toy-sin"
+
+  - id: "014"
+    prompt:
+      - "I am from the United States."
+    answer:
+      - "Olen Yhdysvalloista."
+    phonetic: "OH-len UHD-duys-val-loys-tah"
+
+  - id: "015"
+    prompt:
+      - "What languages do you speak?"
+    answer:
+      - "Mitä kieliä sinä puhut?"
+    phonetic: "MEE-tah KEE-lee-ah SEE-nah POO-hoot"
+
+  - id: "016"
+    prompt:
+      - "I speak English."
+    answer:
+      - "Puhun englantia."
+    phonetic: "POO-hoon ENG-lan-tee-ah"
+
+  - id: "017"
+    prompt:
+      - "I speak a little Finnish."
+    answer:
+      - "Puhun vähän suomea."
+    phonetic: "POO-hoon VAH-han SOO-oh-meh-ah"
+
+  - id: "018"
+    prompt:
+      - "How old are you?"
+    answer:
+      - "Kuinka vanha sinä olet?"
+    phonetic: "KOO-een-kah VAN-hah SEE-nah OH-let"
+
+  - id: "019"
+    prompt:
+      - "What day is it today?"
+    answer:
+      - "Mikä päivä tänään on?"
+    phonetic: "MEE-kah PAI-vah TAN-nan ON"
+
+  - id: "020"
+    prompt:
+      - "Today is Monday."
+    answer:
+      - "Tänään on maanantai."
+    phonetic: "TAN-nan on MAAN-an-tie"
+
+  - id: "021"
+    prompt:
+      - "Today is Thursday."
+    answer:
+      - "Tänään on torstai."
+    phonetic: "TAN-nan on TORS-tie"
+
+  - id: "022"
+    prompt:
+      - "What time is it?"
+    answer:
+      - "Mitä kello on?"
+    phonetic: "MEE-tah KEL-loh ON"
+
+  - id: "023"
+    prompt:
+      - "It is ten o'clock."
+    answer:
+      - "Kello on kymmenen."
+    phonetic: "KEL-loh on KUM-meh-nen"
+
+  - id: "024"
+    prompt:
+      - "It is half past four."
+    answer:
+      - "Kello on puoli viisi."
+    phonetic: "KEL-loh on POO-oh-lee VEE-see"
+
+  - id: "025"
+    prompt:
+      - "When does the class start?"
+    answer:
+      - "Milloin kurssi alkaa?"
+    phonetic: "MIL-loyn KURS-see AHL-kah"
+
+  - id: "026"
+    prompt:
+      - "The class starts at nine."
+    answer:
+      - "Kurssi alkaa kello yhdeksän."
+    phonetic: "KURS-see AHL-kah KEL-loh UHK-dek-san"
+
+  - id: "027"
+    prompt:
+      - "Do you understand?"
+    answer:
+      - "Ymmärrätkö?"
+    phonetic: "UM-mar-rat-koh"
+
+  - id: "028"
+    prompt:
+      - "I understand."
+    answer:
+      - "Ymmärrän."
+    phonetic: "UM-mar-ran"
+
+  - id: "029"
+    prompt:
+      - "I don't understand."
+    answer:
+      - "En ymmärrä."
+    phonetic: "EN UM-mar-rah"
+
+  - id: "030"
+    prompt:
+      - "Can you repeat?"
+    answer:
+      - "Voitko toistaa?"
+    phonetic: "VOYT-koh TOYS-tah-ah"
+
+  - id: "031"
+    prompt:
+      - "Please speak more slowly."
+    answer:
+      - "Puhu hitaammin, kiitos."
+    phonetic: "POO-hoo HEE-tah-am-min KEE-tos"
+
+  - id: "032"
+    prompt:
+      - "What does this mean?"
+    answer:
+      - "Mitä tämä tarkoittaa?"
+    phonetic: "MEE-tah TAH-mah TAR-koyt-taa"
+
+  - id: "033"
+    prompt:
+      - "See you again."
+    answer:
+      - "Nähdään taas."
+    phonetic: "NAHD-daan TAH-as"
+
+  - id: "034"
+    prompt:
+      - "See you tomorrow."
+    answer:
+      - "Nähdään huomenna."
+    phonetic: "NAHD-daan HOO-oh-men-nah"
+
+  - id: "035"
+    prompt:
+      - "Bye!"
+    answer:
+      - "Moikka!"
+    phonetic: "MOYK-kah"

@@ -1,0 +1,44 @@
+metadata:
+  pack_name: "Finnish Basics – Prices and Shopping"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Talking about prices and paying."
+
+entries:
+  - id: "001"
+    prompt: "What does coffee cost?"
+    answer:
+      - "Mitä kahvi maksaa?"
+    phonetic: "MEE-tah KAH-vee MAHK-sah"
+
+  - id: "002"
+    prompt: "Coffee costs two euros."
+    answer:
+      - "Kahvi maksaa kaksi euroa."
+    phonetic: "KAH-vee MAHK-sah KAHK-see EU-roh-ah"
+
+  - id: "003"
+    prompt: "Coffee costs three euros."
+    answer:
+      - "Kahvi maksaa kolme euroa."
+    phonetic: "KAH-vee MAHK-sah KOL-meh EU-roh-ah"
+
+  - id: "004"
+    prompt: "Do you pay by bank card?"
+    answer:
+      - "Maksatko pankkikortilla?"
+    phonetic: "MAHK-saht-koh PAHNK-kee-kor-tee-lah"
+
+  - id: "005"
+    prompt: "In a café."
+    answer:
+      - "Kahvilassa."
+    phonetic: "KAH-vee-lahs-sah"
+
+  - id: "006"
+    prompt: "In a restaurant."
+    answer:
+      - "Ravintolassa."
+    phonetic: "RAH-vin-toh-lahs-sah"

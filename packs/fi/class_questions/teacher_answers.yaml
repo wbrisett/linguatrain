@@ -1,0 +1,322 @@
+metadata:
+  pack_name: "Teacher Answers – Expected Classroom Responses"
+  version: 1
+  author: Wayne Brissette
+  description: "Common Finnish answers a student is expected to give to typical beginner classroom questions."
+
+entries:
+  - id: "001"
+    prompt: "I am well."
+    answer:
+      - "Minä olen hyvin."
+      - "Olen hyvin."
+    phonetic: "MEE-nah OH-len HUU-vin"
+
+  - id: "002"
+    prompt: "I am quite good."
+    answer:
+      - "Minä olen ihan hyvä."
+      - "Olen ihan hyvä."
+    phonetic: "MEE-nah OH-len EE-han HUU-vah"
+
+  - id: "003"
+    prompt: "This is a phone."
+    answer:
+      - "Tämä on puhelin."
+    phonetic: "TAH-mah on POO-heh-lin"
+
+  - id: "004"
+    prompt: "This is a Finnish course."
+    answer:
+      - "Tämä on suomen kurssi."
+      - "Suomen kurssi."
+    phonetic: "TAH-mah on SUO-men KOOR-see"
+
+  - id: "005"
+    prompt: "The course begins on Monday and Thursday at eight o’clock."
+    answer:
+      - "Kurssi alkaa maanantaina ja torstaina kello kahdeksan."
+      - "Maanantaina ja torstaina kello kahdeksan."
+    phonetic: "KOOR-see AHL-kah MAA-nahn-tai-nah yah TOR-stai-nah KEL-loh KAH-dek-sahn"
+
+  - id: "006"
+    prompt: "I live in Helsinki."
+    answer:
+      - "Asun Helsingissä."
+      - "Minä asun Helsingissä."
+    phonetic: "AH-soon HEL-sing-iss-sah"
+
+  - id: "007"
+    prompt: "Helsinki is in Finland."
+    answer:
+      - "Helsinki on Suomessa."
+      - "Se on Suomessa."
+    phonetic: "HEL-sing-kee on SUO-mes-sah"
+
+  - id: "008"
+    prompt: "I do not understand."
+    answer:
+      - "En ymmärrä."
+    phonetic: "EN UM-mar-rah"
+
+  - id: "009"
+    prompt: "I speak English."
+    answer:
+      - "Minä puhun englantia."
+      - "Puhun englantia."
+    phonetic: "MEE-nah POO-hoon ENG-lahn-tee-ah"
+
+  - id: "010"
+    prompt: "I do not watch much television."
+    answer:
+      - "En katso paljon televisiota."
+      - "En katso televisiota paljon."
+    phonetic: "EN KAH-tsoh PAHL-yon TEH-leh-vee-see-oh-tah"
+
+  - id: "011"
+    prompt: "Not in Finland."
+    answer:
+      - "En Suomessa."
+    phonetic: "EN SUO-mes-sah"
+
+  - id: "012"
+    prompt: "I take the tram."
+    answer:
+      - "Otan ratikan."
+    phonetic: "OH-tahn RAH-tee-kahn"
+
+  - id: "013"
+    prompt: "I cycle."
+    answer:
+      - "Pyöräilen."
+    phonetic: "PUH-rah-eye-len"
+
+  - id: "014"
+    prompt: "Yes, sometimes."
+    answer:
+      - "Joo, joskus."
+      - "Kyllä, joskus."
+    phonetic: "YOH YOS-koos"
+
+  - id: "015"
+    prompt: "Coffee costs two euros."
+    answer:
+      - "Kahvi maksaa kaksi euroa."
+    phonetic: "KAH-vee MAHK-sah KAHK-see EU-roh-ah"
+
+  - id: "016"
+    prompt: "Coffee costs three euros."
+    answer:
+      - "Kahvi maksaa kolme euroa."
+    phonetic: "KAH-vee MAHK-sah KOL-meh EU-roh-ah"
+
+  - id: "017"
+    prompt: "Coffee costs three ninety."
+    answer:
+      - "Kahvi maksaa kolme yhdeksänkymmentä."
+    phonetic: "KAH-vee MAHK-sah KOL-meh YUH-dek-sahn-KUM-men-tah"
+
+  - id: "018"
+    prompt: "In a café."
+    answer:
+      - "Kahvilassa."
+    phonetic: "KAH-vee-lahs-sah"
+
+  - id: "019"
+    prompt: "In a restaurant."
+    answer:
+      - "Ravintolassa."
+    phonetic: "RAH-vin-toh-lahs-sah"
+
+  - id: "020"
+    prompt: "Yes, I pay by bank card."
+    answer:
+      - "Kyllä, maksan pankkikortilla."
+      - "Joo, maksan pankkikortilla."
+    phonetic: "KUL-lah MAHK-sahn PAHNK-kee-kor-tee-lah"
+
+  - id: "021"
+    prompt: "An electric car costs one hundred thousand euros."
+    answer:
+      - "Sähköauto maksaa satatuhatta euroa."
+    phonetic: "SAH-hko-AU-toh MAHK-sah SAH-tah-TOO-hat-tah EU-roh-ah"
+
+  - id: "022"
+    prompt: "I have a gasoline car."
+    answer:
+      - "Minulla on bensiiniauto."
+    phonetic: "MEE-noo-lah on BEN-see-nee-AU-toh"
+
+  - id: "023"
+    prompt: "It is an old car."
+    answer:
+      - "Se on vanha auto."
+      - "Vanha auto."
+    phonetic: "SEH on VAN-hah AU-toh"
+
+  - id: "024"
+    prompt: "But it is a good car."
+    answer:
+      - "Mutta se on hyvä auto."
+    phonetic: "MOOT-tah SEH on HUU-vah AU-toh"
+
+  - id: "025"
+    prompt: "It costs three thousand euros now."
+    answer:
+      - "Se maksaa nyt kolme tuhatta euroa."
+    phonetic: "SEH MAHK-sah NYT KOL-meh TOO-hat-tah EU-roh-ah"
+
+  - id: "026"
+    prompt: "It has now two hundred fifty thousand kilometers."
+    answer:
+      - "Siinä on nyt kaksisataa viisikymmentä tuhatta kilometriä."
+    phonetic: "SEE-nah on NYT KAHK-see-sah-tah VEE-see-KUM-men-tah TOO-hat-tah KEE-loh-met-ree-ah"
+
+  - id: "027"
+    prompt: "Today is Thursday."
+    answer:
+      - "Tänään on torstai."
+    phonetic: "TAH-nahn on TOR-stai"
+
+  - id: "028"
+    prompt: "Tomorrow is Friday."
+    answer:
+      - "Huomenna on perjantai."
+    phonetic: "HOO-oh-men-nah on PER-yahn-tai"
+
+  - id: "029"
+    prompt: "Today is the fifth of March."
+    answer:
+      - "Tänään on viides maaliskuuta."
+    phonetic: "TAH-nahn on VEE-des MAAL-is-koo-tah"
+
+  - id: "030"
+    prompt: "It is the year 2026."
+    answer:
+      - "Nyt on kaksi tuhatta kaksikymmentäkuusi."
+      - "Se on kaksi tuhatta kaksikymmentäkuusi."
+    phonetic: "NYT on KAHK-see TOO-hat-tah KAHK-see-KUM-men-tah-KOO-see"
+
+  - id: "031"
+    prompt: "I study Finnish."
+    answer:
+      - "Opiskelen suomea."
+      - "Minä opiskelen suomea."
+    phonetic: "OH-pis-keh-len SUO-meh-ah"
+
+  - id: "032"
+    prompt: "Because my wife works in Finland."
+    answer:
+      - "Koska minun vaimo on työssä Suomessa."
+    phonetic: "KOS-kah MEE-noon VAI-moh on TYOS-sah SUO-mes-sah"
+
+  - id: "033"
+    prompt: "Because I want to be in Finland."
+    answer:
+      - "Koska haluan olla Suomessa."
+    phonetic: "KOS-kah HAH-loo-ahn OL-lah SUO-mes-sah"
+
+  - id: "034"
+    prompt: "It is eight o’clock."
+    answer:
+      - "Kello on kahdeksan."
+    phonetic: "KEL-loh on KAH-dek-sahn"
+
+  - id: "035"
+    prompt: "It is quarter past three."
+    answer:
+      - "Kello on varttia yli kolme."
+      - "Kello on viisitoista yli kolme."
+    phonetic: "KEL-loh on VAR-tee-ah UU-lee KOL-meh"
+
+  - id: "036"
+    prompt: "It is half past four."
+    answer:
+      - "Puoli viisi."
+    phonetic: "PUO-lee VEE-see"
+
+  - id: "037"
+    prompt: "It is quarter to five."
+    answer:
+      - "Kello on varttia vaille viisi."
+      - "Kello on viisitoista vaille viisi."
+    phonetic: "KEL-loh on VAR-tee-ah VAI-leh VEE-see"
+
+  - id: "038"
+    prompt: "It is twenty to nine."
+    answer:
+      - "Kello on kaksikymmentä vaille yhdeksän."
+    phonetic: "KEL-loh on KAHK-see-KUM-men-tah VAI-leh YUH-dek-sahn"
+
+  - id: "039"
+    prompt: "The weather is bad."
+    answer:
+      - "Sää on huono."
+    phonetic: "SAEH on HOO-no"
+
+  - id: "040"
+    prompt: "It is raining heavily today too."
+    answer:
+      - "Tänäänkin sataa kaatamalla."
+    phonetic: "TAH-nahn-kin SAH-tah KAA-tah-mah-lah"
+
+  - id: "041"
+    prompt: "It is windy."
+    answer:
+      - "On tuulista."
+    phonetic: "ON TOO-lis-tah"
+
+  - id: "042"
+    prompt: "The sun is shining here."
+    answer:
+      - "Täällä aurinko paistaa."
+    phonetic: "TAA-yal-lah AU-rin-koh PAI-stah"
+
+  - id: "043"
+    prompt: "It is warm."
+    answer:
+      - "On lämmin."
+    phonetic: "ON LAM-min"
+
+  - id: "044"
+    prompt: "It is really hot."
+    answer:
+      - "On tosi kuuma."
+      - "Tosi kuuma."
+    phonetic: "ON TOH-see KOO-mah"
+
+  - id: "045"
+    prompt: "At night it is so bright that it is hard to sleep."
+    answer:
+      - "Yöllä on niin valoisaa, että on vaikea nukkua."
+    phonetic: "UU-ol-lah on NEEN VAH-loi-sah-ah ET-tah on VAI-keh-ah NOOK-koo-ah"
+
+  - id: "046"
+    prompt: "Enjoy it now."
+    answer:
+      - "Nauti nyt."
+    phonetic: "NAU-tee NYT"
+
+  - id: "047"
+    prompt: "In November it is then dark."
+    answer:
+      - "Marraskuussa on sitten pimeää."
+    phonetic: "MAR-rahs-koo-sah on SIT-ten PEE-meh-ah"
+
+  - id: "048"
+    prompt: "I have a car."
+    answer:
+      - "Minulla on auto."
+    phonetic: "MEE-noo-lah on AU-toh"
+
+  - id: "049"
+    prompt: "I do not have a car."
+    answer:
+      - "Minulla ei ole autoa."
+    phonetic: "MEE-noo-lah ay OH-leh AU-toh-ah"
+  
+  - id: "050"
+    prompt: "I speak a little Finnish."
+    answer:
+      - "Puhun vähän suomea."
+    phonetic: "POO-hoon VAH-han SUO-meh-ah"

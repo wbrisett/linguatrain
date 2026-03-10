@@ -1,0 +1,32 @@
+metadata:
+  pack_name: "Teacher Questions – Dates"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Teacher questions about days and dates."
+
+entries:
+  - id: "001"
+    prompt: "What day is it today?"
+    answer:
+      - "Mikä päivä tänään on?"
+    phonetic: "MEE-kah PAI-vah TAH-nahn on"
+
+  - id: "002"
+    prompt: "What day is tomorrow?"
+    answer:
+      - "Mikä päivä on huomenna?"
+    phonetic: "MEE-kah PAI-vah on HOO-o-men-nah"
+
+  - id: "003"
+    prompt: "What is today's date?"
+    answer:
+      - "Mikä päiväys tänään on?"
+    phonetic: "MEE-kah PAI-vah-yus TAH-nahn on"
+
+  - id: "004"
+    prompt: "What year is it?"
+    answer:
+      - "Mikä vuosi nyt on?"
+    phonetic: "MEE-kah VOO-see NYT on"

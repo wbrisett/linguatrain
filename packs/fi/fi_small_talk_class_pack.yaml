@@ -1,0 +1,179 @@
+metadata:
+  id: fi_small_talk_class
+  name: Finnish Small Talk for Class
+entries:
+- id: '001'
+  prompt:
+  - How are you?
+  answer:
+  - Mitä kuuluu?
+- id: '002'
+  prompt:
+  - Good, thank you.
+  answer:
+  - Hyvää, kiitos.
+- id: '003'
+  prompt:
+  - What did you do on the weekend?
+  answer:
+  - Mitä teit viikonloppuna?
+- id: '004'
+  prompt:
+  - On the weekend
+  answer:
+  - Viikonloppuna
+- id: '005'
+  prompt:
+  - I was at home.
+  answer:
+  - Olin kotona.
+- id: '006'
+  prompt:
+  - I was at the store.
+  answer:
+  - Olin kaupassa.
+- id: '007'
+  prompt:
+  - I studied Finnish.
+  answer:
+  - Opiskelin suomea.
+- id: 008
+  prompt:
+  - I rode my bike.
+  answer:
+  - Ajoin pyörällä.
+- id: 009
+  prompt:
+  - I slept a lot.
+  answer:
+  - Nukuin paljon.
+- id: '010'
+  prompt:
+  - Where do you live?
+  answer:
+  - Missä sinä asut?
+- id: '011'
+  prompt:
+  - I live in Helsinki.
+  answer:
+  - Asun Helsingissä.
+- id: '012'
+  prompt:
+  - I live in Arabia.
+  answer:
+  - Asun Arabiassa.
+- id: '013'
+  prompt:
+  - Where are you from?
+  answer:
+  - Mistä sinä olet kotoisin?
+- id: '014'
+  prompt:
+  - I am from the United States.
+  answer:
+  - Olen Yhdysvalloista.
+- id: '015'
+  prompt:
+  - What languages do you speak?
+  answer:
+  - Mitä kieliä sinä puhut?
+- id: '016'
+  prompt:
+  - I speak English.
+  answer:
+  - Puhun englantia.
+- id: '017'
+  prompt:
+  - I speak a little Finnish.
+  answer:
+  - Puhun vähän suomea.
+- id: 018
+  prompt:
+  - How old are you?
+  answer:
+  - Kuinka vanha sinä olet?
+- id: 019
+  prompt:
+  - What day is it today?
+  answer:
+  - Mikä päivä tänään on?
+- id: '020'
+  prompt:
+  - Today is Monday.
+  answer:
+  - Tänään on maanantai.
+- id: '021'
+  prompt:
+  - Today is Thursday.
+  answer:
+  - Tänään on torstai.
+- id: '022'
+  prompt:
+  - What time is it?
+  answer:
+  - Mitä kello on?
+- id: '023'
+  prompt:
+  - It is ten o'clock.
+  answer:
+  - Kello on kymmenen.
+- id: '024'
+  prompt:
+  - It is half past four.
+  answer:
+  - Kello on puoli viisi.
+- id: '025'
+  prompt:
+  - When does the class start?
+  answer:
+  - Milloin kurssi alkaa?
+- id: '026'
+  prompt:
+  - The class starts at nine.
+  answer:
+  - Kurssi alkaa kello yhdeksän.
+- id: '027'
+  prompt:
+  - Do you understand?
+  answer:
+  - Ymmärrätkö?
+- id: 028
+  prompt:
+  - I understand.
+  answer:
+  - Ymmärrän.
+- id: 029
+  prompt:
+  - I don't understand.
+  answer:
+  - En ymmärrä.
+- id: '030'
+  prompt:
+  - Can you repeat?
+  answer:
+  - Voitko toistaa?
+- id: '031'
+  prompt:
+  - Please speak more slowly.
+  answer:
+  - Puhu hitaammin, kiitos.
+- id: '032'
+  prompt:
+  - What does this mean?
+  answer:
+  - Mitä tämä tarkoittaa?
+- id: '033'
+  prompt:
+  - See you again.
+  answer:
+  - Nähdään taas.
+- id: '034'
+  prompt:
+  - See you tomorrow.
+  answer:
+  - Nähdään huomenna.
+- id: '035'
+  prompt:
+  - Bye!
+  answer:
+  - Moikka!

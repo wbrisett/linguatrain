@@ -254,6 +254,8 @@ def resolve_settings!(options, user_cfg, pack_meta)
   options[:piper_bin] ||= user_cfg.dig(:piper, :bin)
   options[:piper_model] = resolve_piper_model(options, user_cfg, pack_meta)
 
+
+
   # TTS template: pack overrides user defaults
   options[:tts_template] ||= user_cfg.dig(:defaults, :tts_template)
   options[:tts_template] = pack_meta.dig(:tts, :template) || options[:tts_template] || DEFAULT_TTS_TEMPLATE
@@ -407,6 +409,13 @@ def piper_speak(text, piper_bin:, piper_model:)
   raise "Audio playback failed (#{player})." unless ok_play
 ensure
   File.delete(wav) if wav && File.exist?(wav)
+end
+
+
+
+def conversation_speak_line(text, piper_bin:, piper_model:)
+  spoken_text = ensure_terminal_punct(text)
+  piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
 end
 
 def speak_target_prompt(text, piper_bin:, piper_model:, template: DEFAULT_TTS_TEMPLATE)
@@ -642,12 +651,6 @@ def load_pack(path)
   end
 end
 
-def format_phonetic(ui, phon)
-  label = phonetic_label(ui)
-  label = label.sub(/:\z/, "")
-  "#{label}: #{phon}"
-end
-
 # Choose a label for the source/target side.
 # If ui.prompt_prefix/ui.target_prefix is set to "auto" (or left blank),
 # display the resolved language name instead.
@@ -849,15 +852,16 @@ def select_words_srs(words, count, srs, new_count:, due_only: false)
   selected.concat(due_words.shuffle)
 
   # Then new
+  shuffled_new = new_words.shuffle
   unless due_only
     n_new = new_count.to_i
     n_new = 0 if n_new < 0
-    selected.concat(new_words.shuffle.take(n_new))
+    selected.concat(shuffled_new.take(n_new))
   end
 
   # Fill remainder (optionally) from other buckets
   if !due_only
-    selected.concat(new_words.shuffle.drop(new_count.to_i))
+    selected.concat(shuffled_new.drop(n_new))
     selected.concat(other_words.shuffle)
   end
 
@@ -894,6 +898,7 @@ def expected_answer_list(word, answer_variant)
   end
 end
 
+
 def format_variants_for_display(word)
   written = (word[:answer] || []).first.to_s.strip
   spoken  = (word[:spoken] || []).first.to_s.strip
@@ -902,6 +907,14 @@ def format_variants_for_display(word)
   return spoken if written.empty?
 
   "#{written} / #{spoken}"
+end
+
+# Show all answer variants (written and spoken) for missed summary
+def all_answer_variants_for_display(word)
+  (Array(word[:answer]) + Array(word[:spoken]))
+    .map { |x| x.to_s.strip }
+    .reject(&:empty?)
+    .uniq
 end
 
 
@@ -1057,7 +1070,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     if reverse
       # Finnish → English mode
       if listen
-        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
+        say "Audible #{target_label(ui)}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
         maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
@@ -1075,7 +1088,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     else
       # Normal English → Finnish mode
       if listen
-        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
+        say "Audible #{target_label(ui)}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
         maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
@@ -1166,9 +1179,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           end
 
           input = if listen
-                    prompt_with_replay("Type the English meaning: ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+                    meaning_label = source_label(ui)
+                    prompt_with_replay("Type the #{meaning_label} meaning: ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                   else
-                    prompt("#{ui[:prompt_prefix] || ui[:source_language_name] || 'Prompt'}: ")
+                    prompt("#{source_label(ui)}: ")
                   end
 
           kind, ok, matched = match_answer(input, correct_list, lenient: false)
@@ -1185,7 +1199,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
             end
 
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
             update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
             answer_ok = true
             break
@@ -1288,12 +1302,24 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     end
 
     unless answer_ok
+      say
       stats[:failed] += 1
       if reverse
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{w[:prompt].join(' / ')}"
+
+        target_text =
+          if show_variants
+            format_variants_for_display(w)
+          else
+            expected_answer_list(w, answer_variant).join(" / ")
+          end
+
+        say "#{target_label(ui)}: #{target_text}"
+        say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       else
         correct_display = expected_answer_list(w, answer_variant).join(" / ")
-        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}#{w[:phonetic].empty? ? '' : " (#{w[:phonetic]})"}"
+        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}"
+        say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       end
       update_srs!(srs, wid, 2) if srs_enabled
       missed << w
@@ -1303,7 +1329,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
   [stats, missed]
 end
 
-def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, listen:, printed_voice:)
+def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, listen:, printed_voice:, audio_player:)
   say
   say "Conversation — #{entries.length} lines"
   say "-" * 40
@@ -1314,19 +1340,19 @@ def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, list
     fi = (w[:answer] || []).first.to_s.strip
     en = (w[:prompt] || []).first.to_s.strip
     phon = w[:phonetic].to_s.strip
+    spoken_text = ensure_terminal_punct(fi)
 
     next if fi.empty?
 
     say
 
     if listen
-      # Conversation mode: send the raw line to Piper (no carrier/template phrase)
-      spoken_text = ensure_terminal_punct(fi)
       maybe_printed_voice(ui, printed_voice, spoken_text)
-
-      # restore the carrier phrase behavior, switch back to:
-      # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-      piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+      conversation_speak_line(
+        spoken_text,
+        piper_bin: piper_bin,
+        piper_model: piper_model
+      )
       pause = fi.strip.end_with?("?") ? 0.9 : 0.6
       sleep(pause) # slightly longer pause after questions
     end
@@ -1342,12 +1368,11 @@ def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, list
     say " - #{en}" unless en.empty?
 
     unless listen
-      # Conversation mode: send the raw line to Piper (no carrier/template phrase)
-      spoken_text = ensure_terminal_punct(fi)
-
-      # restore the carrier phrase behavior, switch back to:
-      # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-      piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+      conversation_speak_line(
+        spoken_text,
+        piper_bin: piper_bin,
+        piper_model: piper_model
+      )
       pause = fi.strip.end_with?("?") ? 0.9 : 0.6
       sleep(pause) # slightly longer pause after questions
     end
@@ -1358,13 +1383,13 @@ def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, list
       break if input.nil? || input.strip.empty?
 
       if input.strip.casecmp("r").zero?
-        # Conversation mode replay: speak the raw line (no carrier/template phrase)
-        spoken_text = ensure_terminal_punct(fi)
         maybe_printed_voice(ui, printed_voice, spoken_text)
+        conversation_speak_line(
+          spoken_text,
+          piper_bin: piper_bin,
+          piper_model: piper_model
+        )
 
-        # restore the carrier phrase behavior, switch back to:
-        # speak_target_prompt(fi, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-        piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
         next
       end
 
@@ -1514,6 +1539,8 @@ parser = OptionParser.new do |opts|
     options[:conversation] = true
   end
 
+
+
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
     options[:match_options] = v.to_s.strip.downcase
   end
@@ -1568,8 +1595,8 @@ pack_meta = effective_pack_meta
 $UI = options[:ui] || DEFAULT_UI
 $AUDIO_PLAYER = options[:audio_player]
 
-if options[:listen]
-  abort("--listen requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
+if options[:listen] || options[:conversation]
+  abort("--listen/--conversation requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
 end
 
 srs_enabled = options[:srs] && !options[:study]
@@ -1633,7 +1660,8 @@ begin
       piper_model: options[:piper_model],
       tts_template: options[:tts_template],
       listen: options[:listen],
-      printed_voice: options[:printed_voice]
+      printed_voice: options[:printed_voice],
+      audio_player: options[:audio_player]
     )
     exit(0)
   end
@@ -1682,7 +1710,9 @@ begin
 
   say
   say "-" * 50
-  say "Results"
+  results_label = pack_meta[:id].to_s.strip
+  results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+  say(results_label.empty? ? "Results" : "Results from #{results_label}")
   say "Total: #{stats[:total]}"
   say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
   say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
@@ -1703,6 +1733,22 @@ begin
 
     say
     say "Missed words saved to: #{outfile}"
+    say
+    say "Missed items (quick review):"
+    missed.each_with_index do |w, idx|
+      source_text = w[:prompt].join(" / ")
+      target_text = all_answer_variants_for_display(w).join(" / ")
+
+      if options[:reverse]
+        say "#{idx + 1}. #{target_label(options[:ui])}: #{target_text}"
+        say "   #{source_label(options[:ui])}: #{source_text}"
+      else
+        say "#{idx + 1}. #{source_label(options[:ui])}: #{source_text}"
+        say "   #{target_label(options[:ui])}: #{target_text}"
+      end
+
+      say
+    end
   else
     say
     puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"

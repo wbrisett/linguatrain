@@ -1,0 +1,292 @@
+metadata:
+  id: "fi_chapter_03"
+  name: "Finnish Chapter 3 – Vocabulary"
+
+entries:
+
+- id: "001"
+  source: "soittaa"
+  phonetic: "SOI-ttaa"
+  target: "to call"
+
+- id: "002"
+  source: "ystävä"
+  phonetic: "US-ta-vah"
+  target: "friend"
+
+- id: "003"
+  source: "videopuhelu"
+  phonetic: "VEE-deh-o POO-heh-loo"
+  target: "video call"
+
+- id: "004"
+  source: "olla töissä"
+  phonetic: "OL-la TUH-ihs-sah"
+  target: "to be at work"
+
+- id: "005"
+  source: "jo"
+  phonetic: "YO"
+  target: "already"
+
+- id: "006"
+  source: "ei vielä"
+  phonetic: "AY VYEH-lah"
+  target: "not yet"
+
+- id: "007"
+  source: "vasta"
+  phonetic: "VAS-tah"
+  target: "only"
+
+- id: "008"
+  source: "puoli"
+  phonetic: "PUO-lee"
+  target: "half"
+
+- id: "009"
+  source: "Ai niin, totta."
+  phonetic: "AI NEEN TOT-tah"
+  target: "Oh right, true"
+
+- id: "010"
+  source: "sää"
+  phonetic: "SAA"
+  target: "weather"
+
+- id: "011"
+  source: "aika"
+  phonetic: "AI-kah"
+  target: "time"
+
+- id: "012"
+  source: "huono"
+  phonetic: "HOO-no"
+  target: "bad"
+
+- id: "013"
+  source: "-kin"
+  phonetic: "kin"
+  target: "also"
+  also_accepted:
+    - "too"
+
+- id: "014"
+  source: "Sataa kaatamalla."
+  phonetic: "SAH-taa KAA-ta-mal-la"
+  target: "It is raining heavily"
+
+- id: "015"
+  source: "On tuulista."
+  phonetic: "ON TOO-lis-ta"
+  target: "It is windy"
+
+- id: "016"
+  source: "Aijaa!"
+  phonetic: "AI-yah"
+  target: "Oh really"
+
+- id: "017"
+  source: "Aurinko paistaa."
+  phonetic: "AU-rin-ko PAI-staa"
+  target: "The sun is shining"
+
+- id: "018"
+  source: "tosi"
+  phonetic: "TO-si"
+  target: "really"
+
+- id: "019"
+  source: "lämmin"
+  phonetic: "LAM-min"
+  target: "warm"
+
+- id: "020"
+  source: "aste"
+  phonetic: "AS-teh"
+  target: "degree"
+
+- id: "021"
+  source: "yö"
+  phonetic: "YUR"
+  target: "night"
+
+- id: "022"
+  source: "niin"
+  phonetic: "NEEN"
+  target: "so"
+
+- id: "023"
+  source: "valoisa"
+  phonetic: "VA-loy-sa"
+  target: "bright"
+
+- id: "024"
+  source: "että"
+  phonetic: "ET-tah"
+  target: "that"
+
+- id: "025"
+  source: "vaikea"
+  phonetic: "VAI-keh-ah"
+  target: "difficult"
+
+- id: "026"
+  source: "nukkua"
+  phonetic: "NUK-koo-ah"
+  target: "to sleep"
+
+- id: "027"
+  source: "kesä"
+  phonetic: "KEH-sah"
+  target: "summer"
+
+- id: "028"
+  source: "nauttia"
+  phonetic: "NOWT-tee-ah"
+  target: "to enjoy"
+
+- id: "029"
+  source: "marraskuu"
+  phonetic: "MAR-ras-koo"
+  target: "November"
+
+- id: "030"
+  source: "pimeä"
+  phonetic: "PI-meh-ah"
+  target: "dark"
+
+- id: "031"
+  source: "No joo, niin kuulemma!"
+  phonetic: "NO YO NEEN KOO-lem-ma"
+  target: "Yeah, apparently"
+
+- id: "032"
+  source: "onko sinulla"
+  phonetic: "ON-ko SEE-nul-la"
+  target: "do you have"
+
+- id: "033"
+  source: "työpaikka"
+  phonetic: "TYUR-pai-ka"
+  target: "job"
+
+- id: "034"
+  source: "etsiä töitä"
+  phonetic: "ET-see-ah TUH-ih-tah"
+  target: "to look for work"
+
+- id: "035"
+  source: "helppo"
+  phonetic: "HEL-po"
+  target: "easy"
+
+- id: "036"
+  source: "Hieno juttu!"
+  phonetic: "HEE-no YUT-too"
+  target: "Great"
+
+- id: "037"
+  source: "millainen"
+  phonetic: "MIL-lai-nen"
+  target: "what kind of"
+
+- id: "038"
+  source: "mukava"
+  phonetic: "MOO-ka-vah"
+  target: "pleasant"
+
+- id: "039"
+  source: "sama"
+  phonetic: "SA-ma"
+  target: "same"
+
+- id: "040"
+  source: "maanantaisin"
+  phonetic: "MAAN-an-tai-sin"
+  target: "on Mondays"
+
+- id: "041"
+  source: "keskiviikkoisin"
+  phonetic: "KES-ki-vee-ko-sin"
+  target: "on Wednesdays"
+
+- id: "042"
+  source: "torstaisin"
+  phonetic: "TORS-tai-sin"
+  target: "on Thursdays"
+
+- id: "043"
+  source: "kerta"
+  phonetic: "KER-ta"
+  target: "time"
+
+- id: "044"
+  source: "Ohhoh!"
+  phonetic: "OH-ho"
+  target: "Wow"
+
+- id: "045"
+  source: "yhtä hyvin kuin"
+  phonetic: "YUH-tah HUY-vin KUIN"
+  target: "as well as"
+
+- id: "046"
+  source: "Niin varmaan."
+  phonetic: "NEEN VAR-maan"
+  target: "Sure"
+
+- id: "047"
+  source: "vielä"
+  phonetic: "VYEH-lah"
+  target: "still"
+
+- id: "048"
+  source: "opiskelija-asunto"
+  phonetic: "OH-pis-keh-lee-yah AH-sun-to"
+  target: "student apartment"
+
+- id: "049"
+  source: "muuttaa"
+  phonetic: "MOO-ta"
+  target: "to move"
+
+- id: "050"
+  source: "syyskuu"
+  phonetic: "SUYYS-koo"
+  target: "September"
+
+- id: "051"
+  source: "meidän"
+  phonetic: "MEI-dan"
+  target: "our"
+
+- id: "052"
+  source: "uusi"
+  phonetic: "OO-si"
+  target: "new"
+
+- id: "053"
+  source: "Kuulostaa hyvältä."
+  phonetic: "KOO-los-taa HUY-val-ta"
+  target: "Sounds good"
+
+- id: "054"
+  source: "minun täytyy"
+  phonetic: "MEE-nun TAI-tyy"
+  target: "I must"
+
+- id: "055"
+  source: "lähteä töihin"
+  phonetic: "LAH-teh-ah TUH-ih-hin"
+  target: "to go to work"
+
+- id: "056"
+  source: "Terveisiä Hannalle!"
+  phonetic: "TER-veh-see-ah HAN-nal-le"
+  target: "Say hello to Hanna"
+
+- id: "057"
+  source: "kertoa"
+  phonetic: "KER-to-ah"
+  target: "to tell"

@@ -1,0 +1,40 @@
+metadata:
+  pack_name: "Finnish Basics – Course and Language"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Talking about Finnish courses and language learning."
+
+entries:
+  - id: "001"
+    prompt: "What course is this?"
+    answer:
+      - "Mikä kurssi tämä on?"
+    phonetic: "MEE-kah KOOR-see TAH-mah on"
+
+  - id: "002"
+    prompt: "This is a Finnish course."
+    answer:
+      - "Suomen kurssi."
+      - "Tämä on suomen kurssi."
+    phonetic: "SUO-men KOOR-see"
+
+  - id: "003"
+    prompt: "When does the course begin?"
+    answer:
+      - "Milloin kurssi alkaa?"
+    phonetic: "MEEL-loin KOOR-see AHL-kah"
+
+  - id: "004"
+    prompt: "The course starts at eight."
+    answer:
+      - "Kurssi alkaa kello kahdeksan."
+    phonetic: "KOOR-see AHL-kah KEL-loh KAH-dek-sahn"
+
+  - id: "005"
+    prompt: "I study Finnish."
+    answer:
+      - "Opiskelen suomea."
+      - "Minä opiskelen suomea."
+    phonetic: "OH-pis-keh-len SUO-meh-ah"

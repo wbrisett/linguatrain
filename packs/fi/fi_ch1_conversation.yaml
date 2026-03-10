@@ -1,0 +1,157 @@
+metadata:
+  pack_name: "Suomen Mestari – Hei ja tervetuloa"
+  version: 1
+
+entries:
+
+- id: "001"
+  speaker: "Alex"
+  prompt:
+    - "Excuse me, is the Finnish course here?"
+  answer:
+    - "Anteeksi, onko täällä suomen kurssi?"
+  phonetic: "AN-tehk-see, ON-koh TAA-llah SOO-oh-men KOOR-see?"
+
+- id: "002"
+  speaker: "Olga"
+  prompt:
+    - "Yes, it is. This is Suomi 1."
+  answer:
+    - "Joo, on. Tämä on Suomi 1."
+  phonetic: "YOH, on. TAH-mah on SOO-oh-mee YK-see"
+
+- id: "003"
+  speaker: "Alex"
+  prompt:
+    - "Good. Is this seat free?"
+  answer:
+    - "Hyvä. Onko tämä paikka vapaa?"
+  phonetic: "HOO-vah. ON-koh TAH-mah PAIK-kah VA-pah?"
+
+- id: "004"
+  speaker: "Olga"
+  prompt:
+    - "Yes."
+  answer:
+    - "On."
+  phonetic: "ON"
+
+- id: "005"
+  speaker: "Alex"
+  prompt:
+    - "Nice. Hi, I am Alex. Who are you?"
+  answer:
+    - "Kiva. Hei, minä olen Alex. Kuka sinä olet?"
+  phonetic: "KEE-vah. HEY, MEE-nah OH-len A-leks. KOO-kah SEE-nah O-let?"
+
+- id: "006"
+  speaker: "Olga"
+  prompt:
+    - "I am Olga. Nice to meet you!"
+  answer:
+    - "Minä olen Olga. Hauska tutustua!"
+  phonetic: "MEE-nah OH-len OL-gah. HOWS-kah TOO-toos-too-ah!"
+
+- id: "007"
+  speaker: "Alex"
+  prompt:
+    - "Thanks, likewise!"
+  answer:
+    - "Kiitos samoin!"
+  phonetic: "KEE-tohs SA-moyn"
+
+- id: "008"
+  speaker: "Pedro"
+  prompt:
+    - "Hi Olga! How are you?"
+  answer:
+    - "Moi Olga! Mitä kuuluu?"
+  phonetic: "MOY OL-gah! MEE-tah KOO-loo?"
+
+- id: "009"
+  speaker: "Olga"
+  prompt:
+    - "Hello Pedro! Thanks, I am well. And you?"
+  answer:
+    - "Terve Pedro! Kiitos, minulle kuuluu hyvää. Entä sinulle?"
+  phonetic: "TEHR-veh PEH-droh! KEE-tohs, MEE-noo-leh KOO-loo HOO-vah. EN-tah SEE-noo-leh?"
+
+- id: "010"
+  speaker: "Pedro"
+  prompt:
+    - "Very good, thanks."
+  answer:
+    - "Ihan hyvää, kiitos."
+  phonetic: "EE-hahn HOO-vah, KEE-tohs"
+
+- id: "011"
+  speaker: "Olga"
+  prompt:
+    - "Alex, here is Pedro."
+  answer:
+    - "Alex, tässä on Pedro."
+  phonetic: "A-leks, TAH-ssah on PEH-droh"
+
+- id: "012"
+  speaker: "Alex"
+  prompt:
+    - "Hi Pedro. My name is Alex. Nice to meet you!"
+  answer:
+    - "Hei Pedro. Minun nimi on Alex. Hauska tutustua!"
+  phonetic: "HEY PEH-droh. MEE-noon NEE-mee on A-leks. HOWS-kah TOO-toos-too-ah!"
+
+- id: "013"
+  speaker: "Pedro"
+  prompt:
+    - "Nice to meet you!"
+  answer:
+    - "Hauska tutustua!"
+  phonetic: "HOWS-kah TOO-toos-too-ah"
+
+- id: "014"
+  speaker: "Opettaja"
+  prompt:
+    - "Hello and welcome to the Finnish course! This course is Suomi 1 and I am the teacher. My name is Päivi Koskela."
+  answer:
+    - "Hei ja tervetuloa suomen kurssille! Tämä kurssi on Suomi 1 ja minä olen opettaja. Minun nimi on Päivi Koskela."
+  phonetic: "HEY yah TEHR-veh-too-loh-ah SOO-oh-men KOOR-see-leh! TAH-mah KOOR-see on SOO-oh-mee YK-see yah MEE-nah OH-len O-peht-tah-yah. MEE-noon NEE-mee on PAI-vee KOS-keh-lah."
+
+- id: "015"
+  speaker: "Alex"
+  prompt:
+    - "Excuse me, how is it spelled?"
+  answer:
+    - "Anteeksi, miten se kirjoitetaan?"
+  phonetic: "AN-tehk-see, MEE-ten seh KEE-roh-ee-teh-tahn?"
+
+- id: "016"
+  speaker: "Opettaja"
+  prompt:
+    - "My first name is spelled P-Ä-I-V-I and my last name K-O-S-K-E-L-A."
+  answer:
+    - "Minun etunimi kirjoitetaan P-Ä-I-V-I ja sukunimi K-O-S-K-E-L-A."
+  phonetic: "MEE-noon EH-too-nee-mee KEE-roh-ee-teh-tahn P-AE-I-V-I yah SOO-koo-nee-mee K-O-S-K-EH-LAH"
+
+- id: "017"
+  speaker: "Alex"
+  prompt:
+    - "Okay, thank you."
+  answer:
+    - "Okei, kiitos."
+  phonetic: "O-kei, KEE-tohs"
+
+- id: "018"
+  speaker: "Opettaja"
+  prompt:
+    - "The course days are Monday, Wednesday and Thursday."
+  answer:
+    - "Kurssipäivät ovat maanantai, keskiviikko ja torstai."
+  phonetic: "KOOR-see-pai-vat O-vat MAAN-an-tai KES-kee-vee-koh yah TORS-tai"
+
+- id: "019"
+  speaker: "Opettaja"
+  prompt:
+    - "The course is from 18 to 20."
+  answer:
+    - "Kurssi on kello 18–20."
+  phonetic: "KOOR-see on KEL-loh kah-dek-san-tois-ta kah-teen-kym-me-neen"

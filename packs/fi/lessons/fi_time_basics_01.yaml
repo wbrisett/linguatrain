@@ -39,6 +39,8 @@ entries:
       - "vartti"
       - "varttia"
     phonetic: "VAR-tee / VAR-tee-ah"
+    alternative_prompts:
+      - "quarter"
 
   - id: "006"
     prompt:
@@ -61,6 +63,8 @@ entries:
     answer:
       - "yli"
     phonetic: "Y-lee"
+    alternate_prompts:
+      - past
 
   - id: "009"
     prompt:
@@ -68,6 +72,8 @@ entries:
     answer:
       - "vaille"
     phonetic: "VAI-leh"
+    alternative_prompts:
+      - to
 
   - id: "010"
     prompt:
@@ -92,6 +98,9 @@ entries:
     answer:
       - "Kello on puoli viisi."
     phonetic: "KEL-loh on POO-lee VEE-see"
+    alternate_prompts:
+      - half five
+
 
   - id: "013"
     prompt:

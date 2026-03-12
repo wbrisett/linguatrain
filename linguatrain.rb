@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # linguatrain.rb
-# Language quiz CLI (typing / match-game / listening via Piper)
+# Language quiz CLI (typing / match-game / listening / speaking via Piper + Whisper)
 
 require "yaml"
 require "time"
@@ -10,6 +10,7 @@ require "optparse"
 require "securerandom"
 require "digest"
 require "fileutils"
+require "json"
 
 # -----------------------------
 # Utility
@@ -86,7 +87,13 @@ DEFAULT_UI = {
   target_language_name: "Target",
   target_prefix: "Answer",
   quit_message: "👋 Exiting quiz.",
-  printed_voice_prefix: "🗣 Printed voice"
+  printed_voice_prefix: "🗣 Printed voice",
+  speak_now: "🎤 Speak now...",
+  heard_prefix: "Heard",
+  close_enough: "🟡 Close enough",
+  recording_prefix: "🎙 Recording",
+  press_enter_to_start: "Press Enter to start recording",
+  recording_window_suffix: "window"
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -254,7 +261,17 @@ def resolve_settings!(options, user_cfg, pack_meta)
   options[:piper_bin] ||= user_cfg.dig(:piper, :bin)
   options[:piper_model] = resolve_piper_model(options, user_cfg, pack_meta)
 
+  # Speech / Whisper
+  options[:speech_record_cmd] ||= user_cfg.dig(:speech, :record_cmd)
+  options[:speech_bin] ||= user_cfg.dig(:speech, :bin)
+  options[:speech_model] ||= user_cfg.dig(:speech, :model)
+  options[:speech_language] ||= user_cfg.dig(:speech, :language)
+  options[:speech_duration] = user_cfg.dig(:speech, :duration) if options[:speech_duration].nil?
 
+  # Final speech defaults (applied after config so config.yaml wins)
+  options[:speech_model] ||= "base"
+  options[:speech_language] ||= "Finnish"
+  options[:speech_duration] = 3 if options[:speech_duration].nil?
 
   # TTS template: pack overrides user defaults
   options[:tts_template] ||= user_cfg.dig(:defaults, :tts_template)
@@ -320,6 +337,232 @@ end
 
 def normalize_lenient_umlauts(s)
   normalize_basic(s).tr("äö", "ao")
+end
+
+# -----------------------------
+# Speech Recognition & Scoring (Whisper)
+# -----------------------------
+def normalize_for_speech_compare(s)
+  t = normalize_basic(strip_terminal_punct(s))
+  t = t.gsub(/[,:;()\[\]{}"'”“’‘]/, " ")
+  t = t.gsub(/\s+/, " ").strip
+  t
+end
+
+def levenshtein_distance(a, b)
+  a = a.to_s
+  b = b.to_s
+
+  return b.length if a.empty?
+  return a.length if b.empty?
+
+  prev = (0..b.length).to_a
+
+  a.each_char.with_index(1) do |ca, i|
+    curr = [i]
+    b.each_char.with_index(1) do |cb, j|
+      cost = (ca == cb ? 0 : 1)
+      curr[j] = [
+        curr[j - 1] + 1,
+        prev[j] + 1,
+        prev[j - 1] + cost
+      ].min
+    end
+    prev = curr
+  end
+
+  prev[b.length]
+end
+
+def similarity_ratio(a, b)
+  aa = normalize_for_speech_compare(a)
+  bb = normalize_for_speech_compare(b)
+
+  variants_a = [aa]
+  variants_b = [bb]
+
+  # ---------------------------------------------------------
+  # Linguatrain: Finnish ASR tolerance layer
+  #
+  # Whisper often returns forms like:
+  #   "misaasut" instead of "missä asut"
+  #   "vita kulu" instead of "mitä kuuluu"
+  #
+  # To make speaking practice usable for learners we also
+  # compare additional normalized variants:
+  #   - spaces removed
+  #   - umlauts normalized (ä→a, ö→o)
+  #
+  # If you ever want to disable this behavior, remove this
+  # block and keep only the original aa/bb comparison above.
+  # ---------------------------------------------------------
+
+  variants_a << aa.gsub(" ", "")
+  variants_b << bb.gsub(" ", "")
+
+  variants_a << normalize_lenient_umlauts(aa)
+  variants_b << normalize_lenient_umlauts(bb)
+
+  best = 0.0
+
+  variants_a.each do |va|
+    variants_b.each do |vb|
+      max_len = [va.length, vb.length].max
+      next if max_len.zero?
+
+      dist = levenshtein_distance(va, vb)
+      score = 1.0 - (dist.to_f / max_len.to_f)
+      best = score if score > best
+    end
+  end
+
+  best
+end
+
+def shell_escape_single(value)
+  "'#{value.to_s.gsub("'", %q('"'"'))}'"
+end
+
+def build_record_command(template, output_path, duration)
+  tpl = template.to_s.strip
+  raise "Speech record command not configured." if tpl.empty?
+
+  cmd = tpl.gsub("{output}", shell_escape_single(output_path.to_s))
+  cmd = cmd.gsub("{duration}", duration.to_s)
+  cmd
+end
+
+def record_speech_audio(record_cmd_template, duration: 3, ui: nil)
+  wav = File.join("/tmp", "linguatrain_speak_#{Process.pid}_#{SecureRandom.hex(4)}.wav")
+  cmd = build_record_command(record_cmd_template, wav, duration)
+
+  start_label = (ui && ui[:press_enter_to_start]) ? ui[:press_enter_to_start] : "Press Enter to start recording"
+  rec_label = (ui && ui[:recording_prefix]) ? ui[:recording_prefix] : "🎙 Recording"
+  window_suffix = (ui && ui[:recording_window_suffix]) ? ui[:recording_window_suffix] : "window"
+
+  # Wait for user to press Enter to start
+  prompt("#{start_label}: ")
+
+  say("#{rec_label} (#{duration.to_i}s #{window_suffix})...")
+  say("Speak now...")
+
+  pid = Process.spawn(cmd, out: File::NULL, err: File::NULL)
+
+  begin
+    sleep(duration.to_f)
+    begin
+      Process.kill("INT", pid)
+    rescue Errno::ESRCH
+      # already exited
+    end
+    Process.wait(pid)
+  rescue Interrupt
+    begin
+      Process.kill("INT", pid)
+    rescue Errno::ESRCH
+      # already exited
+    end
+    Process.wait(pid) rescue nil
+    raise
+  end
+
+  raise "Speech recording failed." unless File.exist?(wav) && File.size?(wav)
+
+  wav
+end
+
+def whisper_transcribe(audio_path, speech_bin:, model:, language:)
+  resolved = resolve_executable(speech_bin)
+  raise "Speech recognizer not found: #{speech_bin}.\nPATH=#{ENV.fetch('PATH', '')}" unless resolved
+
+  out_dir = File.join("/tmp", "linguatrain_whisper_#{Process.pid}_#{SecureRandom.hex(4)}")
+  FileUtils.mkdir_p(out_dir)
+
+  ok = system(
+    resolved,
+    audio_path,
+    "--language", language.to_s,
+    "--model", model.to_s,
+    "--output_format", "json",
+    "--output_dir", out_dir,
+    "--fp16", "False",
+    out: File::NULL,
+    err: File::NULL
+  )
+
+  raise "Whisper transcription failed." unless ok
+
+  json_path = File.join(out_dir, "#{File.basename(audio_path, File.extname(audio_path))}.json")
+  raise "Whisper output JSON not found: #{json_path}" unless File.exist?(json_path)
+
+  data = JSON.parse(File.read(json_path))
+  text = data["text"].to_s.strip
+  raise "Whisper returned an empty transcript." if text.empty?
+
+  text
+ensure
+  FileUtils.rm_rf(out_dir) if out_dir && File.directory?(out_dir)
+end
+
+def speech_tokens(s)
+  normalize_for_speech_compare(s)
+    .split(/\s+/)
+    .reject(&:empty?)
+end
+
+def stem_like_token(token)
+  t = token.to_s.strip
+  return t if t.empty?
+
+  endings = %w[ssa ssä sta stä lla llä lta ltä lle na nä ksi t n a ä]
+  endings.each do |ending|
+    next unless t.length > ending.length + 2
+    return t[0...-ending.length] if t.end_with?(ending)
+  end
+
+  t
+end
+
+def keyword_overlap_score(transcript, expected)
+  heard = speech_tokens(transcript).map { |t| stem_like_token(t) }
+  want = speech_tokens(expected).map { |t| stem_like_token(t) }
+
+  return 0.0 if want.empty?
+
+  matches = want.count { |tok| heard.include?(tok) }
+  matches.to_f / want.length.to_f
+end
+
+def speech_match_result(transcript, expected_list, lenient:)
+  kind, ok, matched = match_answer(transcript, expected_list, lenient: lenient)
+  return [:exact, true, matched, 1.0, 1.0] if ok
+
+  best_expected = nil
+  best_similarity = -1.0
+  best_overlap = -1.0
+
+  expected_list.each do |candidate|
+    similarity = similarity_ratio(transcript, candidate)
+    overlap = keyword_overlap_score(transcript, candidate)
+
+    if similarity > best_similarity
+      best_similarity = similarity
+      best_expected = candidate
+    end
+
+    best_overlap = overlap if overlap > best_overlap
+  end
+
+  close_threshold = lenient ? 0.72 : 0.80
+  overlap_threshold = 0.66
+
+  if best_similarity >= close_threshold
+    [:close, true, best_expected, best_similarity, best_overlap]
+  elsif best_overlap >= overlap_threshold
+    [:close, true, best_expected, best_similarity, best_overlap]
+  else
+    [:no, false, best_expected, best_similarity, best_overlap]
+  end
 end
 
 def pct(part, total)
@@ -437,6 +680,11 @@ def prompt_with_replay(msg, spoken_text, piper_bin:, piper_model:, template:)
 
     return input
   end
+end
+
+def prompt_to_speak(ui, duration: nil)
+  label = (ui && ui[:speak_now]) ? ui[:speak_now] : "🎤 Speak now..."
+  say(label)
 end
 
 # -----------------------------
@@ -1040,13 +1288,20 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
   say
   mode = []
-  mode << (match_game ? "match-game" : "typing")
+  primary_mode = if speak
+                   "speak"
+                 elsif match_game
+                   "match-game"
+                 else
+                   "typing"
+                 end
+  mode << primary_mode
   if listen
     mode << (listen_no_english ? "listen-no-english" : "listen")
   end
@@ -1100,6 +1355,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     end
 
     answer_ok = false
+    speech_transcript = nil
     wid = word_id(w)
 
     reverse_match_options = nil
@@ -1144,7 +1400,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       forward_match_options = ([shown_correct] + distractors).shuffle
     end
 
-    1.upto(2) do |attempt|
+    1.upto(speak ? 1 : 2) do |attempt|
           if match_game
             if reverse
           # Finnish → English match-game (stable options across attempts)
@@ -1245,7 +1501,28 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             end
           end
       else
-        input = if listen
+        input = if speak
+                  prompt_to_speak(ui, duration: speech_duration)
+                  audio_path = record_speech_audio(speech_record_cmd, duration: speech_duration, ui: ui)
+                  begin
+                    transcript = whisper_transcribe(
+                      audio_path,
+                      speech_bin: speech_bin,
+                      model: speech_model,
+                      language: speech_language
+                    )
+                  rescue RuntimeError => e
+                    if e.message.include?("empty transcript")
+                      transcript = ""
+                    else
+                      raise
+                    end
+                  ensure
+                    File.delete(audio_path) if audio_path && File.exist?(audio_path)
+                  end
+                  speech_transcript = transcript
+                  transcript
+                elsif listen
                   heard_label = target_label(ui)
                   meaning_label = source_label(ui)
                   prompt_with_replay(
@@ -1261,42 +1538,59 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
 
         if reverse
           expected = w[:prompt]
-          kind, ok, matched = match_answer(input, expected, lenient: false)
+          if speak
+            kind, ok, matched, speech_score, speech_overlap = speech_match_result(input, expected, lenient: false)
+          else
+            kind, ok, matched = match_answer(input, expected, lenient: false)
+          end
         else
           expected = expected_answer_list(w, answer_variant)
-          kind, ok, matched = match_answer(input, expected, lenient: lenient)
+          if speak
+            kind, ok, matched, speech_score, speech_overlap = speech_match_result(input, expected, lenient: lenient)
+          else
+            kind, ok, matched = match_answer(input, expected, lenient: lenient)
+          end
         end
 
         if ok
           stats[:"correct_#{attempt}"] += 1
 
-          if kind == :umlaut_lenient
+          if kind == :close
+            say(ui[:close_enough] || "🟡 Close enough")
+          elsif kind == :umlaut_lenient
             say(ui[:correct] || "✅ Correct!")
           else
             say(ui[:correct] || "✅ Correct!")
           end
 
-         if reverse
-            others = expected - [matched]
-            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+         if speak && speech_transcript && !speech_transcript.to_s.strip.empty?
+            heard_label = (ui[:heard_prefix] || "Heard").to_s.sub(/:\z/, "")
+            say "   #{heard_label}: #{speech_transcript}"
+          end
 
-            # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
-            say_reverse_listen_reveal(w, ui) if listen
+          unless speak
+            if reverse
+              others = expected - [matched]
+              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
 
-            # Always show the source-side variants (English) for reverse mode after a correct response.
-            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
-          else
-            # Use the same answer set we validated against (written/spoken/either).
-            others = expected - [matched]
-            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
-            say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
+              # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
+              say_reverse_listen_reveal(w, ui) if listen
+
+              # Always show the source-side variants (English) for reverse mode after a correct response.
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
+            else
+              # Use the same answer set we validated against (written/spoken/either).
+              others = expected - [matched]
+              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
+              say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
+            end
           end
           update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
           answer_ok = true
           break
         else
-          say(ui[:try_again] || "Try again.") if attempt < 2
+          say(ui[:try_again] || "Try again.") if attempt < (speak ? 1 : 2)
         end
       end
     end
@@ -1320,6 +1614,14 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
         correct_display = expected_answer_list(w, answer_variant).join(" / ")
         say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}"
         say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
+      end
+      if speak
+        heard_label = (ui[:heard_prefix] || "Heard").to_s.sub(/:\z/, "")
+        if speech_transcript && !speech_transcript.to_s.strip.empty?
+          say "#{heard_label}: #{speech_transcript}"
+        else
+          say "#{heard_label}: (nothing recognized)"
+        end
       end
       update_srs!(srs, wid, 2) if srs_enabled
       missed << w
@@ -1488,7 +1790,13 @@ options = {
   srs_due_only: false,
   srs_new: 5,
   srs_reset: false,
-  srs_file: nil
+  srs_file: nil,
+  speak: false,
+  speech_record_cmd: ENV["SPEECH_RECORD_CMD"],
+  speech_bin: ENV["WHISPER_BIN"] || ENV["SPEECH_BIN"],
+  speech_model: ENV["WHISPER_MODEL"] || ENV["SPEECH_MODEL"],
+  speech_language: ENV["WHISPER_LANGUAGE"] || ENV["SPEECH_LANGUAGE"],
+  speech_duration: (ENV.key?("SPEECH_DURATION") ? ENV["SPEECH_DURATION"].to_i : nil),
 }
 
 parser = OptionParser.new do |opts|
@@ -1539,6 +1847,30 @@ parser = OptionParser.new do |opts|
     options[:conversation] = true
   end
 
+  opts.on("--speak", "Speaking mode: record your voice and score it with Whisper") do
+    options[:speak] = true
+  end
+
+  opts.on("--speech-record-cmd CMD", "Shell command to record speech audio. Use {output} and {duration} placeholders") do |v|
+    options[:speech_record_cmd] = v
+  end
+
+  opts.on("--speech-bin PATH", "Path to whisper executable (or set WHISPER_BIN / SPEECH_BIN)") do |v|
+    options[:speech_bin] = v
+  end
+
+  opts.on("--speech-model NAME", "Whisper model name (default: base)") do |v|
+    options[:speech_model] = v.to_s.strip
+  end
+
+  opts.on("--speech-language NAME", "Whisper language name (default: Finnish)") do |v|
+    options[:speech_language] = v.to_s.strip
+  end
+
+  opts.on("--speech-duration N", Integer, "Seconds to record in --speak mode (default: 3)") do |v|
+    options[:speech_duration] = v
+  end
+
 
 
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
@@ -1570,6 +1902,10 @@ if options[:study]
   end
 end
 
+abort("--speak cannot be combined with --match-game") if options[:speak] && options[:match_game]
+abort("--speak cannot be combined with --listen") if options[:speak] && options[:listen]
+abort("--speak cannot be combined with --conversation") if options[:speak] && options[:conversation]
+
 pack = load_pack(yaml_path)
 pack_meta = pack[:meta] || {}
 words = pack[:words] || []
@@ -1597,6 +1933,11 @@ $AUDIO_PLAYER = options[:audio_player]
 
 if options[:listen] || options[:conversation]
   abort("--listen/--conversation requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
+end
+
+if options[:speak]
+  abort("--speak requires --speech-record-cmd (or speech.record_cmd in config.yaml)") if options[:speech_record_cmd].to_s.strip.empty?
+  abort("--speak requires Whisper settings: provide --speech-bin, set WHISPER_BIN/SPEECH_BIN, or configure speech.bin in config.yaml") if options[:speech_bin].to_s.strip.empty?
 end
 
 srs_enabled = options[:srs] && !options[:study]
@@ -1705,7 +2046,13 @@ begin
     tts_variant: options[:tts_variant],
     answer_variant: options[:answer_variant],
     show_variants: options[:show_variants],
-    printed_voice: options[:printed_voice]
+    printed_voice: options[:printed_voice],
+    speak: options[:speak],
+    speech_record_cmd: options[:speech_record_cmd],
+    speech_bin: options[:speech_bin],
+    speech_model: options[:speech_model],
+    speech_language: options[:speech_language],
+    speech_duration: options[:speech_duration]
   )
 
   say

@@ -27,3 +27,8 @@ ui:
   quit_message: "👋 Lopetetaan. Kiitos!"
   no_mistakes: "😊 Ei virheitä — hienoa!"
   printed_voice_prefix: "🗣 ääneen:"
+  transform_positive_instruction: "Anna myönteinen vastaus:"
+  transform_negative_instruction: "Anna kielteinen vastaus:"
+  conjugate_positive_instruction: "Anna myönteinen muoto:"
+  conjugate_negative_instruction: "Anna kielteinen muoto:"
+  conjugate_prompt: "Taivuta verbi."

@@ -1,0 +1,102 @@
+metadata:
+  id: "sm2_transform_kpt"
+  pack_name: "Suomen Mestari 2 — Transform Drills (KPT verbs)"
+  drill_type: "transform"
+  shuffle_cues: true
+
+entries:
+
+  - id: "sm2_kpt_001"
+    prompt: "Mitä Paula tekee viikonloppuna?"
+
+    cues:
+      - cue: "soittaa pianoa"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Paula soittaa pianoa."
+              - "Hän soittaa pianoa."
+          - transform: "negative"
+            answer:
+              - "Paula ei soita pianoa."
+              - "Hän ei soita pianoa."
+
+      - cue: "lähteä matkalle"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Paula lähtee matkalle."
+              - "Hän lähtee matkalle."
+          - transform: "negative"
+            answer:
+              - "Paula ei lähde matkalle."
+              - "Hän ei lähde matkalle."
+
+  - id: "sm2_kpt_002"
+    prompt: "Mitä lapset tekevät koulussa?"
+
+    cues:
+      - cue: "kirjoittaa"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Lapset kirjoittavat koulussa."
+          - transform: "negative"
+            answer:
+              - "Lapset eivät kirjoita koulussa."
+
+      - cue: "nukkua"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Lapset nukkuvat koulussa."
+          - transform: "negative"
+            answer:
+              - "Lapset eivät nuku koulussa."
+
+  - id: "sm2_kpt_003"
+    prompt: "Mitä sinä teet illalla?"
+
+    cues:
+      - cue: "lukea kirjaa"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Minä luen kirjaa illalla."
+              - "Luen kirjaa illalla."
+          - transform: "negative"
+            answer:
+              - "Minä en lue kirjaa illalla."
+              - "En lue kirjaa illalla."
+
+      - cue: "kylpeä"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Minä kylven illalla."
+              - "Kylven illalla."
+          - transform: "negative"
+            answer:
+              - "Minä en kylve illalla."
+              - "En kylve illalla."
+
+  - id: "sm2_kpt_004"
+    prompt: "Mitä te teette mökillä?"
+
+    cues:
+      - cue: "kirjoittaa sähköpostia"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Me kirjoitamme sähköpostia mökillä."
+          - transform: "negative"
+            answer:
+              - "Me emme kirjoita sähköpostia mökillä."
+
+      - cue: "onkia"
+        steps:
+          - transform: "positive"
+            answer:
+              - "Me onkimme mökillä."
+          - transform: "negative"
+            answer:

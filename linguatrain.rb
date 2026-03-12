@@ -93,7 +93,13 @@ DEFAULT_UI = {
   close_enough: "🟡 Close enough",
   recording_prefix: "🎙 Recording",
   press_enter_to_start: "Press Enter to start recording",
-  recording_window_suffix: "window"
+  recording_window_suffix: "window",
+  transform_positive_instruction: "Use the positive form:",
+  transform_negative_instruction: "Use the negative form:",
+  conjugate_prompt: "Conjugate the verb.",
+  conjugate_instruction: "Use the correct form:",
+  conjugate_positive_instruction: "Use the positive form:",
+  conjugate_negative_instruction: "Use the negative form:"
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -701,6 +707,13 @@ def load_pack(path)
       # New Linguatrain schema:
       #   metadata: {...}
       #   entries:  [ {id:, prompt:, alternate_prompts:, answer:, phonetic:}, ... ]
+      #   transform packs:
+      #     metadata.drill_type: transform
+      #     entries: [ {id:, prompt:, cues:[{cue:, steps:[{transform:, answer:}, ...]}, ...]}, ... ]
+      #   conjugate packs:
+      #     metadata.drill_type: conjugate
+      #     persons: ["minä", "sinä", "hän", "me", "te", "he"]
+      #     entries: [ {id:, lemma:, forms:{"minä"=>{"positive"=>[...], "negative"=>[...]}, ...}}, ... ]
       pack_meta = data["metadata"] || data[:metadata] || {}
 
       # Back-compat: older packs used metadata.source_lang / metadata.target_lang.
@@ -757,6 +770,8 @@ def load_pack(path)
       end
 
       entries = data["entries"] || data[:entries]
+      persons_v = data["persons"] || data[:persons]
+      drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
       if entries.is_a?(Array)
         entries
       else
@@ -807,95 +822,248 @@ def load_pack(path)
     else
       raise "Unsupported YAML structure."
     end
-
   pack_meta ||= {}
 
-  raw_entries.map do |w|
-    # Optional conversation speaker name (used by --conversation only)
-    speaker_v = w["speaker"] || w[:speaker]
-    # Preserve/assign entry id
-    entry_id = w["id"] || w[:id]
+  if drill_type == "transform"
+    transform_entries = raw_entries.map do |entry|
+      entry_id = entry["id"] || entry[:id]
+      prompt_v = entry["prompt"] || entry[:prompt]
+      cues_v = entry["cues"] || entry[:cues]
 
-    # Legacy keys
-    en = w["en"] || w[:prompt] || w["english"] || w[:english]
-    fi = w["fi"] || w[:answer] || w["finnish"] || w[:finnish]
-    spoken_v = w["spoken"] || w[:spoken]
-    phon = w["phon"] || w[:phonetic] || w["phonetic"] || w[:phonetic]
+      raise "Invalid transform entry: #{entry.inspect}" if prompt_v.nil? || cues_v.nil?
 
-    # New schema keys
-    prompt_v = w["prompt"] || w[:prompt]
-    alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
-    answer_v = w["answer"] || w[:answer]
-    spoken_field_v = w["spoken"] || w[:spoken]
-    phonetic_v = w["phonetic"] || w[:phonetic]
+      prompt_text = prompt_v.to_s.strip
+      raise "Invalid transform entry: #{entry.inspect}" if prompt_text.empty?
+      raise "Invalid transform entry: #{entry.inspect}" unless cues_v.is_a?(Array) && !cues_v.empty?
 
-    # If we have new-schema fields, map them into the legacy variables used below.
-    if en.nil? && !prompt_v.nil?
-      en = prompt_v
-    end
+      cues = cues_v.map do |cue_entry|
+        cue_text = cue_entry["cue"] || cue_entry[:cue]
+        steps_v = cue_entry["steps"] || cue_entry[:steps]
 
-    if fi.nil? && !answer_v.nil?
-      fi = answer_v
-    end
+        raise "Invalid transform cue: #{cue_entry.inspect}" if cue_text.nil? || steps_v.nil?
 
-    # Optional spoken/colloquial form (generic; used by listening mode when present)
-    spoken_v = spoken_field_v if (spoken_v.nil? || spoken_v.to_s.strip.empty?) && !spoken_field_v.nil?
+        cue_text = cue_text.to_s.strip
+        raise "Invalid transform cue: #{cue_entry.inspect}" if cue_text.empty?
+        raise "Invalid transform cue: #{cue_entry.inspect}" unless steps_v.is_a?(Array) && !steps_v.empty?
 
-    if (phon.nil? || phon.to_s.strip.empty?) && !phonetic_v.nil?
-      phon = phonetic_v
-    end
+        steps = steps_v.map do |step|
+          transform_v = step["transform"] || step[:transform]
+          answer_v = step["answer"] || step[:answer]
 
-    raise "Invalid word entry: #{w.inspect}" if en.nil? || fi.nil?
+          raise "Invalid transform step: #{step.inspect}" if transform_v.nil? || answer_v.nil?
 
-    en_list =
-      case en
-      when Array
-        en.map { |x| x.to_s.strip }.reject(&:empty?)
-      else
-        [en.to_s.strip]
+          answers =
+            case answer_v
+            when Array
+              answer_v.map { |x| x.to_s.strip }.reject(&:empty?)
+            else
+              [answer_v.to_s.strip]
+            end
+
+          raise "Invalid transform step: #{step.inspect}" if answers.empty?
+
+          {
+            transform: transform_v.to_s.strip.downcase,
+            answer: answers
+          }
+        end
+
+        {
+          cue: cue_text,
+          steps: steps
+        }
       end
 
-    # New schema: include alternate_prompts as additional accepted English variants.
-    if alt_prompts_v.is_a?(Array)
-      en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
-    elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
-      en_list << alt_prompts_v.strip
+      derived_id = Digest::SHA1.hexdigest("#{prompt_text}::#{cues.map { |c| c[:cue] }.join('|')}")[0, 8]
+
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        prompt: prompt_text,
+        cues: cues
+      }
     end
 
-    en_list = en_list.uniq
+    { meta: symbolize_keys_deep(pack_meta), transform_entries: transform_entries }
 
-    fi_list =
-      case fi
+  elsif drill_type == "conjugate"
+    persons =
+      case persons_v
       when Array
-        fi.map { |x| x.to_s.strip }.reject(&:empty?)
+        persons_v.map { |x| x.to_s.strip }.reject(&:empty?)
       else
-        [fi.to_s.strip]
-      end
-
-    spoken_list =
-      case spoken_v
-      when Array
-        spoken_v.map { |x| x.to_s.strip }.reject(&:empty?)
-      when NilClass
         []
-      else
-        [spoken_v.to_s.strip].reject(&:empty?)
       end
 
-    raise "Invalid word entry: #{w.inspect}" if en_list.empty? || fi_list.empty?
+    raise "Invalid conjugate pack: missing persons list" if persons.empty?
 
-    # Preserve pack entry id when present; otherwise derive a stable short id.
-    derived_id = Digest::SHA1.hexdigest("#{en_list.join('|')}::#{fi_list.join('|')}")[0, 8]
+    conjugate_entries = raw_entries.map do |entry|
+      entry_id = entry["id"] || entry[:id]
+      lemma_v = entry["lemma"] || entry[:lemma] || entry["verb"] || entry[:verb]
+      forms_v = entry["forms"] || entry[:forms]
+
+      raise "Invalid conjugate entry: #{entry.inspect}" if lemma_v.nil? || forms_v.nil?
+
+      lemma_text = lemma_v.to_s.strip
+      raise "Invalid conjugate entry: #{entry.inspect}" if lemma_text.empty?
+      raise "Invalid conjugate entry: #{entry.inspect}" unless forms_v.is_a?(Hash)
+
+      forms = persons.each_with_object({}) do |person, out|
+        raw = forms_v[person] || forms_v[person.to_sym]
+        raise "Invalid conjugate entry for '#{lemma_text}': missing form for #{person}" if raw.nil?
+
+        normalized =
+          if raw.is_a?(Hash)
+            pos_raw = raw["positive"] || raw[:positive]
+            neg_raw = raw["negative"] || raw[:negative]
+
+            raise "Invalid conjugate entry for '#{lemma_text}': missing positive form for #{person}" if pos_raw.nil?
+            raise "Invalid conjugate entry for '#{lemma_text}': missing negative form for #{person}" if neg_raw.nil?
+
+            positive_answers =
+              case pos_raw
+              when Array
+                pos_raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [pos_raw.to_s.strip]
+              end
+
+            negative_answers =
+              case neg_raw
+              when Array
+                neg_raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [neg_raw.to_s.strip]
+              end
+
+            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{person}" if positive_answers.empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{person}" if negative_answers.empty?
+
+            {
+              positive: positive_answers,
+              negative: negative_answers
+            }
+          else
+            # Backward compatibility: flat list means positive-only legacy form.
+            positive_answers =
+              case raw
+              when Array
+                raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [raw.to_s.strip]
+              end
+
+            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{person}" if positive_answers.empty?
+
+            {
+              positive: positive_answers,
+              negative: []
+            }
+          end
+
+        out[person] = normalized
+      end
+
+      derived_id = Digest::SHA1.hexdigest("#{lemma_text}::#{persons.join('|')}")[0, 8]
+
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        lemma: lemma_text,
+        forms: forms
+      }
+    end
+
     {
-      id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
-      speaker: (speaker_v.nil? ? "" : speaker_v.to_s.strip),
-      prompt: en_list,
-      answer: fi_list,
-      spoken: spoken_list,
-      phonetic: phon.to_s.strip
+      meta: symbolize_keys_deep(pack_meta),
+      conjugate_persons: persons,
+      conjugate_entries: conjugate_entries
     }
-  end.then do |words|
-    { meta: symbolize_keys_deep(pack_meta), words: words }
+  else
+    raw_entries.map do |w|
+      # Optional conversation speaker name (used by --conversation only)
+      speaker_v = w["speaker"] || w[:speaker]
+      # Preserve/assign entry id
+      entry_id = w["id"] || w[:id]
+
+      # Legacy keys
+      en = w["en"] || w[:prompt] || w["english"] || w[:english]
+      fi = w["fi"] || w[:answer] || w["finnish"] || w[:finnish]
+      spoken_v = w["spoken"] || w[:spoken]
+      phon = w["phon"] || w[:phonetic] || w["phonetic"] || w[:phonetic]
+
+      # New schema keys
+      prompt_v = w["prompt"] || w[:prompt]
+      alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
+      answer_v = w["answer"] || w[:answer]
+      spoken_field_v = w["spoken"] || w[:spoken]
+      phonetic_v = w["phonetic"] || w[:phonetic]
+
+      # If we have new-schema fields, map them into the legacy variables used below.
+      if en.nil? && !prompt_v.nil?
+        en = prompt_v
+      end
+
+      if fi.nil? && !answer_v.nil?
+        fi = answer_v
+      end
+
+      # Optional spoken/colloquial form (generic; used by listening mode when present)
+      spoken_v = spoken_field_v if (spoken_v.nil? || spoken_v.to_s.strip.empty?) && !spoken_field_v.nil?
+
+      if (phon.nil? || phon.to_s.strip.empty?) && !phonetic_v.nil?
+        phon = phonetic_v
+      end
+
+      raise "Invalid word entry: #{w.inspect}" if en.nil? || fi.nil?
+
+      en_list =
+        case en
+        when Array
+          en.map { |x| x.to_s.strip }.reject(&:empty?)
+        else
+          [en.to_s.strip]
+        end
+
+      # New schema: include alternate_prompts as additional accepted English variants.
+      if alt_prompts_v.is_a?(Array)
+        en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
+      elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
+        en_list << alt_prompts_v.strip
+      end
+
+      en_list = en_list.uniq
+
+      fi_list =
+        case fi
+        when Array
+          fi.map { |x| x.to_s.strip }.reject(&:empty?)
+        else
+          [fi.to_s.strip]
+        end
+
+      spoken_list =
+        case spoken_v
+        when Array
+          spoken_v.map { |x| x.to_s.strip }.reject(&:empty?)
+        when NilClass
+          []
+        else
+          [spoken_v.to_s.strip].reject(&:empty?)
+        end
+
+      raise "Invalid word entry: #{w.inspect}" if en_list.empty? || fi_list.empty?
+
+      derived_id = Digest::SHA1.hexdigest("#{en_list.join('|')}::#{fi_list.join('|')}")[0, 8]
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        speaker: (speaker_v.nil? ? "" : speaker_v.to_s.strip),
+        prompt: en_list,
+        answer: fi_list,
+        spoken: spoken_list,
+        phonetic: phon.to_s.strip
+      }
+    end.then do |words|
+      { meta: symbolize_keys_deep(pack_meta), words: words }
+    end
   end
 end
 
@@ -934,6 +1102,62 @@ def choose_words(words, count)
 
   n = Integer(count)
   words.shuffle.take([n, words.length].min)
+end
+
+def flatten_transform_items(transform_entries, shuffle_cues: false)
+  Array(transform_entries).flat_map do |entry|
+    cues = Array(entry[:cues]).dup
+    cues = cues.shuffle if shuffle_cues
+
+    cues.map do |cue_entry|
+      {
+        entry_id: entry[:id],
+        prompt: entry[:prompt].to_s,
+        cue: cue_entry[:cue].to_s,
+        steps: Array(cue_entry[:steps]).map do |step|
+          {
+            transform: step[:transform].to_s,
+            answer: Array(step[:answer]).map { |x| x.to_s.strip }.reject(&:empty?)
+          }
+        end
+      }
+    end
+  end
+end
+
+def choose_transform_items(items, count)
+  return items if count.nil? || count == "all"
+
+  n = Integer(count)
+  items.take([n, items.length].min)
+end
+
+def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
+  Array(conjugate_entries).flat_map do |entry|
+    ordered_persons = Array(persons).dup
+    ordered_persons = ordered_persons.shuffle if shuffle_persons
+
+    ordered_persons.map do |person|
+      person_forms = entry[:forms][person] || entry[:forms][person.to_sym] || {}
+
+      {
+        entry_id: entry[:id],
+        person: person.to_s,
+        lemma: entry[:lemma].to_s,
+        forms: {
+          positive: Array(person_forms[:positive] || person_forms["positive"]).map { |x| x.to_s.strip }.reject(&:empty?),
+          negative: Array(person_forms[:negative] || person_forms["negative"]).map { |x| x.to_s.strip }.reject(&:empty?)
+        }
+      }
+    end
+  end
+end
+
+def choose_conjugate_items(items, count)
+  return items if count.nil? || count == "all"
+
+  n = Integer(count)
+  items.take([n, items.length].min)
 end
 
 # -----------------------------
@@ -1282,6 +1506,178 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
   say
   say "Done."
+end
+
+# -----------------------------
+# Transform Engine
+# -----------------------------
+
+def transform_instruction_label(ui, transform)
+  key = "transform_#{transform}_instruction".to_sym
+  value = ui[key].to_s.strip if ui.is_a?(Hash)
+  return value unless value.nil? || value.empty?
+
+  transform.to_s.capitalize + ":"
+end
+
+def transform_step_stats(stats)
+  total = stats[:correct_1] + stats[:correct_2] + stats[:failed]
+  stats.merge(total: total)
+end
+
+def run_transform(selected, ui:, lenient:)
+  stats = { correct_1: 0, correct_2: 0, failed: 0 }
+  missed = []
+
+  say
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Transform #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: transform)"
+  say "-" * 70
+
+  selected.each_with_index do |item, idx|
+    say
+    say "[#{idx + 1}/#{selected.length}]"
+    say
+    say item[:prompt].to_s
+    say
+    say "[ #{item[:cue].to_s} ]"
+    say
+
+    Array(item[:steps]).each do |step|
+      instruction = transform_instruction_label(ui, step[:transform])
+      say instruction
+
+      answer_ok = false
+
+      1.upto(2) do |attempt|
+        input = prompt("> ")
+        kind, ok, matched = match_answer(input, step[:answer], lenient: lenient)
+
+        if ok
+          stats[attempt == 1 ? :correct_1 : :correct_2] += 1
+          say(ui[:correct] || "✅ Correct!")
+          others = step[:answer] - [matched]
+          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          answer_ok = true
+          break
+        else
+          say(ui[:try_again] || "Try again.") if attempt < 2
+        end
+      end
+
+      unless answer_ok
+        stats[:failed] += 1
+        correct_display = Array(step[:answer]).join(" / ")
+        say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{correct_display}"
+        missed << {
+          prompt: item[:prompt].to_s,
+          cue: item[:cue].to_s,
+          transform: step[:transform].to_s,
+          answer: Array(step[:answer])
+        }
+      end
+
+      say
+    end
+  end
+
+  [transform_step_stats(stats), missed]
+end
+
+def conjugate_instruction_label(ui, polarity)
+  key = "conjugate_#{polarity}_instruction".to_sym
+  value = ui[key].to_s.strip if ui.is_a?(Hash)
+  return value unless value.nil? || value.empty?
+
+  case polarity.to_s
+  when "positive"
+    ui[:conjugate_positive_instruction].to_s.strip.empty? ? "Use the positive form:" : ui[:conjugate_positive_instruction].to_s
+  when "negative"
+    ui[:conjugate_negative_instruction].to_s.strip.empty? ? "Use the negative form:" : ui[:conjugate_negative_instruction].to_s
+  else
+    ui[:conjugate_instruction].to_s.strip.empty? ? "Use the correct form:" : ui[:conjugate_instruction].to_s
+  end
+end
+
+
+
+def conjugate_polarities_for_item(item, requested)
+  requested = requested.to_s.strip.downcase
+
+  case requested
+  when "negative"
+    return ["negative"] unless Array(item.dig(:forms, :negative)).empty?
+    []
+  when "both"
+    pols = []
+    pols << "positive" unless Array(item.dig(:forms, :positive)).empty?
+    pols << "negative" unless Array(item.dig(:forms, :negative)).empty?
+    pols
+  else
+    return ["positive"] unless Array(item.dig(:forms, :positive)).empty?
+    []
+  end
+end
+
+def run_conjugate(selected, ui:, lenient:, polarity: "positive")
+  stats = { correct_1: 0, correct_2: 0, failed: 0 }
+  missed = []
+
+  total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
+
+  say
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: conjugate, #{polarity})"
+  say "-" * 70
+
+  selected.each_with_index do |item, idx|
+    say
+    say "[#{idx + 1}/#{selected.length}]"
+    say
+    say((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+    say
+    say "[ #{item[:person]} ]"
+    say "[ #{item[:lemma]} ]"
+    say
+
+    conjugate_polarities_for_item(item, polarity).each do |current_polarity|
+      instruction = conjugate_instruction_label(ui, current_polarity)
+      expected = Array(item.dig(:forms, current_polarity.to_sym) || item.dig(:forms, current_polarity)).map { |x| x.to_s.strip }.reject(&:empty?)
+      next if expected.empty?
+
+      say instruction
+      answer_ok = false
+
+      1.upto(2) do |attempt|
+        input = prompt("> ")
+        kind, ok, matched = match_answer(input, expected, lenient: lenient)
+
+        if ok
+          stats[attempt == 1 ? :correct_1 : :correct_2] += 1
+          say(ui[:correct] || "✅ Correct!")
+          others = expected - [matched]
+          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          answer_ok = true
+          break
+        else
+          say(ui[:try_again] || "Try again.") if attempt < 2
+        end
+      end
+
+      unless answer_ok
+        stats[:failed] += 1
+        say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected.join(' / ')}"
+        missed << {
+          person: item[:person],
+          lemma: item[:lemma],
+          polarity: current_polarity,
+          answer: expected
+        }
+      end
+
+      say
+    end
+  end
+
+  [stats.merge(total: total_steps), missed]
 end
 
 # -----------------------------
@@ -1775,6 +2171,9 @@ options = {
   reverse: false,
   study: false,
   conversation: false,
+  transform: false,
+  conjugate: false,
+  conjugate_polarity: "positive",
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
@@ -1847,6 +2246,22 @@ parser = OptionParser.new do |opts|
     options[:conversation] = true
   end
 
+  opts.on("--transform", "Transform mode: prompt with cue-based grammar steps") do
+    options[:transform] = true
+  end
+
+  opts.on("--conjugate", "Conjugation mode: person + verb grammar drills") do
+    options[:conjugate] = true
+  end
+
+  opts.on("--negative", "With --conjugate, drill only negative forms") do
+    options[:conjugate_polarity] = "negative"
+  end
+
+  opts.on("--both", "With --conjugate, drill both positive and negative forms") do
+    options[:conjugate_polarity] = "both"
+  end
+
   opts.on("--speak", "Speaking mode: record your voice and score it with Whisper") do
     options[:speak] = true
   end
@@ -1892,7 +2307,6 @@ parser.parse!
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
 
-# Study mode is intentionally simple: ignore match-game, lenient umlauts, and SRS.
 if options[:study]
   abort("--study cannot be combined with --match-game") if options[:match_game]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
@@ -1906,9 +2320,42 @@ abort("--speak cannot be combined with --match-game") if options[:speak] && opti
 abort("--speak cannot be combined with --listen") if options[:speak] && options[:listen]
 abort("--speak cannot be combined with --conversation") if options[:speak] && options[:conversation]
 
+if options[:transform]
+  abort("--transform cannot be combined with --match-game") if options[:match_game]
+  abort("--transform cannot be combined with --listen") if options[:listen]
+  abort("--transform cannot be combined with --speak") if options[:speak]
+  abort("--transform cannot be combined with --reverse") if options[:reverse]
+  abort("--transform cannot be combined with --study") if options[:study]
+  abort("--transform cannot be combined with --conversation") if options[:conversation]
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--transform does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
+
+if options[:conjugate]
+  abort("--conjugate cannot be combined with --match-game") if options[:match_game]
+  abort("--conjugate cannot be combined with --listen") if options[:listen]
+  abort("--conjugate cannot be combined with --speak") if options[:speak]
+  abort("--conjugate cannot be combined with --reverse") if options[:reverse]
+  abort("--conjugate cannot be combined with --study") if options[:study]
+  abort("--conjugate cannot be combined with --conversation") if options[:conversation]
+  abort("--conjugate cannot be combined with --transform") if options[:transform]
+  unless %w[positive negative both].include?(options[:conjugate_polarity].to_s)
+    abort("--conjugate polarity must be one of: positive, negative, both")
+  end
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--conjugate does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
+
 pack = load_pack(yaml_path)
 pack_meta = pack[:meta] || {}
 words = pack[:words] || []
+transform_entries = pack[:transform_entries] || []
+conjugate_entries = pack[:conjugate_entries] || []
+conjugate_persons = pack[:conjugate_persons] || []
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
@@ -1945,7 +2392,25 @@ srs_path = options[:srs_file] || default_srs_path(yaml_path, pack_meta)
 
 srs = srs_enabled ? load_srs(srs_path) : { "meta" => {}, "items" => {} }
 
-if srs_enabled
+if options[:transform]
+  abort("This pack does not contain transform entries.") if transform_entries.empty?
+elsif options[:conjugate]
+  abort("This pack does not contain conjugate entries.") if conjugate_entries.empty?
+else
+  drill_type = pack_meta[:drill_type].to_s.strip.downcase
+  abort("This pack is a transform pack. Use --transform.") if drill_type == "transform"
+  abort("This pack is a conjugate pack. Use --conjugate.") if drill_type == "conjugate"
+end
+
+if options[:transform]
+  shuffle_cues = !!pack_meta[:shuffle_cues]
+  transform_items = flatten_transform_items(transform_entries, shuffle_cues: shuffle_cues)
+  selected = choose_transform_items(transform_items, options[:count])
+elsif options[:conjugate]
+  shuffle_persons = !!pack_meta[:shuffle_persons]
+  conjugate_items = flatten_conjugate_items(conjugate_entries, conjugate_persons, shuffle_persons: shuffle_persons)
+  selected = choose_conjugate_items(conjugate_items, options[:count])
+elsif srs_enabled
   srs["meta"] ||= {}
   srs["meta"]["source_file"] = File.expand_path(yaml_path)
   srs["meta"]["generated_at"] ||= Time.now.iso8601
@@ -2006,6 +2471,75 @@ begin
     )
     exit(0)
   end
+
+  if options[:transform]
+    stats, missed = run_transform(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      lenient: options[:lenient]
+    )
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say "Total steps: #{stats[:total]}"
+    say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
+    say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
+    say "Failed: #{stats[:failed]} (#{pct(stats[:failed], stats[:total]).round(1)}%)"
+
+    if missed.any?
+      say
+      say "Missed steps (quick review):"
+      missed.each_with_index do |m, missed_idx|
+        say "#{missed_idx + 1}. #{m[:prompt]}"
+        say "   [ #{m[:cue]} ]"
+        say "   #{m[:transform]} → #{Array(m[:answer]).join(' / ')}"
+        say
+      end
+    else
+      say
+      puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
+    end
+
+    exit(0)
+  end
+
+  if options[:conjugate]
+    stats, missed = run_conjugate(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      lenient: options[:lenient],
+      polarity: options[:conjugate_polarity]
+    )
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say "Total steps: #{stats[:total]}"
+    say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
+    say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
+    say "Failed: #{stats[:failed]} (#{pct(stats[:failed], stats[:total]).round(1)}%)"
+
+    if missed.any?
+      say
+      say "Missed items (quick review):"
+      missed.each_with_index do |m, missed_idx|
+        say "#{missed_idx + 1}. #{m[:person]} + #{m[:lemma]} (#{m[:polarity]})"
+        say "   #{Array(m[:answer]).join(' / ')}"
+        say
+      end
+    else
+      say
+      puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
+    end
+
+    exit(0)
+  end
+
 
   if options[:study]
     run_study(

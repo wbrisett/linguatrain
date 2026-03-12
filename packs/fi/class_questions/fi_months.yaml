@@ -1,0 +1,79 @@
+metadata:
+  id: fi_months
+  pack_name: Finnish Months
+  version: 1
+  author: Wayne Brissette
+  description: The 12 months of the year in Finnish.
+
+entries:
+  - id: "001"
+    prompt: January
+    answer:
+      - tammikuu
+    phonetic: TAHM-mee-koo
+
+  - id: "002"
+    prompt: February
+    answer:
+      - helmikuu
+    phonetic: HEL-mee-koo
+
+  - id: "003"
+    prompt: March
+    answer:
+      - maaliskuu
+    phonetic: MAH-lee-skoo
+
+  - id: "004"
+    prompt: April
+    answer:
+      - huhtikuu
+    phonetic: HOOH-tee-koo
+
+  - id: "005"
+    prompt: May
+    answer:
+      - toukokuu
+    phonetic: TOH-koh-koo
+
+  - id: "006"
+    prompt: June
+    answer:
+      - kesäkuu
+    phonetic: KEH-sah-koo
+
+  - id: "007"
+    prompt: July
+    answer:
+      - heinäkuu
+    phonetic: HAY-nah-koo
+
+  - id: "008"
+    prompt: August
+    answer:
+      - elokuu
+    phonetic: EH-loh-koo
+
+  - id: "009"
+    prompt: September
+    answer:
+      - syyskuu
+    phonetic: SOOYS-koo
+
+  - id: "010"
+    prompt: October
+    answer:
+      - lokakuu
+    phonetic: LOH-kah-koo
+
+  - id: "011"
+    prompt: November
+    answer:
+      - marraskuu
+    phonetic: MAHR-rah-skoo
+
+  - id: "012"
+    prompt: December
+    answer:
+      - joulukuu
+    phonetic: YOH-loo-koo

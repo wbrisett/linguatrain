@@ -1,0 +1,34 @@
+metadata:
+  pack_name: "Finnish Basics – Greetings"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Basic Finnish greetings and conversation starters."
+
+entries:
+  - id: "001"
+    prompt: "Good morning."
+    answer:
+      - "Hyvää huomenta."
+    phonetic: "HUU-vah HOO-oh-men-tah"
+
+  - id: "002"
+    prompt: "How are you?"
+    answer:
+      - "Mitä kuuluu?"
+    phonetic: "MEE-tah KOO-loo"
+
+  - id: "003"
+    prompt: "I am well."
+    answer:
+      - "Minä olen hyvin."
+      - "Olen hyvin."
+    phonetic: "MEE-nah OH-len HUU-vin"
+
+  - id: "004"
+    prompt: "I am quite good."
+    answer:
+      - "Minä olen ihan hyvä."
+      - "Olen ihan hyvä."
+    phonetic: "MEE-nah OH-len EE-han HUU-vah"

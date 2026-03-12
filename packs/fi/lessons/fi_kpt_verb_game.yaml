@@ -1,0 +1,149 @@
+metadata:
+  id: fi_kpt_verb_game
+  name: Finnish Verb Dice Game
+
+entries:
+
+- id: "001"
+  prompt:
+    - "minä + löytää"
+  answer:
+    - "minä löydän"
+
+- id: "002"
+  prompt:
+    - "sinä + löytää"
+  answer:
+    - "sinä löydät"
+
+- id: "003"
+  prompt:
+    - "hän + löytää"
+  answer:
+    - "hän löytää"
+
+- id: "004"
+  prompt:
+    - "me + löytää"
+  answer:
+    - "me löydämme"
+
+- id: "005"
+  prompt:
+    - "minä + lukea"
+  answer:
+    - "minä luen"
+
+- id: "006"
+  prompt:
+    - "sinä + lukea"
+  answer:
+    - "sinä luet"
+
+- id: "007"
+  prompt:
+    - "hän + lukea"
+  answer:
+    - "hän lukee"
+
+- id: "008"
+  prompt:
+    - "me + lukea"
+  answer:
+    - "me luemme"
+
+- id: "009"
+  prompt:
+    - "minä + antaa"
+  answer:
+    - "minä annan"
+
+- id: "010"
+  prompt:
+    - "sinä + antaa"
+  answer:
+    - "sinä annat"
+
+- id: "011"
+  prompt:
+    - "hän + antaa"
+  answer:
+    - "hän antaa"
+
+- id: "012"
+  prompt:
+    - "me + antaa"
+  answer:
+    - "me annamme"
+
+- id: "013"
+  prompt:
+    - "minä + ottaa"
+  answer:
+    - "minä otan"
+
+- id: "014"
+  prompt:
+    - "sinä + ottaa"
+  answer:
+    - "sinä otat"
+
+- id: "015"
+  prompt:
+    - "hän + ottaa"
+  answer:
+    - "hän ottaa"
+
+- id: "016"
+  prompt:
+    - "me + ottaa"
+  answer:
+    - "me otamme"
+
+- id: "017"
+  prompt:
+    - "minä + kirjoittaa"
+  answer:
+    - "minä kirjoitan"
+
+- id: "018"
+  prompt:
+    - "sinä + kirjoittaa"
+  answer:
+    - "sinä kirjoitat"
+
+- id: "019"
+  prompt:
+    - "hän + kirjoittaa"
+  answer:
+    - "hän kirjoittaa"
+
+- id: "020"
+  prompt:
+    - "me + kirjoittaa"
+  answer:
+    - "me kirjoitamme"
+
+- id: "021"
+  prompt:
+    - "minä + ymmärtää"
+  answer:
+    - "minä ymmärrän"
+
+- id: "022"
+  prompt:
+    - "sinä + ymmärtää"
+  answer:
+    - "sinä ymmärrät"
+
+- id: "023"
+  prompt:
+    - "hän + ymmärtää"
+  answer:
+    - "hän ymmärtää"
+
+- id: "024"
+  prompt:
+    - "me + ymmärtää"
+  answer:
+    - "me ymmärrämme"

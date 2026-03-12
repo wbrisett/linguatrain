@@ -1,6 +1,6 @@
 meta:
-  id: "en-US_fi-FI"
-  name: "English → Finnish (Finnish UI)"
+  id: "fi-FI_ui"
+  name: "Finnish UI (auto labels)"
 
 languages:
   source:
@@ -20,9 +20,15 @@ ui:
   replay_hint: "🔁 (Kirjoita 'r' toistaaksesi äänen)"
   also_accepted_prefix: "➕ Myös käy:"
   phonetic_prefix: "🗣 ääntämys:"
-  prompt_prefix: "englanniksi"
-  target_prefix: "suomeksi"
+  prompt_prefix: "auto"
+  target_prefix: "auto"
   correct_answer_prefix: "📘 Oikea vastaus:"
   correct_word_prefix: "📘 Oikea sana:"
   quit_message: "👋 Lopetetaan. Kiitos!"
   no_mistakes: "😊 Ei virheitä — hienoa!"
+  printed_voice_prefix: "🗣 ääneen:"
+  transform_positive_instruction: "Anna myönteinen vastaus:"
+  transform_negative_instruction: "Anna kielteinen vastaus:"
+  conjugate_positive_instruction: "Anna myönteinen muoto:"
+  conjugate_negative_instruction: "Anna kielteinen muoto:"
+  conjugate_prompt: "Taivuta verbi."

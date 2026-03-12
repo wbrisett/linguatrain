@@ -1,0 +1,261 @@
+metadata:
+  id: "fi_chapter_02"
+  name: "Finnish Chapter 2 – Vocabulary"
+
+entries:
+
+- id: "001"
+  source: "minkämaalainen"
+  phonetic: "MINK-kah-MAH-lai-nen"
+  target: "from what country"
+
+- id: "002"
+  source: "loppua"
+  phonetic: "LOP-poo-ah"
+  target: "to run out"
+
+- id: "003"
+  source: "muu"
+  phonetic: "MOO"
+  target: "other"
+
+- id: "004"
+  source: "opiskelija"
+  phonetic: "OH-pis-keh-lee-yah"
+  target: "student"
+
+- id: "005"
+  source: "mennä"
+  phonetic: "MEN-nah"
+  target: "to go"
+
+- id: "006"
+  source: "koti"
+  phonetic: "KO-tee"
+  target: "home"
+
+- id: "007"
+  source: "mutta"
+  phonetic: "MOOT-tah"
+  target: "but"
+
+- id: "008"
+  source: "kioski"
+  phonetic: "KEE-osk-kee"
+  target: "kiosk"
+
+- id: "009"
+  source: "ostaa"
+  phonetic: "OS-tah"
+  target: "to buy"
+
+- id: "010"
+  source: "jäätelö"
+  phonetic: "YAA-teh-lur"
+  target: "ice cream"
+
+- id: "011"
+  source: "maksaa"
+  phonetic: "MAK-sah"
+  target: "to cost"
+  also_accepted:
+    - "to pay"
+
+- id: "012"
+  source: "euro"
+  phonetic: "EU-ro"
+  target: "euro"
+
+- id: "013"
+  source: "ei"
+  phonetic: "AY"
+  target: "no"
+
+- id: "014"
+  source: "koska"
+  phonetic: "KOS-kah"
+  target: "because"
+
+- id: "015"
+  source: "säästää"
+  phonetic: "SAA-staa"
+  target: "to save"
+
+- id: "016"
+  source: "raha"
+  phonetic: "RA-hah"
+  target: "money"
+
+- id: "017"
+  source: "sitten"
+  phonetic: "SIT-ten"
+  target: "then"
+
+- id: "018"
+  source: "istua"
+  phonetic: "IS-too-ah"
+  target: "to sit"
+
+- id: "019"
+  source: "puisto"
+  phonetic: "POO-is-to"
+  target: "park"
+
+- id: "020"
+  source: "puhua"
+  phonetic: "POO-hoo-ah"
+  target: "to speak"
+
+- id: "021"
+  source: "nauraa"
+  phonetic: "NOW-rah"
+  target: "to laugh"
+
+- id: "022"
+  source: "brasilialainen"
+  phonetic: "BRA-see-lee-ah-lai-nen"
+  target: "Brazilian"
+
+- id: "023"
+  source: "venäläinen"
+  phonetic: "VEH-na-lai-nen"
+  target: "Russian"
+
+- id: "024"
+  source: "mistä"
+  phonetic: "MIS-tah"
+  target: "from where"
+
+- id: "025"
+  source: "kotoisin"
+  phonetic: "KO-toy-sin"
+  target: "from"
+
+- id: "026"
+  source: "Etelä-Afrikka"
+  phonetic: "EH-teh-lah AF-ree-kah"
+  target: "South Africa"
+
+- id: "027"
+  source: "Ai jaa!"
+  phonetic: "AI yah"
+  target: "Oh really"
+
+- id: "028"
+  source: "kieli"
+  phonetic: "KEE-eh-lee"
+  target: "language"
+
+- id: "029"
+  source: "äidinkieli"
+  phonetic: "AI-din-kee-eh-lee"
+  target: "mother tongue"
+  also_accepted:
+    - "native language"
+
+- id: "030"
+  source: "englanti"
+  phonetic: "ENG-lan-tee"
+  target: "English"
+
+- id: "031"
+  source: "myös"
+  phonetic: "MURSS"
+  target: "also"
+
+- id: "032"
+  source: "vähän"
+  phonetic: "VA-han"
+  target: "a little"
+
+- id: "033"
+  source: "espanja"
+  phonetic: "ES-pan-yah"
+  target: "Spanish"
+
+- id: "034"
+  source: "en puhu"
+  phonetic: "EN POO-hoo"
+  target: "I do not speak"
+
+- id: "035"
+  source: "Brasilia"
+  phonetic: "BRA-see-lee-ah"
+  target: "Brazil"
+
+- id: "036"
+  source: "portugali"
+  phonetic: "POR-too-gah-lee"
+  target: "Portuguese"
+
+- id: "037"
+  source: "Ai niin!"
+  phonetic: "AI neen"
+  target: "Oh right"
+
+- id: "038"
+  source: "totta"
+  phonetic: "TOT-tah"
+  target: "true"
+
+- id: "039"
+  source: "ajaa"
+  phonetic: "AH-yah"
+  target: "to drive"
+
+- id: "040"
+  source: "auto"
+  phonetic: "OW-to"
+  target: "car"
+
+- id: "041"
+  source: "bussipysäkki"
+  phonetic: "BOOS-see-pu-sak-kee"
+  target: "bus stop"
+
+- id: "042"
+  source: "missä"
+  phonetic: "MIS-sah"
+  target: "where"
+
+- id: "043"
+  source: "asua"
+  phonetic: "AH-soo-ah"
+  target: "to live"
+
+- id: "044"
+  source: "Pohjois-Helsinki"
+  phonetic: "POH-yoys HEL-sin-kee"
+  target: "North Helsinki"
+
+- id: "045"
+  source: "bussi"
+  phonetic: "BOOS-see"
+  target: "bus"
+
+- id: "046"
+  source: "ei ... vaan"
+  phonetic: "AY ... VAHN"
+  target: "not ... but"
+
+- id: "047"
+  source: "ensin"
+  phonetic: "EN-sin"
+  target: "first"
+
+- id: "048"
+  source: "metro"
+  phonetic: "MET-ro"
+  target: "metro"
+  also_accepted:
+    - "subway"
+
+- id: "049"
+  source: "nyt"
+  phonetic: "NUYT"
+  target: "now"
+
+- id: "050"
+  source: "tulla"
+  phonetic: "TOOL-lah"
+  target: "to come"

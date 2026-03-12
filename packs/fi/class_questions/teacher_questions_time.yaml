@@ -1,0 +1,20 @@
+metadata:
+  pack_name: "Teacher Questions – Time"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Teacher questions about telling time."
+
+entries:
+  - id: "001"
+    prompt: "What time is it?"
+    answer:
+      - "Mitä kello on?"
+    phonetic: "MEE-tah KEL-loh on"
+
+  - id: "002"
+    prompt: "When does the course start?"
+    answer:
+      - "Milloin kurssi alkaa?"
+    phonetic: "MEEL-loin KOOR-see AHL-kah"

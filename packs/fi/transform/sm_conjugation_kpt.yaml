@@ -1,0 +1,98 @@
+metadata:
+  id: "sm2_kpt_conjugation"
+  pack_name: "Suomen Mestari 2 — KPT Conjugation"
+  drill_type: "conjugate"
+  shuffle_persons: true
+
+persons:
+  - minä
+  - sinä
+  - hän
+  - me
+  - te
+  - he
+
+entries:
+  - id: "kpt_lukea"
+    lemma: "lukea"
+
+    forms:
+      minä:
+        positive:
+          - "Minä luen"
+          - "Luen"
+        negative:
+          - "Minä en lue"
+          - "En lue"
+
+      sinä:
+        positive:
+          - "Sinä luet"
+        negative:
+          - "Sinä et lue"
+
+      hän:
+        positive:
+          - "Hän lukee"
+        negative:
+          - "Hän ei lue"
+
+      me:
+        positive:
+          - "Me luemme"
+        negative:
+          - "Me emme lue"
+
+      te:
+        positive:
+          - "Te luette"
+        negative:
+          - "Te ette lue"
+
+      he:
+        positive:
+          - "He lukevat"
+        negative:
+          - "He eivät lue"
+
+  - id: "kpt_ampua"
+    lemma: "ampua"
+
+    forms:
+      minä:
+        positive:
+          - "Minä ammun"
+          - "Ammun"
+        negative:
+          - "Minä en ammu"
+          - "En ammu"
+
+      sinä:
+        positive:
+          - "Sinä ammut"
+        negative:
+          - "Sinä et ammu"
+
+      hän:
+        positive:
+          - "Hän ampuu"
+        negative:
+          - "Hän ei ammu"
+
+      me:
+        positive:
+          - "Me ammumme"
+        negative:
+          - "Me emme ammu"
+
+      te:
+        positive:
+          - "Te ammutte"
+        negative:
+          - "Te ette ammu"
+
+      he:
+        positive:
+          - "He ampuvat"
+        negative:
+          - "He eivät ammu"

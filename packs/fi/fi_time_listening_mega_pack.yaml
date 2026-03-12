@@ -1,0 +1,1732 @@
+metadata:
+  id: fi_time_listening_300
+  name: Finnish Time Listening Mega Pack (300 entries)
+entries:
+- id: '001'
+  prompt:
+  - '20:40'
+  - '20:40'
+  answer:
+  - kaksikymmentä neljäkymmentä.
+- id: '002'
+  prompt:
+  - '11:25'
+  - '11:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli yksitoista.
+- id: '003'
+  prompt:
+  - 02:05
+  - '2:05'
+  answer:
+  - Kello on viisi yli kaksi.
+- id: '004'
+  prompt:
+  - 02:55
+  - '2:55'
+  answer:
+  - Kello on viisi vaille kolme.
+- id: '005'
+  prompt:
+  - 01:50
+  - '1:50'
+  answer:
+  - Kello on kymmenen vaille kaksi.
+- id: '006'
+  prompt:
+  - '20:45'
+  - '20:45'
+  answer:
+  - kaksikymmentä neljäkymmentä viisi.
+- id: '007'
+  prompt:
+  - '16:55'
+  - '16:55'
+  answer:
+  - kuusitoista viisikymmentä viisi.
+- id: 008
+  prompt:
+  - 01:05
+  - '1:05'
+  answer:
+  - yksi viisi.
+- id: 009
+  prompt:
+  - 04:20
+  - '4:20'
+  answer:
+  - neljä kaksikymmentä.
+- id: '010'
+  prompt:
+  - '13:30'
+  - '13:30'
+  answer:
+  - Kello on puoli kaksi.
+- id: '011'
+  prompt:
+  - '10:35'
+  - '10:35'
+  answer:
+  - kymmenen kolmekymmentä viisi.
+- id: '012'
+  prompt:
+  - 00:40
+  - 0:40
+  answer:
+  - nolla neljäkymmentä.
+- id: '013'
+  prompt:
+  - '15:45'
+  - '15:45'
+  answer:
+  - Kello on varttia vaille neljä.
+- id: '014'
+  prompt:
+  - 00:50
+  - 0:50
+  answer:
+  - nolla viisikymmentä.
+- id: '015'
+  prompt:
+  - 01:10
+  - '1:10'
+  answer:
+  - Kello on kymmenen yli yksi.
+- id: '016'
+  prompt:
+  - '18:25'
+  - '18:25'
+  answer:
+  - kahdeksantoista kaksikymmentä viisi.
+- id: '017'
+  prompt:
+  - '22:55'
+  - '22:55'
+  answer:
+  - kaksikymmentä kaksi viisikymmentä viisi.
+- id: 018
+  prompt:
+  - '19:10'
+  - '19:10'
+  answer:
+  - Kello on kymmenen yli seitsemän.
+- id: 019
+  prompt:
+  - 01:20
+  - '1:20'
+  answer:
+  - yksi kaksikymmentä.
+- id: '020'
+  prompt:
+  - 04:40
+  - '4:40'
+  answer:
+  - neljä neljäkymmentä.
+- id: '021'
+  prompt:
+  - 00:10
+  - 0:10
+  answer:
+  - Kello on kymmenen yli kaksitoista.
+- id: '022'
+  prompt:
+  - '14:55'
+  - '14:55'
+  answer:
+  - Kello on viisi vaille kolme.
+- id: '023'
+  prompt:
+  - '12:00'
+  - '12:00'
+  answer:
+  - kaksitoista nolla.
+- id: '024'
+  prompt:
+  - 03:55
+  - '3:55'
+  answer:
+  - kolme viisikymmentä viisi.
+- id: '025'
+  prompt:
+  - '10:30'
+  - '10:30'
+  answer:
+  - kymmenen kolmekymmentä.
+- id: '026'
+  prompt:
+  - '14:15'
+  - '14:15'
+  answer:
+  - neljätoista viisitoista.
+- id: '027'
+  prompt:
+  - '18:20'
+  - '18:20'
+  answer:
+  - kahdeksantoista kaksikymmentä.
+- id: 028
+  prompt:
+  - '10:50'
+  - '10:50'
+  answer:
+  - kymmenen viisikymmentä.
+- id: 029
+  prompt:
+  - '22:40'
+  - '22:40'
+  answer:
+  - kaksikymmentä kaksi neljäkymmentä.
+- id: '030'
+  prompt:
+  - 08:45
+  - '8:45'
+  answer:
+  - kahdeksan neljäkymmentä viisi.
+- id: '031'
+  prompt:
+  - '18:30'
+  - '18:30'
+  answer:
+  - Kello on puoli seitsemän.
+- id: '032'
+  prompt:
+  - '21:35'
+  - '21:35'
+  answer:
+  - kaksikymmentä yksi kolmekymmentä viisi.
+- id: '033'
+  prompt:
+  - 07:10
+  - '7:10'
+  answer:
+  - seitsemän kymmenen.
+- id: '034'
+  prompt:
+  - 09:30
+  - '9:30'
+  answer:
+  - yhdeksän kolmekymmentä.
+- id: '035'
+  prompt:
+  - '21:25'
+  - '21:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli yhdeksän.
+- id: '036'
+  prompt:
+  - 05:05
+  - '5:05'
+  answer:
+  - viisi viisi.
+- id: '037'
+  prompt:
+  - 00:30
+  - 0:30
+  answer:
+  - Kello on puoli yksi.
+- id: 038
+  prompt:
+  - '22:45'
+  - '22:45'
+  answer:
+  - Kello on varttia vaille yksitoista.
+- id: 039
+  prompt:
+  - 02:35
+  - '2:35'
+  answer:
+  - kaksi kolmekymmentä viisi.
+- id: '040'
+  prompt:
+  - 09:15
+  - '9:15'
+  answer:
+  - Kello on varttia yli yhdeksän.
+- id: '041'
+  prompt:
+  - '13:55'
+  - '13:55'
+  answer:
+  - kolmetoista viisikymmentä viisi.
+- id: '042'
+  prompt:
+  - 07:25
+  - '7:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli seitsemän.
+- id: '043'
+  prompt:
+  - 08:05
+  - '8:05'
+  answer:
+  - Kello on viisi yli kahdeksan.
+- id: '044'
+  prompt:
+  - '18:55'
+  - '18:55'
+  answer:
+  - Kello on viisi vaille seitsemän.
+- id: '045'
+  prompt:
+  - 08:50
+  - '8:50'
+  answer:
+  - kahdeksan viisikymmentä.
+- id: '046'
+  prompt:
+  - 00:20
+  - 0:20
+  answer:
+  - nolla kaksikymmentä.
+- id: '047'
+  prompt:
+  - 06:30
+  - '6:30'
+  answer:
+  - kuusi kolmekymmentä.
+- id: 048
+  prompt:
+  - '14:45'
+  - '14:45'
+  answer:
+  - Kello on varttia vaille kolme.
+- id: 049
+  prompt:
+  - '20:05'
+  - '20:05'
+  answer:
+  - Kello on viisi yli kahdeksan.
+- id: '050'
+  prompt:
+  - '17:30'
+  - '17:30'
+  answer:
+  - seitsemäntoista kolmekymmentä.
+- id: '051'
+  prompt:
+  - 09:50
+  - '9:50'
+  answer:
+  - yhdeksän viisikymmentä.
+- id: '052'
+  prompt:
+  - 03:35
+  - '3:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille neljä.
+- id: '053'
+  prompt:
+  - 07:50
+  - '7:50'
+  answer:
+  - Kello on kymmenen vaille kahdeksan.
+- id: '054'
+  prompt:
+  - '15:10'
+  - '15:10'
+  answer:
+  - viisitoista kymmenen.
+- id: '055'
+  prompt:
+  - 02:00
+  - '2:00'
+  answer:
+  - kaksi nolla.
+- id: '056'
+  prompt:
+  - 05:20
+  - '5:20'
+  answer:
+  - viisi kaksikymmentä.
+- id: '057'
+  prompt:
+  - 05:30
+  - '5:30'
+  answer:
+  - Kello on puoli kuusi.
+- id: 058
+  prompt:
+  - '13:40'
+  - '13:40'
+  answer:
+  - Kello on kaksikymmentä vaille kaksi.
+- id: 059
+  prompt:
+  - '12:25'
+  - '12:25'
+  answer:
+  - kaksitoista kaksikymmentä viisi.
+- id: '060'
+  prompt:
+  - '10:55'
+  - '10:55'
+  answer:
+  - Kello on viisi vaille yksitoista.
+- id: '061'
+  prompt:
+  - '22:20'
+  - '22:20'
+  answer:
+  - kaksikymmentä kaksi kaksikymmentä.
+- id: '062'
+  prompt:
+  - 05:50
+  - '5:50'
+  answer:
+  - Kello on kymmenen vaille kuusi.
+- id: '063'
+  prompt:
+  - 05:35
+  - '5:35'
+  answer:
+  - viisi kolmekymmentä viisi.
+- id: '064'
+  prompt:
+  - '15:05'
+  - '15:05'
+  answer:
+  - Kello on viisi yli kolme.
+- id: '065'
+  prompt:
+  - '21:15'
+  - '21:15'
+  answer:
+  - kaksikymmentä yksi viisitoista.
+- id: '066'
+  prompt:
+  - '17:20'
+  - '17:20'
+  answer:
+  - seitsemäntoista kaksikymmentä.
+- id: '067'
+  prompt:
+  - '11:40'
+  - '11:40'
+  answer:
+  - yksitoista neljäkymmentä.
+- id: 068
+  prompt:
+  - '11:15'
+  - '11:15'
+  answer:
+  - Kello on varttia yli yksitoista.
+- id: 069
+  prompt:
+  - '23:15'
+  - '23:15'
+  answer:
+  - kaksikymmentä kolme viisitoista.
+- id: '070'
+  prompt:
+  - '18:15'
+  - '18:15'
+  answer:
+  - kahdeksantoista viisitoista.
+- id: '071'
+  prompt:
+  - 04:10
+  - '4:10'
+  answer:
+  - neljä kymmenen.
+- id: '072'
+  prompt:
+  - '14:30'
+  - '14:30'
+  answer:
+  - Kello on puoli kolme.
+- id: '073'
+  prompt:
+  - 08:15
+  - '8:15'
+  answer:
+  - kahdeksan viisitoista.
+- id: '074'
+  prompt:
+  - '12:05'
+  - '12:05'
+  answer:
+  - Kello on viisi yli kaksitoista.
+- id: '075'
+  prompt:
+  - '23:55'
+  - '23:55'
+  answer:
+  - kaksikymmentä kolme viisikymmentä viisi.
+- id: '076'
+  prompt:
+  - 07:20
+  - '7:20'
+  answer:
+  - seitsemän kaksikymmentä.
+- id: '077'
+  prompt:
+  - 03:05
+  - '3:05'
+  answer:
+  - Kello on viisi yli kolme.
+- id: 078
+  prompt:
+  - 04:30
+  - '4:30'
+  answer:
+  - Kello on puoli viisi.
+- id: 079
+  prompt:
+  - 05:40
+  - '5:40'
+  answer:
+  - Kello on kaksikymmentä vaille kuusi.
+- id: 080
+  prompt:
+  - 08:00
+  - '8:00'
+  answer:
+  - Kello on kahdeksan.
+- id: 081
+  prompt:
+  - 06:55
+  - '6:55'
+  answer:
+  - Kello on viisi vaille seitsemän.
+- id: 082
+  prompt:
+  - '17:05'
+  - '17:05'
+  answer:
+  - seitsemäntoista viisi.
+- id: 083
+  prompt:
+  - '10:05'
+  - '10:05'
+  answer:
+  - Kello on viisi yli kymmenen.
+- id: 084
+  prompt:
+  - 06:45
+  - '6:45'
+  answer:
+  - Kello on varttia vaille seitsemän.
+- id: 085
+  prompt:
+  - 07:05
+  - '7:05'
+  answer:
+  - seitsemän viisi.
+- id: 086
+  prompt:
+  - 08:25
+  - '8:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli kahdeksan.
+- id: 087
+  prompt:
+  - '16:35'
+  - '16:35'
+  answer:
+  - kuusitoista kolmekymmentä viisi.
+- id: 088
+  prompt:
+  - 09:00
+  - '9:00'
+  answer:
+  - yhdeksän nolla.
+- id: 089
+  prompt:
+  - 06:50
+  - '6:50'
+  answer:
+  - Kello on kymmenen vaille seitsemän.
+- id: 090
+  prompt:
+  - '23:05'
+  - '23:05'
+  answer:
+  - Kello on viisi yli yksitoista.
+- id: 091
+  prompt:
+  - '23:50'
+  - '23:50'
+  answer:
+  - Kello on kymmenen vaille kaksitoista.
+- id: 092
+  prompt:
+  - 05:15
+  - '5:15'
+  answer:
+  - viisi viisitoista.
+- id: 093
+  prompt:
+  - 07:45
+  - '7:45'
+  answer:
+  - Kello on varttia vaille kahdeksan.
+- id: 094
+  prompt:
+  - '23:35'
+  - '23:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille kaksitoista.
+- id: 095
+  prompt:
+  - '19:50'
+  - '19:50'
+  answer:
+  - Kello on kymmenen vaille kahdeksan.
+- id: 096
+  prompt:
+  - 04:00
+  - '4:00'
+  answer:
+  - neljä nolla.
+- id: 097
+  prompt:
+  - 04:25
+  - '4:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli neljä.
+- id: 098
+  prompt:
+  - '21:50'
+  - '21:50'
+  answer:
+  - kaksikymmentä yksi viisikymmentä.
+- id: 099
+  prompt:
+  - 06:20
+  - '6:20'
+  answer:
+  - kuusi kaksikymmentä.
+- id: '100'
+  prompt:
+  - 03:50
+  - '3:50'
+  answer:
+  - Kello on kymmenen vaille neljä.
+- id: '101'
+  prompt:
+  - '17:10'
+  - '17:10'
+  answer:
+  - seitsemäntoista kymmenen.
+- id: '102'
+  prompt:
+  - 02:50
+  - '2:50'
+  answer:
+  - Kello on kymmenen vaille kolme.
+- id: '103'
+  prompt:
+  - '21:45'
+  - '21:45'
+  answer:
+  - kaksikymmentä yksi neljäkymmentä viisi.
+- id: '104'
+  prompt:
+  - '20:55'
+  - '20:55'
+  answer:
+  - kaksikymmentä viisikymmentä viisi.
+- id: '105'
+  prompt:
+  - 06:25
+  - '6:25'
+  answer:
+  - kuusi kaksikymmentä viisi.
+- id: '106'
+  prompt:
+  - 00:45
+  - 0:45
+  answer:
+  - nolla neljäkymmentä viisi.
+- id: '107'
+  prompt:
+  - '12:30'
+  - '12:30'
+  answer:
+  - Kello on puoli yksi.
+- id: '108'
+  prompt:
+  - '20:50'
+  - '20:50'
+  answer:
+  - kaksikymmentä viisikymmentä.
+- id: '109'
+  prompt:
+  - '16:05'
+  - '16:05'
+  answer:
+  - kuusitoista viisi.
+- id: '110'
+  prompt:
+  - '12:35'
+  - '12:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille yksi.
+- id: '111'
+  prompt:
+  - 05:25
+  - '5:25'
+  answer:
+  - viisi kaksikymmentä viisi.
+- id: '112'
+  prompt:
+  - '21:20'
+  - '21:20'
+  answer:
+  - Kello on kaksikymmentä yli yhdeksän.
+- id: '113'
+  prompt:
+  - '20:10'
+  - '20:10'
+  answer:
+  - Kello on kymmenen yli kahdeksan.
+- id: '114'
+  prompt:
+  - '22:05'
+  - '22:05'
+  answer:
+  - kaksikymmentä kaksi viisi.
+- id: '115'
+  prompt:
+  - '22:15'
+  - '22:15'
+  answer:
+  - Kello on varttia yli kymmenen.
+- id: '116'
+  prompt:
+  - '11:00'
+  - '11:00'
+  answer:
+  - yksitoista nolla.
+- id: '117'
+  prompt:
+  - 02:20
+  - '2:20'
+  answer:
+  - kaksi kaksikymmentä.
+- id: '118'
+  prompt:
+  - '11:05'
+  - '11:05'
+  answer:
+  - yksitoista viisi.
+- id: '119'
+  prompt:
+  - 08:35
+  - '8:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille yhdeksän.
+- id: '120'
+  prompt:
+  - '19:15'
+  - '19:15'
+  answer:
+  - yhdeksäntoista viisitoista.
+- id: '121'
+  prompt:
+  - '13:50'
+  - '13:50'
+  answer:
+  - Kello on kymmenen vaille kaksi.
+- id: '122'
+  prompt:
+  - 01:15
+  - '1:15'
+  answer:
+  - Kello on varttia yli yksi.
+- id: '123'
+  prompt:
+  - 07:15
+  - '7:15'
+  answer:
+  - Kello on varttia yli seitsemän.
+- id: '124'
+  prompt:
+  - '10:25'
+  - '10:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli kymmenen.
+- id: '125'
+  prompt:
+  - '18:05'
+  - '18:05'
+  answer:
+  - kahdeksantoista viisi.
+- id: '126'
+  prompt:
+  - 00:05
+  - 0:05
+  answer:
+  - Kello on viisi yli kaksitoista.
+- id: '127'
+  prompt:
+  - '12:10'
+  - '12:10'
+  answer:
+  - Kello on kymmenen yli kaksitoista.
+- id: '128'
+  prompt:
+  - '11:35'
+  - '11:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille kaksitoista.
+- id: '129'
+  prompt:
+  - 09:45
+  - '9:45'
+  answer:
+  - Kello on varttia vaille kymmenen.
+- id: '130'
+  prompt:
+  - '21:10'
+  - '21:10'
+  answer:
+  - kaksikymmentä yksi kymmenen.
+- id: '131'
+  prompt:
+  - '22:00'
+  - '22:00'
+  answer:
+  - Kello on kymmenen.
+- id: '132'
+  prompt:
+  - 02:10
+  - '2:10'
+  answer:
+  - kaksi kymmenen.
+- id: '133'
+  prompt:
+  - 01:35
+  - '1:35'
+  answer:
+  - yksi kolmekymmentä viisi.
+- id: '134'
+  prompt:
+  - 08:55
+  - '8:55'
+  answer:
+  - kahdeksan viisikymmentä viisi.
+- id: '135'
+  prompt:
+  - 03:45
+  - '3:45'
+  answer:
+  - kolme neljäkymmentä viisi.
+- id: '136'
+  prompt:
+  - 04:35
+  - '4:35'
+  answer:
+  - neljä kolmekymmentä viisi.
+- id: '137'
+  prompt:
+  - '11:45'
+  - '11:45'
+  answer:
+  - Kello on varttia vaille kaksitoista.
+- id: '138'
+  prompt:
+  - '17:35'
+  - '17:35'
+  answer:
+  - seitsemäntoista kolmekymmentä viisi.
+- id: '139'
+  prompt:
+  - '10:15'
+  - '10:15'
+  answer:
+  - kymmenen viisitoista.
+- id: '140'
+  prompt:
+  - '23:30'
+  - '23:30'
+  answer:
+  - Kello on puoli kaksitoista.
+- id: '141'
+  prompt:
+  - '17:00'
+  - '17:00'
+  answer:
+  - seitsemäntoista nolla.
+- id: '142'
+  prompt:
+  - 03:20
+  - '3:20'
+  answer:
+  - Kello on kaksikymmentä yli kolme.
+- id: '143'
+  prompt:
+  - '15:40'
+  - '15:40'
+  answer:
+  - Kello on kaksikymmentä vaille neljä.
+- id: '144'
+  prompt:
+  - '20:15'
+  - '20:15'
+  answer:
+  - Kello on varttia yli kahdeksan.
+- id: '145'
+  prompt:
+  - 02:25
+  - '2:25'
+  answer:
+  - kaksi kaksikymmentä viisi.
+- id: '146'
+  prompt:
+  - 06:40
+  - '6:40'
+  answer:
+  - kuusi neljäkymmentä.
+- id: '147'
+  prompt:
+  - '20:00'
+  - '20:00'
+  answer:
+  - kaksikymmentä nolla.
+- id: '148'
+  prompt:
+  - '16:10'
+  - '16:10'
+  answer:
+  - Kello on kymmenen yli neljä.
+- id: '149'
+  prompt:
+  - '19:20'
+  - '19:20'
+  answer:
+  - Kello on kaksikymmentä yli seitsemän.
+- id: '150'
+  prompt:
+  - '17:50'
+  - '17:50'
+  answer:
+  - Kello on kymmenen vaille kuusi.
+- id: '151'
+  prompt:
+  - '22:30'
+  - '22:30'
+  answer:
+  - Kello on puoli yksitoista.
+- id: '152'
+  prompt:
+  - '14:50'
+  - '14:50'
+  answer:
+  - Kello on kymmenen vaille kolme.
+- id: '153'
+  prompt:
+  - '14:20'
+  - '14:20'
+  answer:
+  - neljätoista kaksikymmentä.
+- id: '154'
+  prompt:
+  - 02:40
+  - '2:40'
+  answer:
+  - kaksi neljäkymmentä.
+- id: '155'
+  prompt:
+  - 09:20
+  - '9:20'
+  answer:
+  - yhdeksän kaksikymmentä.
+- id: '156'
+  prompt:
+  - 08:10
+  - '8:10'
+  answer:
+  - kahdeksan kymmenen.
+- id: '157'
+  prompt:
+  - 09:05
+  - '9:05'
+  answer:
+  - yhdeksän viisi.
+- id: '158'
+  prompt:
+  - '20:35'
+  - '20:35'
+  answer:
+  - kaksikymmentä kolmekymmentä viisi.
+- id: '159'
+  prompt:
+  - 09:35
+  - '9:35'
+  answer:
+  - yhdeksän kolmekymmentä viisi.
+- id: '160'
+  prompt:
+  - '19:55'
+  - '19:55'
+  answer:
+  - yhdeksäntoista viisikymmentä viisi.
+- id: '161'
+  prompt:
+  - '22:35'
+  - '22:35'
+  answer:
+  - kaksikymmentä kaksi kolmekymmentä viisi.
+- id: '162'
+  prompt:
+  - '16:20'
+  - '16:20'
+  answer:
+  - kuusitoista kaksikymmentä.
+- id: '163'
+  prompt:
+  - 02:15
+  - '2:15'
+  answer:
+  - kaksi viisitoista.
+- id: '164'
+  prompt:
+  - '11:10'
+  - '11:10'
+  answer:
+  - yksitoista kymmenen.
+- id: '165'
+  prompt:
+  - '21:40'
+  - '21:40'
+  answer:
+  - Kello on kaksikymmentä vaille kymmenen.
+- id: '166'
+  prompt:
+  - '13:35'
+  - '13:35'
+  answer:
+  - kolmetoista kolmekymmentä viisi.
+- id: '167'
+  prompt:
+  - '13:10'
+  - '13:10'
+  answer:
+  - kolmetoista kymmenen.
+- id: '168'
+  prompt:
+  - '10:00'
+  - '10:00'
+  answer:
+  - kymmenen nolla.
+- id: '169'
+  prompt:
+  - '10:20'
+  - '10:20'
+  answer:
+  - Kello on kaksikymmentä yli kymmenen.
+- id: '170'
+  prompt:
+  - '17:15'
+  - '17:15'
+  answer:
+  - Kello on varttia yli viisi.
+- id: '171'
+  prompt:
+  - '19:45'
+  - '19:45'
+  answer:
+  - yhdeksäntoista neljäkymmentä viisi.
+- id: '172'
+  prompt:
+  - '18:40'
+  - '18:40'
+  answer:
+  - Kello on kaksikymmentä vaille seitsemän.
+- id: '173'
+  prompt:
+  - 04:55
+  - '4:55'
+  answer:
+  - Kello on viisi vaille viisi.
+- id: '174'
+  prompt:
+  - '14:40'
+  - '14:40'
+  answer:
+  - neljätoista neljäkymmentä.
+- id: '175'
+  prompt:
+  - '15:25'
+  - '15:25'
+  answer:
+  - viisitoista kaksikymmentä viisi.
+- id: '176'
+  prompt:
+  - 02:30
+  - '2:30'
+  answer:
+  - kaksi kolmekymmentä.
+- id: '177'
+  prompt:
+  - 09:25
+  - '9:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli yhdeksän.
+- id: '178'
+  prompt:
+  - '14:00'
+  - '14:00'
+  answer:
+  - neljätoista nolla.
+- id: '179'
+  prompt:
+  - 03:30
+  - '3:30'
+  answer:
+  - Kello on puoli neljä.
+- id: '180'
+  prompt:
+  - 06:10
+  - '6:10'
+  answer:
+  - kuusi kymmenen.
+- id: '181'
+  prompt:
+  - '23:25'
+  - '23:25'
+  answer:
+  - kaksikymmentä kolme kaksikymmentä viisi.
+- id: '182'
+  prompt:
+  - 01:55
+  - '1:55'
+  answer:
+  - yksi viisikymmentä viisi.
+- id: '183'
+  prompt:
+  - '12:15'
+  - '12:15'
+  answer:
+  - kaksitoista viisitoista.
+- id: '184'
+  prompt:
+  - '18:10'
+  - '18:10'
+  answer:
+  - kahdeksantoista kymmenen.
+- id: '185'
+  prompt:
+  - 00:25
+  - 0:25
+  answer:
+  - nolla kaksikymmentä viisi.
+- id: '186'
+  prompt:
+  - '13:20'
+  - '13:20'
+  answer:
+  - Kello on kaksikymmentä yli yksi.
+- id: '187'
+  prompt:
+  - '19:40'
+  - '19:40'
+  answer:
+  - Kello on kaksikymmentä vaille kahdeksan.
+- id: '188'
+  prompt:
+  - '11:30'
+  - '11:30'
+  answer:
+  - Kello on puoli kaksitoista.
+- id: '189'
+  prompt:
+  - 05:10
+  - '5:10'
+  answer:
+  - viisi kymmenen.
+- id: '190'
+  prompt:
+  - '15:35'
+  - '15:35'
+  answer:
+  - viisitoista kolmekymmentä viisi.
+- id: '191'
+  prompt:
+  - 04:50
+  - '4:50'
+  answer:
+  - Kello on kymmenen vaille viisi.
+- id: '192'
+  prompt:
+  - '20:30'
+  - '20:30'
+  answer:
+  - Kello on puoli yhdeksän.
+- id: '193'
+  prompt:
+  - '16:00'
+  - '16:00'
+  answer:
+  - kuusitoista nolla.
+- id: '194'
+  prompt:
+  - '14:35'
+  - '14:35'
+  answer:
+  - neljätoista kolmekymmentä viisi.
+- id: '195'
+  prompt:
+  - 05:45
+  - '5:45'
+  answer:
+  - Kello on varttia vaille kuusi.
+- id: '196'
+  prompt:
+  - '16:30'
+  - '16:30'
+  answer:
+  - Kello on puoli viisi.
+- id: '197'
+  prompt:
+  - '10:40'
+  - '10:40'
+  answer:
+  - Kello on kaksikymmentä vaille yksitoista.
+- id: '198'
+  prompt:
+  - '15:20'
+  - '15:20'
+  answer:
+  - viisitoista kaksikymmentä.
+- id: '199'
+  prompt:
+  - '16:50'
+  - '16:50'
+  answer:
+  - Kello on kymmenen vaille viisi.
+- id: '200'
+  prompt:
+  - '23:00'
+  - '23:00'
+  answer:
+  - Kello on yksitoista.
+- id: '201'
+  prompt:
+  - '13:25'
+  - '13:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli yksi.
+- id: '202'
+  prompt:
+  - 00:35
+  - 0:35
+  answer:
+  - Kello on kaksikymmentä viisi vaille yksi.
+- id: '203'
+  prompt:
+  - 09:40
+  - '9:40'
+  answer:
+  - Kello on kaksikymmentä vaille kymmenen.
+- id: '204'
+  prompt:
+  - '15:15'
+  - '15:15'
+  answer:
+  - Kello on varttia yli kolme.
+- id: '205'
+  prompt:
+  - 06:00
+  - '6:00'
+  answer:
+  - kuusi nolla.
+- id: '206'
+  prompt:
+  - '16:25'
+  - '16:25'
+  answer:
+  - kuusitoista kaksikymmentä viisi.
+- id: '207'
+  prompt:
+  - '15:50'
+  - '15:50'
+  answer:
+  - viisitoista viisikymmentä.
+- id: '208'
+  prompt:
+  - '21:05'
+  - '21:05'
+  answer:
+  - kaksikymmentä yksi viisi.
+- id: '209'
+  prompt:
+  - 05:00
+  - '5:00'
+  answer:
+  - Kello on viisi.
+- id: '210'
+  prompt:
+  - '21:00'
+  - '21:00'
+  answer:
+  - Kello on yhdeksän.
+- id: '211'
+  prompt:
+  - 04:05
+  - '4:05'
+  answer:
+  - neljä viisi.
+- id: '212'
+  prompt:
+  - '12:40'
+  - '12:40'
+  answer:
+  - kaksitoista neljäkymmentä.
+- id: '213'
+  prompt:
+  - 00:00
+  - 0:00
+  answer:
+  - nolla nolla.
+- id: '214'
+  prompt:
+  - '17:45'
+  - '17:45'
+  answer:
+  - Kello on varttia vaille kuusi.
+- id: '215'
+  prompt:
+  - '13:45'
+  - '13:45'
+  answer:
+  - kolmetoista neljäkymmentä viisi.
+- id: '216'
+  prompt:
+  - 01:00
+  - '1:00'
+  answer:
+  - yksi nolla.
+- id: '217'
+  prompt:
+  - 06:15
+  - '6:15'
+  answer:
+  - Kello on varttia yli kuusi.
+- id: '218'
+  prompt:
+  - '19:25'
+  - '19:25'
+  answer:
+  - yhdeksäntoista kaksikymmentä viisi.
+- id: '219'
+  prompt:
+  - '11:50'
+  - '11:50'
+  answer:
+  - yksitoista viisikymmentä.
+- id: '220'
+  prompt:
+  - 02:45
+  - '2:45'
+  answer:
+  - kaksi neljäkymmentä viisi.
+- id: '221'
+  prompt:
+  - '19:05'
+  - '19:05'
+  answer:
+  - Kello on viisi yli seitsemän.
+- id: '222'
+  prompt:
+  - '18:00'
+  - '18:00'
+  answer:
+  - kahdeksantoista nolla.
+- id: '223'
+  prompt:
+  - '23:45'
+  - '23:45'
+  answer:
+  - kaksikymmentä kolme neljäkymmentä viisi.
+- id: '224'
+  prompt:
+  - '12:45'
+  - '12:45'
+  answer:
+  - kaksitoista neljäkymmentä viisi.
+- id: '225'
+  prompt:
+  - 06:35
+  - '6:35'
+  answer:
+  - kuusi kolmekymmentä viisi.
+- id: '226'
+  prompt:
+  - '21:30'
+  - '21:30'
+  answer:
+  - kaksikymmentä yksi kolmekymmentä.
+- id: '227'
+  prompt:
+  - 09:10
+  - '9:10'
+  answer:
+  - yhdeksän kymmenen.
+- id: '228'
+  prompt:
+  - 03:10
+  - '3:10'
+  answer:
+  - kolme kymmenen.
+- id: '229'
+  prompt:
+  - 00:15
+  - 0:15
+  answer:
+  - nolla viisitoista.
+- id: '230'
+  prompt:
+  - '21:55'
+  - '21:55'
+  answer:
+  - Kello on viisi vaille kymmenen.
+- id: '231'
+  prompt:
+  - 01:45
+  - '1:45'
+  answer:
+  - yksi neljäkymmentä viisi.
+- id: '232'
+  prompt:
+  - 01:40
+  - '1:40'
+  answer:
+  - yksi neljäkymmentä.
+- id: '233'
+  prompt:
+  - 03:15
+  - '3:15'
+  answer:
+  - Kello on varttia yli kolme.
+- id: '234'
+  prompt:
+  - '18:35'
+  - '18:35'
+  answer:
+  - Kello on kaksikymmentä viisi vaille seitsemän.
+- id: '235'
+  prompt:
+  - '23:40'
+  - '23:40'
+  answer:
+  - kaksikymmentä kolme neljäkymmentä.
+- id: '236'
+  prompt:
+  - '23:10'
+  - '23:10'
+  answer:
+  - kaksikymmentä kolme kymmenen.
+- id: '237'
+  prompt:
+  - 07:55
+  - '7:55'
+  answer:
+  - Kello on viisi vaille kahdeksan.
+- id: '238'
+  prompt:
+  - '19:00'
+  - '19:00'
+  answer:
+  - Kello on seitsemän.
+- id: '239'
+  prompt:
+  - '22:10'
+  - '22:10'
+  answer:
+  - Kello on kymmenen yli kymmenen.
+- id: '240'
+  prompt:
+  - 07:35
+  - '7:35'
+  answer:
+  - seitsemän kolmekymmentä viisi.
+- id: '241'
+  prompt:
+  - 07:40
+  - '7:40'
+  answer:
+  - Kello on kaksikymmentä vaille kahdeksan.
+- id: '242'
+  prompt:
+  - '13:05'
+  - '13:05'
+  answer:
+  - kolmetoista viisi.
+- id: '243'
+  prompt:
+  - '10:10'
+  - '10:10'
+  answer:
+  - Kello on kymmenen yli kymmenen.
+- id: '244'
+  prompt:
+  - '14:10'
+  - '14:10'
+  answer:
+  - Kello on kymmenen yli kaksi.
+- id: '245'
+  prompt:
+  - 08:30
+  - '8:30'
+  answer:
+  - Kello on puoli yhdeksän.
+- id: '246'
+  prompt:
+  - '14:25'
+  - '14:25'
+  answer:
+  - neljätoista kaksikymmentä viisi.
+- id: '247'
+  prompt:
+  - 03:00
+  - '3:00'
+  answer:
+  - Kello on kolme.
+- id: '248'
+  prompt:
+  - '19:30'
+  - '19:30'
+  answer:
+  - yhdeksäntoista kolmekymmentä.
+- id: '249'
+  prompt:
+  - '16:40'
+  - '16:40'
+  answer:
+  - kuusitoista neljäkymmentä.
+- id: '250'
+  prompt:
+  - '11:55'
+  - '11:55'
+  answer:
+  - yksitoista viisikymmentä viisi.
+- id: '251'
+  prompt:
+  - '13:15'
+  - '13:15'
+  answer:
+  - Kello on varttia yli yksi.
+- id: '252'
+  prompt:
+  - '18:50'
+  - '18:50'
+  answer:
+  - Kello on kymmenen vaille seitsemän.
+- id: '253'
+  prompt:
+  - 04:45
+  - '4:45'
+  answer:
+  - Kello on varttia vaille viisi.
+- id: '254'
+  prompt:
+  - '11:20'
+  - '11:20'
+  answer:
+  - yksitoista kaksikymmentä.
+- id: '255'
+  prompt:
+  - '15:30'
+  - '15:30'
+  answer:
+  - viisitoista kolmekymmentä.
+- id: '256'
+  prompt:
+  - '12:20'
+  - '12:20'
+  answer:
+  - Kello on kaksikymmentä yli kaksitoista.
+- id: '257'
+  prompt:
+  - 07:30
+  - '7:30'
+  answer:
+  - Kello on puoli kahdeksan.
+- id: '258'
+  prompt:
+  - 06:05
+  - '6:05'
+  answer:
+  - Kello on viisi yli kuusi.
+- id: '259'
+  prompt:
+  - '13:00'
+  - '13:00'
+  answer:
+  - kolmetoista nolla.
+- id: '260'
+  prompt:
+  - 09:55
+  - '9:55'
+  answer:
+  - Kello on viisi vaille kymmenen.
+- id: '261'
+  prompt:
+  - 01:25
+  - '1:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli yksi.
+- id: '262'
+  prompt:
+  - 04:15
+  - '4:15'
+  answer:
+  - neljä viisitoista.
+- id: '263'
+  prompt:
+  - '15:55'
+  - '15:55'
+  answer:
+  - viisitoista viisikymmentä viisi.
+- id: '264'
+  prompt:
+  - '18:45'
+  - '18:45'
+  answer:
+  - kahdeksantoista neljäkymmentä viisi.
+- id: '265'
+  prompt:
+  - '14:05'
+  - '14:05'
+  answer:
+  - Kello on viisi yli kaksi.
+- id: '266'
+  prompt:
+  - '22:25'
+  - '22:25'
+  answer:
+  - kaksikymmentä kaksi kaksikymmentä viisi.
+- id: '267'
+  prompt:
+  - '10:45'
+  - '10:45'
+  answer:
+  - kymmenen neljäkymmentä viisi.
+- id: '268'
+  prompt:
+  - 03:40
+  - '3:40'
+  answer:
+  - Kello on kaksikymmentä vaille neljä.
+- id: '269'
+  prompt:
+  - '12:50'
+  - '12:50'
+  answer:
+  - Kello on kymmenen vaille yksi.
+- id: '270'
+  prompt:
+  - '20:25'
+  - '20:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli kahdeksan.
+- id: '271'
+  prompt:
+  - 00:55
+  - 0:55
+  answer:
+  - Kello on viisi vaille yksi.
+- id: '272'
+  prompt:
+  - '16:45'
+  - '16:45'
+  answer:
+  - kuusitoista neljäkymmentä viisi.
+- id: '273'
+  prompt:
+  - '17:55'
+  - '17:55'
+  answer:
+  - seitsemäntoista viisikymmentä viisi.
+- id: '274'
+  prompt:
+  - '12:55'
+  - '12:55'
+  answer:
+  - kaksitoista viisikymmentä viisi.
+- id: '275'
+  prompt:
+  - 05:55
+  - '5:55'
+  answer:
+  - Kello on viisi vaille kuusi.
+- id: '276'
+  prompt:
+  - '17:40'
+  - '17:40'
+  answer:
+  - seitsemäntoista neljäkymmentä.
+- id: '277'
+  prompt:
+  - 03:25
+  - '3:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli kolme.
+- id: '278'
+  prompt:
+  - '20:20'
+  - '20:20'
+  answer:
+  - kaksikymmentä kaksikymmentä.
+- id: '279'
+  prompt:
+  - 08:20
+  - '8:20'
+  answer:
+  - kahdeksan kaksikymmentä.
+- id: '280'
+  prompt:
+  - 08:40
+  - '8:40'
+  answer:
+  - kahdeksan neljäkymmentä.
+- id: '281'
+  prompt:
+  - 01:30
+  - '1:30'
+  answer:
+  - yksi kolmekymmentä.
+- id: '282'
+  prompt:
+  - 07:00
+  - '7:00'
+  answer:
+  - Kello on seitsemän.
+- id: '283'
+  prompt:
+  - '19:35'
+  - '19:35'
+  answer:
+  - yhdeksäntoista kolmekymmentä viisi.
+- id: '284'
+  prompt:
+  - '16:15'
+  - '16:15'
+  answer:
+  - Kello on varttia yli neljä.
+- id: '285'
+  prompt:
+  - '17:25'
+  - '17:25'
+  answer:
+  - Kello on kaksikymmentä viisi yli viisi.
+- id: '286'
+  prompt:
+  - '23:20'
+  - '23:20'
+  answer:
+  - kaksikymmentä kolme kaksikymmentä.
+- id: '287'
+  prompt:
+  - '22:50'
+  - '22:50'
+  answer:
+  - kaksikymmentä kaksi viisikymmentä.
+- id: '288'
+  prompt:
+  - '15:00'
+  - '15:00'
+  answer:
+  - Kello on kolme.

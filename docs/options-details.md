@@ -9,6 +9,12 @@
 | `--listen` | Speak target (source shown) | off |
 | `--listen-no-source` | Speak target (source hidden) | off |
 | `--listen-no-english` | Alias for `--listen-no-source` | off |
+| `--transform` | Enable grammar transform drills (prompt + cue → transformed sentence) | off |
+| `--conjugate` | Enable verb conjugation drills (person + lemma) | off |
+| `--negative` | With `--conjugate`, drill negative forms only | off |
+| `--both` | With `--conjugate`, drill both positive and negative forms | off |
+| `--conversation` | Enable conversation practice mode | off |
+| `--speak` | Speak answers and validate using Whisper speech recognition | off |
 | `--lenient-umlauts` | Allow simplified characters (`a`→`ä`, `o`→`ö`) | off |
 | `--tts-variant written\|spoken` | Choose what Piper speaks | `written` |
 | `--answer-variant written\|spoken\|either` | Choose which answers are accepted | `written` |
@@ -213,6 +219,186 @@ suomeksi: mitä kuuluu
 ```
 
 ------------------------------------------------------------------------
+
+
+---
+
+## Transform Mode (`--transform`)
+
+Transform mode enables **grammar transformation drills** based on a prompt and cue.
+
+Instead of simple translation, the learner must produce a grammatically transformed sentence.
+
+Typical exercises include:
+
+- Positive → Negative
+- Question → Statement
+- Person changes
+
+Example command:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/transform/sm_transform_kpt.yaml all --transform
+```
+
+Example flow:
+
+```text
+Mitä Paula tekee viikonloppuna?
+
+[ soittaa pianoa ]
+
+Anna myönteinen vastaus:
+> Paula soittaa pianoa
+
+Anna kielteinen vastaus:
+> Paula ei soita pianoa
+```
+
+Transform packs use a structured YAML format containing:
+
+- `prompt`
+- `cue`
+- ordered `steps`
+
+See `transform-yaml-structure.md` for full documentation.
+
+---
+
+## Conjugation Mode (`--conjugate`)
+
+Conjugation mode drills **verb morphology** by combining a person and a verb lemma.
+
+The learner must produce the correct conjugated form.
+
+Example command:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/conjugation/sm_conjugation_kpt.yaml all --conjugate
+```
+
+Example flow:
+
+```text
+Conjugate the verb.
+
+[ minä ]
+[ lukea ]
+
+Anna myönteinen muoto:
+> Minä luen
+```
+
+Optional polarity drills:
+
+Positive only (default):
+
+```bash
+--conjugate
+```
+
+Negative only:
+
+```bash
+--conjugate --negative
+```
+
+Both forms:
+
+```bash
+--conjugate --both
+```
+
+Example dual-form drill:
+
+```text
+[ te ]
+[ lukea ]
+
+Anna myönteinen muoto:
+> Te luette
+
+Anna kielteinen muoto:
+> Te ette lue
+```
+
+Conjugation packs define:
+
+- a verb `lemma`
+- supported `persons`
+- accepted `positive` and `negative` forms
+
+See `conjugate-yaml-structure.md` for the full YAML format.
+
+---
+
+## Conversation Mode (`--conversation`)
+
+Conversation mode simulates **short dialogues** instead of isolated prompts.
+
+This mode is designed for practicing realistic conversational exchanges.
+
+Typical workflow:
+
+1. Linguatrain displays a conversational prompt.
+2. The learner responds with the appropriate phrase.
+3. The engine validates the response.
+
+Example command:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/conversations/greetings.yaml --conversation
+```
+
+Example interaction:
+
+```text
+Hei!
+
+> Hei!
+
+Mitä kuuluu?
+
+> Hyvää, kiitos.
+```
+
+Conversation packs allow multi-line dialogue structures and multiple accepted responses.
+
+---
+
+## Speech Mode (`--speak`)
+
+Speech mode allows learners to **answer by speaking instead of typing**.
+
+Linguatrain records audio and uses **Whisper** speech recognition to transcribe the response.
+
+Example:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --speak
+```
+
+Typical flow:
+
+```text
+English: How are you?
+
+🎤 Speak now...
+🎙 Recording (5s window)...
+
+🟡 Close enough
+   Heard: Mita kuluu
+```
+
+Requirements:
+
+- Python
+- Whisper
+- FFmpeg
+
+See `whisper-installation.md` for installation instructions.
+
+---
 
 ### `--lenient-umlauts`
 

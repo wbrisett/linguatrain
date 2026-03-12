@@ -1,0 +1,39 @@
+metadata:
+  pack_name: "Finnish Basics – Places and Living"
+  version: 1
+  source_lang: en
+  target_lang: fi
+  author: Wayne Brissette
+  description: "Talking about where you live and locations."
+
+entries:
+  - id: "001"
+    prompt: "Where do you live?"
+    answer:
+      - "Missä sinä asut?"
+    phonetic: "MEES-sah SEE-nah AH-soot"
+
+  - id: "002"
+    prompt: "I live in Helsinki."
+    answer:
+      - "Asun Helsingissä."
+      - "Minä asun Helsingissä."
+    phonetic: "AH-soon HEL-sing-iss-sah"
+
+  - id: "003"
+    prompt: "Where is Helsinki?"
+    answer:
+      - "Missä Helsinki on?"
+    phonetic: "MEES-sah HEL-sing-kee on"
+
+  - id: "004"
+    prompt: "Helsinki is in Finland."
+    answer:
+      - "Helsinki on Suomessa."
+    phonetic: "HEL-sing-kee on SUO-mes-sah"
+
+  - id: "005"
+    prompt: "Helsinki is not in America."
+    answer:
+      - "Helsinki ei ole Amerikassa."
+    phonetic: "HEL-sing-kee ay OH-leh AH-meh-ree-kahs-sah"

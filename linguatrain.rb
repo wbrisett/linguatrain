@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 # linguatrain.rb
-# Language quiz CLI (typing / match-game / listening via Piper)
+# Language quiz CLI (typing / match-game / listening / speaking via Piper + Whisper)
 
 require "yaml"
 require "time"
@@ -10,6 +10,7 @@ require "optparse"
 require "securerandom"
 require "digest"
 require "fileutils"
+require "json"
 
 # -----------------------------
 # Utility
@@ -85,7 +86,20 @@ DEFAULT_UI = {
   source_language_name: "Source",
   target_language_name: "Target",
   target_prefix: "Answer",
-  quit_message: "👋 Exiting quiz."
+  quit_message: "👋 Exiting quiz.",
+  printed_voice_prefix: "🗣 Printed voice",
+  speak_now: "🎤 Speak now...",
+  heard_prefix: "Heard",
+  close_enough: "🟡 Close enough",
+  recording_prefix: "🎙 Recording",
+  press_enter_to_start: "Press Enter to start recording",
+  recording_window_suffix: "window",
+  transform_positive_instruction: "Use the positive form:",
+  transform_negative_instruction: "Use the negative form:",
+  conjugate_prompt: "Conjugate the verb.",
+  conjugate_instruction: "Use the correct form:",
+  conjugate_positive_instruction: "Use the positive form:",
+  conjugate_negative_instruction: "Use the negative form:"
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -217,8 +231,9 @@ def load_localisation(path)
 end
 
 def effective_meta(pack_meta, localisation)
-  # Languages come from localisation; pack may still contain other metadata (back-compat).
-  merged = deep_merge_hash({ languages: localisation[:languages] }, (pack_meta || {}))
+  # Localisation owns languages; packs may still contain other metadata (back-compat).
+  # IMPORTANT: localisation must win for languages so pack-level legacy fields can't silently flip directions.
+  merged = deep_merge_hash((pack_meta || {}), { languages: localisation[:languages] })
 
   # If pack doesn't specify a TTS template, take localisation's default.
   if merged.dig(:tts, :template).to_s.strip.empty? && localisation.dig(:tts, :template)
@@ -251,6 +266,18 @@ def resolve_settings!(options, user_cfg, pack_meta)
   # Piper
   options[:piper_bin] ||= user_cfg.dig(:piper, :bin)
   options[:piper_model] = resolve_piper_model(options, user_cfg, pack_meta)
+
+  # Speech / Whisper
+  options[:speech_record_cmd] ||= user_cfg.dig(:speech, :record_cmd)
+  options[:speech_bin] ||= user_cfg.dig(:speech, :bin)
+  options[:speech_model] ||= user_cfg.dig(:speech, :model)
+  options[:speech_language] ||= user_cfg.dig(:speech, :language)
+  options[:speech_duration] = user_cfg.dig(:speech, :duration) if options[:speech_duration].nil?
+
+  # Final speech defaults (applied after config so config.yaml wins)
+  options[:speech_model] ||= "base"
+  options[:speech_language] ||= "Finnish"
+  options[:speech_duration] = 3 if options[:speech_duration].nil?
 
   # TTS template: pack overrides user defaults
   options[:tts_template] ||= user_cfg.dig(:defaults, :tts_template)
@@ -318,6 +345,232 @@ def normalize_lenient_umlauts(s)
   normalize_basic(s).tr("äö", "ao")
 end
 
+# -----------------------------
+# Speech Recognition & Scoring (Whisper)
+# -----------------------------
+def normalize_for_speech_compare(s)
+  t = normalize_basic(strip_terminal_punct(s))
+  t = t.gsub(/[,:;()\[\]{}"'”“’‘]/, " ")
+  t = t.gsub(/\s+/, " ").strip
+  t
+end
+
+def levenshtein_distance(a, b)
+  a = a.to_s
+  b = b.to_s
+
+  return b.length if a.empty?
+  return a.length if b.empty?
+
+  prev = (0..b.length).to_a
+
+  a.each_char.with_index(1) do |ca, i|
+    curr = [i]
+    b.each_char.with_index(1) do |cb, j|
+      cost = (ca == cb ? 0 : 1)
+      curr[j] = [
+        curr[j - 1] + 1,
+        prev[j] + 1,
+        prev[j - 1] + cost
+      ].min
+    end
+    prev = curr
+  end
+
+  prev[b.length]
+end
+
+def similarity_ratio(a, b)
+  aa = normalize_for_speech_compare(a)
+  bb = normalize_for_speech_compare(b)
+
+  variants_a = [aa]
+  variants_b = [bb]
+
+  # ---------------------------------------------------------
+  # Linguatrain: Finnish ASR tolerance layer
+  #
+  # Whisper often returns forms like:
+  #   "misaasut" instead of "missä asut"
+  #   "vita kulu" instead of "mitä kuuluu"
+  #
+  # To make speaking practice usable for learners we also
+  # compare additional normalized variants:
+  #   - spaces removed
+  #   - umlauts normalized (ä→a, ö→o)
+  #
+  # If you ever want to disable this behavior, remove this
+  # block and keep only the original aa/bb comparison above.
+  # ---------------------------------------------------------
+
+  variants_a << aa.gsub(" ", "")
+  variants_b << bb.gsub(" ", "")
+
+  variants_a << normalize_lenient_umlauts(aa)
+  variants_b << normalize_lenient_umlauts(bb)
+
+  best = 0.0
+
+  variants_a.each do |va|
+    variants_b.each do |vb|
+      max_len = [va.length, vb.length].max
+      next if max_len.zero?
+
+      dist = levenshtein_distance(va, vb)
+      score = 1.0 - (dist.to_f / max_len.to_f)
+      best = score if score > best
+    end
+  end
+
+  best
+end
+
+def shell_escape_single(value)
+  "'#{value.to_s.gsub("'", %q('"'"'))}'"
+end
+
+def build_record_command(template, output_path, duration)
+  tpl = template.to_s.strip
+  raise "Speech record command not configured." if tpl.empty?
+
+  cmd = tpl.gsub("{output}", shell_escape_single(output_path.to_s))
+  cmd = cmd.gsub("{duration}", duration.to_s)
+  cmd
+end
+
+def record_speech_audio(record_cmd_template, duration: 3, ui: nil)
+  wav = File.join("/tmp", "linguatrain_speak_#{Process.pid}_#{SecureRandom.hex(4)}.wav")
+  cmd = build_record_command(record_cmd_template, wav, duration)
+
+  start_label = (ui && ui[:press_enter_to_start]) ? ui[:press_enter_to_start] : "Press Enter to start recording"
+  rec_label = (ui && ui[:recording_prefix]) ? ui[:recording_prefix] : "🎙 Recording"
+  window_suffix = (ui && ui[:recording_window_suffix]) ? ui[:recording_window_suffix] : "window"
+
+  # Wait for user to press Enter to start
+  prompt("#{start_label}: ")
+
+  say("#{rec_label} (#{duration.to_i}s #{window_suffix})...")
+  say("Speak now...")
+
+  pid = Process.spawn(cmd, out: File::NULL, err: File::NULL)
+
+  begin
+    sleep(duration.to_f)
+    begin
+      Process.kill("INT", pid)
+    rescue Errno::ESRCH
+      # already exited
+    end
+    Process.wait(pid)
+  rescue Interrupt
+    begin
+      Process.kill("INT", pid)
+    rescue Errno::ESRCH
+      # already exited
+    end
+    Process.wait(pid) rescue nil
+    raise
+  end
+
+  raise "Speech recording failed." unless File.exist?(wav) && File.size?(wav)
+
+  wav
+end
+
+def whisper_transcribe(audio_path, speech_bin:, model:, language:)
+  resolved = resolve_executable(speech_bin)
+  raise "Speech recognizer not found: #{speech_bin}.\nPATH=#{ENV.fetch('PATH', '')}" unless resolved
+
+  out_dir = File.join("/tmp", "linguatrain_whisper_#{Process.pid}_#{SecureRandom.hex(4)}")
+  FileUtils.mkdir_p(out_dir)
+
+  ok = system(
+    resolved,
+    audio_path,
+    "--language", language.to_s,
+    "--model", model.to_s,
+    "--output_format", "json",
+    "--output_dir", out_dir,
+    "--fp16", "False",
+    out: File::NULL,
+    err: File::NULL
+  )
+
+  raise "Whisper transcription failed." unless ok
+
+  json_path = File.join(out_dir, "#{File.basename(audio_path, File.extname(audio_path))}.json")
+  raise "Whisper output JSON not found: #{json_path}" unless File.exist?(json_path)
+
+  data = JSON.parse(File.read(json_path))
+  text = data["text"].to_s.strip
+  raise "Whisper returned an empty transcript." if text.empty?
+
+  text
+ensure
+  FileUtils.rm_rf(out_dir) if out_dir && File.directory?(out_dir)
+end
+
+def speech_tokens(s)
+  normalize_for_speech_compare(s)
+    .split(/\s+/)
+    .reject(&:empty?)
+end
+
+def stem_like_token(token)
+  t = token.to_s.strip
+  return t if t.empty?
+
+  endings = %w[ssa ssä sta stä lla llä lta ltä lle na nä ksi t n a ä]
+  endings.each do |ending|
+    next unless t.length > ending.length + 2
+    return t[0...-ending.length] if t.end_with?(ending)
+  end
+
+  t
+end
+
+def keyword_overlap_score(transcript, expected)
+  heard = speech_tokens(transcript).map { |t| stem_like_token(t) }
+  want = speech_tokens(expected).map { |t| stem_like_token(t) }
+
+  return 0.0 if want.empty?
+
+  matches = want.count { |tok| heard.include?(tok) }
+  matches.to_f / want.length.to_f
+end
+
+def speech_match_result(transcript, expected_list, lenient:)
+  kind, ok, matched = match_answer(transcript, expected_list, lenient: lenient)
+  return [:exact, true, matched, 1.0, 1.0] if ok
+
+  best_expected = nil
+  best_similarity = -1.0
+  best_overlap = -1.0
+
+  expected_list.each do |candidate|
+    similarity = similarity_ratio(transcript, candidate)
+    overlap = keyword_overlap_score(transcript, candidate)
+
+    if similarity > best_similarity
+      best_similarity = similarity
+      best_expected = candidate
+    end
+
+    best_overlap = overlap if overlap > best_overlap
+  end
+
+  close_threshold = lenient ? 0.72 : 0.80
+  overlap_threshold = 0.66
+
+  if best_similarity >= close_threshold
+    [:close, true, best_expected, best_similarity, best_overlap]
+  elsif best_overlap >= overlap_threshold
+    [:close, true, best_expected, best_similarity, best_overlap]
+  else
+    [:no, false, best_expected, best_similarity, best_overlap]
+  end
+end
+
 def pct(part, total)
   return 0.0 if total.to_i <= 0
   (part.to_f / total.to_f) * 100.0
@@ -331,6 +584,23 @@ def ensure_terminal_punct(s)
   t = s.to_s.strip
   return t if t.empty?
   t =~ /[.!?]\z/ ? t : "#{t}."
+end
+
+# Build the exact string we feed to Piper (so printed-voice matches audio).
+def build_tts_spoken(text, template)
+  tpl = template.to_s
+  tpl = DEFAULT_TTS_TEMPLATE if tpl.strip.empty?
+  tpl.gsub("{text}", ensure_terminal_punct(text.to_s.strip))
+end
+
+def maybe_printed_voice(ui, enabled, spoken_text)
+  return unless enabled
+  t = spoken_text.to_s.strip
+  return if t.empty?
+
+  label = (ui && ui[:printed_voice_prefix] ? ui[:printed_voice_prefix].to_s : "🗣 Printed voice").strip
+  label = label.sub(/:\z/, "")
+  say "#{label}: #{t}"
 end
 
 def resolve_executable(cmd)
@@ -390,6 +660,13 @@ ensure
   File.delete(wav) if wav && File.exist?(wav)
 end
 
+
+
+def conversation_speak_line(text, piper_bin:, piper_model:)
+  spoken_text = ensure_terminal_punct(text)
+  piper_speak(spoken_text, piper_bin: piper_bin, piper_model: piper_model)
+end
+
 def speak_target_prompt(text, piper_bin:, piper_model:, template: DEFAULT_TTS_TEMPLATE)
   spoken = template.gsub("{text}", ensure_terminal_punct(text.to_s.strip))
   piper_speak(spoken, piper_bin: piper_bin, piper_model: piper_model)
@@ -411,6 +688,11 @@ def prompt_with_replay(msg, spoken_text, piper_bin:, piper_model:, template:)
   end
 end
 
+def prompt_to_speak(ui, duration: nil)
+  label = (ui && ui[:speak_now]) ? ui[:speak_now] : "🎤 Speak now..."
+  say(label)
+end
+
 # -----------------------------
 # YAML Loading
 # -----------------------------
@@ -425,7 +707,42 @@ def load_pack(path)
       # New Linguatrain schema:
       #   metadata: {...}
       #   entries:  [ {id:, prompt:, alternate_prompts:, answer:, phonetic:}, ... ]
+      #   transform packs:
+      #     metadata.drill_type: transform
+      #     entries: [ {id:, prompt:, cues:[{cue:, steps:[{transform:, answer:}, ...]}, ...]}, ... ]
+      #   conjugate packs:
+      #     metadata.drill_type: conjugate
+      #     persons: ["minä", "sinä", "hän", "me", "te", "he"]
+      #     entries: [ {id:, lemma:, forms:{"minä"=>{"positive"=>[...], "negative"=>[...]}, ...}}, ... ]
       pack_meta = data["metadata"] || data[:metadata] || {}
+
+      # Back-compat: older packs used metadata.source_lang / metadata.target_lang.
+      # If present, map them into metadata.languages.{source,target}.code so they
+      # can override localisation languages via effective_meta().
+      if pack_meta.is_a?(Hash)
+        src_code = pack_meta["source_lang"] || pack_meta[:source_lang]
+        tgt_code = pack_meta["target_lang"] || pack_meta[:target_lang]
+
+        src_code = src_code.to_s.strip unless src_code.nil?
+        tgt_code = tgt_code.to_s.strip unless tgt_code.nil?
+
+        if (src_code && !src_code.empty?) || (tgt_code && !tgt_code.empty?)
+          pack_meta["languages"] ||= {}
+          pack_meta["languages"] = {} unless pack_meta["languages"].is_a?(Hash)
+
+          if src_code && !src_code.empty?
+            pack_meta["languages"]["source"] ||= {}
+            pack_meta["languages"]["source"] = {} unless pack_meta["languages"]["source"].is_a?(Hash)
+            pack_meta["languages"]["source"]["code"] = src_code
+          end
+
+          if tgt_code && !tgt_code.empty?
+            pack_meta["languages"]["target"] ||= {}
+            pack_meta["languages"]["target"] = {} unless pack_meta["languages"]["target"].is_a?(Hash)
+            pack_meta["languages"]["target"]["code"] = tgt_code
+          end
+        end
+      end
 
       # Deprecation: localisation now owns UI strings and language metadata.
       # Packs should contain only pack identity + entries (and optional overrides).
@@ -440,6 +757,10 @@ def load_pack(path)
           deprecations << "metadata.languages. Move language codes/names into the localisation file (localisation/*.yaml)."
         end
 
+        if (pack_meta.key?("source_lang") || pack_meta.key?(:source_lang) || pack_meta.key?("target_lang") || pack_meta.key?(:target_lang))
+          deprecations << "metadata.source_lang/metadata.target_lang. Move language codes into the localisation file (languages.source.code / languages.target.code)."
+        end
+
         tts = pack_meta["tts"] || pack_meta[:tts]
         if tts.is_a?(Hash) && (tts.key?("template") || tts.key?(:template))
           deprecations << "metadata.tts.template. Move the default template into localisation (tts.template). Keep pack-level overrides only if truly pack-specific."
@@ -449,6 +770,8 @@ def load_pack(path)
       end
 
       entries = data["entries"] || data[:entries]
+      persons_v = data["persons"] || data[:persons]
+      drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
       if entries.is_a?(Array)
         entries
       else
@@ -499,87 +822,278 @@ def load_pack(path)
     else
       raise "Unsupported YAML structure."
     end
-
   pack_meta ||= {}
 
-  raw_entries.map do |w|
-    # Preserve/assign entry id
-    entry_id = w["id"] || w[:id]
+  if drill_type == "transform"
+    transform_entries = raw_entries.map do |entry|
+      entry_id = entry["id"] || entry[:id]
+      prompt_v = entry["prompt"] || entry[:prompt]
+      cues_v = entry["cues"] || entry[:cues]
 
-    # Legacy keys
-    en = w["en"] || w[:prompt] || w["english"] || w[:english]
-    fi = w["fi"] || w[:answer] || w["finnish"] || w[:finnish]
-    spoken_v = w["spoken"] || w[:spoken]
-    phon = w["phon"] || w[:phonetic] || w["phonetic"] || w[:phonetic]
+      raise "Invalid transform entry: #{entry.inspect}" if prompt_v.nil? || cues_v.nil?
 
-    # New schema keys
-    prompt_v = w["prompt"] || w[:prompt]
-    alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
-    answer_v = w["answer"] || w[:answer]
-    spoken_field_v = w["spoken"] || w[:spoken]
-    phonetic_v = w["phonetic"] || w[:phonetic]
+      prompt_text = prompt_v.to_s.strip
+      raise "Invalid transform entry: #{entry.inspect}" if prompt_text.empty?
+      raise "Invalid transform entry: #{entry.inspect}" unless cues_v.is_a?(Array) && !cues_v.empty?
 
-    # If we have new-schema fields, map them into the legacy variables used below.
-    if en.nil? && !prompt_v.nil?
-      en = prompt_v
-    end
+      cues = cues_v.map do |cue_entry|
+        cue_text = cue_entry["cue"] || cue_entry[:cue]
+        steps_v = cue_entry["steps"] || cue_entry[:steps]
 
-    if fi.nil? && !answer_v.nil?
-      fi = answer_v
-    end
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}': #{cue_entry.inspect}" if cue_text.nil? || steps_v.nil?
 
-    # Optional spoken/colloquial form (generic; used by listening mode when present)
-    spoken_v = spoken_field_v if (spoken_v.nil? || spoken_v.to_s.strip.empty?) && !spoken_field_v.nil?
+        cue_text = cue_text.to_s.strip
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}': #{cue_entry.inspect}" if cue_text.empty?
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{cue_entry.inspect}" unless steps_v.is_a?(Array) && !steps_v.empty?
 
-    if (phon.nil? || phon.to_s.strip.empty?) && !phonetic_v.nil?
-      phon = phonetic_v
-    end
+        steps = steps_v.map do |step|
+          transform_v = step["transform"] || step[:transform]
+          answer_v = step["answer"] || step[:answer]
 
-    raise "Invalid word entry: #{w.inspect}" if en.nil? || fi.nil?
+          raise "Invalid transform step in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{step.inspect}" if transform_v.nil? || answer_v.nil?
 
-    en_list =
-      case en
-      when Array
-        en.map { |x| x.to_s.strip }.reject(&:empty?)
-      else
-        [en.to_s.strip]
+          answers =
+            case answer_v
+            when Array
+              answer_v.map { |x| x.to_s.strip }.reject(&:empty?)
+            else
+              [answer_v.to_s.strip]
+            end
+
+          raise "Invalid transform step in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{step.inspect}" if answers.empty?
+
+          {
+            transform: transform_v.to_s.strip.downcase,
+            answer: answers
+          }
+        end
+
+        {
+          cue: cue_text,
+          steps: steps
+        }
       end
 
-    # New schema: include alternate_prompts as additional accepted English variants.
-    if alt_prompts_v.is_a?(Array)
-      en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
-    elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
-      en_list << alt_prompts_v.strip
+      derived_id = Digest::SHA1.hexdigest("#{prompt_text}::#{cues.map { |c| c[:cue] }.join('|')}")[0, 8]
+
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        prompt: prompt_text,
+        cues: cues
+      }
     end
 
-    en_list = en_list.uniq
+    { meta: symbolize_keys_deep(pack_meta), transform_entries: transform_entries }
 
-    fi_list =
-      case fi
+  elsif drill_type == "conjugate"
+    persons =
+      case persons_v
       when Array
-        fi.map { |x| x.to_s.strip }.reject(&:empty?)
+        persons_v.map { |x| x.to_s.strip }.reject(&:empty?)
       else
-        [fi.to_s.strip]
-      end
-
-    spoken_list =
-      case spoken_v
-      when Array
-        spoken_v.map { |x| x.to_s.strip }.reject(&:empty?)
-      when NilClass
         []
-      else
-        [spoken_v.to_s.strip].reject(&:empty?)
       end
 
-    raise "Invalid word entry: #{w.inspect}" if en_list.empty? || fi_list.empty?
+    raise "Invalid conjugate pack: missing persons list" if persons.empty?
 
-    # Preserve pack entry id when present; otherwise derive a stable short id.
-    derived_id = Digest::SHA1.hexdigest("#{en_list.join('|')}::#{fi_list.join('|')}")[0, 8]
-    { id: (entry_id.nil? ? derived_id : entry_id.to_s.strip), prompt: en_list, answer: fi_list, spoken: spoken_list, phonetic: phon.to_s.strip }
-  end.then do |words|
-    { meta: symbolize_keys_deep(pack_meta), words: words }
+    conjugate_entries = raw_entries.map do |entry|
+      entry_id = entry["id"] || entry[:id]
+      lemma_v = entry["lemma"] || entry[:lemma] || entry["verb"] || entry[:verb]
+      forms_v = entry["forms"] || entry[:forms]
+
+      raise "Invalid conjugate entry: #{entry.inspect}" if lemma_v.nil? || forms_v.nil?
+
+      lemma_text = lemma_v.to_s.strip
+      raise "Invalid conjugate entry: #{entry.inspect}" if lemma_text.empty?
+      raise "Invalid conjugate entry: #{entry.inspect}" unless forms_v.is_a?(Hash)
+
+      forms = persons.each_with_object({}) do |person, out|
+        raw = forms_v[person] || forms_v[person.to_sym]
+        raise "Invalid conjugate entry for '#{lemma_text}': missing form for #{person}" if raw.nil?
+
+        normalized =
+          if raw.is_a?(Hash)
+            pos_raw = raw["positive"] || raw[:positive]
+            neg_raw = raw["negative"] || raw[:negative]
+
+            raise "Invalid conjugate entry for '#{lemma_text}': missing positive form for #{person}" if pos_raw.nil?
+            raise "Invalid conjugate entry for '#{lemma_text}': missing negative form for #{person}" if neg_raw.nil?
+
+            positive_answers =
+              case pos_raw
+              when Array
+                pos_raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [pos_raw.to_s.strip]
+              end
+
+            negative_answers =
+              case neg_raw
+              when Array
+                neg_raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [neg_raw.to_s.strip]
+              end
+
+            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{person}" if positive_answers.empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{person}" if negative_answers.empty?
+
+            {
+              positive: positive_answers,
+              negative: negative_answers
+            }
+          else
+            # Backward compatibility: flat list means positive-only legacy form.
+            positive_answers =
+              case raw
+              when Array
+                raw.map { |x| x.to_s.strip }.reject(&:empty?)
+              else
+                [raw.to_s.strip]
+              end
+
+            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{person}" if positive_answers.empty?
+
+            {
+              positive: positive_answers,
+              negative: []
+            }
+          end
+
+        out[person] = normalized
+      end
+
+      derived_id = Digest::SHA1.hexdigest("#{lemma_text}::#{persons.join('|')}")[0, 8]
+
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        lemma: lemma_text,
+        forms: forms
+      }
+    end
+
+    {
+      meta: symbolize_keys_deep(pack_meta),
+      conjugate_persons: persons,
+      conjugate_entries: conjugate_entries
+    }
+  else
+    raw_entries.map do |w|
+      # Optional conversation speaker name (used by --conversation only)
+      speaker_v = w["speaker"] || w[:speaker]
+      # Preserve/assign entry id
+      entry_id = w["id"] || w[:id]
+
+      # Legacy keys
+      en = w["en"] || w[:prompt] || w["english"] || w[:english]
+      fi = w["fi"] || w[:answer] || w["finnish"] || w[:finnish]
+      spoken_v = w["spoken"] || w[:spoken]
+      phon = w["phon"] || w[:phonetic] || w["phonetic"] || w[:phonetic]
+
+      # New schema keys
+      prompt_v = w["prompt"] || w[:prompt]
+      alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
+      answer_v = w["answer"] || w[:answer]
+      spoken_field_v = w["spoken"] || w[:spoken]
+      phonetic_v = w["phonetic"] || w[:phonetic]
+
+      # If we have new-schema fields, map them into the legacy variables used below.
+      if en.nil? && !prompt_v.nil?
+        en = prompt_v
+      end
+
+      if fi.nil? && !answer_v.nil?
+        fi = answer_v
+      end
+
+      # Optional spoken/colloquial form (generic; used by listening mode when present)
+      spoken_v = spoken_field_v if (spoken_v.nil? || spoken_v.to_s.strip.empty?) && !spoken_field_v.nil?
+
+      if (phon.nil? || phon.to_s.strip.empty?) && !phonetic_v.nil?
+        phon = phonetic_v
+      end
+
+      raise "Invalid word entry: #{w.inspect}" if en.nil? || fi.nil?
+
+      en_list =
+        case en
+        when Array
+          en.map { |x| x.to_s.strip }.reject(&:empty?)
+        else
+          [en.to_s.strip]
+        end
+
+      # New schema: include alternate_prompts as additional accepted English variants.
+      if alt_prompts_v.is_a?(Array)
+        en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
+      elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
+        en_list << alt_prompts_v.strip
+      end
+
+      en_list = en_list.uniq
+
+      fi_list =
+        case fi
+        when Array
+          fi.map { |x| x.to_s.strip }.reject(&:empty?)
+        else
+          [fi.to_s.strip]
+        end
+
+      spoken_list =
+        case spoken_v
+        when Array
+          spoken_v.map { |x| x.to_s.strip }.reject(&:empty?)
+        when NilClass
+          []
+        else
+          [spoken_v.to_s.strip].reject(&:empty?)
+        end
+
+      raise "Invalid word entry: #{w.inspect}" if en_list.empty? || fi_list.empty?
+
+      derived_id = Digest::SHA1.hexdigest("#{en_list.join('|')}::#{fi_list.join('|')}")[0, 8]
+      {
+        id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
+        speaker: (speaker_v.nil? ? "" : speaker_v.to_s.strip),
+        prompt: en_list,
+        answer: fi_list,
+        spoken: spoken_list,
+        phonetic: phon.to_s.strip
+      }
+    end.then do |words|
+      { meta: symbolize_keys_deep(pack_meta), words: words }
+    end
   end
+end
+
+# Choose a label for the source/target side.
+# If ui.prompt_prefix/ui.target_prefix is set to "auto" (or left blank),
+# display the resolved language name instead.
+def side_label(ui, side)
+  ui ||= {}
+
+  if side == :source
+    prefix = ui[:prompt_prefix].to_s.strip
+    lang_name = ui[:source_language_name].to_s.strip
+  else
+    prefix = ui[:target_prefix].to_s.strip
+    lang_name = ui[:target_language_name].to_s.strip
+  end
+
+  if prefix.empty? || prefix.downcase == "auto"
+    return lang_name.empty? ? (side == :source ? "Source" : "Target") : lang_name
+  end
+
+  prefix
+end
+
+def source_label(ui)
+  side_label(ui, :source)
+end
+
+def target_label(ui)
+  side_label(ui, :target)
 end
 
 
@@ -588,6 +1102,62 @@ def choose_words(words, count)
 
   n = Integer(count)
   words.shuffle.take([n, words.length].min)
+end
+
+def flatten_transform_items(transform_entries, shuffle_cues: false)
+  Array(transform_entries).flat_map do |entry|
+    cues = Array(entry[:cues]).dup
+    cues = cues.shuffle if shuffle_cues
+
+    cues.map do |cue_entry|
+      {
+        entry_id: entry[:id],
+        prompt: entry[:prompt].to_s,
+        cue: cue_entry[:cue].to_s,
+        steps: Array(cue_entry[:steps]).map do |step|
+          {
+            transform: step[:transform].to_s,
+            answer: Array(step[:answer]).map { |x| x.to_s.strip }.reject(&:empty?)
+          }
+        end
+      }
+    end
+  end
+end
+
+def choose_transform_items(items, count)
+  return items if count.nil? || count == "all"
+
+  n = Integer(count)
+  items.take([n, items.length].min)
+end
+
+def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
+  Array(conjugate_entries).flat_map do |entry|
+    ordered_persons = Array(persons).dup
+    ordered_persons = ordered_persons.shuffle if shuffle_persons
+
+    ordered_persons.map do |person|
+      person_forms = entry[:forms][person] || entry[:forms][person.to_sym] || {}
+
+      {
+        entry_id: entry[:id],
+        person: person.to_s,
+        lemma: entry[:lemma].to_s,
+        forms: {
+          positive: Array(person_forms[:positive] || person_forms["positive"]).map { |x| x.to_s.strip }.reject(&:empty?),
+          negative: Array(person_forms[:negative] || person_forms["negative"]).map { |x| x.to_s.strip }.reject(&:empty?)
+        }
+      }
+    end
+  end
+end
+
+def choose_conjugate_items(items, count)
+  return items if count.nil? || count == "all"
+
+  n = Integer(count)
+  items.take([n, items.length].min)
 end
 
 # -----------------------------
@@ -754,15 +1324,16 @@ def select_words_srs(words, count, srs, new_count:, due_only: false)
   selected.concat(due_words.shuffle)
 
   # Then new
+  shuffled_new = new_words.shuffle
   unless due_only
     n_new = new_count.to_i
     n_new = 0 if n_new < 0
-    selected.concat(new_words.shuffle.take(n_new))
+    selected.concat(shuffled_new.take(n_new))
   end
 
   # Fill remainder (optionally) from other buckets
   if !due_only
-    selected.concat(new_words.shuffle.drop(new_count.to_i))
+    selected.concat(shuffled_new.drop(n_new))
     selected.concat(other_words.shuffle)
   end
 
@@ -799,6 +1370,7 @@ def expected_answer_list(word, answer_variant)
   end
 end
 
+
 def format_variants_for_display(word)
   written = (word[:answer] || []).first.to_s.strip
   spoken  = (word[:spoken] || []).first.to_s.strip
@@ -807,6 +1379,14 @@ def format_variants_for_display(word)
   return spoken if written.empty?
 
   "#{written} / #{spoken}"
+end
+
+# Show all answer variants (written and spoken) for missed summary
+def all_answer_variants_for_display(word)
+  (Array(word[:answer]) + Array(word[:spoken]))
+    .map { |x| x.to_s.strip }
+    .reject(&:empty?)
+    .uniq
 end
 
 
@@ -840,7 +1420,7 @@ end
 # ----------------------------
 # Study Engine
 # ----------------------------
-def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:, ui:, tts_variant:, answer_variant:, show_variants:)
+def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper_model:, tts_template:, ui:, tts_variant:, answer_variant:, show_variants:, printed_voice:)
   say
 
   src_name = ui[:source_language_name] || "Source"
@@ -876,11 +1456,12 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
     if reverse
       # Target → Source: show target first (Finnish), then reveal source (English)
-      front_label = ui[:target_prefix] || tgt_name
+      front_label = target_label(ui)
       say "#{front_label}: #{answer_text}"
       say
 
       if listen
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
         speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
       end
@@ -888,7 +1469,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       centered_prompt(indent, "(Enter to reveal; q to quit): ")
       say
 
-      back_label = ui[:prompt_prefix] || src_name
+      back_label = source_label(ui)
       say "#{back_label}: #{prompt_text}"
       say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
@@ -900,19 +1481,20 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       end
     else
       # Source → Target: show source first (English), then reveal target (Finnish)
-      front_label = ui[:prompt_prefix] || src_name
+      front_label = source_label(ui)
       say "#{front_label}: #{prompt_text}" unless listen_no_english
       say
 
       centered_prompt(indent, "(Enter to reveal; q to quit): ")
       say
 
-      back_label = ui[:target_prefix] || tgt_name
+      back_label = target_label(ui)
       say "#{back_label}: #{answer_text}"
       say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
 
       if listen
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
         speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
         prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
@@ -927,16 +1509,195 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 end
 
 # -----------------------------
+# Transform Engine
+# -----------------------------
+
+def transform_instruction_label(ui, transform)
+  key = "transform_#{transform}_instruction".to_sym
+  value = ui[key].to_s.strip if ui.is_a?(Hash)
+  return value unless value.nil? || value.empty?
+
+  transform.to_s.capitalize + ":"
+end
+
+def transform_step_stats(stats)
+  total = stats[:correct_1] + stats[:correct_2] + stats[:failed]
+  stats.merge(total: total)
+end
+
+def run_transform(selected, ui:, lenient:)
+  stats = { correct_1: 0, correct_2: 0, failed: 0 }
+  missed = []
+
+  say
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Transform #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: transform)"
+  say "-" * 70
+
+  selected.each_with_index do |item, idx|
+    say
+    say "[#{idx + 1}/#{selected.length}]"
+    say
+    say item[:prompt].to_s
+    say
+    say "[ #{item[:cue].to_s} ]"
+    say
+
+    Array(item[:steps]).each do |step|
+      instruction = transform_instruction_label(ui, step[:transform])
+      say instruction
+
+      answer_ok = false
+
+      1.upto(2) do |attempt|
+        input = prompt("> ")
+        kind, ok, matched = match_answer(input, step[:answer], lenient: lenient)
+
+        if ok
+          stats[attempt == 1 ? :correct_1 : :correct_2] += 1
+          say(ui[:correct] || "✅ Correct!")
+          others = step[:answer] - [matched]
+          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          answer_ok = true
+          break
+        else
+          say(ui[:try_again] || "Try again.") if attempt < 2
+        end
+      end
+
+      unless answer_ok
+        stats[:failed] += 1
+        correct_display = Array(step[:answer]).join(" / ")
+        say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{correct_display}"
+        missed << {
+          prompt: item[:prompt].to_s,
+          cue: item[:cue].to_s,
+          transform: step[:transform].to_s,
+          answer: Array(step[:answer])
+        }
+      end
+
+      say
+    end
+  end
+
+  [transform_step_stats(stats), missed]
+end
+
+def conjugate_instruction_label(ui, polarity)
+  key = "conjugate_#{polarity}_instruction".to_sym
+  value = ui[key].to_s.strip if ui.is_a?(Hash)
+  return value unless value.nil? || value.empty?
+
+  case polarity.to_s
+  when "positive"
+    ui[:conjugate_positive_instruction].to_s.strip.empty? ? "Use the positive form:" : ui[:conjugate_positive_instruction].to_s
+  when "negative"
+    ui[:conjugate_negative_instruction].to_s.strip.empty? ? "Use the negative form:" : ui[:conjugate_negative_instruction].to_s
+  else
+    ui[:conjugate_instruction].to_s.strip.empty? ? "Use the correct form:" : ui[:conjugate_instruction].to_s
+  end
+end
+
+
+
+def conjugate_polarities_for_item(item, requested)
+  requested = requested.to_s.strip.downcase
+
+  case requested
+  when "negative"
+    return ["negative"] unless Array(item.dig(:forms, :negative)).empty?
+    []
+  when "both"
+    pols = []
+    pols << "positive" unless Array(item.dig(:forms, :positive)).empty?
+    pols << "negative" unless Array(item.dig(:forms, :negative)).empty?
+    pols
+  else
+    return ["positive"] unless Array(item.dig(:forms, :positive)).empty?
+    []
+  end
+end
+
+def run_conjugate(selected, ui:, lenient:, polarity: "positive")
+  stats = { correct_1: 0, correct_2: 0, failed: 0 }
+  missed = []
+
+  total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
+
+  say
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: conjugate, #{polarity})"
+  say "-" * 70
+
+  selected.each_with_index do |item, idx|
+    say
+    say "[#{idx + 1}/#{selected.length}]"
+    say
+    say((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+    say
+    say "[ #{item[:person]} ]"
+    say "[ #{item[:lemma]} ]"
+    say
+
+    conjugate_polarities_for_item(item, polarity).each do |current_polarity|
+      instruction = conjugate_instruction_label(ui, current_polarity)
+      expected = Array(item.dig(:forms, current_polarity.to_sym) || item.dig(:forms, current_polarity)).map { |x| x.to_s.strip }.reject(&:empty?)
+      next if expected.empty?
+
+      say instruction
+      answer_ok = false
+
+      1.upto(2) do |attempt|
+        input = prompt("> ")
+        kind, ok, matched = match_answer(input, expected, lenient: lenient)
+
+        if ok
+          stats[attempt == 1 ? :correct_1 : :correct_2] += 1
+          say(ui[:correct] || "✅ Correct!")
+          others = expected - [matched]
+          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          answer_ok = true
+          break
+        else
+          say(ui[:try_again] || "Try again.") if attempt < 2
+        end
+      end
+
+      unless answer_ok
+        stats[:failed] += 1
+        say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected.join(' / ')}"
+        missed << {
+          person: item[:person],
+          lemma: item[:lemma],
+          polarity: current_polarity,
+          answer: expected
+        }
+      end
+
+      say
+    end
+  end
+
+  [stats.merge(total: total_steps), missed]
+end
+
+# -----------------------------
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
   say
   mode = []
-  mode << (match_game ? "match-game" : "typing")
+  primary_mode = if speak
+                   "speak"
+                 elsif match_game
+                   "match-game"
+                 else
+                   "typing"
+                 end
+  mode << primary_mode
   if listen
     mode << (listen_no_english ? "listen-no-english" : "listen")
   end
@@ -960,8 +1721,9 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
     if reverse
       # Finnish → English mode
       if listen
-        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
+        say "Audible #{target_label(ui)}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
@@ -971,23 +1733,25 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           else
             expected_answer_list(w, answer_variant).sample
           end
-        label = ui[:target_prefix] || ui[:target_language_name] || ui[:language_name] || "Target"
-        say "#{label}: #{display_text}"
+        #label = ui[:target_prefix] || ui[:target_language_name] || ui[:language_name] || "Target"
+        say "#{target_label(ui)}: #{display_text}"
       end
     else
       # Normal English → Finnish mode
       if listen
-        say "Audible #{ui[:target_language_name] || ui[:language_name] || 'Target'}: (listening…)"
+        say "Audible #{target_label(ui)}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
+        maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
-        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')}" unless listen_no_english
+        say "#{source_label(ui)}: #{w[:prompt].join(' / ')}" unless listen_no_english
         say(ui[:replay_hint] || "(Type 'r' to replay audio)")
       else
-        say "#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')}"
+        say "#{source_label(ui)}: #{w[:prompt].join(' / ')}"
       end
     end
 
     answer_ok = false
+    speech_transcript = nil
     wid = word_id(w)
 
     reverse_match_options = nil
@@ -1032,7 +1796,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       forward_match_options = ([shown_correct] + distractors).shuffle
     end
 
-    1.upto(2) do |attempt|
+    1.upto(speak ? 1 : 2) do |attempt|
           if match_game
             if reverse
           # Finnish → English match-game (stable options across attempts)
@@ -1067,9 +1831,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           end
 
           input = if listen
-                    prompt_with_replay("Type the English meaning: ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+                    meaning_label = source_label(ui)
+                    prompt_with_replay("Type the #{meaning_label} meaning: ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                   else
-                    prompt("#{ui[:prompt_prefix] || ui[:source_language_name] || 'Prompt'}: ")
+                    prompt("#{source_label(ui)}: ")
                   end
 
           kind, ok, matched = match_answer(input, correct_list, lenient: false)
@@ -1086,7 +1851,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
             end
 
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+            say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
             update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
             answer_ok = true
             break
@@ -1103,10 +1868,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             options_list.each { |opt| say "  - #{opt}" }
 
             input = if listen
-                      heard_label = ui[:target_prefix] || tgt_name
+                      heard_label = target_label(ui)
                       prompt_with_replay("Type what you heard (#{heard_label}): ", spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
                     else
-                      prompt("#{ui[:target_prefix] || 'Answer'}: ")
+                      prompt("#{target_label(ui)}: ")
                     end
 
             kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
@@ -1123,7 +1888,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               others = correct_list - [matched]
               say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
-              say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
               update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
               answer_ok = true
               break
@@ -1132,9 +1897,30 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             end
           end
       else
-        input = if listen
-                  heard_label = ui[:target_prefix] || tgt_name
-                  meaning_label = ui[:prompt_prefix] || src_name
+        input = if speak
+                  prompt_to_speak(ui, duration: speech_duration)
+                  audio_path = record_speech_audio(speech_record_cmd, duration: speech_duration, ui: ui)
+                  begin
+                    transcript = whisper_transcribe(
+                      audio_path,
+                      speech_bin: speech_bin,
+                      model: speech_model,
+                      language: speech_language
+                    )
+                  rescue RuntimeError => e
+                    if e.message.include?("empty transcript")
+                      transcript = ""
+                    else
+                      raise
+                    end
+                  ensure
+                    File.delete(audio_path) if audio_path && File.exist?(audio_path)
+                  end
+                  speech_transcript = transcript
+                  transcript
+                elsif listen
+                  heard_label = target_label(ui)
+                  meaning_label = source_label(ui)
                   prompt_with_replay(
                     reverse ? "Type the #{meaning_label} meaning: " : "Type what you heard (#{heard_label}): ",
                     spoken,
@@ -1143,58 +1929,95 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
                     template: tts_template
                   )
                 else
-                  prompt(reverse ? "#{ui[:prompt_prefix] || ui[:source_language_name] || 'Prompt'}: " : "#{ui[:target_prefix] || 'Answer'}: ")
+                  prompt(reverse ? "#{source_label(ui)}: " : "#{target_label(ui)}: ")
                 end
 
         if reverse
           expected = w[:prompt]
-          kind, ok, matched = match_answer(input, expected, lenient: false)
+          if speak
+            kind, ok, matched, speech_score, speech_overlap = speech_match_result(input, expected, lenient: false)
+          else
+            kind, ok, matched = match_answer(input, expected, lenient: false)
+          end
         else
           expected = expected_answer_list(w, answer_variant)
-          kind, ok, matched = match_answer(input, expected, lenient: lenient)
+          if speak
+            kind, ok, matched, speech_score, speech_overlap = speech_match_result(input, expected, lenient: lenient)
+          else
+            kind, ok, matched = match_answer(input, expected, lenient: lenient)
+          end
         end
 
         if ok
           stats[:"correct_#{attempt}"] += 1
 
-          if kind == :umlaut_lenient
+          if kind == :close
+            say(ui[:close_enough] || "🟡 Close enough")
+          elsif kind == :umlaut_lenient
             say(ui[:correct] || "✅ Correct!")
           else
             say(ui[:correct] || "✅ Correct!")
           end
 
-          if reverse
-            others = expected - [matched]
-            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+         if speak && speech_transcript && !speech_transcript.to_s.strip.empty?
+            heard_label = (ui[:heard_prefix] || "Heard").to_s.sub(/:\z/, "")
+            say "   #{heard_label}: #{speech_transcript}"
+          end
 
-            # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
-            say_reverse_listen_reveal(w, ui) if listen
+          unless speak
+            if reverse
+              others = expected - [matched]
+              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
 
-            # Always show the source-side variants (English) for reverse mode after a correct response.
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
-          else
-            # Use the same answer set we validated against (written/spoken/either).
-            others = expected - [matched]
-            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-            say "   (#{ui[:prompt_prefix] || 'Prompt'}: #{w[:prompt].join(' / ')})"
-            say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
+              # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
+              say_reverse_listen_reveal(w, ui) if listen
+
+              # Always show the source-side variants (English) for reverse mode after a correct response.
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
+            else
+              # Use the same answer set we validated against (written/spoken/either).
+              others = expected - [matched]
+              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+              say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
+              say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
+            end
           end
           update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
           answer_ok = true
           break
         else
-          say(ui[:try_again] || "Try again.") if attempt < 2
+          say(ui[:try_again] || "Try again.") if attempt < (speak ? 1 : 2)
         end
       end
     end
 
     unless answer_ok
+      say
       stats[:failed] += 1
       if reverse
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{w[:prompt].join(' / ')}"
+
+        target_text =
+          if show_variants
+            format_variants_for_display(w)
+          else
+            expected_answer_list(w, answer_variant).join(" / ")
+          end
+
+        say "#{target_label(ui)}: #{target_text}"
+        say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       else
         correct_display = expected_answer_list(w, answer_variant).join(" / ")
-        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}#{w[:phonetic].empty? ? '' : " (#{w[:phonetic]})"}"
+        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}"
+        say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
+      end
+      if speak
+        heard_label = (ui[:heard_prefix] || "Heard").to_s.sub(/:\z/, "")
+        if speech_transcript && !speech_transcript.to_s.strip.empty?
+          say "#{heard_label}: #{speech_transcript}"
+        else
+          say "#{heard_label}: (nothing recognized)"
+        end
       end
       update_srs!(srs, wid, 2) if srs_enabled
       missed << w
@@ -1202,6 +2025,75 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
   end
 
   [stats, missed]
+end
+
+def run_conversation(entries, ui:, piper_bin:, piper_model:, tts_template:, listen:, printed_voice:, audio_player:)
+  say
+  say "Conversation — #{entries.length} lines"
+  say "-" * 40
+
+  entries.each do |w|
+    speaker_name = (w[:speaker] || "").to_s.strip
+
+    fi = (w[:answer] || []).first.to_s.strip
+    en = (w[:prompt] || []).first.to_s.strip
+    phon = w[:phonetic].to_s.strip
+    spoken_text = ensure_terminal_punct(fi)
+
+    next if fi.empty?
+
+    say
+
+    if listen
+      maybe_printed_voice(ui, printed_voice, spoken_text)
+      conversation_speak_line(
+        spoken_text,
+        piper_bin: piper_bin,
+        piper_model: piper_model
+      )
+      pause = fi.strip.end_with?("?") ? 0.9 : 0.6
+      sleep(pause) # slightly longer pause after questions
+    end
+
+    # Visual cue: always show the label 'Speaker', and if a speaker name exists,
+    # include it before the Finnish line.
+    if speaker_name.empty?
+      say "Speaker: #{fi}"
+    else
+      say "Speaker: #{speaker_name}: #{fi}"
+    end
+    say " - (#{format_phonetic(ui, phon)})" unless phon.empty?
+    say " - #{en}" unless en.empty?
+
+    unless listen
+      conversation_speak_line(
+        spoken_text,
+        piper_bin: piper_bin,
+        piper_model: piper_model
+      )
+      pause = fi.strip.end_with?("?") ? 0.9 : 0.6
+      sleep(pause) # slightly longer pause after questions
+    end
+
+    # Allow replay with 'r' before advancing
+    loop do
+      input = prompt("(Enter for next; 'r' to replay): ")
+      break if input.nil? || input.strip.empty?
+
+      if input.strip.casecmp("r").zero?
+        maybe_printed_voice(ui, printed_voice, spoken_text)
+        conversation_speak_line(
+          spoken_text,
+          piper_bin: piper_bin,
+          piper_model: piper_model
+        )
+
+        next
+      end
+
+      break
+    end
+  end
 end
 
 # -----------------------------
@@ -1278,6 +2170,10 @@ options = {
   listen_no_english: false,
   reverse: false,
   study: false,
+  conversation: false,
+  transform: false,
+  conjugate: false,
+  conjugate_polarity: "positive",
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
@@ -1286,13 +2182,20 @@ options = {
   tts_variant: "written",          # written|spoken (controls what Piper speaks when --listen)
   answer_variant: "written",       # written|spoken|either (controls what is accepted as correct typed answer)
   show_variants: false,            # show written/spoken together when available
+  printed_voice: false,            # with --listen, also print the exact text sent to Piper
   ui: nil,
   count: nil,
   srs: false,
   srs_due_only: false,
   srs_new: 5,
   srs_reset: false,
-  srs_file: nil
+  srs_file: nil,
+  speak: false,
+  speech_record_cmd: ENV["SPEECH_RECORD_CMD"],
+  speech_bin: ENV["WHISPER_BIN"] || ENV["SPEECH_BIN"],
+  speech_model: ENV["WHISPER_MODEL"] || ENV["SPEECH_MODEL"],
+  speech_language: ENV["WHISPER_LANGUAGE"] || ENV["SPEECH_LANGUAGE"],
+  speech_duration: (ENV.key?("SPEECH_DURATION") ? ENV["SPEECH_DURATION"].to_i : nil),
 }
 
 parser = OptionParser.new do |opts|
@@ -1305,6 +2208,10 @@ parser = OptionParser.new do |opts|
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
   opts.on("--listen", "Listening mode: speak target language (Piper) and type what you heard") { options[:listen] = true }
+
+  opts.on("--printed-voice", "With --listen, also print the exact text sent to Piper") do
+    options[:printed_voice] = true
+  end
 
   opts.on("--listen-no-source", "Listening mode without showing source prompt") do
     options[:listen] = true
@@ -1335,6 +2242,52 @@ parser = OptionParser.new do |opts|
     options[:study] = true
   end
 
+  opts.on("--conversation", "Conversation mode: play lines sequentially with TTS") do
+    options[:conversation] = true
+  end
+
+  opts.on("--transform", "Transform mode: prompt with cue-based grammar steps") do
+    options[:transform] = true
+  end
+
+  opts.on("--conjugate", "Conjugation mode: person + verb grammar drills") do
+    options[:conjugate] = true
+  end
+
+  opts.on("--negative", "With --conjugate, drill only negative forms") do
+    options[:conjugate_polarity] = "negative"
+  end
+
+  opts.on("--both", "With --conjugate, drill both positive and negative forms") do
+    options[:conjugate_polarity] = "both"
+  end
+
+  opts.on("--speak", "Speaking mode: record your voice and score it with Whisper") do
+    options[:speak] = true
+  end
+
+  opts.on("--speech-record-cmd CMD", "Shell command to record speech audio. Use {output} and {duration} placeholders") do |v|
+    options[:speech_record_cmd] = v
+  end
+
+  opts.on("--speech-bin PATH", "Path to whisper executable (or set WHISPER_BIN / SPEECH_BIN)") do |v|
+    options[:speech_bin] = v
+  end
+
+  opts.on("--speech-model NAME", "Whisper model name (default: base)") do |v|
+    options[:speech_model] = v.to_s.strip
+  end
+
+  opts.on("--speech-language NAME", "Whisper language name (default: Finnish)") do |v|
+    options[:speech_language] = v.to_s.strip
+  end
+
+  opts.on("--speech-duration N", Integer, "Seconds to record in --speak mode (default: 3)") do |v|
+    options[:speech_duration] = v
+  end
+
+
+
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
     options[:match_options] = v.to_s.strip.downcase
   end
@@ -1354,7 +2307,6 @@ parser.parse!
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
 
-# Study mode is intentionally simple: ignore match-game, lenient umlauts, and SRS.
 if options[:study]
   abort("--study cannot be combined with --match-game") if options[:match_game]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
@@ -1364,9 +2316,46 @@ if options[:study]
   end
 end
 
+abort("--speak cannot be combined with --match-game") if options[:speak] && options[:match_game]
+abort("--speak cannot be combined with --listen") if options[:speak] && options[:listen]
+abort("--speak cannot be combined with --conversation") if options[:speak] && options[:conversation]
+
+if options[:transform]
+  abort("--transform cannot be combined with --match-game") if options[:match_game]
+  abort("--transform cannot be combined with --listen") if options[:listen]
+  abort("--transform cannot be combined with --speak") if options[:speak]
+  abort("--transform cannot be combined with --reverse") if options[:reverse]
+  abort("--transform cannot be combined with --study") if options[:study]
+  abort("--transform cannot be combined with --conversation") if options[:conversation]
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--transform does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
+
+if options[:conjugate]
+  abort("--conjugate cannot be combined with --match-game") if options[:match_game]
+  abort("--conjugate cannot be combined with --listen") if options[:listen]
+  abort("--conjugate cannot be combined with --speak") if options[:speak]
+  abort("--conjugate cannot be combined with --reverse") if options[:reverse]
+  abort("--conjugate cannot be combined with --study") if options[:study]
+  abort("--conjugate cannot be combined with --conversation") if options[:conversation]
+  abort("--conjugate cannot be combined with --transform") if options[:transform]
+  unless %w[positive negative both].include?(options[:conjugate_polarity].to_s)
+    abort("--conjugate polarity must be one of: positive, negative, both")
+  end
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--conjugate does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
+
 pack = load_pack(yaml_path)
 pack_meta = pack[:meta] || {}
 words = pack[:words] || []
+transform_entries = pack[:transform_entries] || []
+conjugate_entries = pack[:conjugate_entries] || []
+conjugate_persons = pack[:conjugate_persons] || []
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
@@ -1389,8 +2378,13 @@ pack_meta = effective_pack_meta
 $UI = options[:ui] || DEFAULT_UI
 $AUDIO_PLAYER = options[:audio_player]
 
-if options[:listen]
-  abort("--listen requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
+if options[:listen] || options[:conversation]
+  abort("--listen/--conversation requires Piper settings: provide --piper-bin/--piper-model, set PIPER_BIN/PIPER_MODEL, or configure ~/.config/linguatrain/config.yaml") unless options[:piper_bin] && options[:piper_model]
+end
+
+if options[:speak]
+  abort("--speak requires --speech-record-cmd (or speech.record_cmd in config.yaml)") if options[:speech_record_cmd].to_s.strip.empty?
+  abort("--speak requires Whisper settings: provide --speech-bin, set WHISPER_BIN/SPEECH_BIN, or configure speech.bin in config.yaml") if options[:speech_bin].to_s.strip.empty?
 end
 
 srs_enabled = options[:srs] && !options[:study]
@@ -1398,7 +2392,25 @@ srs_path = options[:srs_file] || default_srs_path(yaml_path, pack_meta)
 
 srs = srs_enabled ? load_srs(srs_path) : { "meta" => {}, "items" => {} }
 
-if srs_enabled
+if options[:transform]
+  abort("This pack does not contain transform entries.") if transform_entries.empty?
+elsif options[:conjugate]
+  abort("This pack does not contain conjugate entries.") if conjugate_entries.empty?
+else
+  drill_type = pack_meta[:drill_type].to_s.strip.downcase
+  abort("This pack is a transform pack. Use --transform.") if drill_type == "transform"
+  abort("This pack is a conjugate pack. Use --conjugate.") if drill_type == "conjugate"
+end
+
+if options[:transform]
+  shuffle_cues = !!pack_meta[:shuffle_cues]
+  transform_items = flatten_transform_items(transform_entries, shuffle_cues: shuffle_cues)
+  selected = choose_transform_items(transform_items, options[:count])
+elsif options[:conjugate]
+  shuffle_persons = !!pack_meta[:shuffle_persons]
+  conjugate_items = flatten_conjugate_items(conjugate_entries, conjugate_persons, shuffle_persons: shuffle_persons)
+  selected = choose_conjugate_items(conjugate_items, options[:count])
+elsif srs_enabled
   srs["meta"] ||= {}
   srs["meta"]["source_file"] = File.expand_path(yaml_path)
   srs["meta"]["generated_at"] ||= Time.now.iso8601
@@ -1416,6 +2428,14 @@ if srs_enabled
   )
 else
   selected = choose_words(words, options[:count])
+end
+# Conversation mode should always follow the pack order (no shuffling / no SRS ordering).
+if options[:conversation]
+  if options[:count].nil? || options[:count] == "all"
+    selected = words
+  else
+    selected = words.take(Integer(options[:count]))
+  end
 end
 if srs_enabled
   due_count = 0
@@ -1438,6 +2458,89 @@ if srs_enabled
 end
 begin
 
+  if options[:conversation]
+    run_conversation(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      piper_bin: options[:piper_bin],
+      piper_model: options[:piper_model],
+      tts_template: options[:tts_template],
+      listen: options[:listen],
+      printed_voice: options[:printed_voice],
+      audio_player: options[:audio_player]
+    )
+    exit(0)
+  end
+
+  if options[:transform]
+    stats, missed = run_transform(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      lenient: options[:lenient]
+    )
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say "Total steps: #{stats[:total]}"
+    say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
+    say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
+    say "Failed: #{stats[:failed]} (#{pct(stats[:failed], stats[:total]).round(1)}%)"
+
+    if missed.any?
+      say
+      say "Missed steps (quick review):"
+      missed.each_with_index do |m, missed_idx|
+        say "#{missed_idx + 1}. #{m[:prompt]}"
+        say "   [ #{m[:cue]} ]"
+        say "   #{m[:transform]} → #{Array(m[:answer]).join(' / ')}"
+        say
+      end
+    else
+      say
+      puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
+    end
+
+    exit(0)
+  end
+
+  if options[:conjugate]
+    stats, missed = run_conjugate(
+      selected,
+      ui: options[:ui] || DEFAULT_UI,
+      lenient: options[:lenient],
+      polarity: options[:conjugate_polarity]
+    )
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say "Total steps: #{stats[:total]}"
+    say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
+    say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
+    say "Failed: #{stats[:failed]} (#{pct(stats[:failed], stats[:total]).round(1)}%)"
+
+    if missed.any?
+      say
+      say "Missed items (quick review):"
+      missed.each_with_index do |m, missed_idx|
+        say "#{missed_idx + 1}. #{m[:person]} + #{m[:lemma]} (#{m[:polarity]})"
+        say "   #{Array(m[:answer]).join(' / ')}"
+        say
+      end
+    else
+      say
+      puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
+    end
+
+    exit(0)
+  end
+
+
   if options[:study]
     run_study(
       selected,
@@ -1450,7 +2553,8 @@ begin
       ui: options[:ui] || DEFAULT_UI,
       tts_variant: options[:tts_variant],
       answer_variant: options[:answer_variant],
-      show_variants: options[:show_variants]
+      show_variants: options[:show_variants],
+      printed_voice: options[:printed_voice]
     )
 
     # Study mode has no scoring/missed packs.
@@ -1475,12 +2579,21 @@ begin
     srs: srs,
     tts_variant: options[:tts_variant],
     answer_variant: options[:answer_variant],
-    show_variants: options[:show_variants]
+    show_variants: options[:show_variants],
+    printed_voice: options[:printed_voice],
+    speak: options[:speak],
+    speech_record_cmd: options[:speech_record_cmd],
+    speech_bin: options[:speech_bin],
+    speech_model: options[:speech_model],
+    speech_language: options[:speech_language],
+    speech_duration: options[:speech_duration]
   )
 
   say
   say "-" * 50
-  say "Results"
+  results_label = pack_meta[:id].to_s.strip
+  results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+  say(results_label.empty? ? "Results" : "Results from #{results_label}")
   say "Total: #{stats[:total]}"
   say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
   say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"
@@ -1501,6 +2614,22 @@ begin
 
     say
     say "Missed words saved to: #{outfile}"
+    say
+    say "Missed items (quick review):"
+    missed.each_with_index do |w, idx|
+      source_text = w[:prompt].join(" / ")
+      target_text = all_answer_variants_for_display(w).join(" / ")
+
+      if options[:reverse]
+        say "#{idx + 1}. #{target_label(options[:ui])}: #{target_text}"
+        say "   #{source_label(options[:ui])}: #{source_text}"
+      else
+        say "#{idx + 1}. #{source_label(options[:ui])}: #{source_text}"
+        say "   #{target_label(options[:ui])}: #{target_text}"
+      end
+
+      say
+    end
   else
     say
     puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"

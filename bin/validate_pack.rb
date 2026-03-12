@@ -7,12 +7,13 @@ require "optparse"
 class PackValidator
   ISO_639_1 = /\A[a-z]{2}\z/
 
-  def initialize(path:, strict: false)
-    @path = path
-    @strict = strict
-    @errors = []
-    @warnings = []
-  end
+def initialize(path:, strict: false, warn_integer_ids: true)
+  @path = path
+  @strict = strict
+  @warn_integer_ids = warn_integer_ids
+  @errors = []
+  @warnings = []
+end
 
 
 
@@ -187,7 +188,7 @@ class PackValidator
         end
       elsif id.is_a?(Integer)
         # Allow integer ids, but normalize warning (string is nicer in YAML)
-        warn("entries[#{idx}].id is an Integer; consider quoting it as a String") unless @strict
+        #warn("entries[#{idx}].id is an Integer; consider quoting it as a String") if @warn_integer_ids && !@strict
         id_key = id.to_s
         if ids.key?(id_key)
           error("Duplicate id #{id.inspect} at entries[#{idx}] (already used at entries[#{ids[id_key]}])")

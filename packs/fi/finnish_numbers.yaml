@@ -290,6 +290,7 @@ entries:
   - kaksi miljoonaa
   alternate_prompts:
   - '2000000'
+  - 2 million
   phonetic: KAHKS-EE-MEEL-YOH-NAH-AH
 - id: '041'
   prompt: one billion
@@ -298,6 +299,7 @@ entries:
   alternate_prompts:
   - '1000000000'
   - a billion
+  - on billion
   phonetic: MEEL-YAHR-DEE
 - id: '042'
   prompt: five billion
@@ -305,4 +307,5 @@ entries:
   - viisi miljardia
   alternate_prompts:
   - '5000000000'
+  - 5 billion
   phonetic: VEEEES-EE-MEEL-YAHR-DEE-AH

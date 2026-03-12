@@ -840,17 +840,17 @@ def load_pack(path)
         cue_text = cue_entry["cue"] || cue_entry[:cue]
         steps_v = cue_entry["steps"] || cue_entry[:steps]
 
-        raise "Invalid transform cue: #{cue_entry.inspect}" if cue_text.nil? || steps_v.nil?
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}': #{cue_entry.inspect}" if cue_text.nil? || steps_v.nil?
 
         cue_text = cue_text.to_s.strip
-        raise "Invalid transform cue: #{cue_entry.inspect}" if cue_text.empty?
-        raise "Invalid transform cue: #{cue_entry.inspect}" unless steps_v.is_a?(Array) && !steps_v.empty?
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}': #{cue_entry.inspect}" if cue_text.empty?
+        raise "Invalid transform cue in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{cue_entry.inspect}" unless steps_v.is_a?(Array) && !steps_v.empty?
 
         steps = steps_v.map do |step|
           transform_v = step["transform"] || step[:transform]
           answer_v = step["answer"] || step[:answer]
 
-          raise "Invalid transform step: #{step.inspect}" if transform_v.nil? || answer_v.nil?
+          raise "Invalid transform step in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{step.inspect}" if transform_v.nil? || answer_v.nil?
 
           answers =
             case answer_v
@@ -860,7 +860,7 @@ def load_pack(path)
               [answer_v.to_s.strip]
             end
 
-          raise "Invalid transform step: #{step.inspect}" if answers.empty?
+          raise "Invalid transform step in entry '#{entry_id || prompt_text}' for cue '#{cue_text}': #{step.inspect}" if answers.empty?
 
           {
             transform: transform_v.to_s.strip.downcase,

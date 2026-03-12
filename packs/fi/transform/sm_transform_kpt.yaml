@@ -100,3 +100,4 @@ entries:
               - "Me onkimme mökillä."
           - transform: "negative"
             answer:
+              - "Me emme ongi mökillä."

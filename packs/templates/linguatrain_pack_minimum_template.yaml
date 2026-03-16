@@ -1,18 +1,18 @@
 # Linguatrain Minimal Pack Template
-# Rename this file (for example: basics.yaml) and place it inside:
-# packs/<target_lang>/
+# Rename this file (for example: basics.yaml) and place it inside your packs tree.
+#
+# Recommended location:
+#   packs/<target_lang>/
 #
 # Notes:
-# - Use ISO 639-1 language codes (for example: en, fi, es, fr).
+# - Packs should now use `metadata.id` instead of `pack_name`.
+# - Language names/codes and UI strings should come from localisation,
+#   not from the pack file.
 # - `answer` is always a YAML list, even if there is only one accepted answer.
 
 metadata:
-  pack_name: "Starter Pack Name"
+  id: "starter_pack_id"
   version: 1
-  source_lang: "en"          # ISO 639-1 code
-  target_lang: "fi"          # ISO 639-1 code
-  author: "Your Name"
-  description: "Short description of what this pack contains."
 
 entries:
   - id: "001"
@@ -25,11 +25,4 @@ entries:
     answer:
       - "Primary accepted answer."
       - "Alternate accepted answer."
-    phonetic: "phonetic guide"
-    notes: "Optional learning context"
-    tags:
-      - "example"
-    audio:
-      tts: true
-    srs:
-      difficulty: 2
+    phonetic: "phonetic guide"  # Optional

@@ -1,6 +1,8 @@
 metadata:
   id: fi_small_talk_class
   name: Finnish Small Talk for Class
+  version: 1
+  
 entries:
 - id: '001'
   prompt:

@@ -13,86 +13,442 @@ persons:
   - he
 
 entries:
-  - id: "kpt_lukea"
-    lemma: "lukea"
-
-    forms:
-      minä:
-        positive:
-          - "Minä luen"
-          - "Luen"
-        negative:
-          - "Minä en lue"
-          - "En lue"
-
-      sinä:
-        positive:
-          - "Sinä luet"
-        negative:
-          - "Sinä et lue"
-
-      hän:
-        positive:
-          - "Hän lukee"
-        negative:
-          - "Hän ei lue"
-
-      me:
-        positive:
-          - "Me luemme"
-        negative:
-          - "Me emme lue"
-
-      te:
-        positive:
-          - "Te luette"
-        negative:
-          - "Te ette lue"
-
-      he:
-        positive:
-          - "He lukevat"
-        negative:
-          - "He eivät lue"
-
   - id: "kpt_ampua"
     lemma: "ampua"
-
     forms:
       minä:
-        positive:
-          - "Minä ammun"
-          - "Ammun"
-        negative:
-          - "Minä en ammu"
-          - "En ammu"
-
+        positive: ["Minä ammun", "Ammun"]
+        negative: ["Minä en ammu", "En ammu"]
       sinä:
-        positive:
-          - "Sinä ammut"
-        negative:
-          - "Sinä et ammu"
-
+        positive: ["Sinä ammut"]
+        negative: ["Sinä et ammu"]
       hän:
-        positive:
-          - "Hän ampuu"
-        negative:
-          - "Hän ei ammu"
-
+        positive: ["Hän ampuu"]
+        negative: ["Hän ei ammu"]
       me:
-        positive:
-          - "Me ammumme"
-        negative:
-          - "Me emme ammu"
-
+        positive: ["Me ammumme"]
+        negative: ["Me emme ammu"]
       te:
-        positive:
-          - "Te ammutte"
-        negative:
-          - "Te ette ammu"
-
+        positive: ["Te ammutte"]
+        negative: ["Te ette ammu"]
       he:
-        positive:
-          - "He ampuvat"
-        negative:
-          - "He eivät ammu"
+        positive: ["He ampuvat"]
+        negative: ["He eivät ammu"]
+
+  - id: "kpt_antaa"
+    lemma: "antaa"
+    forms:
+      minä:
+        positive: ["Minä annan", "Annan"]
+        negative: ["Minä en anna", "En anna"]
+      sinä:
+        positive: ["Sinä annat"]
+        negative: ["Sinä et anna"]
+      hän:
+        positive: ["Hän antaa"]
+        negative: ["Hän ei anna"]
+      me:
+        positive: ["Me annamme"]
+        negative: ["Me emme anna"]
+      te:
+        positive: ["Te annatte"]
+        negative: ["Te ette anna"]
+      he:
+        positive: ["He antavat"]
+        negative: ["He eivät anna"]
+
+  - id: "kpt_hiihtaa"
+    lemma: "hiihtää"
+    forms:
+      minä:
+        positive: ["Minä hiihdän", "Hiihdän"]
+        negative: ["Minä en hiihdä", "En hiihdä"]
+      sinä:
+        positive: ["Sinä hiihdät"]
+        negative: ["Sinä et hiihdä"]
+      hän:
+        positive: ["Hän hiihtää"]
+        negative: ["Hän ei hiihdä"]
+      me:
+        positive: ["Me hiihdämme"]
+        negative: ["Me emme hiihdä"]
+      te:
+        positive: ["Te hiihdätte"]
+        negative: ["Te ette hiihdä"]
+      he:
+        positive: ["He hiihtävät"]
+        negative: ["He eivät hiihdä"]
+
+  - id: "kpt_hyppia"
+    lemma: "hyppiä"
+    forms:
+      minä:
+        positive: ["Minä hypin", "Hypin"]
+        negative: ["Minä en hypi", "En hypi"]
+      sinä:
+        positive: ["Sinä hypit"]
+        negative: ["Sinä et hypi"]
+      hän:
+        positive: ["Hän hyppii"]
+        negative: ["Hän ei hypi"]
+      me:
+        positive: ["Me hypimme"]
+        negative: ["Me emme hypi"]
+      te:
+        positive: ["Te hypitte"]
+        negative: ["Te ette hypi"]
+      he:
+        positive: ["He hyppivät"]
+        negative: ["He eivät hypi"]
+
+  - id: "kpt_jakaa"
+    lemma: "jakaa"
+    forms:
+      minä:
+        positive: ["Minä jaan", "Jaan"]
+        negative: ["Minä en jaa", "En jaa"]
+      sinä:
+        positive: ["Sinä jaat"]
+        negative: ["Sinä et jaa"]
+      hän:
+        positive: ["Hän jakaa"]
+        negative: ["Hän ei jaa"]
+      me:
+        positive: ["Me jaamme"]
+        negative: ["Me emme jaa"]
+      te:
+        positive: ["Te jaatte"]
+        negative: ["Te ette jaa"]
+      he:
+        positive: ["He jakavat"]
+        negative: ["He eivät jaa"]
+
+  - id: "kpt_kertoa"
+    lemma: "kertoa"
+    forms:
+      minä:
+        positive: ["Minä kerron", "Kerron"]
+        negative: ["Minä en kerro", "En kerro"]
+      sinä:
+        positive: ["Sinä kerrot"]
+        negative: ["Sinä et kerro"]
+      hän:
+        positive: ["Hän kertoo"]
+        negative: ["Hän ei kerro"]
+      me:
+        positive: ["Me kerromme"]
+        negative: ["Me emme kerro"]
+      te:
+        positive: ["Te kerrotte"]
+        negative: ["Te ette kerro"]
+      he:
+        positive: ["He kertovat"]
+        negative: ["He eivät kerro"]
+
+  - id: "kpt_kirjoittaa"
+    lemma: "kirjoittaa"
+    forms:
+      minä:
+        positive: ["Minä kirjoitan", "Kirjoitan"]
+        negative: ["Minä en kirjoita", "En kirjoita"]
+      sinä:
+        positive: ["Sinä kirjoitat"]
+        negative: ["Sinä et kirjoita"]
+      hän:
+        positive: ["Hän kirjoittaa"]
+        negative: ["Hän ei kirjoita"]
+      me:
+        positive: ["Me kirjoitamme"]
+        negative: ["Me emme kirjoita"]
+      te:
+        positive: ["Te kirjoitatte"]
+        negative: ["Te ette kirjoita"]
+      he:
+        positive: ["He kirjoittavat"]
+        negative: ["He eivät kirjoita"]
+
+  - id: "kpt_kylpea"
+    lemma: "kylpeä"
+    forms:
+      minä:
+        positive: ["Minä kylven", "Kylven"]
+        negative: ["Minä en kylve", "En kylve"]
+      sinä:
+        positive: ["Sinä kylvet"]
+        negative: ["Sinä et kylve"]
+      hän:
+        positive: ["Hän kylpee"]
+        negative: ["Hän ei kylve"]
+      me:
+        positive: ["Me kylvemme"]
+        negative: ["Me emme kylve"]
+      te:
+        positive: ["Te kylvette"]
+        negative: ["Te ette kylve"]
+      he:
+        positive: ["He kylpevät"]
+        negative: ["He eivät kylve"]
+
+  - id: "kpt_leipoa"
+    lemma: "leipoa"
+    forms:
+      minä:
+        positive: ["Minä leivon", "Leivon"]
+        negative: ["Minä en leivo", "En leivo"]
+      sinä:
+        positive: ["Sinä leivot"]
+        negative: ["Sinä et leivo"]
+      hän:
+        positive: ["Hän leipoo"]
+        negative: ["Hän ei leivo"]
+      me:
+        positive: ["Me leivomme"]
+        negative: ["Me emme leivo"]
+      te:
+        positive: ["Te leivotte"]
+        negative: ["Te ette leivo"]
+      he:
+        positive: ["He leipovat"]
+        negative: ["He eivät leivo"]
+
+  - id: "kpt_lentaa"
+    lemma: "lentää"
+    forms:
+      minä:
+        positive: ["Minä lennän", "Lennän"]
+        negative: ["Minä en lennä", "En lennä"]
+      sinä:
+        positive: ["Sinä lennät"]
+        negative: ["Sinä et lennä"]
+      hän:
+        positive: ["Hän lentää"]
+        negative: ["Hän ei lennä"]
+      me:
+        positive: ["Me lennämme"]
+        negative: ["Me emme lennä"]
+      te:
+        positive: ["Te lennätte"]
+        negative: ["Te ette lennä"]
+      he:
+        positive: ["He lentävät"]
+        negative: ["He eivät lennä"]
+
+  - id: "kpt_lukea"
+    lemma: "lukea"
+    forms:
+      minä:
+        positive: ["Minä luen", "Luen"]
+        negative: ["Minä en lue", "En lue"]
+      sinä:
+        positive: ["Sinä luet"]
+        negative: ["Sinä et lue"]
+      hän:
+        positive: ["Hän lukee"]
+        negative: ["Hän ei lue"]
+      me:
+        positive: ["Me luemme"]
+        negative: ["Me emme lue"]
+      te:
+        positive: ["Te luette"]
+        negative: ["Te ette lue"]
+      he:
+        positive: ["He lukevat"]
+        negative: ["He eivät lue"]
+
+  - id: "kpt_lahtea"
+    lemma: "lähteä"
+    forms:
+      minä:
+        positive: ["Minä lähden", "Lähden"]
+        negative: ["Minä en lähde", "En lähde"]
+      sinä:
+        positive: ["Sinä lähdet"]
+        negative: ["Sinä et lähde"]
+      hän:
+        positive: ["Hän lähtee"]
+        negative: ["Hän ei lähde"]
+      me:
+        positive: ["Me lähdemme"]
+        negative: ["Me emme lähde"]
+      te:
+        positive: ["Te lähdette"]
+        negative: ["Te ette lähde"]
+      he:
+        positive: ["He lähtevät"]
+        negative: ["He eivät lähde"]
+
+  - id: "kpt_loytaa"
+    lemma: "löytää"
+    forms:
+      minä:
+        positive: ["Minä löydän", "Löydän"]
+        negative: ["Minä en löydä", "En löydä"]
+      sinä:
+        positive: ["Sinä löydät"]
+        negative: ["Sinä et löydä"]
+      hän:
+        positive: ["Hän löytää"]
+        negative: ["Hän ei löydä"]
+      me:
+        positive: ["Me löydämme"]
+        negative: ["Me emme löydä"]
+      te:
+        positive: ["Te löydätte"]
+        negative: ["Te ette löydä"]
+      he:
+        positive: ["He löytävät"]
+        negative: ["He eivät löydä"]
+
+  - id: "kpt_nayttaa"
+    lemma: "näyttää"
+    forms:
+      minä:
+        positive: ["Minä näytän", "Näytän"]
+        negative: ["Minä en näytä", "En näytä"]
+      sinä:
+        positive: ["Sinä näytät"]
+        negative: ["Sinä et näytä"]
+      hän:
+        positive: ["Hän näyttää"]
+        negative: ["Hän ei näytä"]
+      me:
+        positive: ["Me näytämme"]
+        negative: ["Me emme näytä"]
+      te:
+        positive: ["Te näytätte"]
+        negative: ["Te ette näytä"]
+      he:
+        positive: ["He näyttävät"]
+        negative: ["He eivät näytä"]
+
+  - id: "kpt_onkia"
+    lemma: "onkia"
+    forms:
+      minä:
+        positive: ["Minä ongin", "Ongin"]
+        negative: ["Minä en ongi", "En ongi"]
+      sinä:
+        positive: ["Sinä ongit"]
+        negative: ["Sinä et ongi"]
+      hän:
+        positive: ["Hän onkii"]
+        negative: ["Hän ei ongi"]
+      me:
+        positive: ["Me ongimme"]
+        negative: ["Me emme ongi"]
+      te:
+        positive: ["Te ongitte"]
+        negative: ["Te ette ongi"]
+      he:
+        positive: ["He onkivat"]
+        negative: ["He eivät ongi"]
+
+  - id: "kpt_oppia"
+    lemma: "oppia"
+    forms:
+      minä:
+        positive: ["Minä opin", "Opin"]
+        negative: ["Minä en opi", "En opi"]
+      sinä:
+        positive: ["Sinä opit"]
+        negative: ["Sinä et opi"]
+      hän:
+        positive: ["Hän oppii"]
+        negative: ["Hän ei opi"]
+      me:
+        positive: ["Me opimme"]
+        negative: ["Me emme opi"]
+      te:
+        positive: ["Te opitte"]
+        negative: ["Te ette opi"]
+      he:
+        positive: ["He oppivat"]
+        negative: ["He eivät opi"]
+
+  - id: "kpt_ottaa"
+    lemma: "ottaa"
+    forms:
+      minä:
+        positive: ["Minä otan", "Otan"]
+        negative: ["Minä en ota", "En ota"]
+      sinä:
+        positive: ["Sinä otat"]
+        negative: ["Sinä et ota"]
+      hän:
+        positive: ["Hän ottaa"]
+        negative: ["Hän ei ota"]
+      me:
+        positive: ["Me otamme"]
+        negative: ["Me emme ota"]
+      te:
+        positive: ["Te otatte"]
+        negative: ["Te ette ota"]
+      he:
+        positive: ["He ottavat"]
+        negative: ["He eivät ota"]
+
+  - id: "kpt_piirtaa"
+    lemma: "piirtää"
+    forms:
+      minä:
+        positive: ["Minä piirrän", "Piirrän"]
+        negative: ["Minä en piirrä", "En piirrä"]
+      sinä:
+        positive: ["Sinä piirrät"]
+        negative: ["Sinä et piirrä"]
+      hän:
+        positive: ["Hän piirtää"]
+        negative: ["Hän ei piirrä"]
+      me:
+        positive: ["Me piirrämme"]
+        negative: ["Me emme piirrä"]
+      te:
+        positive: ["Te piirrätte"]
+        negative: ["Te ette piirrä"]
+      he:
+        positive: ["He piirtävät"]
+        negative: ["He eivät piirrä"]
+
+  - id: "kpt_rakentaa"
+    lemma: "rakentaa"
+    forms:
+      minä:
+        positive: ["Minä rakennan", "Rakennan"]
+        negative: ["Minä en rakenna", "En rakenna"]
+      sinä:
+        positive: ["Sinä rakennat"]
+        negative: ["Sinä et rakenna"]
+      hän:
+        positive: ["Hän rakentaa"]
+        negative: ["Hän ei rakenna"]
+      me:
+        positive: ["Me rakennamme"]
+        negative: ["Me emme rakenna"]
+      te:
+        positive: ["Te rakennatte"]
+        negative: ["Te ette rakenna"]
+      he:
+        positive: ["He rakentavat"]
+        negative: ["He eivät rakenna"]
+
+  - id: "kpt_ymmartaa"
+    lemma: "ymmärtää"
+    forms:
+      minä:
+        positive: ["Minä ymmärrän", "Ymmärrän"]
+        negative: ["Minä en ymmärrä", "En ymmärrä"]
+      sinä:
+        positive: ["Sinä ymmärrät"]
+        negative: ["Sinä et ymmärrä"]
+      hän:
+        positive: ["Hän ymmärtää"]
+        negative: ["Hän ei ymmärrä"]
+      me:
+        positive: ["Me ymmärrämme"]
+        negative: ["Me emme ymmärrä"]
+      te:
+        positive: ["Te ymmärrätte"]
+        negative: ["Te ette ymmärrä"]
+      he:
+        positive: ["He ymmärtävät"]
+        negative: ["He eivät ymmärrä"]

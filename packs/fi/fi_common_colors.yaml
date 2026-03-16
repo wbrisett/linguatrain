@@ -1,0 +1,68 @@
+pack_name: fi_common_colors
+entries:
+- id: '001'
+  prompt:
+  - red
+  answer:
+  - punainen
+  phonetic: PU-nai-nen
+- id: '002'
+  prompt:
+  - blue
+  answer:
+  - sininen
+  phonetic: SI-ni-nen
+- id: '003'
+  prompt:
+  - green
+  answer:
+  - vihreä
+  phonetic: VIH-reh-ah
+- id: '004'
+  prompt:
+  - yellow
+  answer:
+  - keltainen
+  phonetic: KEL-tai-nen
+- id: '005'
+  prompt:
+  - orange (color)
+  answer:
+  - oranssi
+  phonetic: O-rans-si
+- id: '006'
+  prompt:
+  - black
+  answer:
+  - musta
+  phonetic: MUS-ta
+- id: '007'
+  prompt:
+  - white
+  answer:
+  - valkoinen
+  phonetic: VAL-koi-nen
+- id: 008
+  prompt:
+  - gray
+  answer:
+  - harmaa
+  phonetic: HAR-maa
+- id: 009
+  prompt:
+  - brown
+  answer:
+  - ruskea
+  phonetic: RUS-keh-ah
+- id: '010'
+  prompt:
+  - pink
+  answer:
+  - pinkki
+  phonetic: PING-kee
+- id: '011'
+  prompt:
+  - purple
+  answer:
+  - violetti
+  phonetic: VIO-let-ti

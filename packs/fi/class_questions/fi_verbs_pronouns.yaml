@@ -1,0 +1,84 @@
+pack:
+  id: "fi_verbs_pronouns"
+  title: "Finnish Verbs and Pronouns"
+  language: "fi"
+  source: "Wayne class recording"
+
+entries:
+  - id: "001"
+    prompt: "To shoot."
+    answer:
+      - "Ampua."
+    phonetic: "AM-pu-a"
+
+  - id: "002"
+    prompt: "I shoot."
+    answer:
+      - "Minä ammun."
+    phonetic: "MI-na AM-mun"
+
+  - id: "003"
+    prompt: "You shoot."
+    answer:
+      - "Sinä ammut."
+    phonetic: "SI-na AM-mut"
+
+  - id: "004"
+    prompt: "He or she shoots."
+    answer:
+      - "Hän ampuu."
+    phonetic: "HAN AM-puu"
+
+  - id: "005"
+    prompt: "We shoot."
+    answer:
+      - "Me ammumme."
+    phonetic: "ME AM-mum-me"
+
+  - id: "006"
+    prompt: "You all shoot."
+    answer:
+      - "Te ammutte."
+    phonetic: "TE AM-mut-te"
+
+  - id: "007"
+    prompt: "They shoot."
+    answer:
+      - "He ampuvat."
+    phonetic: "HE AM-pu-vat"
+
+  - id: "008"
+    prompt: "To sleep."
+    answer:
+      - "Nukkua."
+    phonetic: "NUK-ku-a"
+
+  - id: "009"
+    prompt: "I want to sleep."
+    answer:
+      - "Minä haluan nukkua."
+    phonetic: "MI-na HA-lu-an NUK-ku-a"
+
+  - id: "010"
+    prompt: "Where is the pen?"
+    answer:
+      - "Missä on kynä?"
+    phonetic: "MIS-sa on KU-na"
+
+  - id: "011"
+    prompt: "One person is me."
+    answer:
+      - "Yksi ihminen on minä."
+    phonetic: "UHK-si I-hi-mi-nen on MI-na"
+
+  - id: "012"
+    prompt: "Another person is you."
+    answer:
+      - "Toinen ihminen on sinä."
+    phonetic: "TOI-nen I-hi-mi-nen on SI-na"
+
+  - id: "013"
+    prompt: "The third person is he or she."
+    answer:
+      - "Kolmas ihminen on hän."
+    phonetic: "KOL-mas I-hi-mi-nen on HAN"

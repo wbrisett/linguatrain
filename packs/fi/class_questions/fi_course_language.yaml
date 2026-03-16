@@ -1,8 +1,7 @@
 metadata:
-  pack_name: "Finnish Basics – Course and Language"
+  id: "fi_course_language"
   version: 1
-  source_lang: en
-  target_lang: fi
+
   author: Wayne Brissette
   description: "Talking about Finnish courses and language learning."
 

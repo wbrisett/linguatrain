@@ -1,8 +1,6 @@
 metadata:
-  pack_name: "Finnish Basics – Dates"
+  id: "Finnish Basics – Dates"
   version: 1
-  source_lang: en
-  target_lang: fi
   author: Wayne Brissette
   description: "Talking about days and dates."
 

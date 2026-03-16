@@ -1,0 +1,71 @@
+pmetadata:
+  id: "fi_ordinals"
+  title: "Finnish Ordinals"
+  source: "Wayne class recording"
+
+entries:
+  - id: "001"
+    prompt: "First."
+    answer:
+      - "Ensimmäinen."
+    phonetic: "EN-sim-mai-nen"
+
+  - id: "002"
+    prompt: "Second."
+    answer:
+      - "Toinen."
+    phonetic: "TOI-nen"
+
+  - id: "003"
+    prompt: "Third."
+    answer:
+      - "Kolmas."
+    phonetic: "KOL-mas"
+
+  - id: "004"
+    prompt: "Fourth."
+    answer:
+      - "Neljäs."
+    phonetic: "NEL-yas"
+
+  - id: "005"
+    prompt: "Fifth."
+    answer:
+      - "Viides."
+    phonetic: "VII-des"
+
+  - id: "006"
+    prompt: "Sixth."
+    answer:
+      - "Kuudes."
+    phonetic: "KUU-des"
+
+  - id: "007"
+    prompt: "Seventh."
+    answer:
+      - "Seitsemäs."
+    phonetic: "SAIT-se-mas"
+
+  - id: "008"
+    prompt: "Eighth."
+    answer:
+      - "Kahdeksas."
+    phonetic: "KAH-dek-sas"
+
+  - id: "009"
+    prompt: "Ninth."
+    answer:
+      - "Yhdeksäs."
+    phonetic: "UH-dek-sas"
+
+  - id: "010"
+    prompt: "Tenth."
+    answer:
+      - "Kymmenes."
+    phonetic: "KU-me-nes"
+
+  - id: "011"
+    prompt: "Eleventh."
+    answer:
+      - "Yhdestoista."
+    phonetic: "UH-des-toi-sta"

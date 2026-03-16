@@ -9,71 +9,71 @@ entries:
   - id: "001"
     prompt: January
     answer:
-      - tammikuu
+      - Tammikuu
     phonetic: TAHM-mee-koo
 
   - id: "002"
     prompt: February
     answer:
-      - helmikuu
+      - Helmikuu
     phonetic: HEL-mee-koo
 
   - id: "003"
     prompt: March
     answer:
-      - maaliskuu
+      - Maaliskuu
     phonetic: MAH-lee-skoo
 
   - id: "004"
     prompt: April
     answer:
-      - huhtikuu
+      - Huhtikuu
     phonetic: HOOH-tee-koo
 
   - id: "005"
     prompt: May
     answer:
-      - toukokuu
+      - Toukokuu
     phonetic: TOH-koh-koo
 
   - id: "006"
     prompt: June
     answer:
-      - kesäkuu
+      - Kesäkuu
     phonetic: KEH-sah-koo
 
   - id: "007"
     prompt: July
     answer:
-      - heinäkuu
+      - Heinäkuu
     phonetic: HAY-nah-koo
 
   - id: "008"
     prompt: August
     answer:
-      - elokuu
+      - Elokuu
     phonetic: EH-loh-koo
 
   - id: "009"
     prompt: September
     answer:
-      - syyskuu
+      - Syyskuu
     phonetic: SOOYS-koo
 
   - id: "010"
     prompt: October
     answer:
-      - lokakuu
+      - Lokakuu
     phonetic: LOH-kah-koo
 
   - id: "011"
     prompt: November
     answer:
-      - marraskuu
+      - Marraskuu
     phonetic: MAHR-rah-skoo
 
   - id: "012"
     prompt: December
     answer:
-      - joulukuu
+      - Joulukuu
     phonetic: YOH-loo-koo

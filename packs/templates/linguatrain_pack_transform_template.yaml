@@ -1,0 +1,54 @@
+# Linguatrain Transform Pack Template
+# Rename this file and place it inside your packs tree.
+#
+# Recommended location:
+#   packs/<target_lang>/
+#
+# Notes:
+# - Transform packs must set metadata.drill_type to "transform".
+# - Each entry has a prompt and one or more cues.
+# - Each cue has one or more steps.
+# - Each step has:
+#     - transform: a short transform label
+#     - answer: a YAML list of accepted answers
+
+metadata:
+  id: "starter_transform_pack"
+  version: 1
+  drill_type: "transform"
+  author: "Your Name"                    # Optional
+  description: "Cue-based sentence transformation drills."  # Optional
+  tags:                                  # Optional
+    - "transform"
+    - "grammar"
+
+entries:
+  - id: "001"
+    prompt: "Minä menen kouluun."
+    cues:
+      - cue: "eilen"
+        steps:
+          - transform: "past"
+            answer:
+              - "Minä menin kouluun eilen."
+
+      - cue: "huomenna"
+        steps:
+          - transform: "future_context"
+            answer:
+              - "Minä menen kouluun huomenna."
+
+  - id: "002"
+    prompt: "Hän lukee kirjaa."
+    cues:
+      - cue: "ei"
+        steps:
+          - transform: "negative"
+            answer:
+              - "Hän ei lue kirjaa."
+
+      - cue: "eilen"
+        steps:
+          - transform: "past"
+            answer:
+              - "Hän luki kirjaa eilen."

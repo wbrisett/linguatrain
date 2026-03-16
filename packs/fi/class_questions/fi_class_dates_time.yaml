@@ -1,0 +1,361 @@
+metadata:
+  id: "fi_class_dates_time"
+  title: "Finnish Class – Dates, Time, and Conversation"
+  language: "fi"
+  source: "Wayne class recording"
+  version: 1
+
+entries:
+  - id: "001"
+    prompt: "Good morning."
+    answer:
+      - "Hyvää huomenta."
+    phonetic: "HUU-vah HUU-o-men-ta"
+
+  - id: "002"
+    prompt: "What day is it today?"
+    answer:
+      - "Mikä päivä tänään on?"
+    phonetic: "MEE-kah PAI-vah TAH-nahn on"
+
+  - id: "003"
+    prompt: "Today is Thursday."
+    answer:
+      - "Tänään on torstai."
+    phonetic: "TAH-nahn on TOR-stai"
+
+  - id: "004"
+    prompt: "What is the day number?"
+    answer:
+      - "Mikä päivän numero on?"
+    phonetic: "MEE-kah PAI-vahn NU-me-ro on"
+
+  - id: "005"
+    prompt: "Eleven."
+    answer:
+      - "Yksitoista."
+    phonetic: "UHK-see-toi-sta"
+
+  - id: "006"
+    prompt: "First."
+    answer:
+      - "Ensimmäinen."
+    phonetic: "EN-sim-mai-nen"
+
+  - id: "007"
+    prompt: "Second."
+    answer:
+      - "Toinen."
+    phonetic: "TOI-nen"
+
+  - id: "008"
+    prompt: "Third."
+    answer:
+      - "Kolmas."
+    phonetic: "KOL-mas"
+
+  - id: "009"
+    prompt: "Fourth."
+    answer:
+      - "Neljäs."
+    phonetic: "NEL-yas"
+
+  - id: "010"
+    prompt: "Fifth."
+    answer:
+      - "Viides."
+    phonetic: "VII-des"
+
+  - id: "011"
+    prompt: "Sixth."
+    answer:
+      - "Kuudes."
+    phonetic: "KUU-des"
+
+  - id: "012"
+    prompt: "Seventh."
+    answer:
+      - "Seitsemäs."
+    phonetic: "SAIT-se-mas"
+
+  - id: "013"
+    prompt: "Eighth."
+    answer:
+      - "Kahdeksas."
+    phonetic: "KAH-dek-sas"
+
+  - id: "014"
+    prompt: "Ninth."
+    answer:
+      - "Yhdeksäs."
+    phonetic: "UH-dek-sas"
+
+  - id: "015"
+    prompt: "Tenth."
+    answer:
+      - "Kymmenes."
+    phonetic: "KU-me-nes"
+
+  - id: "016"
+    prompt: "Eleventh."
+    answer:
+      - "Yhdestoista."
+    phonetic: "UH-des-toi-sta"
+
+  - id: "017"
+    prompt: "Today is the eleventh of March."
+    answer:
+      - "Tänään on yhdestoista maaliskuuta."
+    phonetic: "TAH-nahn on UH-des-toi-sta MAA-lis-kuu-ta"
+
+  - id: "018"
+    prompt: "January."
+    answer:
+      - "Tammikuu."
+    phonetic: "TAM-mi-kuu"
+
+  - id: "019"
+    prompt: "In January."
+    answer:
+      - "Tammikuussa."
+    phonetic: "TAM-mi-kuu-sa"
+
+  - id: "020"
+    prompt: "March."
+    answer:
+      - "Maaliskuu."
+    phonetic: "MAA-lis-kuu"
+
+  - id: "021"
+    prompt: "In March."
+    answer:
+      - "Maaliskuussa."
+    phonetic: "MAA-lis-kuu-sa"
+
+  - id: "022"
+    prompt: "Today is Thursday the eleventh of March two thousand twenty-six."
+    answer:
+      - "Tänään on torstai yhdestoista maaliskuuta kaksituhattakaksikymmentäkuusi."
+    phonetic: "TAH-nahn on TOR-stai UH-des-toi-sta MAA-lis-kuu-ta KAK-see-tuu-hat-ta KAK-see-ku-men-ta kuu-si"
+
+  - id: "023"
+    prompt: "What time is it?"
+    answer:
+      - "Mitä kello on?"
+    phonetic: "MEE-ta KEL-lo on"
+
+  - id: "024"
+    prompt: "It is eight o'clock."
+    answer:
+      - "Kello on kahdeksan."
+    phonetic: "KEL-lo on KAH-dek-san"
+
+  - id: "025"
+    prompt: "It is eleven o'clock."
+    answer:
+      - "Kello on yksitoista."
+    phonetic: "KEL-lo on UHK-see-toi-sta"
+
+  - id: "026"
+    prompt: "Half past eight."
+    answer:
+      - "Puoli yhdeksän."
+    phonetic: "PUO-li UH-dek-san"
+
+  - id: "027"
+    prompt: "When does the course start?"
+    answer:
+      - "Milloin kurssi alkaa?"
+    phonetic: "MIL-loin KURS-si AL-kaa"
+
+  - id: "028"
+    prompt: "The course starts at eight."
+    answer:
+      - "Kurssi alkaa kello kahdeksan."
+    phonetic: "KURS-si AL-kaa KEL-lo KAH-dek-san"
+
+  - id: "029"
+    prompt: "When did the course start today?"
+    answer:
+      - "Milloin kurssi alkoi tänään?"
+    phonetic: "MIL-loin KURS-si AL-koi TAH-nahn"
+
+  - id: "030"
+    prompt: "The course started late."
+    answer:
+      - "Kurssi alkoi myöhään."
+    phonetic: "KURS-si AL-koi MUU-haan"
+
+  - id: "031"
+    prompt: "Do you buy food today?"
+    answer:
+      - "Ostatko tänään ruokaa?"
+    phonetic: "OS-tat-ko TAH-nahn RUO-kaa"
+
+  - id: "032"
+    prompt: "Will you buy food tomorrow?"
+    answer:
+      - "Ostatko huomenna ruokaa?"
+    phonetic: "OS-tat-ko HUO-men-na RUO-kaa"
+
+  - id: "033"
+    prompt: "Yes. I will."
+    answer:
+      - "Kyllä. Ostan."
+    phonetic: "KU-laa OS-tan"
+
+  - id: "034"
+    prompt: "When you buy food, do you pay by card?"
+    answer:
+      - "Kun ostat ruokaa, maksatko kortilla?"
+    phonetic: "KUN OS-tat RUO-kaa MAK-sat-ko KOR-ti-la"
+
+  - id: "035"
+    prompt: "I pay."
+    answer:
+      - "Maksan."
+    phonetic: "MAK-san"
+
+  - id: "036"
+    prompt: "To shoot."
+    answer:
+      - "Ampua."
+    phonetic: "AM-pu-a"
+
+  - id: "037"
+    prompt: "I shoot."
+    answer:
+      - "Minä ammun."
+    phonetic: "MI-na AM-mun"
+
+  - id: "038"
+    prompt: "You shoot."
+    answer:
+      - "Sinä ammut."
+    phonetic: "SI-na AM-mut"
+
+  - id: "039"
+    prompt: "He or she shoots."
+    answer:
+      - "Hän ampuu."
+    phonetic: "HAN AM-puu"
+
+  - id: "040"
+    prompt: "We shoot."
+    answer:
+      - "Me ammumme."
+    phonetic: "ME AM-mum-me"
+
+  - id: "041"
+    prompt: "You all shoot."
+    answer:
+      - "Te ammutte."
+    phonetic: "TE AM-mut-te"
+
+  - id: "042"
+    prompt: "They shoot."
+    answer:
+      - "He ampuvat."
+    phonetic: "HE AM-pu-vat"
+
+  - id: "043"
+    prompt: "To sleep."
+    answer:
+      - "Nukkua."
+    phonetic: "NUK-ku-a"
+
+  - id: "044"
+    prompt: "I want to sleep."
+    answer:
+      - "Minä haluan nukkua."
+    phonetic: "MI-na HA-lu-an NUK-ku-a"
+
+  - id: "045"
+    prompt: "Where is the pen?"
+    answer:
+      - "Missä on kynä?"
+    phonetic: "MIS-sa on KU-na"
+
+  - id: "046"
+    prompt: "One person is me."
+    answer:
+      - "Yksi ihminen on minä."
+    phonetic: "UHK-si I-hi-mi-nen on MI-na"
+
+  - id: "047"
+    prompt: "Another person is you."
+    answer:
+      - "Toinen ihminen on sinä."
+    phonetic: "TOI-nen I-hi-mi-nen on SI-na"
+
+  - id: "048"
+    prompt: "The third person is he or she."
+    answer:
+      - "Kolmas ihminen on hän."
+    phonetic: "KOL-mas I-hi-mi-nen on HAN"
+
+  - id: "049"
+    prompt: "Milk."
+    answer:
+      - "Maito."
+    phonetic: "MAI-to"
+
+  - id: "050"
+    prompt: "Buttermilk."
+    answer:
+      - "Piimä."
+    phonetic: "PII-ma"
+
+  - id: "051"
+    prompt: "Juice."
+    answer:
+      - "Mehu."
+    phonetic: "ME-hu"
+
+  - id: "052"
+    prompt: "Milk is healthy."
+    answer:
+      - "Maito on terveellistä."
+    phonetic: "MAI-to on TER-ve-el-lis-ta"
+
+  - id: "053"
+    prompt: "Buttermilk is healthy."
+    answer:
+      - "Piimä on terveellistä."
+    phonetic: "PII-ma on TER-ve-el-lis-ta"
+
+  - id: "054"
+    prompt: "Juice is a drink."
+    answer:
+      - "Mehu on juoma."
+    phonetic: "ME-hu on JUO-ma"
+
+  - id: "055"
+    prompt: "Oat."
+    answer:
+      - "Kaura."
+    phonetic: "KAU-ra"
+
+  - id: "056"
+    prompt: "Oat milk."
+    answer:
+      - "Kauramaito."
+    phonetic: "KAU-ra-MAI-to"
+
+  - id: "057"
+    prompt: "Thank you."
+    answer:
+      - "Kiitos."
+    phonetic: "KII-tos"
+
+  - id: "058"
+    prompt: "See you."
+    answer:
+      - "Nähdään."
+    phonetic: "NAH-daan"
+
+  - id: "059"
+    prompt: "See you later."
+    answer:
+      - "Nähdään myöhemmin."
+    phonetic: "NAH-daan MUU-hem-min"

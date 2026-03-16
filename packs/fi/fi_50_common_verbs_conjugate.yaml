@@ -1,0 +1,1631 @@
+metadata:
+  id: fi_50_common_verbs_conjugate
+  name: Finnish 50 Common Verbs – Conjugation Pack
+  drill_type: conjugate
+  source_note: Built from the uploaded FinnishPod101 verb worksheet; duplicate lemmas
+    in the source list were deduplicated.
+persons:
+- minä
+- sinä
+- hän
+- me
+- te
+- he
+entries:
+- id: '001'
+  lemma: levätä
+  forms:
+    minä:
+      positive:
+      - lepään
+      negative:
+      - en lepää
+    sinä:
+      positive:
+      - lepäät
+      negative:
+      - et lepää
+    hän:
+      positive:
+      - lepää
+      negative:
+      - ei lepää
+    me:
+      positive:
+      - lepäämme
+      negative:
+      - emme lepää
+    te:
+      positive:
+      - lepäätte
+      negative:
+      - ette lepää
+    he:
+      positive:
+      - lepäävät
+      negative:
+      - eivät lepää
+- id: '002'
+  lemma: kokata
+  forms:
+    minä:
+      positive:
+      - kokkaan
+      negative:
+      - en kokkaa
+    sinä:
+      positive:
+      - kokkaat
+      negative:
+      - et kokkaa
+    hän:
+      positive:
+      - kokkaa
+      negative:
+      - ei kokkaa
+    me:
+      positive:
+      - kokkaamme
+      negative:
+      - emme kokkaa
+    te:
+      positive:
+      - kokkaatte
+      negative:
+      - ette kokkaa
+    he:
+      positive:
+      - kokkaavat
+      negative:
+      - eivät kokkaa
+- id: '003'
+  lemma: palata
+  forms:
+    minä:
+      positive:
+      - palaan
+      negative:
+      - en palaa
+    sinä:
+      positive:
+      - palaat
+      negative:
+      - et palaa
+    hän:
+      positive:
+      - palaa
+      negative:
+      - ei palaa
+    me:
+      positive:
+      - palaamme
+      negative:
+      - emme palaa
+    te:
+      positive:
+      - palaatte
+      negative:
+      - ette palaa
+    he:
+      positive:
+      - palaavat
+      negative:
+      - eivät palaa
+- id: '004'
+  lemma: kylpeä
+  forms:
+    minä:
+      positive:
+      - kylven
+      negative:
+      - en kylve
+    sinä:
+      positive:
+      - kylvet
+      negative:
+      - et kylve
+    hän:
+      positive:
+      - kylpee
+      negative:
+      - ei kylve
+    me:
+      positive:
+      - kylvemme
+      negative:
+      - emme kylve
+    te:
+      positive:
+      - kylvette
+      negative:
+      - ette kylve
+    he:
+      positive:
+      - kylpevät
+      negative:
+      - eivät kylve
+- id: '005'
+  lemma: nukkua
+  forms:
+    minä:
+      positive:
+      - nukun
+      negative:
+      - en nuku
+    sinä:
+      positive:
+      - nukut
+      negative:
+      - et nuku
+    hän:
+      positive:
+      - nukkuu
+      negative:
+      - ei nuku
+    me:
+      positive:
+      - nukumme
+      negative:
+      - emme nuku
+    te:
+      positive:
+      - nukutte
+      negative:
+      - ette nuku
+    he:
+      positive:
+      - nukkuvat
+      negative:
+      - eivät nuku
+- id: '006'
+  lemma: herätä
+  forms:
+    minä:
+      positive:
+      - herään
+      negative:
+      - en herää
+    sinä:
+      positive:
+      - heräät
+      negative:
+      - et herää
+    hän:
+      positive:
+      - herää
+      negative:
+      - ei herää
+    me:
+      positive:
+      - heräämme
+      negative:
+      - emme herää
+    te:
+      positive:
+      - heräätte
+      negative:
+      - ette herää
+    he:
+      positive:
+      - heräävät
+      negative:
+      - eivät herää
+- id: '007'
+  lemma: tuntea
+  forms:
+    minä:
+      positive:
+      - tunnen
+      negative:
+      - en tunne
+    sinä:
+      positive:
+      - tunnet
+      negative:
+      - et tunne
+    hän:
+      positive:
+      - tuntee
+      negative:
+      - ei tunne
+    me:
+      positive:
+      - tunnemme
+      negative:
+      - emme tunne
+    te:
+      positive:
+      - tunnette
+      negative:
+      - ette tunne
+    he:
+      positive:
+      - tuntevat
+      negative:
+      - eivät tunne
+- id: 008
+  lemma: piirtää
+  forms:
+    minä:
+      positive:
+      - piirrän
+      negative:
+      - en piirrä
+    sinä:
+      positive:
+      - piirrät
+      negative:
+      - et piirrä
+    hän:
+      positive:
+      - piirtää
+      negative:
+      - ei piirrä
+    me:
+      positive:
+      - piirrämme
+      negative:
+      - emme piirrä
+    te:
+      positive:
+      - piirrätte
+      negative:
+      - ette piirrä
+    he:
+      positive:
+      - piirtävät
+      negative:
+      - eivät piirrä
+- id: 009
+  lemma: laittaa päälle
+  forms:
+    minä:
+      positive:
+      - laitan päälle
+      negative:
+      - en laita päälle
+    sinä:
+      positive:
+      - laitat päälle
+      negative:
+      - et laita päälle
+    hän:
+      positive:
+      - laittaa päälle
+      negative:
+      - ei laita päälle
+    me:
+      positive:
+      - laitamme päälle
+      negative:
+      - emme laita päälle
+    te:
+      positive:
+      - laitatte päälle
+      negative:
+      - ette laita päälle
+    he:
+      positive:
+      - laittavat päälle
+      negative:
+      - eivät laita päälle
+- id: '010'
+  lemma: saapua
+  forms:
+    minä:
+      positive:
+      - saavun
+      negative:
+      - en saavu
+    sinä:
+      positive:
+      - saavut
+      negative:
+      - et saavu
+    hän:
+      positive:
+      - saapuu
+      negative:
+      - ei saavu
+    me:
+      positive:
+      - saavumme
+      negative:
+      - emme saavu
+    te:
+      positive:
+      - saavutte
+      negative:
+      - ette saavu
+    he:
+      positive:
+      - saapuvat
+      negative:
+      - eivät saavu
+- id: '011'
+  lemma: vastata
+  forms:
+    minä:
+      positive:
+      - vastaan
+      negative:
+      - en vastaa
+    sinä:
+      positive:
+      - vastaat
+      negative:
+      - et vastaa
+    hän:
+      positive:
+      - vastaa
+      negative:
+      - ei vastaa
+    me:
+      positive:
+      - vastaamme
+      negative:
+      - emme vastaa
+    te:
+      positive:
+      - vastaatte
+      negative:
+      - ette vastaa
+    he:
+      positive:
+      - vastaavat
+      negative:
+      - eivät vastaa
+- id: '012'
+  lemma: opettaa
+  forms:
+    minä:
+      positive:
+      - opetan
+      negative:
+      - en opeta
+    sinä:
+      positive:
+      - opetat
+      negative:
+      - et opeta
+    hän:
+      positive:
+      - opettaa
+      negative:
+      - ei opeta
+    me:
+      positive:
+      - opetamme
+      negative:
+      - emme opeta
+    te:
+      positive:
+      - opetatte
+      negative:
+      - ette opeta
+    he:
+      positive:
+      - opettavat
+      negative:
+      - eivät opeta
+- id: '013'
+  lemma: kysyä
+  forms:
+    minä:
+      positive:
+      - kysyn
+      negative:
+      - en kysy
+    sinä:
+      positive:
+      - kysyt
+      negative:
+      - et kysy
+    hän:
+      positive:
+      - kysyy
+      negative:
+      - ei kysy
+    me:
+      positive:
+      - kysymme
+      negative:
+      - emme kysy
+    te:
+      positive:
+      - kysytte
+      negative:
+      - ette kysy
+    he:
+      positive:
+      - kysyvät
+      negative:
+      - eivät kysy
+- id: '014'
+  lemma: vastaanottaa
+  forms:
+    minä:
+      positive:
+      - vastaanotan
+      negative:
+      - en vastaanota
+    sinä:
+      positive:
+      - vastaanotat
+      negative:
+      - et vastaanota
+    hän:
+      positive:
+      - vastaanottaa
+      negative:
+      - ei vastaanota
+    me:
+      positive:
+      - vastaanotamme
+      negative:
+      - emme vastaanota
+    te:
+      positive:
+      - vastaanotatte
+      negative:
+      - ette vastaanota
+    he:
+      positive:
+      - vastaanottavat
+      negative:
+      - eivät vastaanota
+- id: '015'
+  lemma: suunnitella
+  forms:
+    minä:
+      positive:
+      - suunnittelen
+      negative:
+      - en suunnittele
+    sinä:
+      positive:
+      - suunnittelet
+      negative:
+      - et suunnittele
+    hän:
+      positive:
+      - suunnittelee
+      negative:
+      - ei suunnittele
+    me:
+      positive:
+      - suunnittelemme
+      negative:
+      - emme suunnittele
+    te:
+      positive:
+      - suunnittelette
+      negative:
+      - ette suunnittele
+    he:
+      positive:
+      - suunnittelevat
+      negative:
+      - eivät suunnittele
+- id: '016'
+  lemma: selittää
+  forms:
+    minä:
+      positive:
+      - selitän
+      negative:
+      - en selitä
+    sinä:
+      positive:
+      - selität
+      negative:
+      - et selitä
+    hän:
+      positive:
+      - selittää
+      negative:
+      - ei selitä
+    me:
+      positive:
+      - selitämme
+      negative:
+      - emme selitä
+    te:
+      positive:
+      - selitätte
+      negative:
+      - ette selitä
+    he:
+      positive:
+      - selittävät
+      negative:
+      - eivät selitä
+- id: '017'
+  lemma: voida
+  forms:
+    minä:
+      positive:
+      - voin
+      negative:
+      - en voi
+    sinä:
+      positive:
+      - voit
+      negative:
+      - et voi
+    hän:
+      positive:
+      - voi
+      negative:
+      - ei voi
+    me:
+      positive:
+      - voimme
+      negative:
+      - emme voi
+    te:
+      positive:
+      - voitte
+      negative:
+      - ette voi
+    he:
+      positive:
+      - voivat
+      negative:
+      - eivät voi
+- id: 018
+  lemma: sulkea
+  forms:
+    minä:
+      positive:
+      - suljen
+      negative:
+      - en sulje
+    sinä:
+      positive:
+      - suljet
+      negative:
+      - et sulje
+    hän:
+      positive:
+      - sulkee
+      negative:
+      - ei sulje
+    me:
+      positive:
+      - suljemme
+      negative:
+      - emme sulje
+    te:
+      positive:
+      - suljette
+      negative:
+      - ette sulje
+    he:
+      positive:
+      - sulkevat
+      negative:
+      - eivät sulje
+- id: 019
+  lemma: ostaa
+  forms:
+    minä:
+      positive:
+      - ostan
+      negative:
+      - en osta
+    sinä:
+      positive:
+      - ostat
+      negative:
+      - et osta
+    hän:
+      positive:
+      - ostaa
+      negative:
+      - ei osta
+    me:
+      positive:
+      - ostamme
+      negative:
+      - emme osta
+    te:
+      positive:
+      - ostatte
+      negative:
+      - ette osta
+    he:
+      positive:
+      - ostavat
+      negative:
+      - eivät osta
+- id: '020'
+  lemma: juosta
+  forms:
+    minä:
+      positive:
+      - juoksen
+      negative:
+      - en juokse
+    sinä:
+      positive:
+      - juokset
+      negative:
+      - et juokse
+    hän:
+      positive:
+      - juoksee
+      negative:
+      - ei juokse
+    me:
+      positive:
+      - juoksemme
+      negative:
+      - emme juokse
+    te:
+      positive:
+      - juoksette
+      negative:
+      - ette juokse
+    he:
+      positive:
+      - juoksevat
+      negative:
+      - eivät juokse
+- id: '021'
+  lemma: haluta
+  forms:
+    minä:
+      positive:
+      - haluan
+      negative:
+      - en halua
+    sinä:
+      positive:
+      - haluat
+      negative:
+      - et halua
+    hän:
+      positive:
+      - haluaa
+      negative:
+      - ei halua
+    me:
+      positive:
+      - haluamme
+      negative:
+      - emme halua
+    te:
+      positive:
+      - haluatte
+      negative:
+      - ette halua
+    he:
+      positive:
+      - haluavat
+      negative:
+      - eivät halua
+- id: '022'
+  lemma: lukea
+  forms:
+    minä:
+      positive:
+      - luen
+      negative:
+      - en lue
+    sinä:
+      positive:
+      - luet
+      negative:
+      - et lue
+    hän:
+      positive:
+      - lukee
+      negative:
+      - ei lue
+    me:
+      positive:
+      - luemme
+      negative:
+      - emme lue
+    te:
+      positive:
+      - luette
+      negative:
+      - ette lue
+    he:
+      positive:
+      - lukevat
+      negative:
+      - eivät lue
+- id: '023'
+  lemma: etsiä
+  forms:
+    minä:
+      positive:
+      - etsin
+      negative:
+      - en etsi
+    sinä:
+      positive:
+      - etsit
+      negative:
+      - et etsi
+    hän:
+      positive:
+      - etsii
+      negative:
+      - ei etsi
+    me:
+      positive:
+      - etsimme
+      negative:
+      - emme etsi
+    te:
+      positive:
+      - etsitte
+      negative:
+      - ette etsi
+    he:
+      positive:
+      - etsivät
+      negative:
+      - eivät etsi
+- id: '024'
+  lemma: kiertää
+  forms:
+    minä:
+      positive:
+      - kierrän
+      negative:
+      - en kierrä
+    sinä:
+      positive:
+      - kierrät
+      negative:
+      - et kierrä
+    hän:
+      positive:
+      - kiertää
+      negative:
+      - ei kierrä
+    me:
+      positive:
+      - kierrämme
+      negative:
+      - emme kierrä
+    te:
+      positive:
+      - kierrätte
+      negative:
+      - ette kierrä
+    he:
+      positive:
+      - kiertävät
+      negative:
+      - eivät kierrä
+- id: '025'
+  lemma: laittaa
+  forms:
+    minä:
+      positive:
+      - laitan
+      negative:
+      - en laita
+    sinä:
+      positive:
+      - laitat
+      negative:
+      - et laita
+    hän:
+      positive:
+      - laittaa
+      negative:
+      - ei laita
+    me:
+      positive:
+      - laitamme
+      negative:
+      - emme laita
+    te:
+      positive:
+      - laitatte
+      negative:
+      - ette laita
+    he:
+      positive:
+      - laittavat
+      negative:
+      - eivät laita
+- id: '026'
+  lemma: käyttää
+  forms:
+    minä:
+      positive:
+      - käytän
+      negative:
+      - en käytä
+    sinä:
+      positive:
+      - käytät
+      negative:
+      - et käytä
+    hän:
+      positive:
+      - käyttää
+      negative:
+      - ei käytä
+    me:
+      positive:
+      - käytämme
+      negative:
+      - emme käytä
+    te:
+      positive:
+      - käytätte
+      negative:
+      - ette käytä
+    he:
+      positive:
+      - käyttävät
+      negative:
+      - eivät käytä
+- id: '027'
+  lemma: matkustaa
+  forms:
+    minä:
+      positive:
+      - matkustan
+      negative:
+      - en matkusta
+    sinä:
+      positive:
+      - matkustat
+      negative:
+      - et matkusta
+    hän:
+      positive:
+      - matkustaa
+      negative:
+      - ei matkusta
+    me:
+      positive:
+      - matkustamme
+      negative:
+      - emme matkusta
+    te:
+      positive:
+      - matkustatte
+      negative:
+      - ette matkusta
+    he:
+      positive:
+      - matkustavat
+      negative:
+      - eivät matkusta
+- id: 028
+  lemma: peruuttaa
+  forms:
+    minä:
+      positive:
+      - peruutan
+      negative:
+      - en peruuta
+    sinä:
+      positive:
+      - peruutat
+      negative:
+      - et peruuta
+    hän:
+      positive:
+      - peruuttaa
+      negative:
+      - ei peruuta
+    me:
+      positive:
+      - peruutamme
+      negative:
+      - emme peruuta
+    te:
+      positive:
+      - peruutatte
+      negative:
+      - ette peruuta
+    he:
+      positive:
+      - peruuttavat
+      negative:
+      - eivät peruuta
+- id: 029
+  lemma: tehdä
+  forms:
+    minä:
+      positive:
+      - teen
+      negative:
+      - en tee
+    sinä:
+      positive:
+      - teet
+      negative:
+      - et tee
+    hän:
+      positive:
+      - tekee
+      negative:
+      - ei tee
+    me:
+      positive:
+      - teemme
+      negative:
+      - emme tee
+    te:
+      positive:
+      - teette
+      negative:
+      - ette tee
+    he:
+      positive:
+      - tekevät
+      negative:
+      - eivät tee
+- id: '030'
+  lemma: mennä
+  forms:
+    minä:
+      positive:
+      - menen
+      negative:
+      - en mene
+    sinä:
+      positive:
+      - menet
+      negative:
+      - et mene
+    hän:
+      positive:
+      - menee
+      negative:
+      - ei mene
+    me:
+      positive:
+      - menemme
+      negative:
+      - emme mene
+    te:
+      positive:
+      - menette
+      negative:
+      - ette mene
+    he:
+      positive:
+      - menevät
+      negative:
+      - eivät mene
+- id: '031'
+  lemma: syödä
+  forms:
+    minä:
+      positive:
+      - syön
+      negative:
+      - en syö
+    sinä:
+      positive:
+      - syöt
+      negative:
+      - et syö
+    hän:
+      positive:
+      - syö
+      negative:
+      - ei syö
+    me:
+      positive:
+      - syömme
+      negative:
+      - emme syö
+    te:
+      positive:
+      - syötte
+      negative:
+      - ette syö
+    he:
+      positive:
+      - syövät
+      negative:
+      - eivät syö
+- id: '032'
+  lemma: tulla
+  forms:
+    minä:
+      positive:
+      - tulen
+      negative:
+      - en tule
+    sinä:
+      positive:
+      - tulet
+      negative:
+      - et tule
+    hän:
+      positive:
+      - tulee
+      negative:
+      - ei tule
+    me:
+      positive:
+      - tulemme
+      negative:
+      - emme tule
+    te:
+      positive:
+      - tulette
+      negative:
+      - ette tule
+    he:
+      positive:
+      - tulevat
+      negative:
+      - eivät tule
+- id: '033'
+  lemma: seistä
+  forms:
+    minä:
+      positive:
+      - seison
+      negative:
+      - en seiso
+    sinä:
+      positive:
+      - seisot
+      negative:
+      - et seiso
+    hän:
+      positive:
+      - seisoo
+      negative:
+      - ei seiso
+    me:
+      positive:
+      - seisomme
+      negative:
+      - emme seiso
+    te:
+      positive:
+      - seisotte
+      negative:
+      - ette seiso
+    he:
+      positive:
+      - seisovat
+      negative:
+      - eivät seiso
+- id: '034'
+  lemma: sanoa
+  forms:
+    minä:
+      positive:
+      - sanon
+      negative:
+      - en sano
+    sinä:
+      positive:
+      - sanot
+      negative:
+      - et sano
+    hän:
+      positive:
+      - sanoo
+      negative:
+      - ei sano
+    me:
+      positive:
+      - sanomme
+      negative:
+      - emme sano
+    te:
+      positive:
+      - sanotte
+      negative:
+      - ette sano
+    he:
+      positive:
+      - sanovat
+      negative:
+      - eivät sano
+- id: '035'
+  lemma: soittaa
+  forms:
+    minä:
+      positive:
+      - soitan
+      negative:
+      - en soita
+    sinä:
+      positive:
+      - soitat
+      negative:
+      - et soita
+    hän:
+      positive:
+      - soittaa
+      negative:
+      - ei soita
+    me:
+      positive:
+      - soitamme
+      negative:
+      - emme soita
+    te:
+      positive:
+      - soitatte
+      negative:
+      - ette soita
+    he:
+      positive:
+      - soittavat
+      negative:
+      - eivät soita
+- id: '036'
+  lemma: nauraa
+  forms:
+    minä:
+      positive:
+      - nauran
+      negative:
+      - en naura
+    sinä:
+      positive:
+      - naurat
+      negative:
+      - et naura
+    hän:
+      positive:
+      - nauraa
+      negative:
+      - ei naura
+    me:
+      positive:
+      - nauramme
+      negative:
+      - emme naura
+    te:
+      positive:
+      - nauratte
+      negative:
+      - ette naura
+    he:
+      positive:
+      - nauravat
+      negative:
+      - eivät naura
+- id: '037'
+  lemma: muistaa
+  forms:
+    minä:
+      positive:
+      - muistan
+      negative:
+      - en muista
+    sinä:
+      positive:
+      - muistat
+      negative:
+      - et muista
+    hän:
+      positive:
+      - muistaa
+      negative:
+      - ei muista
+    me:
+      positive:
+      - muistamme
+      negative:
+      - emme muista
+    te:
+      positive:
+      - muistatte
+      negative:
+      - ette muista
+    he:
+      positive:
+      - muistavat
+      negative:
+      - eivät muista
+- id: 038
+  lemma: nähdä
+  forms:
+    minä:
+      positive:
+      - näen
+      negative:
+      - en näe
+    sinä:
+      positive:
+      - näet
+      negative:
+      - et näe
+    hän:
+      positive:
+      - näkee
+      negative:
+      - ei näe
+    me:
+      positive:
+      - näemme
+      negative:
+      - emme näe
+    te:
+      positive:
+      - näette
+      negative:
+      - ette näe
+    he:
+      positive:
+      - näkevät
+      negative:
+      - eivät näe
+- id: 039
+  lemma: harjata
+  forms:
+    minä:
+      positive:
+      - harjaan
+      negative:
+      - en harjaa
+    sinä:
+      positive:
+      - harjaat
+      negative:
+      - et harjaa
+    hän:
+      positive:
+      - harjaa
+      negative:
+      - ei harjaa
+    me:
+      positive:
+      - harjaamme
+      negative:
+      - emme harjaa
+    te:
+      positive:
+      - harjaatte
+      negative:
+      - ette harjaa
+    he:
+      positive:
+      - harjaavat
+      negative:
+      - eivät harjaa
+- id: '040'
+  lemma: käydä suihkussa
+  forms:
+    minä:
+      positive:
+      - käyn suihkussa
+      negative:
+      - en käy suihkussa
+    sinä:
+      positive:
+      - käyt suihkussa
+      negative:
+      - et käy suihkussa
+    hän:
+      positive:
+      - käy suihkussa
+      negative:
+      - ei käy suihkussa
+    me:
+      positive:
+      - käymme suihkussa
+      negative:
+      - emme käy suihkussa
+    te:
+      positive:
+      - käytte suihkussa
+      negative:
+      - ette käy suihkussa
+    he:
+      positive:
+      - käyvät suihkussa
+      negative:
+      - eivät käy suihkussa
+- id: '041'
+  lemma: pestä
+  forms:
+    minä:
+      positive:
+      - pesen
+      negative:
+      - en pese
+    sinä:
+      positive:
+      - peset
+      negative:
+      - et pese
+    hän:
+      positive:
+      - pesee
+      negative:
+      - ei pese
+    me:
+      positive:
+      - pesemme
+      negative:
+      - emme pese
+    te:
+      positive:
+      - pesette
+      negative:
+      - ette pese
+    he:
+      positive:
+      - pesevät
+      negative:
+      - eivät pese
+- id: '042'
+  lemma: puhua
+  forms:
+    minä:
+      positive:
+      - puhun
+      negative:
+      - en puhu
+    sinä:
+      positive:
+      - puhut
+      negative:
+      - et puhu
+    hän:
+      positive:
+      - puhuu
+      negative:
+      - ei puhu
+    me:
+      positive:
+      - puhumme
+      negative:
+      - emme puhu
+    te:
+      positive:
+      - puhutte
+      negative:
+      - ette puhu
+    he:
+      positive:
+      - puhuvat
+      negative:
+      - eivät puhu
+- id: '043'
+  lemma: avata
+  forms:
+    minä:
+      positive:
+      - avaan
+      negative:
+      - en avaa
+    sinä:
+      positive:
+      - avaat
+      negative:
+      - et avaa
+    hän:
+      positive:
+      - avaa
+      negative:
+      - ei avaa
+    me:
+      positive:
+      - avaamme
+      negative:
+      - emme avaa
+    te:
+      positive:
+      - avaatte
+      negative:
+      - ette avaa
+    he:
+      positive:
+      - avaavat
+      negative:
+      - eivät avaa
+- id: '044'
+  lemma: lopettaa
+  forms:
+    minä:
+      positive:
+      - lopetan
+      negative:
+      - en lopeta
+    sinä:
+      positive:
+      - lopetat
+      negative:
+      - et lopeta
+    hän:
+      positive:
+      - lopettaa
+      negative:
+      - ei lopeta
+    me:
+      positive:
+      - lopetamme
+      negative:
+      - emme lopeta
+    te:
+      positive:
+      - lopetatte
+      negative:
+      - ette lopeta
+    he:
+      positive:
+      - lopettavat
+      negative:
+      - eivät lopeta
+- id: '045'
+  lemma: katsoa
+  forms:
+    minä:
+      positive:
+      - katson
+      negative:
+      - en katso
+    sinä:
+      positive:
+      - katsot
+      negative:
+      - et katso
+    hän:
+      positive:
+      - katsoo
+      negative:
+      - ei katso
+    me:
+      positive:
+      - katsomme
+      negative:
+      - emme katso
+    te:
+      positive:
+      - katsotte
+      negative:
+      - ette katso
+    he:
+      positive:
+      - katsovat
+      negative:
+      - eivät katso
+- id: '046'
+  lemma: opiskella
+  forms:
+    minä:
+      positive:
+      - opiskelen
+      negative:
+      - en opiskele
+    sinä:
+      positive:
+      - opiskelet
+      negative:
+      - et opiskele
+    hän:
+      positive:
+      - opiskelee
+      negative:
+      - ei opiskele
+    me:
+      positive:
+      - opiskelemme
+      negative:
+      - emme opiskele
+    te:
+      positive:
+      - opiskelette
+      negative:
+      - ette opiskele
+    he:
+      positive:
+      - opiskelevat
+      negative:
+      - eivät opiskele
+- id: '047'
+  lemma: kuunnella
+  forms:
+    minä:
+      positive:
+      - kuuntelen
+      negative:
+      - en kuuntele
+    sinä:
+      positive:
+      - kuuntelet
+      negative:
+      - et kuuntele
+    hän:
+      positive:
+      - kuuntelee
+      negative:
+      - ei kuuntele
+    me:
+      positive:
+      - kuuntelemme
+      negative:
+      - emme kuuntele
+    te:
+      positive:
+      - kuuntelette
+      negative:
+      - ette kuuntele
+    he:
+      positive:
+      - kuuntelevat
+      negative:
+      - eivät kuuntele
+- id: 048
+  lemma: kuolla
+  forms:
+    minä:
+      positive:
+      - kuolen
+      negative:
+      - en kuole
+    sinä:
+      positive:
+      - kuolet
+      negative:
+      - et kuole
+    hän:
+      positive:
+      - kuolee
+      negative:
+      - ei kuole
+    me:
+      positive:
+      - kuolemme
+      negative:
+      - emme kuole
+    te:
+      positive:
+      - kuolette
+      negative:
+      - ette kuole
+    he:
+      positive:
+      - kuolevat
+      negative:
+      - eivät kuole
+- id: 049
+  lemma: odottaa
+  forms:
+    minä:
+      positive:
+      - odotan
+      negative:
+      - en odota
+    sinä:
+      positive:
+      - odotat
+      negative:
+      - et odota
+    hän:
+      positive:
+      - odottaa
+      negative:
+      - ei odota
+    me:
+      positive:
+      - odotamme
+      negative:
+      - emme odota
+    te:
+      positive:
+      - odotatte
+      negative:
+      - ette odota
+    he:
+      positive:
+      - odottavat
+      negative:
+      - eivät odota

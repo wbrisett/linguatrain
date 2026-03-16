@@ -1,305 +1,305 @@
 metadata:
-  pack_name: Finnish Class Transcript – 2026-03-02 (Segment 2)
+  id: "fi_conversation_2"
   version: 1
 
 
 entries:
 
-  - id: 036
+  - id: "036"
     prompt: When does the course start?
     answer:
       - Milloin kurssi alkaa?
     phonetic: MIL-loin KUR-see AHK-lah
 
-  - id: 037
+  - id: "037"
     prompt: At eight o’clock.
     answer:
       - Kello kahdeksan.
     phonetic: KEL-loh KAH-dek-sahn
 
-  - id: 038
+  - id: "038"
     prompt: On Monday at eight o’clock.
     answer:
       - Maanantaina kello kahdeksan.
     phonetic: MAH-nahn-tai-nah KEL-loh KAH-dek-sahn
 
-  - id: 039
+  - id: "039"
     prompt: And on Thursday.
     answer:
       - Ja torstaina.
     phonetic: yah TORS-tai-nah
 
-  - id: 040
+  - id: "040"
     prompt: When is the weekend?
     answer:
       - Milloin on viikonloppu?
     phonetic: MIL-loin on VEE-kon-lop-poo
 
-  - id: 041
+  - id: "041"
     prompt: Then it’s the weekend, Saturday and Sunday.
     answer:
       - Silloin on viikonloppu, lauantaina ja sunnuntaina.
     phonetic: SIL-loin on VEE-kon-lop-poo LOW-ahn-tai-nah yah SOON-noon-tai-nah
 
-  - id: 042
+  - id: "042"
     prompt: How are you?
     answer:
       - Mitä kuuluu?
     phonetic: MEE-tah KOO-loo
 
-  - id: 043
+  - id: "043"
     prompt: How are you? (alternate)
     answer:
       - Miten sinä olet?
     phonetic: MEE-ten SEE-nah OH-let
 
-  - id: 044
+  - id: "044"
     prompt: Are you Finnish?
     answer:
       - Oletko sinä suomalainen?
     phonetic: OH-let-koh SEE-nah SOO-mah-lai-nen
 
-  - id: 045
+  - id: "045"
     prompt: Do you live in Finland?
     answer:
       - Asutko sinä Suomessa?
     phonetic: AH-soot-koh SEE-nah SOO-oh-meh-sah
 
-  - id: 046
+  - id: "046"
     prompt: I live in Helsinki.
     answer:
       - Asun Helsingissä.
     phonetic: AH-soon HEL-sing-iss-sah
 
-  - id: 047
+  - id: "047"
     prompt: I live in Jyväskylä in Finland.
     answer:
       - Minä asun Jyväskylässä Suomessa.
     phonetic: MEE-nah AH-soon YOO-vaes-koo-laes-sah SOO-oh-meh-sah
 
-  - id: 048
+  - id: "048"
     prompt: Do you travel on the weekend?
     answer:
       - Matkustatko sinä viikonloppuna?
     phonetic: MAHT-koo-stat-koh SEE-nah VEE-kon-lop-poo-nah
 
-  - id: 049
+  - id: "049"
     prompt: I would say, no.
     answer:
       - Sanoisin, että ei.
     phonetic: SAH-noy-sin AET-tah EI
 
-  - id: 050
+  - id: "050"
     prompt: Yes, that is the answer.
     answer:
       - Kyllä, se on vastaus.
     phonetic: KYL-lah seh on VAHS-tah-oos
 
-  - id: 051
+  - id: "051"
     prompt: I buy food today.
     answer:
       - Ostan ruokaa tänään.
     phonetic: OH-stahn ROO-oh-kah TAE-naen
 
-  - id: 052
+  - id: "052"
     prompt: Do you buy food today?
     answer:
       - Ostatko sinä ruokaa tänään?
     phonetic: OH-stat-koh SEE-nah ROO-oh-kah TAE-naen
 
-  - id: 053
+  - id: "053"
     prompt: Have you bought food today?
     answer:
       - Oletko ostanut ruokaa tänään?
     phonetic: OH-let-koh OH-stah-noot ROO-oh-kah TAE-naen
 
-  - id: 054
+  - id: "054"
     prompt: No, I have not bought food.
     answer:
       - Ei, en ole ostanut ruokaa.
     phonetic: EI en OH-leh OH-stah-noot ROO-oh-kah
 
-  - id: 055
+  - id: "055"
     prompt: Do you pay with a bank card?
     answer:
       - Maksatko sinä pankkikortilla?
     phonetic: MAHK-sat-koh SEE-nah PAHNK-kee-kor-tee-lah
 
-  - id: 056
+  - id: "056"
     prompt: Yes, I pay.
     answer:
       - Kyllä, maksan.
     phonetic: KYL-lah MAHK-sahn
 
-  - id: 057
+  - id: "057"
     prompt: Do we speak Finnish?
     answer:
       - Puhummeko me suomea?
     phonetic: POO-hoom-meh-koh meh SOO-oh-meh-ah
 
-  - id: 058
+  - id: "058"
     prompt: We speak Finnish.
     answer:
       - Me puhumme suomea.
     phonetic: meh POO-hoom-meh SOO-oh-meh-ah
 
-  - id: 059
+  - id: "059"
     prompt: Do we live in Finland?
     answer:
       - Asummeko me Suomessa?
     phonetic: AH-soom-meh-koh meh SOO-oh-meh-sah
 
-  - id: 060
+  - id: "060"
     prompt: Yes, we live. (Yes, we do.)
     answer:
       - Kyllä, asumme.
     phonetic: KYL-lah AH-soom-meh
 
-  - id: 061
+  - id: "061"
     prompt: Do you speak Swedish?
     answer:
       - Puhutko sinä ruotsia?
     phonetic: POO-hoot-koh SEE-nah RWOHT-see-ah
 
-  - id: 062
+  - id: "062"
     prompt: I speak Swedish.
     answer:
       - Minä puhun ruotsia.
     phonetic: MEE-nah POO-hoon RWOHT-see-ah
 
-  - id: 063
+  - id: "063"
     prompt: Do you save money?
     answer:
       - Säästätkö sinä rahaa?
     phonetic: SAES-taet-koh SEE-nah RAH-hah
 
-  - id: 064
+  - id: "064"
     prompt: Are you from Spain?
     answer:
       - Oletko sinä kotoisin Espanjasta?
     phonetic: OH-let-koh SEE-nah KOH-toy-sin ES-PAHN-yah-stah
 
-  - id: 065
+  - id: "065"
     prompt: Are you from Spain?
     answer:
       - oletko sinä Espanjasta?
     phonetic: KÜS-üm-üs OH-lee-see OH-let-koh SEE-nah ES-PAHN-yah-stah
 
-  - id: 066
+  - id: "066"
     prompt: Are you from America?
     answer:
       - Oletko sinä Amerikasta?
     phonetic: OH-let-koh SEE-nah AH-meh-REE-kah-stah
 
-  - id: 067
+  - id: "067"
     prompt: Yes, I am.
     answer:
       - Kyllä, olen.
     phonetic: KYL-lah OH-len
 
-  - id: 068
+  - id: "068"
     prompt: Do you drive a car?
     answer:
       - Ajatko sinä autoa?
     phonetic: AH-yat-koh SEE-nah OW-too-ah
 
-  - id: 069
+  - id: "069"
     prompt: Do you watch a lot of TV?
     answer:
       - Katsotko paljon televisiota?
     phonetic: KAHT-soht-koh PAHL-yon TEH-leh-vee-see-oh-tah
 
-  - id: 070
+  - id: "070"
     prompt: Good; bad.
     answer:
       - Hyvä, huono.
     phonetic: HÜ-va HOO-noh
 
-  - id: 071
+  - id: "071"
     prompt: Hot, cold.
     answer:
       - Kuuma, kylmä.
     phonetic: KOO-mah KÜL-mah
 
-  - id: 072
+  - id: "072"
     prompt: Ice cream is cold.
     answer:
       - Jäätelö on kylmää.
     phonetic: YAE-teh-lö on KÜL-maa
 
-  - id: 073
+  - id: "073"
     prompt: Finnish is difficult.
     answer:
       - Suomi on vaikeaa.
     phonetic: SOO-oh-mee on VAI-keh-ah
 
-  - id: 074
+  - id: "074"
     prompt: Mathematics is difficult.
     answer:
       - Matematiikka on vaikeaa.
     phonetic: MAH-teh-mah-TEE-kah on VAI-keh-ah
 
-  - id: 075
+  - id: "075"
     prompt: How old are you?
     answer:
       - Kuinka vanha sinä olet?
     phonetic: KOO-in-kah VAHN-hah SEE-nah OH-let
 
-  - id: 076
+  - id: "076"
     prompt: New and old.
     answer:
       - Uusi ja vanha.
     phonetic: OO-see yah VAHN-hah
 
-  - id: 077
+  - id: "077"
     prompt: Warm; hot; cool; cold.
     answer:
       - Lämmin, kuuma, viileä ja kylmä.
     phonetic: LAEM-min KOO-mah VEE-leh-ah yah KÜL-mah
 
-  - id: 078
+  - id: "078"
     prompt: Summer is bright.
     answer:
       - Kesä on valoisa.
     phonetic: KEH-sah on VAH-loy-sah
 
-  - id: 079
+  - id: "079"
     prompt: Night is dark.
     answer:
       - Yö on pimeä.
     phonetic: YÖ on PEE-meh-ah
 
-  - id: 080
+  - id: "080"
     prompt: There is light in the lamp.
     answer:
       - Lampussa on valo.
     phonetic: LAHM-poos-sah on VAH-loh
 
-  - id: 081
+  - id: "081"
     prompt: The weather is bad now.
     answer:
       - Mutta sää on nyt huono.
     phonetic: MUT-tah SAE on NÜT HOO-noh
 
-  - id: 082
+  - id: "082"
     prompt: It is raining heavily.
     answer:
       - Sataa kaatamalla.
     phonetic: SAH-tah KAH-tah-mah-lah
 
-  - id: 083
+  - id: "083"
     prompt: It is windy.
     answer:
       - On tuulista.
     phonetic: on TOO-lee-stah
 
-  - id: 084
+  - id: "084"
     prompt: The sun is shining here.
     answer:
       - Täällä aurinko paistaa.
     phonetic: TAE-ael-lah OW-ring-koh PIE-stah
 
-  - id: 085
+  - id: "085"
     prompt: It is really warm.
     answer:
       - On tosi lämmin.

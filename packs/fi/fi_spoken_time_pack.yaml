@@ -1,0 +1,302 @@
+pack_name: finnish_spoken_time_pack
+entries:
+- id: '001'
+  prompt:
+  - 01:00
+  answer:
+  - Kello on tasan yksi.
+  phonetic: KEHL-loh on TAH-sahn UUK-see
+- id: '002'
+  prompt:
+  - 02:00
+  answer:
+  - Kello on tasan kaksi.
+  phonetic: KEHL-loh on TAH-sahn KAHK-see
+- id: '003'
+  prompt:
+  - 03:00
+  answer:
+  - Kello on tasan kolme.
+  phonetic: KEHL-loh on TAH-sahn KOHL-meh
+- id: '004'
+  prompt:
+  - 04:00
+  answer:
+  - Kello on tasan neljä.
+  phonetic: KEHL-loh on TAH-sahn NEL-yah
+- id: '005'
+  prompt:
+  - 05:00
+  answer:
+  - Kello on tasan viisi.
+  phonetic: KEHL-loh on TAH-sahn VEE-see
+- id: '006'
+  prompt:
+  - 06:00
+  answer:
+  - Kello on tasan kuusi.
+  phonetic: KEHL-loh on TAH-sahn KUU-see
+- id: '007'
+  prompt:
+  - 07:00
+  answer:
+  - Kello on tasan seitsemän.
+  phonetic: KEHL-loh on TAH-sahn SAYT-seh-mahn
+- id: 008
+  prompt:
+  - 08:00
+  answer:
+  - Kello on tasan kahdeksan.
+  phonetic: KEHL-loh on TAH-sahn KAH-dehk-sahn
+- id: 009
+  prompt:
+  - 09:00
+  answer:
+  - Kello on tasan yhdeksän.
+  phonetic: KEHL-loh on TAH-sahn UUH-dehk-sahn
+- id: '010'
+  prompt:
+  - '10:00'
+  answer:
+  - Kello on tasan kymmenen.
+  phonetic: KEHL-loh on TAH-sahn KUHM-meh-nehn
+- id: '011'
+  prompt:
+  - 01:05
+  answer:
+  - Kello on viisi yli yksi.
+  phonetic: KEHL-loh on VEE-see UU-lee UUK-see
+- id: '012'
+  prompt:
+  - 01:15
+  answer:
+  - Kello on varttia yli yksi.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee UUK-see
+- id: '013'
+  prompt:
+  - 02:05
+  answer:
+  - Kello on viisi yli kaksi.
+  phonetic: KEHL-loh on VEE-see UU-lee KAHK-see
+- id: '014'
+  prompt:
+  - 02:15
+  answer:
+  - Kello on varttia yli kaksi.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee KAHK-see
+- id: '015'
+  prompt:
+  - 03:05
+  answer:
+  - Kello on viisi yli kolme.
+  phonetic: KEHL-loh on VEE-see UU-lee KOHL-meh
+- id: '016'
+  prompt:
+  - 03:15
+  answer:
+  - Kello on varttia yli kolme.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee KOHL-meh
+- id: '017'
+  prompt:
+  - 04:05
+  answer:
+  - Kello on viisi yli neljä.
+  phonetic: KEHL-loh on VEE-see UU-lee NEL-yah
+- id: 018
+  prompt:
+  - 04:15
+  answer:
+  - Kello on varttia yli neljä.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee NEL-yah
+- id: 019
+  prompt:
+  - 05:05
+  answer:
+  - Kello on viisi yli viisi.
+  phonetic: KEHL-loh on VEE-see UU-lee VEE-see
+- id: '020'
+  prompt:
+  - 05:15
+  answer:
+  - Kello on varttia yli viisi.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee VEE-see
+- id: '021'
+  prompt:
+  - 06:05
+  answer:
+  - Kello on viisi yli kuusi.
+  phonetic: KEHL-loh on VEE-see UU-lee KUU-see
+- id: '022'
+  prompt:
+  - 06:15
+  answer:
+  - Kello on varttia yli kuusi.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee KUU-see
+- id: '023'
+  prompt:
+  - 07:05
+  answer:
+  - Kello on viisi yli seitsemän.
+  phonetic: KEHL-loh on VEE-see UU-lee SAYT-seh-mahn
+- id: '024'
+  prompt:
+  - 07:15
+  answer:
+  - Kello on varttia yli seitsemän.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee SAYT-seh-mahn
+- id: '025'
+  prompt:
+  - 08:05
+  answer:
+  - Kello on viisi yli kahdeksan.
+  phonetic: KEHL-loh on VEE-see UU-lee KAH-dehk-sahn
+- id: '026'
+  prompt:
+  - 08:15
+  answer:
+  - Kello on varttia yli kahdeksan.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee KAH-dehk-sahn
+- id: '027'
+  prompt:
+  - 09:05
+  answer:
+  - Kello on viisi yli yhdeksän.
+  phonetic: KEHL-loh on VEE-see UU-lee UUH-dehk-sahn
+- id: 028
+  prompt:
+  - 09:15
+  answer:
+  - Kello on varttia yli yhdeksän.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee UUH-dehk-sahn
+- id: 029
+  prompt:
+  - '10:05'
+  answer:
+  - Kello on viisi yli kymmenen.
+  phonetic: KEHL-loh on VEE-see UU-lee KUHM-meh-nehn
+- id: '030'
+  prompt:
+  - '10:15'
+  answer:
+  - Kello on varttia yli kymmenen.
+  phonetic: KEHL-loh on VAHR-tee-ah UU-lee KUHM-meh-nehn
+- id: '031'
+  prompt:
+  - 01:30
+  answer:
+  - Kello on puoli kaksi.
+  phonetic: KEHL-loh on PUOH-lee KAHK-see
+- id: '032'
+  prompt:
+  - 02:30
+  answer:
+  - Kello on puoli kolme.
+  phonetic: KEHL-loh on PUOH-lee KOHL-meh
+- id: '033'
+  prompt:
+  - 03:30
+  answer:
+  - Kello on puoli neljä.
+  phonetic: KEHL-loh on PUOH-lee NEL-yah
+- id: '034'
+  prompt:
+  - 04:30
+  answer:
+  - Kello on puoli viisi.
+  phonetic: KEHL-loh on PUOH-lee VEE-see
+- id: '035'
+  prompt:
+  - 05:30
+  answer:
+  - Kello on puoli kuusi.
+  phonetic: KEHL-loh on PUOH-lee KUU-see
+- id: '036'
+  prompt:
+  - 06:30
+  answer:
+  - Kello on puoli seitsemän.
+  phonetic: KEHL-loh on PUOH-lee SAYT-seh-mahn
+- id: '037'
+  prompt:
+  - 07:30
+  answer:
+  - Kello on puoli kahdeksan.
+  phonetic: KEHL-loh on PUOH-lee KAH-dehk-sahn
+- id: 038
+  prompt:
+  - 08:30
+  answer:
+  - Kello on puoli yhdeksän.
+  phonetic: KEHL-loh on PUOH-lee UUH-dehk-sahn
+- id: 039
+  prompt:
+  - 09:30
+  answer:
+  - Kello on puoli kymmenen.
+  phonetic: KEHL-loh on PUOH-lee KUHM-meh-nehn
+- id: '040'
+  prompt:
+  - '10:30'
+  answer:
+  - Kello on puoli yksitoista.
+  phonetic: KEHL-loh on PUOH-lee UUK-see-TOY-stah
+- id: '041'
+  prompt:
+  - 01:50
+  answer:
+  - Kello on kymmenen vaille kaksi.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh KAHK-see
+- id: '042'
+  prompt:
+  - 02:50
+  answer:
+  - Kello on kymmenen vaille kolme.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh KOHL-meh
+- id: '043'
+  prompt:
+  - 03:50
+  answer:
+  - Kello on kymmenen vaille neljä.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh NEL-yah
+- id: '044'
+  prompt:
+  - 04:50
+  answer:
+  - Kello on kymmenen vaille viisi.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh VEE-see
+- id: '045'
+  prompt:
+  - 05:50
+  answer:
+  - Kello on kymmenen vaille kuusi.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh KUU-see
+- id: '046'
+  prompt:
+  - 06:50
+  answer:
+  - Kello on kymmenen vaille seitsemän.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh SAYT-seh-mahn
+- id: '047'
+  prompt:
+  - 07:50
+  answer:
+  - Kello on kymmenen vaille kahdeksan.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh KAH-dehk-sahn
+- id: 048
+  prompt:
+  - 08:50
+  answer:
+  - Kello on kymmenen vaille yhdeksän.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh UUH-dehk-sahn
+- id: 049
+  prompt:
+  - 09:50
+  answer:
+  - Kello on kymmenen vaille kymmenen.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh KUHM-meh-nehn
+- id: '050'
+  prompt:
+  - '10:50'
+  answer:
+  - Kello on kymmenen vaille yksitoista.
+  phonetic: KEHL-loh on KUHM-meh-nehn VAI-leh UUK-see-TOY-stah

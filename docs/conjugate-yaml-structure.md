@@ -22,6 +22,73 @@ A conjugate pack uses this general structure:
 
 ```yaml
 metadata:
+  id: "english_read_conjugation"
+  pack_name: "English Verb Example"
+  drill_type: "conjugate"
+  shuffle_persons: true
+
+persons:
+  - I
+  - you
+  - he/she
+  - we
+  - you (plural)
+  - they
+
+entries:
+  - id: "001"
+    lemma: "to read"
+    forms:
+      I:
+        positive:
+          - "I read"
+        negative:
+          - "I do not read"
+          - "I don't read"
+
+      you:
+        positive:
+          - "You read"
+        negative:
+          - "You do not read"
+          - "You don't read"
+
+      he/she:
+        positive:
+          - "He reads"
+          - "She reads"
+        negative:
+          - "He does not read"
+          - "She does not read"
+          - "He doesn't read"
+          - "She doesn't read"
+
+      we:
+        positive:
+          - "We read"
+        negative:
+          - "We do not read"
+          - "We don't read"
+
+      you (plural):
+        positive:
+          - "You read"
+        negative:
+          - "You do not read"
+          - "You don't read"
+
+      they:
+        positive:
+          - "They read"
+        negative:
+          - "They do not read"
+          - "They don't read"
+``` 
+
+Example using Finnish.  
+
+```yaml
+metadata:
   id: "pack_id"
   pack_name: "Human-readable name"
   drill_type: "conjugate"

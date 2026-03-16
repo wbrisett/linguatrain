@@ -1,0 +1,3118 @@
+metadata:
+  title: Finnish Female Words (converted from Anki)
+  source: Anki APKG conversion
+  languages:
+    prompt: en
+    answer: fi
+entries:
+- id: '001'
+  prompt: dog
+  answer:
+  - koira
+  phonetic: KOI-rah
+- id: '002'
+  prompt: cat
+  answer:
+  - kissa
+  phonetic: KEES-sah
+- id: '003'
+  prompt: fish
+  answer:
+  - kala
+  phonetic: KAH-lah
+- id: '004'
+  prompt: bird
+  answer:
+  - lintu
+  phonetic: LEEN-too
+- id: '005'
+  prompt: cow
+  answer:
+  - lehmä
+  phonetic: LEHH-mah
+- id: '006'
+  prompt: pig
+  answer:
+  - sika
+  phonetic: SEE-kah
+- id: '007'
+  prompt: mouse
+  answer:
+  - hiiri
+  phonetic: HEE-ree
+- id: 008
+  prompt: horse
+  answer:
+  - hevonen
+  phonetic: HEH-voh-nehn
+- id: 009
+  prompt: wing
+  answer:
+  - siipi
+  phonetic: SEE-pee
+- id: '010'
+  prompt: animal
+  answer:
+  - eläin
+  phonetic: EH-lain
+- id: '011'
+  prompt: train
+  answer:
+  - juna
+  phonetic: YOO-nah
+- id: '012'
+  prompt: plane
+  answer:
+  - lentokone
+  phonetic: LEHN-toh-koh-neh
+- id: '013'
+  prompt: car
+  answer:
+  - auto
+  phonetic: OW-toh
+- id: '014'
+  prompt: truck
+  answer:
+  - rekka
+  phonetic: REHK-kah
+- id: '015'
+  prompt: bicycle
+  answer:
+  - polkupyörä
+  phonetic: POHL-koo-pyö-rah
+- id: '016'
+  prompt: bus
+  answer:
+  - bussi
+  phonetic: BOOS-see
+- id: '017'
+  prompt: boat
+  answer:
+  - vene
+  phonetic: VEH-neh
+- id: 018
+  prompt: ship
+  answer:
+  - laiva
+  phonetic: LAI-vah
+- id: 019
+  prompt: tire
+  answer:
+  - rengas
+  phonetic: REHN-gahs
+- id: '020'
+  prompt: gasoline
+  answer:
+  - bensa
+  phonetic: BEHN-sah
+- id: '021'
+  prompt: engine
+  answer:
+  - moottori
+  phonetic: MOHT-toh-ree
+- id: '022'
+  prompt: (train) ticket
+  answer:
+  - junalippu
+  phonetic: YOO-nah-leep-poo
+- id: '023'
+  prompt: traffic
+  answer:
+  - liikenne
+  phonetic: LEE-kehn-neh
+- id: '024'
+  prompt: city
+  answer:
+  - kaupunki
+  phonetic: KOW-poon-kee
+- id: '025'
+  prompt: house
+  answer:
+  - talo
+  phonetic: TAH-loh
+- id: '026'
+  prompt: apartment
+  answer:
+  - asunto
+  phonetic: AH-soon-toh
+- id: '027'
+  prompt: street/road
+  answer:
+  - katu
+  - tie
+  phonetic: KAH-too / TIE
+- id: 028
+  prompt: airport
+  answer:
+  - lentokenttä
+  phonetic: LEHN-toh-kehn-ttah
+- id: 029
+  prompt: train station
+  answer:
+  - rautatieasema
+  - juna-asema
+  phonetic: ROW-tah-tie-ah-seh-mah / YOO-nah--ah-seh-mah
+- id: '030'
+  prompt: bridge
+  answer:
+  - silta
+  phonetic: SEEL-tah
+- id: '031'
+  prompt: hotel
+  answer:
+  - hotelli
+  phonetic: HOH-tehl-lee
+- id: '032'
+  prompt: restaurant
+  answer:
+  - ravintola
+  phonetic: RAH-veen-toh-lah
+- id: '033'
+  prompt: farm
+  answer:
+  - maatila
+  phonetic: MAH-tee-lah
+- id: '034'
+  prompt: court
+  answer:
+  - tuomioistuin
+  phonetic: TUO-mee-ois-tuin
+- id: '035'
+  prompt: school
+  answer:
+  - koulu
+  phonetic: KOU-loo
+- id: '036'
+  prompt: office
+  answer:
+  - toimisto
+  phonetic: TOI-mees-toh
+- id: '037'
+  prompt: room
+  answer:
+  - huone
+  phonetic: HUO-neh
+- id: 038
+  prompt: town
+  answer:
+  - kaupunki
+  phonetic: KOW-poon-kee
+- id: 039
+  prompt: university
+  answer:
+  - yliopisto
+  phonetic: UU-lee-oh-pees-toh
+- id: '040'
+  prompt: club
+  answer:
+  - klubi
+  phonetic: KLOO-bee
+- id: '041'
+  prompt: bar
+  answer:
+  - baari
+  phonetic: BAH-ree
+- id: '042'
+  prompt: park
+  answer:
+  - puisto
+  phonetic: PUIS-toh
+- id: '043'
+  prompt: camp
+  answer:
+  - leiri
+  phonetic: LEI-ree
+- id: '044'
+  prompt: store/shop
+  answer:
+  - kauppa
+  phonetic: KOWP-pah
+- id: '045'
+  prompt: theater
+  answer:
+  - teatteri
+  phonetic: TEH-aht-teh-ree
+- id: '046'
+  prompt: library
+  answer:
+  - kirjasto
+  phonetic: KEER-yahs-toh
+- id: '047'
+  prompt: hospital
+  answer:
+  - sairaala
+  phonetic: SAI-rah-lah
+- id: 048
+  prompt: church
+  answer:
+  - kirkko
+  phonetic: KEER-kkoh
+- id: 049
+  prompt: market
+  answer:
+  - tori
+  phonetic: TOH-ree
+- id: '050'
+  prompt: country (USA)
+  answer:
+  - maa
+  phonetic: MAH
+- id: '051'
+  prompt: building
+  answer:
+  - rakennus
+  phonetic: RAH-kehn-noos
+- id: '052'
+  prompt: ground
+  answer:
+  - maa
+  phonetic: MAH
+- id: '053'
+  prompt: space (outer space)
+  answer:
+  - avaruus
+  phonetic: AH-vah-roos
+- id: '054'
+  prompt: bank
+  answer:
+  - pankki
+  phonetic: PAHN-kkee
+- id: '055'
+  prompt: location
+  answer:
+  - sijainti
+  phonetic: SEE-yain-tee
+- id: '056'
+  prompt: hat
+  answer:
+  - hattu
+  phonetic: HAHT-too
+- id: '057'
+  prompt: dress
+  answer:
+  - mekko
+  phonetic: MEHK-koh
+- id: 058
+  prompt: suit
+  answer:
+  - puku
+  phonetic: POO-koo
+- id: 059
+  prompt: skirt
+  answer:
+  - hame
+  phonetic: HAH-meh
+- id: '060'
+  prompt: shirt
+  answer:
+  - paita
+  phonetic: PAI-tah
+- id: '061'
+  prompt: T-shirt
+  answer:
+  - t-paita
+  phonetic: T-PAI-tah
+- id: '062'
+  prompt: pants
+  answer:
+  - housut
+  phonetic: HOU-soot
+- id: '063'
+  prompt: shoes
+  answer:
+  - kengät
+  phonetic: KEHN-gaht
+- id: '064'
+  prompt: pocket
+  answer:
+  - tasku
+  phonetic: TAHS-koo
+- id: '065'
+  prompt: coat
+  answer:
+  - takki
+  phonetic: TAHK-kee
+- id: '066'
+  prompt: stain
+  answer:
+  - tahra
+  phonetic: TAHH-rah
+- id: '067'
+  prompt: clothing
+  answer:
+  - vaatetus
+  phonetic: VAH-teh-toos
+- id: 068
+  prompt: red
+  answer:
+  - punainen
+  phonetic: POO-nai-nehn
+- id: 069
+  prompt: green
+  answer:
+  - vihreä
+  phonetic: VEEH-reh-ah
+- id: '070'
+  prompt: blue
+  answer:
+  - sininen
+  phonetic: SEE-nee-nehn
+- id: '071'
+  prompt: yellow
+  answer:
+  - keltainen
+  phonetic: KEHL-tai-nehn
+- id: '072'
+  prompt: brown
+  answer:
+  - ruskea
+  phonetic: ROOS-keh-ah
+- id: '073'
+  prompt: pink
+  answer:
+  - vaaleanpunainen
+  phonetic: VAH-leh-ahn-poo-nai-nehn
+- id: '074'
+  prompt: orange
+  answer:
+  - oranssi
+  phonetic: OH-rahn-ssee
+- id: '075'
+  prompt: black
+  answer:
+  - musta
+  phonetic: MOOS-tah
+- id: '076'
+  prompt: white
+  answer:
+  - valkoinen
+  phonetic: VAHL-koi-nehn
+- id: '077'
+  prompt: gray
+  answer:
+  - harmaa
+  phonetic: HAHR-mah
+- id: 078
+  prompt: color
+  answer:
+  - väri
+  phonetic: VAH-ree
+- id: 079
+  prompt: son
+  answer:
+  - poika
+  phonetic: POI-kah
+- id: 080
+  prompt: daughter
+  answer:
+  - tytär
+  phonetic: TUU-tahr
+- id: 081
+  prompt: mother
+  answer:
+  - äiti
+  phonetic: AI-tee
+- id: 082
+  prompt: father
+  answer:
+  - isä
+  phonetic: EE-sah
+- id: 083
+  prompt: parent (= mother/father)
+  answer:
+  - vanhempi
+  phonetic: VAHN-hehm-pee
+- id: 084
+  prompt: baby
+  answer:
+  - vauva
+  phonetic: VOW-vah
+- id: 085
+  prompt: man
+  answer:
+  - mies
+  phonetic: MIES
+- id: 086
+  prompt: woman
+  answer:
+  - nainen
+  phonetic: NAI-nehn
+- id: 087
+  prompt: brother
+  answer:
+  - veli
+  phonetic: VEH-lee
+- id: 088
+  prompt: sister
+  answer:
+  - sisko
+  phonetic: SEES-koh
+- id: 089
+  prompt: family
+  answer:
+  - perhe
+  phonetic: PEHR-heh
+- id: 090
+  prompt: grandfather
+  answer:
+  - isoisä
+  - pappa
+  - vaari
+  phonetic: EE-soi-sah / PAHP-pah / VAH-ree
+- id: 091
+  prompt: grandmother
+  answer:
+  - isoäiti
+  - mummo
+  - mummu
+  - mamma
+  phonetic: EE-soh-ai-tee / MOOM-moh / MOOM-moo / MAHM-mah
+- id: 092
+  prompt: husband
+  answer:
+  - aviomies
+  phonetic: AH-vee-oh-mies
+- id: 093
+  prompt: wife
+  answer:
+  - vaimo
+  phonetic: VAI-moh
+- id: 094
+  prompt: king
+  answer:
+  - kuningas
+  phonetic: KOO-neen-gahs
+- id: 095
+  prompt: queen
+  answer:
+  - kuningatar
+  phonetic: KOO-neen-gah-tahr
+- id: 096
+  prompt: president
+  answer:
+  - presidentti
+  phonetic: PREH-see-dehn-ttee
+- id: 097
+  prompt: neighbor
+  answer:
+  - naapuri
+  phonetic: NAH-poo-ree
+- id: 098
+  prompt: boy
+  answer:
+  - poika
+  phonetic: POI-kah
+- id: 099
+  prompt: girl
+  answer:
+  - tyttö
+  phonetic: TUUT-tuh
+- id: '100'
+  prompt: child (= boy/girl)
+  answer:
+  - lapsi
+  phonetic: LAHP-see
+- id: '101'
+  prompt: adult (= man/woman)
+  answer:
+  - aikuinen
+  phonetic: AI-kui-nehn
+- id: '102'
+  prompt: human
+  answer:
+  - ihminen
+  phonetic: EEH-mee-nehn
+- id: '103'
+  prompt: friend
+  answer:
+  - ystävä
+  phonetic: UUS-tah-vah
+- id: '104'
+  prompt: victim
+  answer:
+  - uhri
+  phonetic: OOH-ree
+- id: '105'
+  prompt: player
+  answer:
+  - pelaaja
+  phonetic: PEH-lah-yah
+- id: '106'
+  prompt: fan
+  answer:
+  - fani
+  phonetic: FAH-nee
+- id: '107'
+  prompt: crowd
+  answer:
+  - väkijoukko
+  phonetic: VAH-kee-youk-koh
+- id: '108'
+  prompt: person
+  answer:
+  - henkilö
+  phonetic: HEHN-kee-luh
+- id: '109'
+  prompt: Teacher
+  answer:
+  - opettaja
+  phonetic: OH-peht-tah-yah
+- id: '110'
+  prompt: student
+  answer:
+  - opiskelija
+  phonetic: OH-pees-keh-lee-yah
+- id: '111'
+  prompt: lawyer
+  answer:
+  - asianajaja
+  phonetic: AH-see-ah-nah-yah-yah
+- id: '112'
+  prompt: doctor
+  answer:
+  - lääkäri
+  phonetic: LAH-kah-ree
+- id: '113'
+  prompt: patient
+  answer:
+  - potilas
+  phonetic: POH-tee-lahs
+- id: '114'
+  prompt: waiter
+  answer:
+  - tarjoilija
+  phonetic: TAHR-yoi-lee-yah
+- id: '115'
+  prompt: secretary
+  answer:
+  - sihteeri
+  phonetic: SEEH-teh-ree
+- id: '116'
+  prompt: priest
+  answer:
+  - pappi
+  phonetic: PAHP-pee
+- id: '117'
+  prompt: police
+  answer:
+  - poliisi
+  phonetic: POH-lee-see
+- id: '118'
+  prompt: army
+  answer:
+  - armeija
+  phonetic: AHR-mei-yah
+- id: '119'
+  prompt: soldier
+  answer:
+  - sotilas
+  phonetic: SOH-tee-lahs
+- id: '120'
+  prompt: artist
+  answer:
+  - taiteilija
+  phonetic: TAI-tei-lee-yah
+- id: '121'
+  prompt: author
+  answer:
+  - kirjailija
+  phonetic: KEER-yai-lee-yah
+- id: '122'
+  prompt: manager
+  answer:
+  - johtaja
+  phonetic: YOHH-tah-yah
+- id: '123'
+  prompt: reporter
+  answer:
+  - toimittaja
+  phonetic: TOI-meet-tah-yah
+- id: '124'
+  prompt: actor
+  answer:
+  - näyttelijä
+  phonetic: NAIT-teh-lee-yah
+- id: '125'
+  prompt: job
+  answer:
+  - ammatti
+  phonetic: AHM-maht-tee
+- id: '126'
+  prompt: religion
+  answer:
+  - uskonto
+  phonetic: OOS-kohn-toh
+- id: '127'
+  prompt: heaven
+  answer:
+  - taivas
+  phonetic: TAI-vahs
+- id: '128'
+  prompt: hell
+  answer:
+  - helvetti
+  phonetic: HEHL-veht-tee
+- id: '129'
+  prompt: death
+  answer:
+  - kuolema
+  phonetic: KUO-leh-mah
+- id: '130'
+  prompt: medicine
+  answer:
+  - lääke
+  phonetic: LAH-keh
+- id: '131'
+  prompt: money
+  answer:
+  - raha
+  phonetic: RAH-hah
+- id: '132'
+  prompt: dollar
+  answer:
+  - dollari
+  phonetic: DOHL-lah-ree
+- id: '133'
+  prompt: bill
+  answer:
+  - lasku
+  phonetic: LAHS-koo
+- id: '134'
+  prompt: marriage
+  answer:
+  - avioliitto
+  phonetic: AH-vee-oh-leet-toh
+- id: '135'
+  prompt: wedding
+  answer:
+  - häät
+  phonetic: HAHT
+- id: '136'
+  prompt: team
+  answer:
+  - joukkue
+  phonetic: YOUK-koo-eh
+- id: '137'
+  prompt: race (ethnicity)
+  answer:
+  - rotu
+  phonetic: ROH-too
+- id: '138'
+  prompt: sex (the act)
+  answer:
+  - seksi
+  phonetic: SEHK-see
+- id: '139'
+  prompt: sex (gender)
+  answer:
+  - sukupuoli
+  phonetic: SOO-koo-puo-lee
+- id: '140'
+  prompt: murder
+  answer:
+  - murha
+  phonetic: MOOR-hah
+- id: '141'
+  prompt: prison
+  answer:
+  - vankila
+  phonetic: VAHN-kee-lah
+- id: '142'
+  prompt: technology
+  answer:
+  - teknologia
+  phonetic: TEHK-noh-loh-gee-ah
+- id: '143'
+  prompt: energy
+  answer:
+  - energia
+  phonetic: EH-nehr-gee-ah
+- id: '144'
+  prompt: war
+  answer:
+  - sota
+  phonetic: SOH-tah
+- id: '145'
+  prompt: peace
+  answer:
+  - rauha
+  phonetic: ROW-hah
+- id: '146'
+  prompt: attack
+  answer:
+  - hyökkäys
+  phonetic: HYÖK-kais
+- id: '147'
+  prompt: election
+  answer:
+  - vaalit
+  phonetic: VAH-leet
+- id: '148'
+  prompt: magazine
+  answer:
+  - aikakauslehti
+  phonetic: AI-kah-kows-lehh-tee
+- id: '149'
+  prompt: newspaper
+  answer:
+  - sanomalehti
+  phonetic: SAH-noh-mah-lehh-tee
+- id: '150'
+  prompt: poison
+  answer:
+  - myrkky
+  phonetic: MUUR-kkuu
+- id: '151'
+  prompt: gun
+  answer:
+  - ase
+  phonetic: AH-seh
+- id: '152'
+  prompt: sport
+  answer:
+  - urheilu
+  phonetic: OOR-hei-loo
+- id: '153'
+  prompt: race (sport)
+  answer:
+  - kilpailu
+  phonetic: KEEL-pai-loo
+- id: '154'
+  prompt: exercise
+  answer:
+  - liikunta
+  phonetic: LEE-koon-tah
+- id: '155'
+  prompt: ball
+  answer:
+  - pallo
+  phonetic: PAHL-loh
+- id: '156'
+  prompt: game
+  answer:
+  - peli
+  phonetic: PEH-lee
+- id: '157'
+  prompt: price
+  answer:
+  - hinta
+  phonetic: HEEN-tah
+- id: '158'
+  prompt: contract
+  answer:
+  - sopimus
+  phonetic: SOH-pee-moos
+- id: '159'
+  prompt: drug
+  answer:
+  - huume
+  phonetic: HOO-meh
+- id: '160'
+  prompt: sign
+  answer:
+  - kyltti
+  phonetic: KUUL-ttee
+- id: '161'
+  prompt: science
+  answer:
+  - tiede
+  phonetic: TIE-deh
+- id: '162'
+  prompt: God
+  answer:
+  - Jumala
+  phonetic: YOO-mah-lah
+- id: '163'
+  prompt: band
+  answer:
+  - bändi
+  phonetic: BAHN-dee
+- id: '164'
+  prompt: song
+  answer:
+  - laulu
+  phonetic: LOW-loo
+- id: '165'
+  prompt: instrument (musical)
+  answer:
+  - soitin
+  phonetic: SOI-teen
+- id: '166'
+  prompt: music
+  answer:
+  - musiikki
+  phonetic: MOO-seek-kee
+- id: '167'
+  prompt: movie
+  answer:
+  - elokuva
+  phonetic: EH-loh-koo-vah
+- id: '168'
+  prompt: art
+  answer:
+  - taide
+  phonetic: TAI-deh
+- id: '169'
+  prompt: coffee
+  answer:
+  - kahvi
+  phonetic: KAHH-vee
+- id: '170'
+  prompt: tea
+  answer:
+  - tee
+  phonetic: TEH
+- id: '171'
+  prompt: wine
+  answer:
+  - viini
+  phonetic: VEE-nee
+- id: '172'
+  prompt: beer
+  answer:
+  - olut
+  phonetic: OH-loot
+- id: '173'
+  prompt: juice
+  answer:
+  - mehu
+  phonetic: MEH-hoo
+- id: '174'
+  prompt: water
+  answer:
+  - vesi
+  phonetic: VEH-see
+- id: '175'
+  prompt: milk
+  answer:
+  - maito
+  phonetic: MAI-toh
+- id: '176'
+  prompt: beverage
+  answer:
+  - juoma
+  phonetic: YUO-mah
+- id: '177'
+  prompt: egg
+  answer:
+  - kananmuna
+  phonetic: KAH-nahn-moo-nah
+- id: '178'
+  prompt: cheese
+  answer:
+  - juusto
+  phonetic: YOOS-toh
+- id: '179'
+  prompt: bread
+  answer:
+  - leipä
+  phonetic: LEI-pah
+- id: '180'
+  prompt: soup
+  answer:
+  - keitto
+  phonetic: KEIT-toh
+- id: '181'
+  prompt: cake
+  answer:
+  - kakku
+  phonetic: KAHK-koo
+- id: '182'
+  prompt: chicken
+  answer:
+  - kana
+  phonetic: KAH-nah
+- id: '183'
+  prompt: pork
+  answer:
+  - possu
+  - porsaanliha
+  phonetic: POHS-soo / POHR-sahn-lee-hah
+- id: '184'
+  prompt: beef
+  answer:
+  - nauta
+  - naudanliha
+  phonetic: NOW-tah / NOW-dahn-lee-hah
+- id: '185'
+  prompt: apple
+  answer:
+  - omena
+  phonetic: OH-meh-nah
+- id: '186'
+  prompt: banana
+  answer:
+  - banaani
+  phonetic: BAH-nah-nee
+- id: '187'
+  prompt: orange
+  answer:
+  - appelsiini
+  phonetic: AHP-pehl-see-nee
+- id: '188'
+  prompt: lemon
+  answer:
+  - sitruuna
+  phonetic: SEET-roo-nah
+- id: '189'
+  prompt: corn
+  answer:
+  - maissi
+  phonetic: MAIS-see
+- id: '190'
+  prompt: rice
+  answer:
+  - riisi
+  phonetic: REE-see
+- id: '191'
+  prompt: oil
+  answer:
+  - öljy
+  phonetic: UHL-yuu
+- id: '192'
+  prompt: seed
+  answer:
+  - siemen
+  phonetic: SIE-mehn
+- id: '193'
+  prompt: knife
+  answer:
+  - veitsi
+  phonetic: VEIT-see
+- id: '194'
+  prompt: spoon
+  answer:
+  - lusikka
+  phonetic: LOO-seek-kah
+- id: '195'
+  prompt: fork
+  answer:
+  - haarukka
+  phonetic: HAH-rook-kah
+- id: '196'
+  prompt: plate
+  answer:
+  - lautanen
+  phonetic: LOW-tah-nehn
+- id: '197'
+  prompt: cup
+  answer:
+  - kuppi
+  phonetic: KOOP-pee
+- id: '198'
+  prompt: breakfast
+  answer:
+  - aamiainen
+  phonetic: AH-mee-ai-nehn
+- id: '199'
+  prompt: lunch
+  answer:
+  - lounas
+  phonetic: LOU-nahs
+- id: '200'
+  prompt: dinner
+  answer:
+  - päivällinen
+  phonetic: PAI-vahl-lee-nehn
+- id: '201'
+  prompt: evening snack/supper
+  answer:
+  - iltapala
+  phonetic: EEL-tah-pah-lah
+- id: '202'
+  prompt: sugar
+  answer:
+  - sokeri
+  phonetic: SOH-keh-ree
+- id: '203'
+  prompt: salt
+  answer:
+  - suola
+  phonetic: SUO-lah
+- id: '204'
+  prompt: bottle
+  answer:
+  - pullo
+  phonetic: POOL-loh
+- id: '205'
+  prompt: food
+  answer:
+  - ruoka
+  phonetic: RUO-kah
+- id: '206'
+  prompt: table
+  answer:
+  - pöytä
+  phonetic: POI-tah
+- id: '207'
+  prompt: chair
+  answer:
+  - tuoli
+  phonetic: TUO-lee
+- id: '208'
+  prompt: bed
+  answer:
+  - sänky
+  phonetic: SAHN-kuu
+- id: '209'
+  prompt: dream
+  answer:
+  - uni
+  phonetic: OO-nee
+- id: '210'
+  prompt: window
+  answer:
+  - ikkuna
+  phonetic: EEK-koo-nah
+- id: '211'
+  prompt: door
+  answer:
+  - ovi
+  phonetic: OH-vee
+- id: '212'
+  prompt: bedroom
+  answer:
+  - makuuhuone
+  phonetic: MAH-koo-huo-neh
+- id: '213'
+  prompt: kitchen
+  answer:
+  - keittiö
+  phonetic: KEIT-tee-uh
+- id: '214'
+  prompt: bathroom
+  answer:
+  - kylpyhuone
+  phonetic: KUUL-puu-huo-neh
+- id: '215'
+  prompt: pencil
+  answer:
+  - lyijykynä
+  phonetic: LUI-yuu-kuu-nah
+- id: '216'
+  prompt: pen
+  answer:
+  - kynä
+  phonetic: KUU-nah
+- id: '217'
+  prompt: photograph
+  answer:
+  - valokuva
+  phonetic: VAH-loh-koo-vah
+- id: '218'
+  prompt: soap
+  answer:
+  - saippua
+  phonetic: SAIP-poo-ah
+- id: '219'
+  prompt: book
+  answer:
+  - kirja
+  phonetic: KEER-yah
+- id: '220'
+  prompt: page
+  answer:
+  - sivu
+  phonetic: SEE-voo
+- id: '221'
+  prompt: key
+  answer:
+  - avain
+  phonetic: AH-vain
+- id: '222'
+  prompt: paint
+  answer:
+  - maali
+  phonetic: MAH-lee
+- id: '223'
+  prompt: letter
+  answer:
+  - kirje
+  phonetic: KEER-yeh
+- id: '224'
+  prompt: note
+  answer:
+  - muistiinpano
+  phonetic: MUIS-teen-pah-noh
+- id: '225'
+  prompt: wall
+  answer:
+  - seinä
+  phonetic: SEI-nah
+- id: '226'
+  prompt: paper
+  answer:
+  - paperi
+  phonetic: PAH-peh-ree
+- id: '227'
+  prompt: floor
+  answer:
+  - lattia
+  phonetic: LAHT-tee-ah
+- id: '228'
+  prompt: ceiling
+  answer:
+  - sisäkatto
+  phonetic: SEE-sah-kaht-toh
+- id: '229'
+  prompt: roof
+  answer:
+  - katto
+  phonetic: KAHT-toh
+- id: '230'
+  prompt: pool
+  answer:
+  - allas
+  phonetic: AHL-lahs
+- id: '231'
+  prompt: lock
+  answer:
+  - lukko
+  phonetic: LOOK-koh
+- id: '232'
+  prompt: telephone
+  answer:
+  - puhelin
+  phonetic: POO-heh-leen
+- id: '233'
+  prompt: garden
+  answer:
+  - puutarha
+  phonetic: POO-tahr-hah
+- id: '234'
+  prompt: yard
+  answer:
+  - piha
+  phonetic: PEE-hah
+- id: '235'
+  prompt: needle
+  answer:
+  - neula
+  phonetic: NEU-lah
+- id: '236'
+  prompt: bag
+  answer:
+  - laukku
+  phonetic: LOWK-koo
+- id: '237'
+  prompt: box
+  answer:
+  - laatikko
+  phonetic: LAH-teek-koh
+- id: '238'
+  prompt: gift
+  answer:
+  - lahja
+  phonetic: LAHH-yah
+- id: '239'
+  prompt: card
+  answer:
+  - kortti
+  phonetic: KOHR-ttee
+- id: '240'
+  prompt: ring
+  answer:
+  - sormus
+  phonetic: SOHR-moos
+- id: '241'
+  prompt: tool
+  answer:
+  - työkalu
+  phonetic: TYÖ-kah-loo
+- id: '242'
+  prompt: clock
+  answer:
+  - kello
+  phonetic: KEHL-loh
+- id: '243'
+  prompt: lamp
+  answer:
+  - lamppu
+  phonetic: LAHM-ppoo
+- id: '244'
+  prompt: fan (air conditioning)
+  answer:
+  - tuuletin
+  phonetic: TOO-leh-teen
+- id: '245'
+  prompt: phone
+  answer:
+  - puhelin
+  phonetic: POO-heh-leen
+- id: '246'
+  prompt: network
+  answer:
+  - verkko
+  phonetic: VEHR-kkoh
+- id: '247'
+  prompt: computer
+  answer:
+  - tietokone
+  phonetic: TIE-toh-koh-neh
+- id: '248'
+  prompt: program (computer)
+  answer:
+  - ohjelma
+  phonetic: OHH-yehl-mah
+- id: '249'
+  prompt: laptop
+  answer:
+  - läppäri
+  - kannettava tietokone
+  phonetic: LAHP-pah-ree / KAHN-neht-tah-vah TIE-toh-koh-neh
+- id: '250'
+  prompt: screen
+  answer:
+  - näyttö
+  phonetic: NAIT-tuh
+- id: '251'
+  prompt: camera
+  answer:
+  - kamera
+  phonetic: KAH-meh-rah
+- id: '252'
+  prompt: television
+  answer:
+  - telkkari
+  - televisio
+  phonetic: TEHL-kkah-ree / TEH-leh-vee-see-oh
+- id: '253'
+  prompt: radio
+  answer:
+  - radio
+  phonetic: RAH-dee-oh
+- id: '254'
+  prompt: head
+  answer:
+  - pää
+  phonetic: PAH
+- id: '255'
+  prompt: neck
+  answer:
+  - kaula
+  phonetic: KOW-lah
+- id: '256'
+  prompt: face
+  answer:
+  - kasvot
+  phonetic: KAHS-voht
+- id: '257'
+  prompt: beard
+  answer:
+  - parta
+  phonetic: PAHR-tah
+- id: '258'
+  prompt: hair
+  answer:
+  - hiukset
+  phonetic: HIUK-seht
+- id: '259'
+  prompt: eye
+  answer:
+  - silmä
+  phonetic: SEEL-mah
+- id: '260'
+  prompt: mouth
+  answer:
+  - suu
+  phonetic: SOO
+- id: '261'
+  prompt: lip
+  answer:
+  - huuli
+  phonetic: HOO-lee
+- id: '262'
+  prompt: nose
+  answer:
+  - nenä
+  phonetic: NEH-nah
+- id: '263'
+  prompt: tooth
+  answer:
+  - hammas
+  phonetic: HAHM-mahs
+- id: '264'
+  prompt: ear
+  answer:
+  - korva
+  phonetic: KOHR-vah
+- id: '265'
+  prompt: tear (drop)
+  answer:
+  - kyynel
+  phonetic: KUU-nehl
+- id: '266'
+  prompt: tongue
+  answer:
+  - kieli
+  phonetic: KIE-lee
+- id: '267'
+  prompt: back
+  answer:
+  - selkä
+  phonetic: SEHL-kah
+- id: '268'
+  prompt: toe
+  answer:
+  - varvas
+  phonetic: VAHR-vahs
+- id: '269'
+  prompt: finger
+  answer:
+  - sormi
+  phonetic: SOHR-mee
+- id: '270'
+  prompt: foot
+  answer:
+  - jalkaterä
+  phonetic: YAHL-kah-teh-rah
+- id: '271'
+  prompt: hand
+  answer:
+  - käsi
+  phonetic: KAH-see
+- id: '272'
+  prompt: leg
+  answer:
+  - jalka
+  phonetic: YAHL-kah
+- id: '273'
+  prompt: arm
+  answer:
+  - käsivarsi
+  phonetic: KAH-see-vahr-see
+- id: '274'
+  prompt: shoulder
+  answer:
+  - olkapää
+  phonetic: OHL-kah-pah
+- id: '275'
+  prompt: heart
+  answer:
+  - sydän
+  phonetic: SUU-dahn
+- id: '276'
+  prompt: blood
+  answer:
+  - veri
+  phonetic: VEH-ree
+- id: '277'
+  prompt: brain
+  answer:
+  - aivot
+  phonetic: AI-voht
+- id: '278'
+  prompt: knee
+  answer:
+  - polvi
+  phonetic: POHL-vee
+- id: '279'
+  prompt: sweat
+  answer:
+  - hiki
+  phonetic: HEE-kee
+- id: '280'
+  prompt: disease
+  answer:
+  - sairaus
+  phonetic: SAI-rows
+- id: '281'
+  prompt: bone
+  answer:
+  - luu
+  phonetic: LOO
+- id: '282'
+  prompt: voice
+  answer:
+  - ääni
+  phonetic: AH-nee
+- id: '283'
+  prompt: skin
+  answer:
+  - iho
+  phonetic: EE-hoh
+- id: '284'
+  prompt: body
+  answer:
+  - keho
+  phonetic: KEH-hoh
+- id: '285'
+  prompt: sea
+  answer:
+  - meri
+  phonetic: MEH-ree
+- id: '286'
+  prompt: ocean
+  answer:
+  - valtameri
+  phonetic: VAHL-tah-meh-ree
+- id: '287'
+  prompt: river
+  answer:
+  - joki
+  phonetic: YOH-kee
+- id: '288'
+  prompt: mountain
+  answer:
+  - vuori
+  phonetic: VUO-ree
+- id: '289'
+  prompt: rain
+  answer:
+  - sade
+  phonetic: SAH-deh
+- id: '290'
+  prompt: snow
+  answer:
+  - lumi
+  phonetic: LOO-mee
+- id: '291'
+  prompt: tree
+  answer:
+  - puu
+  phonetic: POO
+- id: '292'
+  prompt: sun
+  answer:
+  - aurinko
+  phonetic: OW-reen-koh
+- id: '293'
+  prompt: moon
+  answer:
+  - kuu
+  phonetic: KOO
+- id: '294'
+  prompt: world
+  answer:
+  - maailma
+  phonetic: MAHEEL-mah
+- id: '295'
+  prompt: Earth
+  answer:
+  - Maa
+  phonetic: MAH
+- id: '296'
+  prompt: forest
+  answer:
+  - metsä
+  phonetic: MEHT-sah
+- id: '297'
+  prompt: sky
+  answer:
+  - taivas
+  phonetic: TAI-vahs
+- id: '298'
+  prompt: plant
+  answer:
+  - kasvi
+  phonetic: KAHS-vee
+- id: '299'
+  prompt: wind
+  answer:
+  - tuuli
+  phonetic: TOO-lee
+- id: '300'
+  prompt: soil
+  answer:
+  - multa
+  phonetic: MOOL-tah
+- id: '301'
+  prompt: flower
+  answer:
+  - kukka
+  phonetic: KOOK-kah
+- id: '302'
+  prompt: valley
+  answer:
+  - laakso
+  phonetic: LAHK-soh
+- id: '303'
+  prompt: root
+  answer:
+  - juuri
+  phonetic: YOO-ree
+- id: '304'
+  prompt: lake
+  answer:
+  - järvi
+  phonetic: YAHR-vee
+- id: '305'
+  prompt: star
+  answer:
+  - tähti
+  phonetic: TAHH-tee
+- id: '306'
+  prompt: grass
+  answer:
+  - ruoho
+  phonetic: RUO-hoh
+- id: '307'
+  prompt: leaf
+  answer:
+  - lehti
+  phonetic: LEHH-tee
+- id: '308'
+  prompt: air
+  answer:
+  - ilma
+  phonetic: EEL-mah
+- id: '309'
+  prompt: sand
+  answer:
+  - hiekka
+  phonetic: HIEK-kah
+- id: '310'
+  prompt: beach
+  answer:
+  - ranta
+  phonetic: RAHN-tah
+- id: '311'
+  prompt: wave
+  answer:
+  - aalto
+  phonetic: AHL-toh
+- id: '312'
+  prompt: fire
+  answer:
+  - tuli
+  phonetic: TOO-lee
+- id: '313'
+  prompt: ice
+  answer:
+  - jää
+  phonetic: YAH
+- id: '314'
+  prompt: island
+  answer:
+  - saari
+  phonetic: SAH-ree
+- id: '315'
+  prompt: hill
+  answer:
+  - mäki
+  phonetic: MAH-kee
+- id: '316'
+  prompt: heat
+  answer:
+  - lämpö
+  phonetic: LAHM-puh
+- id: '317'
+  prompt: nature
+  answer:
+  - luonto
+  phonetic: LUON-toh
+- id: '318'
+  prompt: glass
+  answer:
+  - lasi
+  phonetic: LAH-see
+- id: '319'
+  prompt: metal
+  answer:
+  - metalli
+  phonetic: MEH-tahl-lee
+- id: '320'
+  prompt: plastic
+  answer:
+  - muovi
+  phonetic: MUO-vee
+- id: '321'
+  prompt: wood
+  answer:
+  - puu
+  phonetic: POO
+- id: '322'
+  prompt: stone
+  answer:
+  - kivi
+  phonetic: KEE-vee
+- id: '323'
+  prompt: diamond
+  answer:
+  - timantti
+  phonetic: TEE-mahn-ttee
+- id: '324'
+  prompt: clay
+  answer:
+  - savi
+  phonetic: SAH-vee
+- id: '325'
+  prompt: dust
+  answer:
+  - pöly
+  phonetic: PUH-luu
+- id: '326'
+  prompt: gold
+  answer:
+  - kulta
+  phonetic: KOOL-tah
+- id: '327'
+  prompt: copper
+  answer:
+  - kupari
+  phonetic: KOO-pah-ree
+- id: '328'
+  prompt: silver
+  answer:
+  - hopea
+  phonetic: HOH-peh-ah
+- id: '329'
+  prompt: material
+  answer:
+  - materiaali
+  phonetic: MAH-teh-ree-ah-lee
+- id: '330'
+  prompt: meter
+  answer:
+  - metri
+  phonetic: MEHT-ree
+- id: '331'
+  prompt: centimeter
+  answer:
+  - sentti
+  - senttimetri
+  phonetic: SEHN-ttee / SEHN-ttee-meht-ree
+- id: '332'
+  prompt: kilogram
+  answer:
+  - kilo
+  - kilogramma
+  phonetic: KEE-loh / KEE-lohg-rahm-mah
+- id: '333'
+  prompt: inch
+  answer:
+  - tuuma
+  phonetic: TOO-mah
+- id: '334'
+  prompt: foot
+  answer:
+  - jalka
+  phonetic: YAHL-kah
+- id: '335'
+  prompt: pound
+  answer:
+  - pauna
+  phonetic: POW-nah
+- id: '336'
+  prompt: half
+  answer:
+  - puolikas
+  phonetic: PUO-lee-kahs
+- id: '337'
+  prompt: circle
+  answer:
+  - ympyrä
+  phonetic: UUM-puu-rah
+- id: '338'
+  prompt: square
+  answer:
+  - neliö
+  phonetic: NEH-lee-uh
+- id: '339'
+  prompt: temperature
+  answer:
+  - lämpötila
+  phonetic: LAHM-puh-tee-lah
+- id: '340'
+  prompt: date
+  answer:
+  - päivämäärä
+  phonetic: PAI-vah-mah-rah
+- id: '341'
+  prompt: weight
+  answer:
+  - paino
+  phonetic: PAI-noh
+- id: '342'
+  prompt: edge
+  answer:
+  - reuna
+  phonetic: REU-nah
+- id: '343'
+  prompt: corner
+  answer:
+  - kulma
+  phonetic: KOOL-mah
+- id: '344'
+  prompt: map
+  answer:
+  - kartta
+  phonetic: KAHR-ttah
+- id: '345'
+  prompt: dot
+  answer:
+  - piste
+  phonetic: PEES-teh
+- id: '346'
+  prompt: consonant
+  answer:
+  - konsonantti
+  phonetic: KOHN-soh-nahn-ttee
+- id: '347'
+  prompt: vowel
+  answer:
+  - vokaali
+  phonetic: VOH-kah-lee
+- id: '348'
+  prompt: light
+  answer:
+  - valo
+  phonetic: VAH-loh
+- id: '349'
+  prompt: sound
+  answer:
+  - ääni
+  phonetic: AH-nee
+- id: '350'
+  prompt: 'yes'
+  answer:
+  - kyllä
+  phonetic: KUUL-lah
+- id: '351'
+  prompt: 'no'
+  answer:
+  - ei
+  phonetic: EI
+- id: '352'
+  prompt: piece
+  answer:
+  - pala
+  phonetic: PAH-lah
+- id: '353'
+  prompt: pain
+  answer:
+  - kipu
+  phonetic: KEE-poo
+- id: '354'
+  prompt: injury
+  answer:
+  - vamma
+  phonetic: VAHM-mah
+- id: '355'
+  prompt: hole
+  answer:
+  - reikä
+  phonetic: REI-kah
+- id: '356'
+  prompt: image
+  answer:
+  - kuva
+  phonetic: KOO-vah
+- id: '357'
+  prompt: pattern
+  answer:
+  - kuvio
+  phonetic: KOO-vee-oh
+- id: '358'
+  prompt: noun
+  answer:
+  - substantiivi
+  phonetic: SOOB-stahn-tee-vee
+- id: '359'
+  prompt: verb
+  answer:
+  - verbi
+  phonetic: VEHR-bee
+- id: '360'
+  prompt: adjective
+  answer:
+  - adjektiivi
+  phonetic: AHD-yehk-tee-vee
+- id: '361'
+  prompt: top
+  answer:
+  - yläosa
+  phonetic: UU-lah-oh-sah
+- id: '362'
+  prompt: bottom
+  answer:
+  - alaosa
+  phonetic: AH-lah-oh-sah
+- id: '363'
+  prompt: side
+  answer:
+  - puoli
+  phonetic: PUO-lee
+- id: '364'
+  prompt: front
+  answer:
+  - etuosa
+  phonetic: EH-tuo-sah
+- id: '365'
+  prompt: back
+  answer:
+  - takaosa
+  phonetic: TAH-kah-oh-sah
+- id: '366'
+  prompt: outside
+  answer:
+  - ulkopuoli
+  phonetic: OOL-koh-puo-lee
+- id: '367'
+  prompt: inside
+  answer:
+  - sisäpuoli
+  phonetic: SEE-sah-puo-lee
+- id: '368'
+  prompt: up
+  answer:
+  - ylös
+  phonetic: UU-luhs
+- id: '369'
+  prompt: down
+  answer:
+  - alas
+  phonetic: AH-lahs
+- id: '370'
+  prompt: left
+  answer:
+  - vasen
+  phonetic: VAH-sehn
+- id: '371'
+  prompt: right
+  answer:
+  - oikea
+  phonetic: OI-keh-ah
+- id: '372'
+  prompt: straight
+  answer:
+  - suoraan
+  phonetic: SUO-rahn
+- id: '373'
+  prompt: north
+  answer:
+  - pohjoinen
+  phonetic: POHH-yoi-nehn
+- id: '374'
+  prompt: south
+  answer:
+  - etelä
+  phonetic: EH-teh-lah
+- id: '375'
+  prompt: east
+  answer:
+  - itä
+  phonetic: EE-tah
+- id: '376'
+  prompt: west
+  answer:
+  - länsi
+  phonetic: LAHN-see
+- id: '377'
+  prompt: direction
+  answer:
+  - suunta
+  phonetic: SOON-tah
+- id: '378'
+  prompt: Summer
+  answer:
+  - kesä
+  phonetic: KEH-sah
+- id: '379'
+  prompt: Spring (before summer)
+  answer:
+  - kevät
+  phonetic: KEH-vaht
+- id: '380'
+  prompt: Winter
+  answer:
+  - talvi
+  phonetic: TAHL-vee
+- id: '381'
+  prompt: Fall (after summer)
+  answer:
+  - syksy
+  phonetic: SUUK-suu
+- id: '382'
+  prompt: season
+  answer:
+  - vuodenaika
+  phonetic: VUO-deh-nai-kah
+- id: '383'
+  prompt: '0'
+  answer:
+  - nolla
+  phonetic: NOHL-lah
+- id: '384'
+  prompt: '1'
+  answer:
+  - yksi
+  phonetic: UUK-see
+- id: '385'
+  prompt: '2'
+  answer:
+  - kaksi
+  phonetic: KAHK-see
+- id: '386'
+  prompt: '3'
+  answer:
+  - kolme
+  phonetic: KOHL-meh
+- id: '387'
+  prompt: '4'
+  answer:
+  - neljä
+  phonetic: NEHL-yah
+- id: '388'
+  prompt: '5'
+  answer:
+  - viisi
+  phonetic: VEE-see
+- id: '389'
+  prompt: '6'
+  answer:
+  - kuusi
+  phonetic: KOO-see
+- id: '390'
+  prompt: '7'
+  answer:
+  - seitsemän
+  phonetic: SEIT-seh-mahn
+- id: '391'
+  prompt: '8'
+  answer:
+  - kahdeksan
+  phonetic: KAHH-dehk-sahn
+- id: '392'
+  prompt: '9'
+  answer:
+  - yhdeksän
+  phonetic: UUH-dehk-sahn
+- id: '393'
+  prompt: '10'
+  answer:
+  - kymmenen
+  phonetic: KUUM-meh-nehn
+- id: '394'
+  prompt: '11'
+  answer:
+  - yksitoista
+  phonetic: UUK-see-tois-tah
+- id: '395'
+  prompt: '12'
+  answer:
+  - kaksitoista
+  phonetic: KAHK-see-tois-tah
+- id: '396'
+  prompt: '13'
+  answer:
+  - kolmetoista
+  phonetic: KOHL-meh-tois-tah
+- id: '397'
+  prompt: '14'
+  answer:
+  - neljätoista
+  phonetic: NEHL-yah-tois-tah
+- id: '398'
+  prompt: '15'
+  answer:
+  - viisitoista
+  phonetic: VEE-see-tois-tah
+- id: '399'
+  prompt: '16'
+  answer:
+  - kuusitoista
+  phonetic: KOO-see-tois-tah
+- id: '400'
+  prompt: '17'
+  answer:
+  - seitsemäntoista
+  phonetic: SEIT-seh-mahn-tois-tah
+- id: '401'
+  prompt: '18'
+  answer:
+  - kahdeksantoista
+  phonetic: KAHH-dehk-sahn-tois-tah
+- id: '402'
+  prompt: '19'
+  answer:
+  - yhdeksäntoista
+  phonetic: UUH-dehk-sahn-tois-tah
+- id: '403'
+  prompt: '20'
+  answer:
+  - kaksikymmentä
+  phonetic: KAHK-see-kuum-mehn-tah
+- id: '404'
+  prompt: '21'
+  answer:
+  - kaksikymmentäyksi
+  phonetic: KAHK-see-kuum-mehn-taik-see
+- id: '405'
+  prompt: '22'
+  answer:
+  - kaksikymmentäkaksi
+  phonetic: KAHK-see-kuum-mehn-tah-kahk-see
+- id: '406'
+  prompt: '30'
+  answer:
+  - kolmekymmentä
+  phonetic: KOHL-meh-kuum-mehn-tah
+- id: '407'
+  prompt: '31'
+  answer:
+  - kolmekymmentäyksi
+  phonetic: KOHL-meh-kuum-mehn-taik-see
+- id: '408'
+  prompt: '32'
+  answer:
+  - kolmekymmentäkaksi
+  phonetic: KOHL-meh-kuum-mehn-tah-kahk-see
+- id: '409'
+  prompt: '40'
+  answer:
+  - neljäkymmentä
+  phonetic: NEHL-yah-kuum-mehn-tah
+- id: '410'
+  prompt: '41'
+  answer:
+  - neljäkymmentäyksi
+  phonetic: NEHL-yah-kuum-mehn-taik-see
+- id: '411'
+  prompt: '42'
+  answer:
+  - neljäkymmentäkaksi
+  phonetic: NEHL-yah-kuum-mehn-tah-kahk-see
+- id: '412'
+  prompt: '50'
+  answer:
+  - viisikymmentä
+  phonetic: VEE-see-kuum-mehn-tah
+- id: '413'
+  prompt: '51'
+  answer:
+  - viisikymmentäyksi
+  phonetic: VEE-see-kuum-mehn-taik-see
+- id: '414'
+  prompt: '52'
+  answer:
+  - viisikymmentäkaksi
+  phonetic: VEE-see-kuum-mehn-tah-kahk-see
+- id: '415'
+  prompt: '60'
+  answer:
+  - kuusikymmentä
+  phonetic: KOO-see-kuum-mehn-tah
+- id: '416'
+  prompt: '61'
+  answer:
+  - kuusikymmentäyksi
+  phonetic: KOO-see-kuum-mehn-taik-see
+- id: '417'
+  prompt: '62'
+  answer:
+  - kuusikymmentäkaksi
+  phonetic: KOO-see-kuum-mehn-tah-kahk-see
+- id: '418'
+  prompt: '70'
+  answer:
+  - seitsemänkymmentä
+  phonetic: SEIT-seh-mahn-kuum-mehn-tah
+- id: '419'
+  prompt: '71'
+  answer:
+  - seitsemänkymmentäyksi
+  phonetic: SEIT-seh-mahn-kuum-mehn-taik-see
+- id: '420'
+  prompt: '72'
+  answer:
+  - seitsemänkymmentäkaksi
+  phonetic: SEIT-seh-mahn-kuum-mehn-tah-kahk-see
+- id: '421'
+  prompt: '80'
+  answer:
+  - kahdeksankymmentä
+  phonetic: KAHH-dehk-sahn-kuum-mehn-tah
+- id: '422'
+  prompt: '81'
+  answer:
+  - kahdeksankymmentäyksi
+  phonetic: KAHH-dehk-sahn-kuum-mehn-taik-see
+- id: '423'
+  prompt: '82'
+  answer:
+  - kahdeksankymmentäkaksi
+  phonetic: KAHH-dehk-sahn-kuum-mehn-tah-kahk-see
+- id: '424'
+  prompt: '90'
+  answer:
+  - yhdeksänkymmentä
+  phonetic: UUH-dehk-sahn-kuum-mehn-tah
+- id: '425'
+  prompt: '91'
+  answer:
+  - yhdeksänkymmentäyksi
+  phonetic: UUH-dehk-sahn-kuum-mehn-taik-see
+- id: '426'
+  prompt: '92'
+  answer:
+  - yhdeksänkymmentäkaksi
+  phonetic: UUH-dehk-sahn-kuum-mehn-tah-kahk-see
+- id: '427'
+  prompt: '100'
+  answer:
+  - sata
+  phonetic: SAH-tah
+- id: '428'
+  prompt: '101'
+  answer:
+  - satayksi
+  phonetic: SAH-tah-uuk-see
+- id: '429'
+  prompt: '102'
+  answer:
+  - satakaksi
+  phonetic: SAH-tah-kahk-see
+- id: '430'
+  prompt: '110'
+  answer:
+  - satakymmenen
+  phonetic: SAH-tah-kuum-meh-nehn
+- id: '431'
+  prompt: '111'
+  answer:
+  - satayksitoista
+  phonetic: SAH-tah-uuk-see-tois-tah
+- id: '432'
+  prompt: '1000'
+  answer:
+  - tuhat
+  phonetic: TOO-haht
+- id: '433'
+  prompt: '1001'
+  answer:
+  - tuhatyksi
+  phonetic: TOO-hah-tuuk-see
+- id: '434'
+  prompt: '10000'
+  answer:
+  - kymmenentuhatta
+  phonetic: KUUM-meh-nehn-too-haht-tah
+- id: '435'
+  prompt: '100000'
+  answer:
+  - satatuhatta
+  phonetic: SAH-tah-too-haht-tah
+- id: '436'
+  prompt: million
+  answer:
+  - miljoona
+  phonetic: MEEL-yoh-nah
+- id: '437'
+  prompt: billion
+  answer:
+  - miljardi
+  phonetic: MEEL-yahr-dee
+- id: '438'
+  prompt: 1st
+  answer:
+  - ensimmäinen
+  phonetic: EHN-seem-mai-nehn
+- id: '439'
+  prompt: 2nd
+  answer:
+  - toinen
+  phonetic: TOI-nehn
+- id: '440'
+  prompt: 3rd
+  answer:
+  - kolmas
+  phonetic: KOHL-mahs
+- id: '441'
+  prompt: 4th
+  answer:
+  - neljäs
+  phonetic: NEHL-yahs
+- id: '442'
+  prompt: 5th
+  answer:
+  - viides
+  phonetic: VEE-dehs
+- id: '443'
+  prompt: number
+  answer:
+  - numero
+  phonetic: NOO-meh-roh
+- id: '444'
+  prompt: January
+  answer:
+  - tammikuu
+  phonetic: TAHM-mee-koo
+- id: '445'
+  prompt: February
+  answer:
+  - helmikuu
+  phonetic: HEHL-mee-koo
+- id: '446'
+  prompt: March
+  answer:
+  - maaliskuu
+  phonetic: MAH-lees-koo
+- id: '447'
+  prompt: April
+  answer:
+  - huhtikuu
+  phonetic: HOOH-tee-koo
+- id: '448'
+  prompt: May
+  answer:
+  - toukokuu
+  phonetic: TOU-koh-koo
+- id: '449'
+  prompt: June
+  answer:
+  - kesäkuu
+  phonetic: KEH-sah-koo
+- id: '450'
+  prompt: July
+  answer:
+  - heinäkuu
+  phonetic: HEI-nah-koo
+- id: '451'
+  prompt: August
+  answer:
+  - elokuu
+  phonetic: EH-loh-koo
+- id: '452'
+  prompt: September
+  answer:
+  - syyskuu
+  phonetic: SUUS-koo
+- id: '453'
+  prompt: October
+  answer:
+  - lokakuu
+  phonetic: LOH-kah-koo
+- id: '454'
+  prompt: November
+  answer:
+  - marraskuu
+  phonetic: MAHR-rahs-koo
+- id: '455'
+  prompt: December
+  answer:
+  - joulukuu
+  phonetic: YOU-loo-koo
+- id: '456'
+  prompt: Monday
+  answer:
+  - maanantai
+  phonetic: MAH-nahn-tai
+- id: '457'
+  prompt: Tuesday
+  answer:
+  - tiistai
+  phonetic: TEES-tai
+- id: '458'
+  prompt: Wednesday
+  answer:
+  - keskiviikko
+  phonetic: KEHS-kee-veek-koh
+- id: '459'
+  prompt: Thursday
+  answer:
+  - torstai
+  phonetic: TOHR-stai
+- id: '460'
+  prompt: Friday
+  answer:
+  - perjantai
+  phonetic: PEHR-yahn-tai
+- id: '461'
+  prompt: Saturday
+  answer:
+  - lauantai
+  phonetic: LOW-ahn-tai
+- id: '462'
+  prompt: Sunday
+  answer:
+  - sunnuntai
+  phonetic: SOON-noon-tai
+- id: '463'
+  prompt: year
+  answer:
+  - vuosi
+  phonetic: VUO-see
+- id: '464'
+  prompt: month
+  answer:
+  - kuukausi
+  phonetic: KOO-kow-see
+- id: '465'
+  prompt: week
+  answer:
+  - viikko
+  phonetic: VEEK-koh
+- id: '466'
+  prompt: day
+  answer:
+  - päivä
+  phonetic: PAI-vah
+- id: '467'
+  prompt: hour
+  answer:
+  - tunti
+  phonetic: TOON-tee
+- id: '468'
+  prompt: minute
+  answer:
+  - minuutti
+  phonetic: MEE-noot-tee
+- id: '469'
+  prompt: second
+  answer:
+  - sekunti
+  phonetic: SEH-koon-tee
+- id: '470'
+  prompt: morning
+  answer:
+  - aamu
+  phonetic: AH-moo
+- id: '471'
+  prompt: afternoon
+  answer:
+  - iltapäivä
+  phonetic: EEL-tah-pai-vah
+- id: '472'
+  prompt: evening
+  answer:
+  - ilta
+  phonetic: EEL-tah
+- id: '473'
+  prompt: night
+  answer:
+  - yö
+  phonetic: YÖ
+- id: '474'
+  prompt: time
+  answer:
+  - aika
+  phonetic: AI-kah
+- id: '475'
+  prompt: work
+  answer:
+  - työskennellä
+  phonetic: TYÖS-kehn-nehl-lah
+- id: '476'
+  prompt: play
+  answer:
+  - pelata
+  phonetic: PEH-lah-tah
+- id: '477'
+  prompt: walk
+  answer:
+  - kävellä
+  phonetic: KAH-vehl-lah
+- id: '478'
+  prompt: run
+  answer:
+  - juosta
+  phonetic: YUOS-tah
+- id: '479'
+  prompt: drive
+  answer:
+  - ajaa
+  phonetic: AH-yah
+- id: '480'
+  prompt: fly
+  answer:
+  - lentää
+  phonetic: LEHN-tah
+- id: '481'
+  prompt: swim
+  answer:
+  - uida
+  phonetic: UI-dah
+- id: '482'
+  prompt: go
+  answer:
+  - mennä
+  phonetic: MEHN-nah
+- id: '483'
+  prompt: stop
+  answer:
+  - pysähtyä
+  phonetic: PUU-sahh-tuu-ah
+- id: '484'
+  prompt: follow
+  answer:
+  - seurata
+  phonetic: SEU-rah-tah
+- id: '485'
+  prompt: think
+  answer:
+  - ajatella
+  phonetic: AH-yah-tehl-lah
+- id: '486'
+  prompt: speak/say
+  answer:
+  - puhua
+  phonetic: POO-hoo-ah
+- id: '487'
+  prompt: eat
+  answer:
+  - syödä
+  phonetic: SYÖ-dah
+- id: '488'
+  prompt: drink
+  answer:
+  - juoda
+  phonetic: YUO-dah
+- id: '489'
+  prompt: kill
+  answer:
+  - tappaa
+  phonetic: TAHP-pah
+- id: '490'
+  prompt: die
+  answer:
+  - kuolla
+  phonetic: KUOL-lah
+- id: '491'
+  prompt: smile
+  answer:
+  - hymyillä
+  phonetic: HUU-muil-lah
+- id: '492'
+  prompt: laugh
+  answer:
+  - nauraa
+  phonetic: NOW-rah
+- id: '493'
+  prompt: cry
+  answer:
+  - itkeä
+  phonetic: EET-keh-ah
+- id: '494'
+  prompt: buy
+  answer:
+  - ostaa
+  phonetic: OHS-tah
+- id: '495'
+  prompt: pay
+  answer:
+  - maksaa
+  phonetic: MAHK-sah
+- id: '496'
+  prompt: sell
+  answer:
+  - myydä
+  phonetic: MUU-dah
+- id: '497'
+  prompt: shoot
+  answer:
+  - ampua
+  phonetic: AHM-poo-ah
+- id: '498'
+  prompt: learn
+  answer:
+  - oppia
+  phonetic: OHP-pee-ah
+- id: '499'
+  prompt: jump
+  answer:
+  - hypätä
+  phonetic: HUU-pah-tah
+- id: '500'
+  prompt: smell
+  answer:
+  - haistaa
+  phonetic: HAIS-tah
+- id: '501'
+  prompt: hear (a sound)
+  answer:
+  - kuulla
+  phonetic: KOOL-lah
+- id: '502'
+  prompt: listen (something)
+  answer:
+  - kuunnella
+  phonetic: KOON-nehl-lah
+- id: '503'
+  prompt: taste
+  answer:
+  - maistaa
+  phonetic: MAIS-tah
+- id: '504'
+  prompt: touch
+  answer:
+  - koskettaa
+  phonetic: KOHS-keht-tah
+- id: '505'
+  prompt: see (f.ex. a bird)
+  answer:
+  - nähdä
+  phonetic: NAHH-dah
+- id: '506'
+  prompt: watch (f.ex. TV)
+  answer:
+  - katsoa
+  phonetic: KAHT-soh-ah
+- id: '507'
+  prompt: kiss
+  answer:
+  - pussata
+  - suudella
+  phonetic: POOS-sah-tah / SOO-dehl-lah
+- id: '508'
+  prompt: burn
+  answer:
+  - palaa
+  phonetic: PAH-lah
+- id: '509'
+  prompt: melt
+  answer:
+  - sulaa
+  phonetic: SOO-lah
+- id: '510'
+  prompt: dig
+  answer:
+  - kaivaa
+  phonetic: KAI-vah
+- id: '511'
+  prompt: explode
+  answer:
+  - räjähtää
+  phonetic: RAH-yahh-tah
+- id: '512'
+  prompt: sit
+  answer:
+  - istua
+  phonetic: EES-too-ah
+- id: '513'
+  prompt: stand
+  answer:
+  - seisoa
+  phonetic: SEI-soh-ah
+- id: '514'
+  prompt: love
+  answer:
+  - rakastaa
+  phonetic: RAH-kahs-tah
+- id: '515'
+  prompt: pass by
+  answer:
+  - ohittaa
+  phonetic: OH-heet-tah
+- id: '516'
+  prompt: cut
+  answer:
+  - leikata
+  phonetic: LEI-kah-tah
+- id: '517'
+  prompt: fight
+  answer:
+  - tapella
+  phonetic: TAH-pehl-lah
+- id: '518'
+  prompt: lie down
+  answer:
+  - mennä makuulle
+  phonetic: MEHN-nah MAH-kool-leh
+- id: '519'
+  prompt: dance
+  answer:
+  - tanssia
+  phonetic: TAHN-ssee-ah
+- id: '520'
+  prompt: sleep
+  answer:
+  - nukkua
+  phonetic: NOOK-koo-ah
+- id: '521'
+  prompt: wake up
+  answer:
+  - herätä
+  phonetic: HEH-rah-tah
+- id: '522'
+  prompt: sing
+  answer:
+  - laulaa
+  phonetic: LOW-lah
+- id: '523'
+  prompt: count
+  answer:
+  - laskea
+  phonetic: LAHS-keh-ah
+- id: '524'
+  prompt: marry
+  answer:
+  - mennä naimisiin
+  phonetic: MEHN-nah NAI-mee-seen
+- id: '525'
+  prompt: pray
+  answer:
+  - rukoilla
+  phonetic: ROO-koil-lah
+- id: '526'
+  prompt: win
+  answer:
+  - voittaa
+  phonetic: VOIT-tah
+- id: '527'
+  prompt: lose
+  answer:
+  - hävitä
+  phonetic: HAH-vee-tah
+- id: '528'
+  prompt: mix/stir
+  answer:
+  - sekoittaa
+  phonetic: SEH-koit-tah
+- id: '529'
+  prompt: bend
+  answer:
+  - taivuttaa
+  phonetic: TAI-voot-tah
+- id: '530'
+  prompt: wash
+  answer:
+  - pestä
+  phonetic: PEHS-tah
+- id: '531'
+  prompt: cook
+  answer:
+  - laittaa ruokaa
+  phonetic: LAIT-tah RUO-kah
+- id: '532'
+  prompt: open
+  answer:
+  - avata
+  phonetic: AH-vah-tah
+- id: '533'
+  prompt: close
+  answer:
+  - sulkea
+  phonetic: SOOL-keh-ah
+- id: '534'
+  prompt: write
+  answer:
+  - kirjoittaa
+  phonetic: KEER-yoit-tah
+- id: '535'
+  prompt: call
+  answer:
+  - soittaa
+  phonetic: SOIT-tah
+- id: '536'
+  prompt: turn
+  answer:
+  - kääntyä
+  phonetic: KAHN-tuu-ah
+- id: '537'
+  prompt: build
+  answer:
+  - rakentaa
+  phonetic: RAH-kehn-tah
+- id: '538'
+  prompt: teach
+  answer:
+  - opettaa
+  phonetic: OH-peht-tah
+- id: '539'
+  prompt: grow
+  answer:
+  - kasvaa
+  phonetic: KAHS-vah
+- id: '540'
+  prompt: draw
+  answer:
+  - piirtää
+  phonetic: PEER-tah
+- id: '541'
+  prompt: feed
+  answer:
+  - ruokkia
+  phonetic: RUOK-kee-ah
+- id: '542'
+  prompt: catch
+  answer:
+  - ottaa kiinni
+  phonetic: OHT-tah KEEN-nee
+- id: '543'
+  prompt: throw
+  answer:
+  - heittää
+  phonetic: HEIT-tah
+- id: '544'
+  prompt: clean
+  answer:
+  - siivota
+  phonetic: SEE-voh-tah
+- id: '545'
+  prompt: find
+  answer:
+  - löytää
+  phonetic: LOI-tah
+- id: '546'
+  prompt: fall
+  answer:
+  - pudota
+  phonetic: POO-doh-tah
+- id: '547'
+  prompt: push
+  answer:
+  - työntää
+  phonetic: TYÖN-tah
+- id: '548'
+  prompt: pull
+  answer:
+  - vetää
+  phonetic: VEH-tah
+- id: '549'
+  prompt: carry
+  answer:
+  - kantaa
+  phonetic: KAHN-tah
+- id: '550'
+  prompt: break
+  answer:
+  - rikkoa
+  phonetic: REEK-koh-ah
+- id: '551'
+  prompt: wear
+  answer:
+  - pitää yllään
+  phonetic: PEE-tah UUL-lahn
+- id: '552'
+  prompt: hang
+  answer:
+  - riippua
+  phonetic: REEP-poo-ah
+- id: '553'
+  prompt: shake
+  answer:
+  - ravistaa
+  phonetic: RAH-vees-tah
+- id: '554'
+  prompt: sign (a signature)
+  answer:
+  - allekirjoittaa
+  phonetic: AHL-leh-keer-yoit-tah
+- id: '555'
+  prompt: beat
+  answer:
+  - lyödä
+  phonetic: LYÖ-dah
+- id: '556'
+  prompt: lift
+  answer:
+  - nostaa
+  phonetic: NOHS-tah
+- id: '557'
+  prompt: long
+  answer:
+  - pitkä
+  phonetic: PEET-kah
+- id: '558'
+  prompt: short (f.ex. distance)
+  answer:
+  - lyhyt
+  phonetic: LUU-huut
+- id: '559'
+  prompt: tall
+  answer:
+  - pitkä
+  phonetic: PEET-kah
+- id: '560'
+  prompt: short (height)
+  answer:
+  - lyhyt
+  phonetic: LUU-huut
+- id: '561'
+  prompt: wide
+  answer:
+  - leveä
+  phonetic: LEH-veh-ah
+- id: '562'
+  prompt: narrow
+  answer:
+  - kapea
+  phonetic: KAH-peh-ah
+- id: '563'
+  prompt: big/large
+  answer:
+  - suuri
+  phonetic: SOO-ree
+- id: '564'
+  prompt: small/little
+  answer:
+  - pieni
+  phonetic: PIE-nee
+- id: '565'
+  prompt: slow
+  answer:
+  - hidas
+  phonetic: HEE-dahs
+- id: '566'
+  prompt: fast
+  answer:
+  - nopea
+  phonetic: NOH-peh-ah
+- id: '567'
+  prompt: hot
+  answer:
+  - kuuma
+  phonetic: KOO-mah
+- id: '568'
+  prompt: cold
+  answer:
+  - kylmä
+  phonetic: KUUL-mah
+- id: '569'
+  prompt: warm
+  answer:
+  - lämmin
+  phonetic: LAHM-meen
+- id: '570'
+  prompt: cool
+  answer:
+  - viileä
+  phonetic: VEE-leh-ah
+- id: '571'
+  prompt: new
+  answer:
+  - uusi
+  phonetic: OO-see
+- id: '572'
+  prompt: old (opposite to new)
+  answer:
+  - vanha
+  phonetic: VAHN-hah
+- id: '573'
+  prompt: young
+  answer:
+  - nuori
+  phonetic: NUO-ree
+- id: '574'
+  prompt: old (opposite to young)
+  answer:
+  - vanha
+  phonetic: VAHN-hah
+- id: '575'
+  prompt: good
+  answer:
+  - hyvä
+  phonetic: HUU-vah
+- id: '576'
+  prompt: bad
+  answer:
+  - huono
+  phonetic: HUO-noh
+- id: '577'
+  prompt: wet
+  answer:
+  - märkä
+  phonetic: MAHR-kah
+- id: '578'
+  prompt: dry
+  answer:
+  - kuiva
+  phonetic: KUI-vah
+- id: '579'
+  prompt: sick
+  answer:
+  - sairas
+  phonetic: SAI-rahs
+- id: '580'
+  prompt: healthy
+  answer:
+  - terve
+  phonetic: TEHR-veh
+- id: '581'
+  prompt: loud
+  answer:
+  - äänekäs
+  phonetic: AH-neh-kahs
+- id: '582'
+  prompt: quiet
+  answer:
+  - hiljainen
+  phonetic: HEEL-yai-nehn
+- id: '583'
+  prompt: happy
+  answer:
+  - iloinen
+  phonetic: EE-loi-nehn
+- id: '584'
+  prompt: sad
+  answer:
+  - surullinen
+  phonetic: SOO-rool-lee-nehn
+- id: '585'
+  prompt: beautiful
+  answer:
+  - kaunis
+  phonetic: KOW-nees
+- id: '586'
+  prompt: ugly
+  answer:
+  - ruma
+  phonetic: ROO-mah
+- id: '587'
+  prompt: deaf
+  answer:
+  - kuuro
+  phonetic: KOO-roh
+- id: '588'
+  prompt: blind
+  answer:
+  - sokea
+  phonetic: SOH-keh-ah
+- id: '589'
+  prompt: nice
+  answer:
+  - mukava
+  phonetic: MOO-kah-vah
+- id: '590'
+  prompt: mean
+  answer:
+  - ilkeä
+  phonetic: EEL-keh-ah
+- id: '591'
+  prompt: rich
+  answer:
+  - rikas
+  phonetic: REE-kahs
+- id: '592'
+  prompt: poor
+  answer:
+  - köyhä
+  phonetic: KOI-hah
+- id: '593'
+  prompt: thick
+  answer:
+  - paksu
+  phonetic: PAHK-soo
+- id: '594'
+  prompt: thin
+  answer:
+  - ohut
+  phonetic: OH-hoot
+- id: '595'
+  prompt: expensive
+  answer:
+  - kallis
+  phonetic: KAHL-lees
+- id: '596'
+  prompt: cheap
+  answer:
+  - halpa
+  phonetic: HAHL-pah
+- id: '597'
+  prompt: flat
+  answer:
+  - litteä
+  phonetic: LEET-teh-ah
+- id: '598'
+  prompt: curved
+  answer:
+  - kaareva
+  phonetic: KAH-reh-vah
+- id: '599'
+  prompt: male
+  answer:
+  - mies
+  - miespuolinen
+  phonetic: MIES / MIES-puo-lee-nehn
+- id: '600'
+  prompt: female
+  answer:
+  - nainen
+  - naispuolinen
+  phonetic: NAI-nehn / NAIS-puo-lee-nehn
+- id: '601'
+  prompt: tight
+  answer:
+  - tiukka
+  phonetic: TIUK-kah
+- id: '602'
+  prompt: loose
+  answer:
+  - löysä
+  phonetic: LOI-sah
+- id: '603'
+  prompt: high
+  answer:
+  - korkea
+  phonetic: KOHR-keh-ah
+- id: '604'
+  prompt: low
+  answer:
+  - matala
+  phonetic: MAH-tah-lah
+- id: '605'
+  prompt: soft
+  answer:
+  - pehmeä
+  phonetic: PEHH-meh-ah
+- id: '606'
+  prompt: hard
+  answer:
+  - kova
+  phonetic: KOH-vah
+- id: '607'
+  prompt: deep
+  answer:
+  - syvä
+  phonetic: SUU-vah
+- id: '608'
+  prompt: shallow
+  answer:
+  - matala
+  phonetic: MAH-tah-lah
+- id: '609'
+  prompt: clean
+  answer:
+  - puhdas
+  phonetic: POOH-dahs
+- id: '610'
+  prompt: dirty
+  answer:
+  - likainen
+  phonetic: LEE-kai-nehn
+- id: '611'
+  prompt: strong
+  answer:
+  - vahva
+  phonetic: VAHH-vah
+- id: '612'
+  prompt: weak
+  answer:
+  - heikko
+  phonetic: HEIK-koh
+- id: '613'
+  prompt: dead
+  answer:
+  - kuollut
+  phonetic: KUOL-loot
+- id: '614'
+  prompt: alive
+  answer:
+  - elossa
+  phonetic: EH-lohs-sah
+- id: '615'
+  prompt: heavy (weight)
+  answer:
+  - painava
+  phonetic: PAI-nah-vah
+- id: '616'
+  prompt: light (weight)
+  answer:
+  - kevyt
+  phonetic: KEH-vuut
+- id: '617'
+  prompt: dark
+  answer:
+  - pimeä
+  phonetic: PEE-meh-ah
+- id: '618'
+  prompt: light (dark)
+  answer:
+  - valoisa
+  phonetic: VAH-loi-sah
+- id: '619'
+  prompt: famous
+  answer:
+  - kuuluisa
+  phonetic: KOO-lui-sah

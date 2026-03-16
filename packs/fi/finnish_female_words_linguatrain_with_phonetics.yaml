@@ -1,9 +1,6 @@
 metadata:
   title: Finnish Female Words (converted from Anki)
   source: Anki APKG conversion
-  languages:
-    prompt: en
-    answer: fi
 entries:
 - id: '001'
   prompt: dog

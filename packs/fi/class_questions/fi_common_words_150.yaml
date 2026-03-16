@@ -1,6 +1,5 @@
 metadata:
   id: fi_common_words_150
-  pack_name: Finnish Common Words 150
   version: 1
   author: Wayne Brissette
   description: 150 high-frequency everyday Finnish words for beginner practice.
@@ -235,13 +234,16 @@ entries:
     phonetic: SIT-ten
 
   - id: "039"
-    prompt: really; indeed
+    prompt:
+      - "yes"
+      - really
+      - indeed
     answer:
       - kyllä
     phonetic: KUUL-lah
-
+    
   - id: "040"
-    prompt: no
+    prompt: "no"
     answer:
       - ei
     phonetic: AY
@@ -699,8 +701,8 @@ entries:
   - id: "116"
     prompt: is
     answer:
-      - on
-    phonetic: ON
+      - "on"
+    phonetic: "ON"
 
   - id: "117"
     prompt: to have

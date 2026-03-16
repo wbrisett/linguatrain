@@ -1,0 +1,234 @@
+metadata:
+  id: fi_chapter_03
+  name: Finnish Chapter 3 – Vocabulary
+entries:
+- id: '001'
+  source: to call
+  phonetic: SOI-ttaa
+  target: soittaa
+- id: '002'
+  source: friend
+  phonetic: US-ta-vah
+  target: ystävä
+- id: '003'
+  source: video call
+  phonetic: VEE-deh-o POO-heh-loo
+  target: videopuhelu
+- id: '004'
+  source: to be at work
+  phonetic: OL-la TUH-ihs-sah
+  target: olla töissä
+- id: '005'
+  source: already
+  phonetic: YO
+  target: jo
+- id: '006'
+  source: not yet
+  phonetic: AY VYEH-lah
+  target: ei vielä
+- id: '007'
+  source: only
+  phonetic: VAS-tah
+  target: vasta
+- id: 008
+  source: half
+  phonetic: PUO-lee
+  target: puoli
+- id: 009
+  source: Oh right, true
+  phonetic: AI NEEN TOT-tah
+  target: Ai niin, totta.
+- id: '010'
+  source: weather
+  phonetic: SAA
+  target: sää
+- id: '011'
+  source: time
+  phonetic: AI-kah
+  target: aika
+- id: '012'
+  source: bad
+  phonetic: HOO-no
+  target: huono
+- id: '013'
+  source: also
+  phonetic: kin
+  target: -kin
+  also_accepted:
+  - too
+- id: '014'
+  source: It is raining heavily
+  phonetic: SAH-taa KAA-ta-mal-la
+  target: Sataa kaatamalla.
+- id: '015'
+  source: It is windy
+  phonetic: ON TOO-lis-ta
+  target: On tuulista.
+- id: '016'
+  source: Oh really
+  phonetic: AI-yah
+  target: Aijaa!
+- id: '017'
+  source: The sun is shining
+  phonetic: AU-rin-ko PAI-staa
+  target: Aurinko paistaa.
+- id: 018
+  source: really
+  phonetic: TO-si
+  target: tosi
+- id: 019
+  source: warm
+  phonetic: LAM-min
+  target: lämmin
+- id: '020'
+  source: degree
+  phonetic: AS-teh
+  target: aste
+- id: '021'
+  source: night
+  phonetic: YUR
+  target: yö
+- id: '022'
+  source: so
+  phonetic: NEEN
+  target: niin
+- id: '023'
+  source: bright
+  phonetic: VA-loy-sa
+  target: valoisa
+- id: '024'
+  source: that
+  phonetic: ET-tah
+  target: että
+- id: '025'
+  source: difficult
+  phonetic: VAI-keh-ah
+  target: vaikea
+- id: '026'
+  source: to sleep
+  phonetic: NUK-koo-ah
+  target: nukkua
+- id: '027'
+  source: summer
+  phonetic: KEH-sah
+  target: kesä
+- id: 028
+  source: to enjoy
+  phonetic: NOWT-tee-ah
+  target: nauttia
+- id: 029
+  source: November
+  phonetic: MAR-ras-koo
+  target: marraskuu
+- id: '030'
+  source: dark
+  phonetic: PI-meh-ah
+  target: pimeä
+- id: '031'
+  source: Yeah, apparently
+  phonetic: NO YO NEEN KOO-lem-ma
+  target: No joo, niin kuulemma!
+- id: '032'
+  source: do you have
+  phonetic: ON-ko SEE-nul-la
+  target: onko sinulla
+- id: '033'
+  source: job
+  phonetic: TYUR-pai-ka
+  target: työpaikka
+- id: '034'
+  source: to look for work
+  phonetic: ET-see-ah TUH-ih-tah
+  target: etsiä töitä
+- id: '035'
+  source: easy
+  phonetic: HEL-po
+  target: helppo
+- id: '036'
+  source: Great
+  phonetic: HEE-no YUT-too
+  target: Hieno juttu!
+- id: '037'
+  source: what kind of
+  phonetic: MIL-lai-nen
+  target: millainen
+- id: 038
+  source: pleasant
+  phonetic: MOO-ka-vah
+  target: mukava
+- id: 039
+  source: same
+  phonetic: SA-ma
+  target: sama
+- id: '040'
+  source: on Mondays
+  phonetic: MAAN-an-tai-sin
+  target: maanantaisin
+- id: '041'
+  source: on Wednesdays
+  phonetic: KES-ki-vee-ko-sin
+  target: keskiviikkoisin
+- id: '042'
+  source: on Thursdays
+  phonetic: TORS-tai-sin
+  target: torstaisin
+- id: '043'
+  source: time
+  phonetic: KER-ta
+  target: kerta
+- id: '044'
+  source: Wow
+  phonetic: OH-ho
+  target: Ohhoh!
+- id: '045'
+  source: as well as
+  phonetic: YUH-tah HUY-vin KUIN
+  target: yhtä hyvin kuin
+- id: '046'
+  source: Sure
+  phonetic: NEEN VAR-maan
+  target: Niin varmaan.
+- id: '047'
+  source: still
+  phonetic: VYEH-lah
+  target: vielä
+- id: 048
+  source: student apartment
+  phonetic: OH-pis-keh-lee-yah AH-sun-to
+  target: opiskelija-asunto
+- id: 049
+  source: to move
+  phonetic: MOO-ta
+  target: muuttaa
+- id: '050'
+  source: September
+  phonetic: SUYYS-koo
+  target: syyskuu
+- id: '051'
+  source: our
+  phonetic: MEI-dan
+  target: meidän
+- id: '052'
+  source: new
+  phonetic: OO-si
+  target: uusi
+- id: '053'
+  source: Sounds good
+  phonetic: KOO-los-taa HUY-val-ta
+  target: Kuulostaa hyvältä.
+- id: '054'
+  source: I must
+  phonetic: MEE-nun TAI-tyy
+  target: minun täytyy
+- id: '055'
+  source: to go to work
+  phonetic: LAH-teh-ah TUH-ih-hin
+  target: lähteä töihin
+- id: '056'
+  source: Say hello to Hanna
+  phonetic: TER-veh-see-ah HAN-nal-le
+  target: Terveisiä Hannalle!
+- id: '057'
+  source: to tell
+  phonetic: KER-to-ah
+  target: kertoa

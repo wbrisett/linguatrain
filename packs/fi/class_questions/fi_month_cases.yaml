@@ -1,6 +1,5 @@
 metadata:
   id: fi_month_cases
-  pack_name: Finnish Month Cases
   version: 1
   author: Wayne Brissette
   description: Finnish months in the inessive case, for example "in January".

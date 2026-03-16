@@ -1,0 +1,102 @@
+# Linguatrain Conjugate Pack Template
+# Rename this file and place it inside your packs tree.
+#
+# Recommended location:
+#   packs/<target_lang>/
+#
+# Notes:
+# - Conjugation packs must set metadata.drill_type to "conjugate".
+# - The persons list defines the drill order unless shuffle_persons is enabled elsewhere.
+# - Each entry has:
+#     - lemma: the dictionary form of the verb
+#     - forms: person-by-person accepted answers
+# - Each person can contain:
+#     - positive: YAML list of accepted positive forms
+#     - negative: YAML list of accepted negative forms
+
+metadata:
+  id: "starter_conjugate_pack"
+  version: 1
+  drill_type: "conjugate"
+  author: "Your Name"                    # Optional
+  description: "Verb conjugation drills."  # Optional
+  tags:                                  # Optional
+    - "conjugate"
+    - "verbs"
+
+persons:
+  - "minä"
+  - "sinä"
+  - "hän"
+  - "me"
+  - "te"
+  - "he"
+
+entries:
+  - id: "001"
+    lemma: "puhua"
+    forms:
+      minä:
+        positive:
+          - "puhun"
+        negative:
+          - "en puhu"
+      sinä:
+        positive:
+          - "puhut"
+        negative:
+          - "et puhu"
+      hän:
+        positive:
+          - "puhuu"
+        negative:
+          - "ei puhu"
+      me:
+        positive:
+          - "puhumme"
+        negative:
+          - "emme puhu"
+      te:
+        positive:
+          - "puhutte"
+        negative:
+          - "ette puhu"
+      he:
+        positive:
+          - "puhuvat"
+        negative:
+          - "eivät puhu"
+
+  - id: "002"
+    lemma: "syödä"
+    forms:
+      minä:
+        positive:
+          - "syön"
+        negative:
+          - "en syö"
+      sinä:
+        positive:
+          - "syöt"
+        negative:
+          - "et syö"
+      hän:
+        positive:
+          - "syö"
+        negative:
+          - "ei syö"
+      me:
+        positive:
+          - "syömme"
+        negative:
+          - "emme syö"
+      te:
+        positive:
+          - "syötte"
+        negative:
+          - "ette syö"
+      he:
+        positive:
+          - "syövät"
+        negative:
+          - "eivät syö"

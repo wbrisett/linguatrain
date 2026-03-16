@@ -11,6 +11,7 @@ require "securerandom"
 require "digest"
 require "fileutils"
 require "json"
+require "fileutils"
 
 # -----------------------------
 # Utility
@@ -674,6 +675,7 @@ end
 
 # In listen modes, allow the user to type 'r' to replay the audio.
 # Returns the user's non-replay input (may be nil on EOF).
+
 def prompt_with_replay(msg, spoken_text, piper_bin:, piper_model:, template:)
   loop do
     input = prompt(msg)
@@ -687,6 +689,69 @@ def prompt_with_replay(msg, spoken_text, piper_bin:, piper_model:, template:)
     return input
   end
 end
+
+# Helper: Speak a sequence of target texts with a small gap between.
+def speak_target_sequence(texts, piper_bin:, piper_model:, template:, gap: 0.35)
+  Array(texts).each_with_index do |text, idx|
+    spoken = text.to_s.strip
+    next if spoken.empty?
+
+    speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: template)
+    sleep(gap) if idx < Array(texts).length - 1
+  end
+end
+
+module TerminalStyle
+  module_function
+
+  def enabled?
+    return false if ENV.key?("NO_COLOR")
+    return false unless $stdout.tty?
+
+    true
+  rescue StandardError
+    false
+  end
+
+  def wrap(code, text)
+    s = text.to_s
+    return s unless enabled?
+
+    "\e[#{code}m#{s}\e[0m"
+  end
+
+  def bold(text)
+    wrap("1", text)
+  end
+
+  def dim(text)
+    wrap("2", text)
+  end
+
+  def cyan(text)
+    wrap("36", text)
+  end
+
+  def yellow(text)
+    wrap("33", text)
+  end
+end
+
+
+def render_prompt_line(text)
+  TerminalStyle.bold(text.to_s)
+end
+
+
+def render_cue_line(text)
+  TerminalStyle.cyan("[ #{text.to_s} ]")
+end
+
+
+def render_instruction_line(text)
+  TerminalStyle.yellow(text.to_s)
+end
+
 
 def prompt_to_speak(ui, duration: nil)
   label = (ui && ui[:speak_now]) ? ui[:speak_now] : "🎤 Speak now..."
@@ -984,18 +1049,18 @@ def load_pack(path)
       # Preserve/assign entry id
       entry_id = w["id"] || w[:id]
 
-      # Legacy keys
-      en = w["en"] || w[:prompt] || w["english"] || w[:english]
-      fi = w["fi"] || w[:answer] || w["finnish"] || w[:finnish]
+      # Legacy and compatibility keys
+      en = w["en"] || w[:en] || w["english"] || w[:english] || w["prompt"] || w[:prompt] || w["source"] || w[:source]
+      fi = w["fi"] || w[:fi] || w["finnish"] || w[:finnish] || w["answer"] || w[:answer] || w["target"] || w[:target]
       spoken_v = w["spoken"] || w[:spoken]
-      phon = w["phon"] || w[:phonetic] || w["phonetic"] || w[:phonetic]
+      phon = w["phon"] || w[:phon] || w["phonetic"] || w[:phonetic]
 
-      # New schema keys
-      prompt_v = w["prompt"] || w[:prompt]
-      alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts]
-      answer_v = w["answer"] || w[:answer]
+      # Canonical schema keys
+      prompt_v = w["prompt"] || w[:prompt] || w["source"] || w[:source]
+      alt_prompts_v = w["alternate_prompts"] || w[:alternate_prompts] || w["also_accepted"] || w[:also_accepted]
+      answer_v = w["answer"] || w[:answer] || w["target"] || w[:target]
       spoken_field_v = w["spoken"] || w[:spoken]
-      phonetic_v = w["phonetic"] || w[:phonetic]
+      phonetic_v = w["phonetic"] || w[:phonetic] || w["phon"] || w[:phon]
 
       # If we have new-schema fields, map them into the legacy variables used below.
       if en.nil? && !prompt_v.nil?
@@ -1023,7 +1088,8 @@ def load_pack(path)
           [en.to_s.strip]
         end
 
-      # New schema: include alternate_prompts as additional accepted English variants.
+      # Canonical schema: include alternate_prompts as additional accepted prompt-side variants.
+      # Compatibility aliases: source/target and also_accepted are accepted too.
       if alt_prompts_v.is_a?(Array)
         en_list.concat(alt_prompts_v.map { |x| x.to_s.strip }.reject(&:empty?))
       elsif alt_prompts_v.is_a?(String) && !alt_prompts_v.strip.empty?
@@ -1153,11 +1219,11 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
   end
 end
 
-def choose_conjugate_items(items, count)
-  return items if count.nil? || count == "all"
+def choose_conjugate_entries(entries, count)
+  return entries if count.nil? || count == "all"
 
   n = Integer(count)
-  items.take([n, items.length].min)
+  entries.take([n, entries.length].min)
 end
 
 # -----------------------------
@@ -1458,6 +1524,10 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       # Target → Source: show target first (Finnish), then reveal source (English)
       front_label = target_label(ui)
       say "#{front_label}: #{answer_text}"
+
+      back_label = source_label(ui)
+      say "#{back_label}: #{prompt_text}"
+      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
       say
 
       if listen
@@ -1465,14 +1535,6 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
         speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say "#{indent}#{ui[:replay_hint] || "(Type 'r' to replay audio)"}"
       end
-
-      centered_prompt(indent, "(Enter to reveal; q to quit): ")
-      say
-
-      back_label = source_label(ui)
-      say "#{back_label}: #{prompt_text}"
-      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
-      say
 
       if listen
         prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
@@ -1483,10 +1545,6 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       # Source → Target: show source first (English), then reveal target (Finnish)
       front_label = source_label(ui)
       say "#{front_label}: #{prompt_text}" unless listen_no_english
-      say
-
-      centered_prompt(indent, "(Enter to reveal; q to quit): ")
-      say
 
       back_label = target_label(ui)
       say "#{back_label}: #{answer_text}"
@@ -1508,6 +1566,184 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
   say "Done."
 end
 
+def run_transform_study(selected, ui:, listen: false, piper_bin: nil, piper_model: nil, tts_template: DEFAULT_TTS_TEMPLATE, printed_voice: false)
+  say
+
+  total_steps = selected.sum { |item| Array(item[:steps]).length }
+  prompts_count = selected.map { |i| i[:prompt].to_s }.uniq.length
+  prompt_label = prompts_count == 1 ? "prompt" : "prompts"
+
+  mode = ["study", "transform"]
+  mode << "listen" if listen
+
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Transform #{ui[:quiz_label] || 'Quiz'} — #{prompts_count} #{prompt_label} (#{total_steps} steps) (mode: #{mode.join(', ')})"
+  say "-" * 70
+
+  step_index = 0
+
+  selected.each do |item|
+    say
+    say render_prompt_line(item[:prompt].to_s)
+    say
+    say render_cue_line(item[:cue].to_s)
+    say
+
+    Array(item[:steps]).each do |step|
+      step_index += 1
+
+      say "[#{step_index}/#{total_steps}]"
+      say
+      say render_instruction_line(transform_instruction_label(ui, step[:transform]))
+      say
+
+      prompt("(Enter to reveal; q to quit): ")
+      say
+      say "#{target_label(ui)}: #{Array(step[:answer]).join(' / ')}"
+      say
+
+      if listen
+        spoken_target = Array(step[:answer]).first.to_s.strip
+        unless spoken_target.empty?
+          maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
+          speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+          say((ui[:replay_hint] || "(Type 'r' to replay audio)"))
+          prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+        else
+          prompt("(Enter for next; q to quit): ")
+        end
+      else
+        prompt("(Enter for next; q to quit): ")
+      end
+
+      say
+    end
+  end
+
+  say
+  say "Done."
+end
+
+
+def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, piper_bin: nil, piper_model: nil, tts_template: DEFAULT_TTS_TEMPLATE, printed_voice: false)
+  say
+
+  total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
+
+  verbs_count = selected.map { |i| i[:lemma] }.uniq.length
+
+  mode = ["study", "conjugate", polarity]
+  mode << "listen" if listen
+
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{total_steps} items) (mode: #{mode.join(', ')})"
+  say "-" * 70
+
+  step_index = 0
+
+  selected.each do |item|
+    polarities = conjugate_polarities_for_item(item, polarity)
+    next if polarities.empty?
+
+    expected_by_polarity = polarities.each_with_object({}) do |current_polarity, out|
+      answers = Array(item.dig(:forms, current_polarity.to_sym) || item.dig(:forms, current_polarity))
+                  .map { |x| x.to_s.strip }
+                  .reject(&:empty?)
+      out[current_polarity] = answers unless answers.empty?
+    end
+
+    next if expected_by_polarity.empty?
+
+    if polarity.to_s == "both" && expected_by_polarity.key?("positive") && expected_by_polarity.key?("negative")
+      positive_answers = expected_by_polarity["positive"]
+      negative_answers = expected_by_polarity["negative"]
+
+      start_step = step_index + 1
+      end_step = step_index + 2
+      step_index += 2
+
+      say
+      say "[#{start_step} & #{end_step}/#{total_steps}]"
+      say
+      say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+      say
+      say render_cue_line(item[:person])
+      say render_cue_line(item[:lemma])
+      say
+      say render_instruction_line("Positive form:")
+      say
+      say "#{target_label(ui)}: #{positive_answers.join(' / ')}"
+      say
+      say render_instruction_line("Negative form:")
+      say
+      say "#{target_label(ui)}: #{negative_answers.join(' / ')}"
+      say
+
+      if listen
+        spoken_targets = [positive_answers.first.to_s.strip, negative_answers.first.to_s.strip].reject(&:empty?)
+
+        unless spoken_targets.empty?
+          if printed_voice
+            spoken_targets.each do |spoken_target|
+              maybe_printed_voice(ui, true, build_tts_spoken(spoken_target, tts_template))
+            end
+          end
+
+          speak_target_sequence(spoken_targets, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+          say((ui[:replay_hint] || "(Type 'r' to replay audio)"))
+
+          loop do
+            input = prompt("(Enter for next; 'r' to replay; q to quit): ")
+            break if input.nil? || !input.strip.casecmp("r").zero?
+
+            speak_target_sequence(spoken_targets, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+          end
+        else
+          prompt("(Enter for next; q to quit): ")
+        end
+      else
+        prompt("(Enter for next; q to quit): ")
+      end
+    else
+      expected_by_polarity.each do |current_polarity, expected|
+        next if expected.empty?
+
+        step_index += 1
+
+        say
+        say "[#{step_index}/#{total_steps}]"
+        say
+        say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+        say
+        say render_cue_line(item[:person])
+        say render_cue_line(item[:lemma])
+        say
+        say render_instruction_line(conjugate_instruction_label(ui, current_polarity))
+        say
+
+        prompt("(Enter to reveal; q to quit): ")
+        say
+        say "#{target_label(ui)}: #{expected.join(' / ')}"
+        say
+
+        if listen
+          spoken_target = expected.first.to_s.strip
+          unless spoken_target.empty?
+            maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken_target, tts_template))
+            speak_target_prompt(spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+            say((ui[:replay_hint] || "(Type 'r' to replay audio)"))
+            prompt_with_replay("(Enter for next; 'r' to replay; q to quit): ", spoken_target, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
+          else
+            prompt("(Enter for next; q to quit): ")
+          end
+        else
+          prompt("(Enter for next; q to quit): ")
+        end
+      end
+    end
+  end
+
+  say
+  say "Done."
+end
 # -----------------------------
 # Transform Engine
 # -----------------------------
@@ -1537,14 +1773,14 @@ def run_transform(selected, ui:, lenient:)
     say
     say "[#{idx + 1}/#{selected.length}]"
     say
-    say item[:prompt].to_s
+    say render_prompt_line(item[:prompt].to_s)
     say
-    say "[ #{item[:cue].to_s} ]"
+    say render_cue_line(item[:cue].to_s)
     say
 
     Array(item[:steps]).each do |step|
       instruction = transform_instruction_label(ui, step[:transform])
-      say instruction
+      say render_instruction_line(instruction)
 
       answer_ok = false
 
@@ -1624,18 +1860,20 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
 
   total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
 
+  verbs_count = selected.map { |i| i[:lemma] }.uniq.length
+
   say
-  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{selected.length} item(s) (mode: conjugate, #{polarity})"
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{selected.length} items) (mode: conjugate, #{polarity})"
   say "-" * 70
 
   selected.each_with_index do |item, idx|
     say
     say "[#{idx + 1}/#{selected.length}]"
     say
-    say((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+    say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
     say
-    say "[ #{item[:person]} ]"
-    say "[ #{item[:lemma]} ]"
+    say render_cue_line(item[:person])
+    say render_cue_line(item[:lemma])
     say
 
     conjugate_polarities_for_item(item, polarity).each do |current_polarity|
@@ -1643,7 +1881,7 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
       expected = Array(item.dig(:forms, current_polarity.to_sym) || item.dig(:forms, current_polarity)).map { |x| x.to_s.strip }.reject(&:empty?)
       next if expected.empty?
 
-      say instruction
+      say render_instruction_line(instruction)
       answer_ok = false
 
       1.upto(2) do |attempt|
@@ -2100,7 +2338,7 @@ end
 # Output
 # -----------------------------
 
-def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game:, listen:, listen_no_english:, reverse:)
+def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game:, listen:, listen_no_english:, reverse:, output_dir: nil)
   base = (pack_meta && pack_meta[:id] && !pack_meta[:id].to_s.strip.empty?) ? pack_meta[:id].to_s.strip : File.basename(input_path, File.extname(input_path))
   filename = "#{base}_missed_#{Time.now.strftime('%Y%m%d_%H%M%S')}.yaml"
 
@@ -2110,23 +2348,23 @@ def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game
   missed_meta = deep_merge_hash(base_meta || {}, {
     id: "#{base}_missed",
     generated: begin
-      g = {
-        generated_at: Time.now.iso8601,
-        source_pack_id: (pack_meta || {}).dig(:id),
-        source_file: File.expand_path(input_path),
-        localisation: (defined?($LOCALISATION_ID) ? $LOCALISATION_ID : nil),
-        stats: stats,
-        options: {
-          lenient_umlauts: lenient,
-          match_game: match_game,
-          listen: listen,
-          listen_no_source: listen_no_english,
-          reverse: reverse
-        }
-      }
-      g.delete_if { |_, v| v.nil? }
-      g
-    end
+                 g = {
+                   generated_at: Time.now.iso8601,
+                   source_pack_id: (pack_meta || {}).dig(:id),
+                   source_file: File.expand_path(input_path),
+                   localisation: (defined?($LOCALISATION_ID) ? $LOCALISATION_ID : nil),
+                   stats: stats,
+                   options: {
+                     lenient_umlauts: lenient,
+                     match_game: match_game,
+                     listen: listen,
+                     listen_no_source: listen_no_english,
+                     reverse: reverse
+                   }
+                 }
+                 g.delete_if { |_, v| v.nil? }
+                 g
+               end
   })
 
   entries = missed.map do |w|
@@ -2153,8 +2391,17 @@ def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game
     "entries" => entries
   }
 
-  File.write(filename, YAML.dump(payload))
-  filename
+  output_path =
+    if output_dir && !output_dir.to_s.strip.empty?
+      expanded_dir = File.expand_path(output_dir.to_s.strip)
+      FileUtils.mkdir_p(expanded_dir)
+      File.join(expanded_dir, filename)
+    else
+      filename
+    end
+
+  File.write(output_path, YAML.dump(payload))
+  output_path
 end
 
 # -----------------------------
@@ -2196,6 +2443,7 @@ options = {
   speech_model: ENV["WHISPER_MODEL"] || ENV["SPEECH_MODEL"],
   speech_language: ENV["WHISPER_LANGUAGE"] || ENV["SPEECH_LANGUAGE"],
   speech_duration: (ENV.key?("SPEECH_DURATION") ? ENV["SPEECH_DURATION"].to_i : nil),
+  missed_output_dir: nil,
 }
 
 parser = OptionParser.new do |opts|
@@ -2310,6 +2558,9 @@ options[:count] = ARGV.shift
 if options[:study]
   abort("--study cannot be combined with --match-game") if options[:match_game]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
+  abort("--study cannot be combined with --speak") if options[:speak]
+  abort("--study cannot be combined with --conversation") if options[:conversation]
+  abort("--study cannot be combined with --reverse when used with --conjugate") if options[:conjugate] && options[:reverse]
 
   if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
     abort("--study ignores SRS. Remove --srs/--due/--new/--reset-srs/--srs-file.")
@@ -2322,10 +2573,10 @@ abort("--speak cannot be combined with --conversation") if options[:speak] && op
 
 if options[:transform]
   abort("--transform cannot be combined with --match-game") if options[:match_game]
-  abort("--transform cannot be combined with --listen") if options[:listen]
+
   abort("--transform cannot be combined with --speak") if options[:speak]
   abort("--transform cannot be combined with --reverse") if options[:reverse]
-  abort("--transform cannot be combined with --study") if options[:study]
+  abort("--transform cannot be combined with --listen unless used with --study") if options[:listen] && !options[:study]
   abort("--transform cannot be combined with --conversation") if options[:conversation]
 
   if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
@@ -2335,10 +2586,9 @@ end
 
 if options[:conjugate]
   abort("--conjugate cannot be combined with --match-game") if options[:match_game]
-  abort("--conjugate cannot be combined with --listen") if options[:listen]
+  abort("--conjugate cannot be combined with --listen unless used with --study") if options[:listen] && !options[:study]
   abort("--conjugate cannot be combined with --speak") if options[:speak]
   abort("--conjugate cannot be combined with --reverse") if options[:reverse]
-  abort("--conjugate cannot be combined with --study") if options[:study]
   abort("--conjugate cannot be combined with --conversation") if options[:conversation]
   abort("--conjugate cannot be combined with --transform") if options[:transform]
   unless %w[positive negative both].include?(options[:conjugate_polarity].to_s)
@@ -2387,6 +2637,8 @@ if options[:speak]
   abort("--speak requires Whisper settings: provide --speech-bin, set WHISPER_BIN/SPEECH_BIN, or configure speech.bin in config.yaml") if options[:speech_bin].to_s.strip.empty?
 end
 
+options[:missed_output_dir] ||= user_cfg.dig(:runtime, :missed_output_dir)
+
 srs_enabled = options[:srs] && !options[:study]
 srs_path = options[:srs_file] || default_srs_path(yaml_path, pack_meta)
 
@@ -2408,8 +2660,8 @@ if options[:transform]
   selected = choose_transform_items(transform_items, options[:count])
 elsif options[:conjugate]
   shuffle_persons = !!pack_meta[:shuffle_persons]
-  conjugate_items = flatten_conjugate_items(conjugate_entries, conjugate_persons, shuffle_persons: shuffle_persons)
-  selected = choose_conjugate_items(conjugate_items, options[:count])
+  selected_entries = choose_conjugate_entries(conjugate_entries, options[:count])
+  selected = flatten_conjugate_items(selected_entries, conjugate_persons, shuffle_persons: shuffle_persons)
 elsif srs_enabled
   srs["meta"] ||= {}
   srs["meta"]["source_file"] = File.expand_path(yaml_path)
@@ -2472,7 +2724,7 @@ begin
     exit(0)
   end
 
-  if options[:transform]
+  if options[:transform] && !options[:study]
     stats, missed = run_transform(
       selected,
       ui: options[:ui] || DEFAULT_UI,
@@ -2503,6 +2755,51 @@ begin
       puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
     end
 
+    exit(0)
+  end
+
+
+
+  if options[:study]
+    if options[:conjugate]
+      run_conjugate_study(
+        selected,
+        ui: options[:ui] || DEFAULT_UI,
+        polarity: options[:conjugate_polarity],
+        listen: options[:listen],
+        piper_bin: options[:piper_bin],
+        piper_model: options[:piper_model],
+        tts_template: options[:tts_template],
+        printed_voice: options[:printed_voice]
+      )
+    elsif options[:transform]
+      run_transform_study(
+        selected,
+        ui: options[:ui] || DEFAULT_UI,
+        listen: options[:listen],
+        piper_bin: options[:piper_bin],
+        piper_model: options[:piper_model],
+        tts_template: options[:tts_template],
+        printed_voice: options[:printed_voice]
+      )
+    else
+      run_study(
+        selected,
+        reverse: options[:reverse],
+        listen: options[:listen],
+        listen_no_english: options[:listen_no_english],
+        piper_bin: options[:piper_bin],
+        piper_model: options[:piper_model],
+        tts_template: options[:tts_template],
+        ui: options[:ui] || DEFAULT_UI,
+        tts_variant: options[:tts_variant],
+        answer_variant: options[:answer_variant],
+        show_variants: options[:show_variants],
+        printed_voice: options[:printed_voice]
+      )
+    end
+
+    # Study mode has no scoring/missed packs.
     exit(0)
   end
 
@@ -2537,27 +2834,6 @@ begin
       puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
     end
 
-    exit(0)
-  end
-
-
-  if options[:study]
-    run_study(
-      selected,
-      reverse: options[:reverse],
-      listen: options[:listen],
-      listen_no_english: options[:listen_no_english],
-      piper_bin: options[:piper_bin],
-      piper_model: options[:piper_model],
-      tts_template: options[:tts_template],
-      ui: options[:ui] || DEFAULT_UI,
-      tts_variant: options[:tts_variant],
-      answer_variant: options[:answer_variant],
-      show_variants: options[:show_variants],
-      printed_voice: options[:printed_voice]
-    )
-
-    # Study mode has no scoring/missed packs.
     exit(0)
   end
 
@@ -2609,7 +2885,8 @@ begin
       match_game: options[:match_game],
       listen: options[:listen],
       listen_no_english: options[:listen_no_english],
-      reverse: options[:reverse]
+      reverse: options[:reverse],
+      output_dir: options[:missed_output_dir]
     )
 
     say

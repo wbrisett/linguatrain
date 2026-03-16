@@ -1,0 +1,210 @@
+metadata:
+  id: fi_chapter_02
+  name: Finnish Chapter 2 – Vocabulary
+entries:
+- id: '001'
+  source: from what country
+  phonetic: MINK-kah-MAH-lai-nen
+  target: minkämaalainen
+- id: '002'
+  source: to run out
+  phonetic: LOP-poo-ah
+  target: loppua
+- id: '003'
+  source: other
+  phonetic: MOO
+  target: muu
+- id: '004'
+  source: student
+  phonetic: OH-pis-keh-lee-yah
+  target: opiskelija
+- id: '005'
+  source: to go
+  phonetic: MEN-nah
+  target: mennä
+- id: '006'
+  source: home
+  phonetic: KO-tee
+  target: koti
+- id: '007'
+  source: but
+  phonetic: MOOT-tah
+  target: mutta
+- id: 008
+  source: kiosk
+  phonetic: KEE-osk-kee
+  target: kioski
+- id: 009
+  source: to buy
+  phonetic: OS-tah
+  target: ostaa
+- id: '010'
+  source: ice cream
+  phonetic: YAA-teh-lur
+  target: jäätelö
+- id: '011'
+  source: to cost
+  phonetic: MAK-sah
+  target: maksaa
+  also_accepted:
+  - to pay
+- id: '012'
+  source: euro
+  phonetic: EU-ro
+  target: euro
+- id: '013'
+  source: 'no'
+  phonetic: AY
+  target: ei
+- id: '014'
+  source: because
+  phonetic: KOS-kah
+  target: koska
+- id: '015'
+  source: to save
+  phonetic: SAA-staa
+  target: säästää
+- id: '016'
+  source: money
+  phonetic: RA-hah
+  target: raha
+- id: '017'
+  source: then
+  phonetic: SIT-ten
+  target: sitten
+- id: 018
+  source: to sit
+  phonetic: IS-too-ah
+  target: istua
+- id: 019
+  source: park
+  phonetic: POO-is-to
+  target: puisto
+- id: '020'
+  source: to speak
+  phonetic: POO-hoo-ah
+  target: puhua
+- id: '021'
+  source: to laugh
+  phonetic: NOW-rah
+  target: nauraa
+- id: '022'
+  source: Brazilian
+  phonetic: BRA-see-lee-ah-lai-nen
+  target: brasilialainen
+- id: '023'
+  source: Russian
+  phonetic: VEH-na-lai-nen
+  target: venäläinen
+- id: '024'
+  source: from where
+  phonetic: MIS-tah
+  target: mistä
+- id: '025'
+  source: from
+  phonetic: KO-toy-sin
+  target: kotoisin
+- id: '026'
+  source: South Africa
+  phonetic: EH-teh-lah AF-ree-kah
+  target: Etelä-Afrikka
+- id: '027'
+  source: Oh really
+  phonetic: AI yah
+  target: Ai jaa!
+- id: 028
+  source: language
+  phonetic: KEE-eh-lee
+  target: kieli
+- id: 029
+  source: mother tongue
+  phonetic: AI-din-kee-eh-lee
+  target: äidinkieli
+  also_accepted:
+  - native language
+- id: '030'
+  source: English
+  phonetic: ENG-lan-tee
+  target: englanti
+- id: '031'
+  source: also
+  phonetic: MURSS
+  target: myös
+- id: '032'
+  source: a little
+  phonetic: VA-han
+  target: vähän
+- id: '033'
+  source: Spanish
+  phonetic: ES-pan-yah
+  target: espanja
+- id: '034'
+  source: I do not speak
+  phonetic: EN POO-hoo
+  target: en puhu
+- id: '035'
+  source: Brazil
+  phonetic: BRA-see-lee-ah
+  target: Brasilia
+- id: '036'
+  source: Portuguese
+  phonetic: POR-too-gah-lee
+  target: portugali
+- id: '037'
+  source: Oh right
+  phonetic: AI neen
+  target: Ai niin!
+- id: 038
+  source: 'true'
+  phonetic: TOT-tah
+  target: totta
+- id: 039
+  source: to drive
+  phonetic: AH-yah
+  target: ajaa
+- id: '040'
+  source: car
+  phonetic: OW-to
+  target: auto
+- id: '041'
+  source: bus stop
+  phonetic: BOOS-see-pu-sak-kee
+  target: bussipysäkki
+- id: '042'
+  source: where
+  phonetic: MIS-sah
+  target: missä
+- id: '043'
+  source: to live
+  phonetic: AH-soo-ah
+  target: asua
+- id: '044'
+  source: North Helsinki
+  phonetic: POH-yoys HEL-sin-kee
+  target: Pohjois-Helsinki
+- id: '045'
+  source: bus
+  phonetic: BOOS-see
+  target: bussi
+- id: '046'
+  source: not ... but
+  phonetic: AY ... VAHN
+  target: ei ... vaan
+- id: '047'
+  source: first
+  phonetic: EN-sin
+  target: ensin
+- id: 048
+  source: metro
+  phonetic: MET-ro
+  target: metro
+  also_accepted:
+  - subway
+- id: 049
+  source: now
+  phonetic: NUYT
+  target: nyt
+- id: '050'
+  source: to come
+  phonetic: TOOL-lah
+  target: tulla

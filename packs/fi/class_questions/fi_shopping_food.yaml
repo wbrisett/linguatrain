@@ -1,0 +1,84 @@
+pack:
+  id: "fi_shopping_food"
+  title: "Finnish Shopping and Food"
+  language: "fi"
+  source: "Wayne class recording"
+
+entries:
+  - id: "001"
+    prompt: "Do you buy food today?"
+    answer:
+      - "Ostatko tänään ruokaa?"
+    phonetic: "OS-tat-ko TAH-nahn RUO-kaa"
+
+  - id: "002"
+    prompt: "Will you buy food tomorrow?"
+    answer:
+      - "Ostatko huomenna ruokaa?"
+    phonetic: "OS-tat-ko HUO-men-na RUO-kaa"
+
+  - id: "003"
+    prompt: "Yes. I will."
+    answer:
+      - "Kyllä. Ostan."
+    phonetic: "KU-laa OS-tan"
+
+  - id: "004"
+    prompt: "When you buy food, do you pay by card?"
+    answer:
+      - "Kun ostat ruokaa, maksatko kortilla?"
+    phonetic: "KUN OS-tat RUO-kaa MAK-sat-ko KOR-ti-la"
+
+  - id: "005"
+    prompt: "I pay."
+    answer:
+      - "Maksan."
+    phonetic: "MAK-san"
+
+  - id: "006"
+    prompt: "Milk."
+    answer:
+      - "Maito."
+    phonetic: "MAI-to"
+
+  - id: "007"
+    prompt: "Buttermilk."
+    answer:
+      - "Piimä."
+    phonetic: "PII-ma"
+
+  - id: "008"
+    prompt: "Juice."
+    answer:
+      - "Mehu."
+    phonetic: "ME-hu"
+
+  - id: "009"
+    prompt: "Milk is healthy."
+    answer:
+      - "Maito on terveellistä."
+    phonetic: "MAI-to on TER-ve-el-lis-ta"
+
+  - id: "010"
+    prompt: "Buttermilk is healthy."
+    answer:
+      - "Piimä on terveellistä."
+    phonetic: "PII-ma on TER-ve-el-lis-ta"
+
+  - id: "011"
+    prompt: "Juice is a drink."
+    answer:
+      - "Mehu on juoma."
+    phonetic: "ME-hu on JUO-ma"
+
+  - id: "012"
+    prompt: "Oat."
+    answer:
+      - "Kaura."
+    phonetic: "KAU-ra"
+
+  - id: "013"
+    prompt: "Oat milk."
+    answer:
+      - "Kauramaito."
+    phonetic: "KAU-ra-MAI-to"

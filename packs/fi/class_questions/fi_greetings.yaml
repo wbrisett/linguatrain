@@ -1,8 +1,7 @@
 metadata:
-  pack_name: "Finnish Basics – Greetings"
+  id: "Finnish Basics – Greetings"
   version: 1
-  source_lang: en
-  target_lang: fi
+
   author: Wayne Brissette
   description: "Basic Finnish greetings and conversation starters."
 

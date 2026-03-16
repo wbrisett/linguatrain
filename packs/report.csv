@@ -1,0 +1,984 @@
+file,severity,message
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_date_questions.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates_months.yaml,warning,Unknown top-level key: pack
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates_months.yaml,error,Missing required top-level key: metadata. Expected `metadata:` and `entries:` at the top of the file.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_dates_months.yaml,error,metadata must be a mapping (Hash). Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_greetings.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_greetings.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_greetings.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_greetings.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_month_cases.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_month_phrases.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_months.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_ordinals.yaml,warning,Unknown top-level key: pack
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_ordinals.yaml,error,Missing required top-level key: metadata. Expected `metadata:` and `entries:` at the top of the file.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_ordinals.yaml,error,metadata must be a mapping (Hash). Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_place_language.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_place_language.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_place_language.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_place_language.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_possession.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_possession.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_possession.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_possession.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_prices_shopping.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_prices_shopping.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_prices_shopping.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_prices_shopping.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_questions_objects.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_questions_objects.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_questions_objects.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_questions_objects.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_shop_phrases.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_shop_phrases.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_shopping_food.yaml,warning,Unknown top-level key: pack
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_shopping_food.yaml,error,Missing required top-level key: metadata. Expected `metadata:` and `entries:` at the top of the file.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_shopping_food.yaml,error,metadata must be a mapping (Hash). Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time_schedule.yaml,warning,Unknown top-level key: pack
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time_schedule.yaml,error,Missing required top-level key: metadata. Expected `metadata:` and `entries:` at the top of the file.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_time_schedule.yaml,error,metadata must be a mapping (Hash). Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_transportation.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_transportation.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_transportation.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_transportation.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_verbs_pronouns.yaml,warning,Unknown top-level key: pack
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_verbs_pronouns.yaml,error,Missing required top-level key: metadata. Expected `metadata:` and `entries:` at the top of the file.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_verbs_pronouns.yaml,error,metadata must be a mapping (Hash). Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_weather.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_weather.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_weather.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/fi_weather.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/finnish_everyday_phrases.yaml,warning,entries[1].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_answers.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_answers.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_basic.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_basic.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_dates.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_dates.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_dates.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_dates.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_money_transport.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_money_transport.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_money_transport.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_money_transport.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_time.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_time.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_time.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/class_questions/teacher_questions_time.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_50_common_verbs_conjugate.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_calendar_pack.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_ch1_conversation.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_ch1_conversation.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_small_talk_class_pack_fixed.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[1].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[2].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[3].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[4].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[5].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[6].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[7].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[8].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[9].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[10].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[11].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[12].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[13].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[14].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[15].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[16].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[17].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[18].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[19].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_announcement_pack.yaml,error,entries[20].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_conversational_pack.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[3].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[4].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[5].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[8].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[9].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[12].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[12].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[14].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[14].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[15].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[19].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[20].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[21].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[21].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[24].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[30].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[33].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[34].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[36].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[37].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[37].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[39].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[40].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[42].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[43].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[45].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[46].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[46].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[47].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[51].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[52].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[53].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[55].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[56].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[57].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[62].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[63].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[71].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[73].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[76].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[77].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[78].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[79].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[80].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[81].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[84].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[85].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[86].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[88].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[89].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[92].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[93].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[96].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[97].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[99].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[100].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[102].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[105].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[106].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[106].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[111].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[117].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[119].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[122].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[123].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[126].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[126].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[129].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[132].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[133].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[134].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[135].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[136].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[142].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[145].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[146].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[154].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[155].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[156].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[157].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[159].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[163].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[173].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[176].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[177].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[179].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[180].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[182].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[185].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[185].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[189].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[191].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[195].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[202].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[202].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[203].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[205].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[209].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[211].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[213].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[213].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[216].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[217].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[220].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[225].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[227].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[228].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[229].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[229].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[231].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[232].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[233].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[237].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[240].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[241].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[245].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[247].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[253].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[257].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[258].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[260].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[261].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[262].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[268].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[271].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[271].prompt[1] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[275].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[277].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[279].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[280].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[281].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_listening_mega_pack.yaml,error,entries[282].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[1].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[2].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[3].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[4].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[5].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[6].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[7].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[8].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[9].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[10].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[11].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[12].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[13].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[14].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[15].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[16].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[17].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[18].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[19].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[20].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[21].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[22].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[23].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[24].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[25].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[26].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[27].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[28].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[29].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[30].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[31].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[32].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[33].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[34].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[35].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[36].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[37].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[38].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[39].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[40].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[41].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[42].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[43].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[44].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[45].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[46].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[47].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/fi_time_master_pack.yaml,error,entries[48].prompt[0] must be a String. Got: Integer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/finnish_time_expressions.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/finnish_time_expressions.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[1].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[2].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[3].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[4].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[5].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[6].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[7].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[10].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[11].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[12].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[13].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[14].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[15].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[16].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[17].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[20].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[21].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[22].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,warning,entries[23].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[1].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[2].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[3].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[4].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[5].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[6].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[7].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[8].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[9].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[10].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[10].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[11].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[11].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[12].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[12].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[13].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[14].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[14].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[15].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[16].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[16].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[17].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[18].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[18].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[19].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[19].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[20].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[20].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[21].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[21].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[22].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[23].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[23].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[24].answer[0] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10.yaml,error,entries[24].answer[1] must be a String. Got: Hash
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10_study.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10_study.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10_study.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_Harjoitus10_study.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_ch2_conversation.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_ch2_conversation.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_ch3_conversation.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_ch3_conversation.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[1] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[1] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[1].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[1].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[2] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[2] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[2].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[2].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[3] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[3] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[3].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[3].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[4] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[4] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[4].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[4].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[5] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[5] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[5].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[5].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[6] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[6] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[6].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[6].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[7] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[7] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[7].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[7].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[8] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[8] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[8].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[8].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[9] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[9] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[9].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[9].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[10] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[10] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[10].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[10].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[11] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[11] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[11].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[11].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[12] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[12] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[12].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[12].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[13] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[13] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[13].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[13].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[14] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[14] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[14].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[14].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[15] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[15] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[15].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[15].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[16] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[16] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[16].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[16].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[17] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[17] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[17].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[17].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[18] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[18] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[18].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[18].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[19] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[19] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[19].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[19].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[20] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[20] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[20].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[20].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[21] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[21] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[21].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[21].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[22] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[22] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[22].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[22].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[23] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[23] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[23].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[23].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[24] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[24] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[24].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[24].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[25] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[25] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[25].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[25].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[26] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[26] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[26].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[26].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[27] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[27] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[27].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[27].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[28] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[28] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[28].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[28].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[29] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[29] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[29].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[29].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[30] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[30] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[30].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[30].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[31] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[31] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[31].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[31].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[32] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[32] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[32].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[32].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[33] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[33] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[33].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[33].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[34] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[34] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[34].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[34].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[35] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[35] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[35].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[35].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[36] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[36] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[36].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[36].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[37] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[37] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[37].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[37].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[38] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[38] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[38].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_01_wordlist.yaml,error,entries[38].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[1] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[1] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[1].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[1].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[2] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[2] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[2].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[2].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[3] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[3] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[3].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[3].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[4] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[4] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[4].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[4].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[5] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[5] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[5].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[5].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[6] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[6] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[6].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[6].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[7] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[7] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[7].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[7].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[8] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[8] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[8].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[8].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[9] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[9] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[9].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[9].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[10] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[10] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[10].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[10].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[11] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[11] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[11].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[11].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[12] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[12] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[12].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[12].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[13] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[13] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[13].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[13].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[14] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[14] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[14].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[14].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[15] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[15] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[15].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[15].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[16] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[16] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[16].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[16].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[17] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[17] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[17].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[17].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[18] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[18] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[18].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[18].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[19] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[19] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[19].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[19].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[20] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[20] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[20].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[20].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[21] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[21] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[21].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[21].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[22] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[22] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[22].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[22].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[23] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[23] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[23].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[23].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[24] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[24] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[24].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[24].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[25] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[25] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[25].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[25].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[26] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[26] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[26].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[26].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[27] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[27] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[27].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[27].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[28] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[28] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[28].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[28].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[29] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[29] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[29].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[29].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[30] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[30] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[30].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[30].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[31] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[31] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[31].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[31].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[32] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[32] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[32].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[32].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[33] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[33] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[33].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[33].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[34] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[34] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[34].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[34].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[35] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[35] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[35].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[35].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[36] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[36] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[36].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[36].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[37] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[37] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[37].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[37].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[38] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[38] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[38].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[38].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[39] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[39] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[39].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[39].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[40] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[40] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[40].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[40].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[41] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[41] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[41].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[41].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[42] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[42] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[42].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[42].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[43] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[43] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[43].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[43].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[44] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[44] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[44].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[44].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[45] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[45] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[45].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[45].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[46] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[46] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[46].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[46].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[47] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[47] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[47].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[47].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[48] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[48] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[48].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[48].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[49] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[49] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[49].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[49].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[50] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[50] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[50].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_02_wordlist.yaml,error,entries[50].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[1] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[1] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[1].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[1].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[2] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[2] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[2].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[2].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[3] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[3] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[3].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[3].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[4] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[4] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[4].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[4].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[5] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[5] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[5].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[5].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[6] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[6] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[6].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[6].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[7] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[7] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[7].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[7].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[8] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[8] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[8].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[8].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[9] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[9] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[9].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[9].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[10] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[10] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[10].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[10].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[11] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[11] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[11].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[11].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[12] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[12] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[12].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[12].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[13] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[13] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[13].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[13].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[14] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[14] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[14].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[14].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[15] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[15] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[15].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[15].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[16] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[16] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[16].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[16].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[17] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[17] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[17].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[17].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[18] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[18] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[18].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[18].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[19] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[19] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[19].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[19].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[20] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[20] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[20].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[20].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[21] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[21] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[21].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[21].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[22] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[22] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[22].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[22].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[23] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[23] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[23].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[23].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[24] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[24] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[24].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[24].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[25] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[25] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[25].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[25].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[26] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[26] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[26].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[26].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[27] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[27] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[27].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[27].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[28] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[28] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[28].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[28].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[29] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[29] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[29].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[29].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[30] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[30] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[30].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[30].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[31] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[31] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[31].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[31].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[32] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[32] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[32].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[32].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[33] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[33] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[33].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[33].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[34] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[34] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[34].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[34].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[35] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[35] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[35].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[35].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[36] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[36] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[36].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[36].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[37] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[37] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[37].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[37].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[38] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[38] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[38].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[38].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[39] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[39] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[39].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[39].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[40] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[40] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[40].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[40].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[41] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[41] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[41].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[41].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[42] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[42] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[42].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[42].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[43] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[43] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[43].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[43].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[44] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[44] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[44].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[44].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[45] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[45] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[45].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[45].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[46] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[46] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[46].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[46].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[47] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[47] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[47].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[47].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[48] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[48] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[48].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[48].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[49] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[49] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[49].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[49].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[50] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[50] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[50].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[50].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[51] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[51] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[51].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[51].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[52] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[52] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[52].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[52].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[53] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[53] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[53].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[53].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[54] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[54] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[54].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[54].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[55] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[55] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[55].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[55].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[56] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[56] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[56].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[56].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[57] missing required field: prompt
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[57] missing required field: answer
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[57].prompt must be a String or a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_chapter_03_wordlist.yaml,error,entries[57].answer must be a list (Array) of Strings. Got: NilClass
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_class_2026_03_09.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_kpt_verb_game.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,"metadata.source_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,"metadata.target_lang is deprecated. Move language codes into localisation, not the pack."
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[1].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[2].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[3].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[4].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[5].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[6].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[7].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[10].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[11].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[12].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[13].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[14].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[15].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[16].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[17].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[20].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[21].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,warning,entries[22].id is an Integer; consider quoting it as a String
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_soemen_mestari.yaml,error,metadata missing required field: id
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_time_basics_01.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_time_basics_01.yaml,warning,entries[5] unknown key: alternative_prompts
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_time_basics_01.yaml,warning,entries[9] unknown key: alternative_prompts
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_time_drills_01.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/lessons/fi_time_paractice.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[1] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[2] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[3] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[4] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[5] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[6] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[7] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[8] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[9] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[10] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[11] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[12] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[13] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/millainen_opposites.yaml,warning,entries[14] unknown key: tags
+/Users/wayneb/Documents/github/linguatrain/packs/fi/missed/fi_chapter_01_missed_20260315_051305.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/speak_test.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/transform/sm_conjugation_kpt.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/transform/sm_conjugation_kpt.yaml,error,metadata missing required field: version
+/Users/wayneb/Documents/github/linguatrain/packs/fi/transform/sm_transform_kpt.yaml,warning,metadata.pack_name is deprecated. Use metadata.id instead.
+/Users/wayneb/Documents/github/linguatrain/packs/fi/transform/sm_transform_kpt.yaml,error,metadata missing required field: version

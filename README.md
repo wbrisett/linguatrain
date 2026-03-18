@@ -113,7 +113,7 @@ Example beginner progression:
 
 ## Overview
 
-`linguatrain` does not ship with full courses. Instead, it ships with example packs (mostly Finnish) that show you how things work.
+`linguatrain` does not ship with full courses. Instead, it includes example packs that show you how things work.
 
 The idea is simple:
 
@@ -146,6 +146,16 @@ It can be a single word.
 It can be a full sentence.  
 
 You control the content.
+
+---
+
+## Language Packs Repository
+
+Maintained language packs and localisation files also live in the separate **Linguatrain Language Packs** repository:
+
+https://github.com/wbrisett/linguatrain_language_packs
+
+Maintained language packs and localisation files also live in the separate Linguatrain Language Packs repository. Contributions to shared language content should go there.
 
 ---
 
@@ -560,7 +570,7 @@ packs/
   de/
 ```
 
-There’s also a `templates/` folder with starter pack YAML examples.
+Starter pack templates are maintained in both this repository and the Linguatrain Language Packs repository. Shared language-pack files are also maintained in the Linguatrain Language Packs repository.
 
 ---
 

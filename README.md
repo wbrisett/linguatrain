@@ -151,11 +151,9 @@ You control the content.
 
 ## Language Packs Repository
 
-Maintained language packs and localisation files also live in the separate **Linguatrain Language Packs** repository:
+Maintained language packs and localisation files also live in the separate Linguatrain Language Packs repository. Contributions to shared language content should go there.
 
 https://github.com/wbrisett/linguatrain_language_packs
-
-Maintained language packs and localisation files also live in the separate Linguatrain Language Packs repository. Contributions to shared language content should go there.
 
 ---
 

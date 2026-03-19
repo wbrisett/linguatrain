@@ -1,0 +1,134 @@
+metadata:
+  id: "es_basics"
+  version: 1
+  schema_version: 1
+  author: "Wayne Brissette"
+  description: "Starter basics pack for Spanish."
+
+entries:
+  - id: "001"
+    prompt: "Hello"
+    answer:
+      - "Hola"
+    phonetic: "OH-lah"
+
+  - id: "002"
+    prompt: "Good morning"
+    answer:
+      - "Buenos días"
+    phonetic: "BWEH-nohs DEE-ahs"
+
+  - id: "003"
+    prompt: "How are you?"
+    answer:
+      - "¿Cómo está?"
+    phonetic: "KOH-moh eh-STAH"
+
+  - id: "004"
+    prompt: "I'm fine, thank you"
+    answer:
+      - "Estoy bien, gracias"
+    phonetic: "eh-STOY byehn GRAH-syahs"
+
+  - id: "005"
+    prompt: "Excuse me"
+    answer:
+      - "Perdón"
+      - "Disculpe"
+    phonetic: "per-DOHN"
+
+  - id: "006"
+    prompt: "Sorry"
+    answer:
+      - "Lo siento"
+    phonetic: "loh see-EN-toh"
+
+  - id: "007"
+    prompt: "Please"
+    answer:
+      - "Por favor"
+    phonetic: "por fah-VOR"
+
+  - id: "008"
+    prompt: "Thank you"
+    answer:
+      - "Gracias"
+    phonetic: "GRAH-syahs"
+
+  - id: "009"
+    prompt: "Do you speak English?"
+    answer:
+      - "¿Habla inglés?"
+    phonetic: "AH-blah een-GLAYS"
+
+  - id: "010"
+    prompt: "Do you speak Spanish?"
+    answer:
+      - "¿Habla español?"
+    phonetic: "AH-blah es-pah-NYOL"
+
+  - id: "011"
+    prompt: "I don't understand"
+    answer:
+      - "No entiendo"
+    phonetic: "noh en-tee-EN-doh"
+
+  - id: "012"
+    prompt: "Where is the bathroom?"
+    answer:
+      - "¿Dónde está el baño?"
+    phonetic: "DON-deh eh-STAH el BAHN-yoh"
+
+  - id: "013"
+    prompt: "How much does this cost?"
+    answer:
+      - "¿Cuánto cuesta esto?"
+    phonetic: "KWAHN-toh KWEHS-tah ES-toh"
+
+  - id: "014"
+    prompt: "I would like this"
+    answer:
+      - "Quisiera esto"
+    phonetic: "kee-SYEH-rah ES-toh"
+
+  - id: "015"
+    prompt: "Can you help me?"
+    answer:
+      - "¿Puede ayudarme?"
+    phonetic: "PWEH-deh ah-yoo-DAR-meh"
+
+  - id: "016"
+    prompt: "What time is it?"
+    answer:
+      - "¿Qué hora es?"
+    phonetic: "keh OR-ah es"
+
+  - id: "017"
+    prompt: "Where is the train station?"
+    answer:
+      - "¿Dónde está la estación de tren?"
+    phonetic: "DON-deh eh-STAH lah es-tah-SYON deh tren"
+
+  - id: "018"
+    prompt: "I live in..."
+    answer:
+      - "Vivo en..."
+    phonetic: "VEE-voh en"
+
+  - id: "019"
+    prompt: "I am learning Spanish"
+    answer:
+      - "Estoy aprendiendo español"
+    phonetic: "eh-STOY ah-pren-dee-EN-doh es-pah-NYOL"
+
+  - id: "020"
+    prompt: "Can you repeat that?"
+    answer:
+      - "¿Puede repetir eso?"
+    phonetic: "PWEH-deh reh-peh-TEER EH-soh"
+
+  - id: "021"
+    prompt: "What is this?"
+    answer:
+      - "¿Qué es esto?"
+    phonetic: "keh es ES-toh"

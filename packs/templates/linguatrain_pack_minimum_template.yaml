@@ -1,18 +1,17 @@
-# Linguatrain Minimal Pack Template
-# Rename this file (for example: basics.yaml) and place it inside your packs tree.
-#
-# Recommended location:
-#   packs/<target_lang>/
+# Linguatrain minimal pack template
+# Place this file under: packs/<target_lang>/
+# Rename it to match your pack, for example: basics.yaml
 #
 # Notes:
-# - Packs should now use `metadata.id` instead of `pack_name`.
-# - Language names/codes and UI strings should come from localisation,
-#   not from the pack file.
-# - `answer` is always a YAML list, even if there is only one accepted answer.
+# - Pack files contain metadata and entries only.
+# - schema_version is supported.
+# - `prompt` is the source-side text shown to the learner.
+# - `answer` must always be a YAML list.
 
 metadata:
   id: "starter_pack_id"
   version: 1
+  schema_version: 1
 
 entries:
   - id: "001"
@@ -25,4 +24,4 @@ entries:
     answer:
       - "Primary accepted answer."
       - "Alternate accepted answer."
-    phonetic: "phonetic guide"  # Optional
+    phonetic: "optional pronunciation guide"

@@ -1,0 +1,134 @@
+metadata:
+  id: "fi_basics"
+  version: 1
+  schema_version: 1
+  author: "Wayne Brissette"
+  description: "Starter basics pack for Finnish."
+
+entries:
+  - id: "001"
+    prompt: "Hello"
+    answer:
+      - "Hei"
+    phonetic: "HAY"
+
+  - id: "002"
+    prompt: "Good morning"
+    answer:
+      - "Hyvää huomenta"
+    phonetic: "HUU-vaa HOO-oh-men-tah"
+
+  - id: "003"
+    prompt: "How are you?"
+    answer:
+      - "Mitä kuuluu?"
+    phonetic: "MEE-tah KOO-loo"
+
+  - id: "004"
+    prompt: "I'm fine, thank you"
+    answer:
+      - "Hyvää, kiitos"
+    phonetic: "HUU-vaa, KEE-tos"
+
+  - id: "005"
+    prompt: "Excuse me"
+    answer:
+      - "Anteeksi"
+    phonetic: "AHN-tehk-see"
+
+  - id: "006"
+    prompt: "Sorry"
+    answer:
+      - "Anteeksi"
+    phonetic: "AHN-tehk-see"
+
+  - id: "007"
+    prompt: "Please"
+    answer:
+      - "Ole hyvä"
+    phonetic: "OH-leh HUU-vaa"
+
+  - id: "008"
+    prompt: "Thank you"
+    answer:
+      - "Kiitos"
+    phonetic: "KEE-tos"
+
+  - id: "009"
+    prompt: "Do you speak English?"
+    answer:
+      - "Puhutko englantia?"
+    phonetic: "POO-hoot-koh ENG-lahn-tee-ah"
+
+  - id: "010"
+    prompt: "Do you speak Finnish?"
+    answer:
+      - "Puhutko suomea?"
+    phonetic: "POO-hoot-koh SOO-oh-meh-ah"
+
+  - id: "011"
+    prompt: "I don't understand"
+    answer:
+      - "En ymmärrä"
+    phonetic: "EN UUM-mahr-rah"
+
+  - id: "012"
+    prompt: "Where is the bathroom?"
+    answer:
+      - "Missä on wc?"
+      - "Missä on vessa?"
+    phonetic: "MEES-sah on VES-sah"
+
+  - id: "013"
+    prompt: "How much does this cost?"
+    answer:
+      - "Paljonko tämä maksaa?"
+    phonetic: "PAHL-yon-koh TAH-mah MAHK-saa"
+
+  - id: "014"
+    prompt: "I would like this"
+    answer:
+      - "Haluaisin tämän"
+    phonetic: "HAH-loo-eye-seen TAH-mahn"
+
+  - id: "015"
+    prompt: "Can you help me?"
+    answer:
+      - "Voitko auttaa minua?"
+    phonetic: "VOYT-koh OWT-taa MEE-noo-ah"
+
+  - id: "016"
+    prompt: "What time is it?"
+    answer:
+      - "Paljonko kello on?"
+    phonetic: "PAHL-yon-koh KEHL-loh on"
+
+  - id: "017"
+    prompt: "Where is the train station?"
+    answer:
+      - "Missä on rautatieasema?"
+    phonetic: "MEES-sah on ROW-tah-tee-ASE-mah"
+
+  - id: "018"
+    prompt: "I live in..."
+    answer:
+      - "Asun..."
+    phonetic: "AH-soon"
+
+  - id: "019"
+    prompt: "I am learning Finnish"
+    answer:
+      - "Opiskelen suomea"
+    phonetic: "OH-pis-keh-lehn SOO-oh-meh-ah"
+
+  - id: "020"
+    prompt: "Can you repeat that?"
+    answer:
+      - "Voitko toistaa sen?"
+    phonetic: "VOYT-koh TOYS-taa sehn"
+
+  - id: "021"
+    prompt: "What is this?"
+    answer:
+      - "Mikä tämä on?"
+    phonetic: "MEE-kah TAH-mah on"

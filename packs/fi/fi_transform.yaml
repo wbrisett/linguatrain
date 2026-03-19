@@ -1,0 +1,74 @@
+metadata:
+  id: "fi_transform"
+  version: 1
+  drill_type: "transform"
+  author: "Wayne Brissette"
+  description: "Starter sentence transformation drills for Finnish."
+  schema_version: 1
+  # shuffle_cues: true
+  # Use shuffle_cues to randomize cue order during practice
+
+entries:
+  - id: "001"
+    prompt: "Minä syön omenan."
+    cues:
+      - cue: "eilen"
+        steps:
+          - transform: "past"
+            answer:
+              - "Minä söin omenan eilen."
+
+  - id: "002"
+    prompt: "Minä juon kahvia."
+    cues:
+      - cue: "ei"
+        steps:
+          - transform: "negative"
+            answer:
+              - "Minä en juo kahvia."
+
+  - id: "003"
+    prompt: "Sinä asut Helsingissä."
+    cues:
+      - cue: "kysymys"
+        steps:
+          - transform: "question"
+            answer:
+              - "Asutko sinä Helsingissä?"
+
+  - id: "004"
+    prompt: "Minä puhun suomea."
+    cues:
+      - cue: "hän"
+        steps:
+          - transform: "person_change"
+            answer:
+              - "Hän puhuu suomea."
+
+  - id: "005"
+    prompt: "Me menemme kauppaan."
+    cues:
+      - cue: "huomenna"
+        steps:
+          - transform: "future_context"
+            answer:
+              - "Me menemme kauppaan huomenna."
+      - cue: "eilen"
+        steps:
+          - transform: "past"
+            answer:
+              - "Me menimme kauppaan eilen."
+
+  - id: "006"
+    prompt: "Minä haluan tämän."
+    cues:
+      - cue: "tuon"
+        steps:
+          - transform: "object_change"
+            answer:
+              - "Minä haluan tuon."
+      - cue: "sen"
+        steps:
+          - transform: "object_change"
+            answer:
+              - "Minä haluan sen."

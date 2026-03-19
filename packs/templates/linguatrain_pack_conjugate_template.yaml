@@ -1,28 +1,31 @@
 # Linguatrain Conjugate Pack Template
-# Rename this file and place it inside your packs tree.
-#
-# Recommended location:
+# Rename this file and place it under:
 #   packs/<target_lang>/
 #
 # Notes:
 # - Conjugation packs must set metadata.drill_type to "conjugate".
-# - The persons list defines the drill order unless shuffle_persons is enabled elsewhere.
-# - Each entry has:
-#     - lemma: the dictionary form of the verb
-#     - forms: person-by-person accepted answers
+# - schema_version is supported.
+# - metadata.shuffle_persons can be used to randomize person order during practice.
+# - The persons list defines the drill order when shuffle_persons is not enabled.
+# - Each entry contains:
+#   - lemma: the dictionary form of the verb
+#   - forms: person-by-person accepted answers
 # - Each person can contain:
-#     - positive: YAML list of accepted positive forms
-#     - negative: YAML list of accepted negative forms
+#   - positive: YAML list of accepted positive forms
+#   - negative: YAML list of accepted negative forms
 
 metadata:
   id: "starter_conjugate_pack"
   version: 1
   drill_type: "conjugate"
-  author: "Your Name"                    # Optional
-  description: "Verb conjugation drills."  # Optional
-  tags:                                  # Optional
+  author: "Your Name"
+  description: "Verb conjugation drills."
+  schema_version: 1
+  tags:
     - "conjugate"
     - "verbs"
+  # shuffle_persons: true
+  # Use shuffle_persons to randomize person order during practice.
 
 persons:
   - "minä"

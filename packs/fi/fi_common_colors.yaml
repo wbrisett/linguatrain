@@ -1,4 +1,12 @@
-pack_name: fi_common_colors
+metadata:
+  id: "fi_common_colors"
+  version: 1
+  author: "Wayne Brissette"                    # Optional
+  description: "Common Colors"  # Optional
+  schema_version: 1
+  
+# drill_type: "transform" # or "conjugate" 
+
 entries:
 - id: '001'
   prompt:

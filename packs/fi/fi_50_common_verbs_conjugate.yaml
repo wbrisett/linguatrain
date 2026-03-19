@@ -1,9 +1,11 @@
 metadata:
   id: fi_50_common_verbs_conjugate
+  version: 1
   name: Finnish 50 Common Verbs – Conjugation Pack
   drill_type: conjugate
-  source_note: Built from the uploaded FinnishPod101 verb worksheet; duplicate lemmas
-    in the source list were deduplicated.
+  schema_version: 1
+  shuffle_persons: true
+  
 persons:
 - minä
 - sinä

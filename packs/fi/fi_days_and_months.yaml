@@ -1,6 +1,10 @@
+---
 metadata:
   id: "fi_days_and_months"
   version: 1
+  author: "Wayne Brissette"  
+  description: "months and day of the week"
+  schema_version: 1
 
 entries:
 

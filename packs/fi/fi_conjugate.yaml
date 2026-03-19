@@ -1,0 +1,282 @@
+metadata:
+  id: "fi_conjugate"
+  version: 1
+  drill_type: "conjugate"
+  author: "Wayne Brissette"
+  description: "Starter conjugation drills for Finnish."
+  schema_version: 1
+  # shuffle_persons: true
+  # Use shuffle_persons to randomize person order during practice.
+
+persons:
+  - "minä"
+  - "sinä"
+  - "hän"
+  - "me"
+  - "te"
+  - "he"
+
+entries:
+  - id: "001"
+    lemma: "olla"
+    forms:
+      minä:
+        positive: ["olen"]
+        negative: ["en ole"]
+      sinä:
+        positive: ["olet"]
+        negative: ["et ole"]
+      hän:
+        positive: ["on"]
+        negative: ["ei ole"]
+      me:
+        positive: ["olemme"]
+        negative: ["emme ole"]
+      te:
+        positive: ["olette"]
+        negative: ["ette ole"]
+      he:
+        positive: ["ovat"]
+        negative: ["eivät ole"]
+
+  - id: "002"
+    lemma: "saada"
+    forms:
+      minä:
+        positive: ["saan"]
+        negative: ["en saa"]
+      sinä:
+        positive: ["saat"]
+        negative: ["et saa"]
+      hän:
+        positive: ["saa"]
+        negative: ["ei saa"]
+      me:
+        positive: ["saamme"]
+        negative: ["emme saa"]
+      te:
+        positive: ["saatte"]
+        negative: ["ette saa"]
+      he:
+        positive: ["saavat"]
+        negative: ["eivät saa"]
+
+  - id: "003"
+    lemma: "mennä"
+    forms:
+      minä:
+        positive: ["menen"]
+        negative: ["en mene"]
+      sinä:
+        positive: ["menet"]
+        negative: ["et mene"]
+      hän:
+        positive: ["menee"]
+        negative: ["ei mene"]
+      me:
+        positive: ["menemme"]
+        negative: ["emme mene"]
+      te:
+        positive: ["menette"]
+        negative: ["ette mene"]
+      he:
+        positive: ["menevät"]
+        negative: ["eivät mene"]
+
+  - id: "004"
+    lemma: "tulla"
+    forms:
+      minä:
+        positive: ["tulen"]
+        negative: ["en tule"]
+      sinä:
+        positive: ["tulet"]
+        negative: ["et tule"]
+      hän:
+        positive: ["tulee"]
+        negative: ["ei tule"]
+      me:
+        positive: ["tulemme"]
+        negative: ["emme tule"]
+      te:
+        positive: ["tulette"]
+        negative: ["ette tule"]
+      he:
+        positive: ["tulevat"]
+        negative: ["eivät tule"]
+
+  - id: "005"
+    lemma: "haluta"
+    forms:
+      minä:
+        positive: ["haluan"]
+        negative: ["en halua"]
+      sinä:
+        positive: ["haluat"]
+        negative: ["et halua"]
+      hän:
+        positive: ["haluaa"]
+        negative: ["ei halua"]
+      me:
+        positive: ["haluamme"]
+        negative: ["emme halua"]
+      te:
+        positive: ["haluatte"]
+        negative: ["ette halua"]
+      he:
+        positive: ["haluavat"]
+        negative: ["eivät halua"]
+
+  - id: "006"
+    lemma: "tarvita"
+    forms:
+      minä:
+        positive: ["tarvitsen"]
+        negative: ["en tarvitse"]
+      sinä:
+        positive: ["tarvitset"]
+        negative: ["et tarvitse"]
+      hän:
+        positive: ["tarvitsee"]
+        negative: ["ei tarvitse"]
+      me:
+        positive: ["tarvitsemme"]
+        negative: ["emme tarvitse"]
+      te:
+        positive: ["tarvitsette"]
+        negative: ["ette tarvitse"]
+      he:
+        positive: ["tarvitsevat"]
+        negative: ["eivät tarvitse"]
+
+  - id: "007"
+    lemma: "syödä"
+    forms:
+      minä:
+        positive: ["syön"]
+        negative: ["en syö"]
+      sinä:
+        positive: ["syöt"]
+        negative: ["et syö"]
+      hän:
+        positive: ["syö"]
+        negative: ["ei syö"]
+      me:
+        positive: ["syömme"]
+        negative: ["emme syö"]
+      te:
+        positive: ["syötte"]
+        negative: ["ette syö"]
+      he:
+        positive: ["syövät"]
+        negative: ["eivät syö"]
+
+  - id: "008"
+    lemma: "juoda"
+    forms:
+      minä:
+        positive: ["juon"]
+        negative: ["en juo"]
+      sinä:
+        positive: ["juot"]
+        negative: ["et juo"]
+      hän:
+        positive: ["juo"]
+        negative: ["ei juo"]
+      me:
+        positive: ["juomme"]
+        negative: ["emme juo"]
+      te:
+        positive: ["juotte"]
+        negative: ["ette juo"]
+      he:
+        positive: ["juovat"]
+        negative: ["eivät juo"]
+
+  - id: "009"
+    lemma: "puhua"
+    forms:
+      minä:
+        positive: ["puhun"]
+        negative: ["en puhu"]
+      sinä:
+        positive: ["puhut"]
+        negative: ["et puhu"]
+      hän:
+        positive: ["puhuu"]
+        negative: ["ei puhu"]
+      me:
+        positive: ["puhumme"]
+        negative: ["emme puhu"]
+      te:
+        positive: ["puhutte"]
+        negative: ["ette puhu"]
+      he:
+        positive: ["puhuvat"]
+        negative: ["eivät puhu"]
+
+  - id: "010"
+    lemma: "asua"
+    forms:
+      minä:
+        positive: ["asun"]
+        negative: ["en asu"]
+      sinä:
+        positive: ["asut"]
+        negative: ["et asu"]
+      hän:
+        positive: ["asuu"]
+        negative: ["ei asu"]
+      me:
+        positive: ["asumme"]
+        negative: ["emme asu"]
+      te:
+        positive: ["asutte"]
+        negative: ["ette asu"]
+      he:
+        positive: ["asuvat"]
+        negative: ["eivät asu"]
+
+  - id: "011"
+    lemma: "työskennellä"
+    forms:
+      minä:
+        positive: ["työskentelen"]
+        negative: ["en työskentele"]
+      sinä:
+        positive: ["työskentelet"]
+        negative: ["et työskentele"]
+      hän:
+        positive: ["työskentelee"]
+        negative: ["ei työskentele"]
+      me:
+        positive: ["työskentelemme"]
+        negative: ["emme työskentele"]
+      te:
+        positive: ["työskentelette"]
+        negative: ["ette työskentele"]
+      he:
+        positive: ["työskentelevät"]
+        negative: ["eivät työskentele"]
+
+  - id: "012"
+    lemma: "opiskella"
+    forms:
+      minä:
+        positive: ["opiskelen"]
+        negative: ["en opiskele"]
+      sinä:
+        positive: ["opiskelet"]
+        negative: ["et opiskele"]
+      hän:
+        positive: ["opiskelee"]
+        negative: ["ei opiskele"]
+      me:
+        positive: ["opiskelemme"]
+        negative: ["emme opiskele"]
+      te:
+        positive: ["opiskelette"]
+        negative: ["ette opiskele"]
+      he:
+        positive: ["opiskelevat"]
+        negative: ["eivät opiskele"]

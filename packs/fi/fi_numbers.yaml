@@ -2,7 +2,9 @@
 metadata:
   id: Finnish numbers
   version: 1
+  author: "Wayne Brissette"  
   description: Numbers with English variants (digits + word forms)
+  schema_version: 1
 entries:
 - id: '001'
   prompt: zero
@@ -273,6 +275,7 @@ entries:
   prompt: five hundred thousand
   answer:
   - viisisataatuhatta
+  - viisisataa tuhatta
   alternate_prompts:
   - '500000'
   phonetic: VEEEES-EE-SAH-TAA-TOO-HAHT-TAH

@@ -11,7 +11,7 @@ require "securerandom"
 require "digest"
 require "fileutils"
 require "json"
-require "fileutils"
+require "pathname"
 
 # -----------------------------
 # Utility
@@ -152,6 +152,11 @@ def first_existing_path(paths)
   Array(paths).find { |p| p && !p.to_s.strip.empty? && File.exist?(p.to_s) }
 end
 
+def resolve_relative_to_script(path)
+  return path if Pathname.new(path).absolute?
+  File.expand_path(path, __dir__)
+end
+
 def deep_merge_hash(a, b)
   a = (a || {}).dup
   (b || {}).each do |k, v|
@@ -182,23 +187,32 @@ end
 
 def resolve_localisation_path(cli_path, user_cfg, user_cfg_path)
   # Precedence: CLI > ENV > config.yaml
-  return cli_path if cli_path && !cli_path.to_s.strip.empty?
-
-  env_path = ENV["LINGUATRAIN_LOCALISATION"]
-  return env_path if env_path && !env_path.to_s.strip.empty?
-
-  cfg_path = user_cfg.dig(:localisation)
-  return nil if cfg_path.nil? || cfg_path.to_s.strip.empty?
-
-  raw = cfg_path.to_s.strip
+  raw =
+    if cli_path && !cli_path.to_s.strip.empty?
+      cli_path.to_s.strip
+    else
+      env_path = ENV["LINGUATRAIN_LOCALISATION"]
+      if env_path && !env_path.to_s.strip.empty?
+        env_path.to_s.strip
+      else
+        cfg_path = user_cfg.dig(:localisation)
+        return nil if cfg_path.nil? || cfg_path.to_s.strip.empty?
+        cfg_path.to_s.strip
+      end
+    end
 
   # Absolute path: use as-is.
-  return raw if raw.start_with?("/") || raw =~ /^[A-Za-z]:[\\\/]/
+  return raw if Pathname.new(raw).absolute? || raw =~ /^[A-Za-z]:[\\\/]/
 
-  # Relative path: try from current working directory first (repo-friendly),
-  # then relative to the config.yaml directory (user-config-friendly).
+  # Relative path resolution order:
+  # 1) current working directory (project-local override)
+  # 2) directory of this script/repo (bundled localisation files)
+  # 3) directory of the user config file (portable user config)
   cwd_candidate = File.expand_path(raw, Dir.pwd)
   return cwd_candidate if File.exist?(cwd_candidate)
+
+  script_candidate = File.expand_path(raw, __dir__)
+  return script_candidate if File.exist?(script_candidate)
 
   if user_cfg_path && !user_cfg_path.to_s.strip.empty?
     cfg_dir = File.dirname(File.expand_path(user_cfg_path))
@@ -206,29 +220,17 @@ def resolve_localisation_path(cli_path, user_cfg, user_cfg_path)
     return cfg_candidate if File.exist?(cfg_candidate)
   end
 
-  # Fall back to CWD-expanded path (caller validates existence)
-  cwd_candidate
+  # Fall back to the script-relative path so bundled resources still resolve
+  # when called from arbitrary working directories.
+  script_candidate
 end
+
+
 
 def load_localisation(path)
   return {} if path.nil? || path.to_s.strip.empty?
-  raise "Localisation file not found: #{path}" unless File.exist?(path)
-
-  data = YAML.load_file(path)
-  data = {} unless data.is_a?(Hash)
-  loc = symbolize_keys_deep(data)
-
-  # One file = one UI language. Validate required keys.
-  missing = []
-  missing << "languages.source.code" if loc.dig(:languages, :source, :code).to_s.strip.empty?
-  missing << "languages.target.code" if loc.dig(:languages, :target, :code).to_s.strip.empty?
-  missing << "ui" unless loc[:ui].is_a?(Hash)
-
-  unless missing.empty?
-    raise "Invalid localisation YAML (#{path}). Missing/invalid: #{missing.join(', ')}"
-  end
-
-  loc
+  raise "Localisation file not found: #{path} (resolved from input)" unless File.exist?(path)
+  symbolize_keys_deep(YAML.load_file(path) || {})
 end
 
 def effective_meta(pack_meta, localisation)
@@ -2609,10 +2611,16 @@ conjugate_persons = pack[:conjugate_persons] || []
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
-
 loc_path = resolve_localisation_path(options[:localisation], user_cfg, user_cfg_path)
-localisation = load_localisation(loc_path)
-$LOCALISATION_ID = localisation.dig(:meta, :id)
+
+loc = load_localisation(loc_path)
+localisation = loc
+
+$LOCALISATION_ID = begin
+                     src = loc.dig(:languages, :source, :code)
+                     tgt = loc.dig(:languages, :target, :code)
+                     (src && !src.to_s.strip.empty? && tgt && !tgt.to_s.strip.empty?) ? "#{src}_#{tgt}" : nil
+                   end
 
 # Make localisation UI available to resolve_settings!
 options[:localisation_ui] = localisation[:ui] || {}

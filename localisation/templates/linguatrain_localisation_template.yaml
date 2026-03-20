@@ -1,0 +1,59 @@
+---
+# Linguatrain Localisation Template
+#
+# Rename this file to match your language pair, for example:
+#   en-US_fi-FI.yaml
+#   en-US_es-MX.yaml
+#
+# Recommended location:
+#   localisation/
+#
+# This file defines:
+# - source and target language metadata
+# - TTS output formatting
+# - user-facing UI labels
+#
+# Notes:
+# - source = the language used in prompts
+# - target = the language expected in answers
+# - Some UI labels are optional and only needed for certain drill types.
+
+meta:
+  id: "source-target_ui"
+  name: "Target Language UI"
+
+languages:
+  source:
+    code: "en-US"
+    name: "English"
+  target:
+    code: "xx-XX"
+    name: "Target Language"
+
+tts:
+  template: "{text}"
+
+ui:
+  quiz_label: "Quiz"
+  correct: "✅ Correct!"
+  try_again: "❌ Try again."
+  replay_hint: "🔁 (Type 'r' to replay audio)"
+  also_accepted_prefix: "➕ Also accepted:"
+  phonetic_prefix: "🗣 pronunciation:"
+  prompt_prefix: "auto"
+  target_prefix: "auto"
+  correct_answer_prefix: "📘 Correct answer:"
+  correct_word_prefix: "📘 Correct word:"
+  quit_message: "👋 Ending session. Thank you!"
+  no_mistakes: "😊 No mistakes — great job!"
+  printed_voice_prefix: "🗣 spoken:"
+
+  # Optional drill-specific labels:
+  # Enable and translate these if this localisation will be used with
+  # transform or conjugate packs.
+
+  # transform_positive_instruction: "Give the positive form:"
+  # transform_negative_instruction: "Give the negative form:"
+  # conjugate_positive_instruction: "Give the positive form:"
+  # conjugate_negative_instruction: "Give the negative form:"
+  # conjugate_prompt: "Conjugate the verb."

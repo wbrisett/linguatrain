@@ -137,19 +137,19 @@ Examples:
 Official reference:
 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 
-Common examples:
+**Common language code examples:**
 
-Language   Code
-  ---------- ------
-English    en
-Finnish    fi
-Spanish    es
-German     de
-French     fr
+| Language | Code |
+|----------|------|
+| English  | en   |
+| Finnish  | fi   |
+| Spanish  | es   |
+| German   | de   |
+| French   | fr   |
 
 **ISO 3166 region codes**
 
-Official reference: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+Official reference: [ISO 3166-1 alpha-2 (Wikipedia)](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
 
 ## tts
 The `tts` section allows you to override the carrier phrase used when generating audio with text‑to‑speech.

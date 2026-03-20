@@ -201,6 +201,97 @@ At the end of a session, you get a summary — and anything you missed is writte
 
 ---
 
+
+---
+
+## 📁 Project Structure
+
+```
+linguatrain/
+├── bin/              # CLI entry points and utility scripts
+├── docs/             # Detailed documentation and specifications
+├── localisation/     # UI labels and language pair configurations
+├── packs/            # Language learning content (YAML packs)
+├── tools/            # Internal utilities (e.g., phonetic processing)
+├── linguatrain.rb    # Main application entry point
+└── README.md
+```
+
+### bin/
+Command-line scripts and utilities.
+
+- linguatrain.rb → main CLI launcher  
+- validate_pack.rb → validates YAML structure  
+- flip_pack.rb → reverses prompt/answer  
+- add_finnish_phonetics.rb → enriches packs with phonetics  
+
+---
+
+### docs/
+Deep-dive documentation and system design.
+
+Includes:
+- YAML schemas (standard, conjugate, transform)  
+- phonetic rules  
+- Piper / Whisper setup  
+- configuration details  
+
+---
+
+### localisation/
+Defines UI text and language pair mappings.
+
+Examples:
+- en-US_fi-FI.yaml  
+- en-US_es-MX.yaml  
+
+---
+
+### packs/
+All learning content lives here.
+
+```
+packs/
+├── fi/         # Finnish packs
+├── es/         # Spanish packs
+└── templates/  # Starter templates for new packs
+```
+
+Each pack is a YAML file with:
+- metadata  
+- entries  
+- optional phonetics  
+- optional transforms  
+
+---
+
+### tools/
+Internal helper scripts not directly exposed via CLI.
+
+Example:
+- finnish_phonetics.rb  
+
+---
+
+### Root Files
+
+- linguatrain.rb → main runtime entry  
+- CHANGELOG.md → version history  
+- LICENSE / NOTICE → legal  
+- README.md → project overview  
+
+---
+
+## Core Concepts
+
+- Pack → YAML-based learning unit  
+- Drill Type → standard, conjugate, transform  
+- Cue / Step → transform mechanics  
+- Phonetics → learner-friendly pronunciation layer  
+
+---
+
+
 ## Reverse the Direction
 
 Want to flip the practice and use Finnish → English instead? Just use `--reverse`.
@@ -611,6 +702,32 @@ Source → Target Quiz — 28 word(s) (mode: typing, Source→Target)
 Prompt: Pretty good. / Quite good. / Doing pretty well.
 Answer: 
 ```
+
+#### Customising the UI (localisation) 
+
+Localisation files define UI labels and TTS behavior for a language pair. Unlike study packs, these files belong in the `localisation/` directory rather than `packs/`.
+
+A starter localisation template is provided so you can create new language-pair UI files consistently.
+
+Recommended naming:
+
+```text
+localisation/
+  en-US_fi-FI.yaml
+  en-US_es-MX.yaml
+```
+
+The template should be renamed to match the source and target language pair. For example:
+
+```text
+en-US_fi-FI.yaml
+```
+
+Use this template as a starting point for:
+- language metadata
+- TTS formatting
+- quiz UI labels
+- optional conjugate and transform drill labels
 
 ---
 

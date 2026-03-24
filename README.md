@@ -30,7 +30,7 @@ Everything runs directly in your terminal.
 ## Quick Demo
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --listen --match-game
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --listen --match-game
 ```
 ```text
 English → Finnish Quiz
@@ -162,13 +162,13 @@ https://github.com/wbrisett/linguatrain_language_packs
 ```bash
 git clone https://github.com/wbrisett/linguatrain.git
 cd linguatrain
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml
 ```
 
 Once you've cloned the repo, you can run a pack immediately:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml
 ```
 
 You’ll see something like:
@@ -297,7 +297,7 @@ Example:
 Want to flip the practice and use Finnish → English instead? Just use `--reverse`.
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --reverse
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --reverse
 ```
 
 Now it shows:
@@ -318,7 +318,7 @@ Just flipped.
 If you're learning new material, you should start with `--study`:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --study
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --study
 ```
 
 This turns linguatrain into a flashcard flow:
@@ -343,7 +343,7 @@ Best of all, you can combine this with `--reverse` if you want to study in the o
 Once you're comfortable with the material, simply add light pressure with `--match-game`:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --match-game
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --match-game
 ```
 
 Now you’ll see hints:
@@ -368,7 +368,7 @@ This is especially useful early on when recall is still shaky.
 If you have Piper installed, you can enable audio:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --listen
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --listen
 ```
 
 Now the target language is spoken before you answer.
@@ -397,7 +397,7 @@ In this mode the program:
 Example:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --speak
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --speak
 ```
 
 Example interaction:
@@ -423,7 +423,7 @@ Installation instructions for Whisper are available in:
 To enable lightweight spaced repetition tracking:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml all --srs
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml all --srs
 ```
 
 The engine will:
@@ -441,7 +441,7 @@ If you only want to practice a limited number of items, you simply add that numb
 **Example of limited question/answer pairs**
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml 5
 ```
 
 Now your session is limited to five items. 
@@ -618,13 +618,13 @@ cd linguatrain
 Run a pack immediately:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml
 ```
 
 That’s enough to get started, although if you don't know Finnish, probably best to use: 
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --study
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --study
 ```
 
 ---
@@ -693,7 +693,7 @@ That’s all you need.
 Without localisation of the UI elements it looks like this: 
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml 
 
 Source → Target Quiz — 28 word(s) (mode: typing, Source→Target)
 --------------------------------------------------

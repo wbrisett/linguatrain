@@ -432,6 +432,13 @@ def shell_escape_single(value)
   "'#{value.to_s.gsub("'", %q('"'"'))}'"
 end
 
+def format_time(seconds)
+  m = (seconds / 60).floor
+  s = (seconds % 60).round
+  "#{m}m #{s}s"
+end
+
+
 def build_record_command(template, output_path, duration)
   tpl = template.to_s.strip
   raise "Speech record command not configured." if tpl.empty?
@@ -754,6 +761,9 @@ def render_instruction_line(text)
   TerminalStyle.yellow(text.to_s)
 end
 
+def render_gloss_line(text)
+  TerminalStyle.dim(text.to_s)
+end
 
 def prompt_to_speak(ui, duration: nil)
   label = (ui && ui[:speak_now]) ? ui[:speak_now] : "🎤 Speak now..."
@@ -966,6 +976,8 @@ def load_pack(path)
     conjugate_entries = raw_entries.map do |entry|
       entry_id = entry["id"] || entry[:id]
       lemma_v = entry["lemma"] || entry[:lemma] || entry["verb"] || entry[:verb]
+      gloss_v = entry["gloss"] || entry[:gloss] || entry["english"] || entry[:english]
+      notes_v = entry["notes"] || entry[:notes]
       forms_v = entry["forms"] || entry[:forms]
 
       raise "Invalid conjugate entry: #{entry.inspect}" if lemma_v.nil? || forms_v.nil?
@@ -1032,9 +1044,13 @@ def load_pack(path)
 
       derived_id = Digest::SHA1.hexdigest("#{lemma_text}::#{persons.join('|')}")[0, 8]
 
+      gloss_text = gloss_v.nil? ? "" : gloss_v.to_s.strip
+
       {
         id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
         lemma: lemma_text,
+        gloss: gloss_text,
+        notes: notes_v,
         forms: forms
       }
     end
@@ -1212,6 +1228,8 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
         entry_id: entry[:id],
         person: person.to_s,
         lemma: entry[:lemma].to_s,
+        gloss: entry[:gloss].to_s,
+        notes: entry[:notes],
         forms: {
           positive: Array(person_forms[:positive] || person_forms["positive"]).map { |x| x.to_s.strip }.reject(&:empty?),
           negative: Array(person_forms[:negative] || person_forms["negative"]).map { |x| x.to_s.strip }.reject(&:empty?)
@@ -1669,12 +1687,14 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say
       say render_cue_line(item[:person])
       say render_cue_line(item[:lemma])
+      gloss = item[:gloss].to_s.strip
+      say render_gloss_line(gloss) unless gloss.empty?
       say
-      say render_instruction_line("Positive form:")
+      say render_instruction_line(conjugate_instruction_label(ui, "positive"))
       say
       say "#{target_label(ui)}: #{positive_answers.join(' / ')}"
       say
-      say render_instruction_line("Negative form:")
+      say render_instruction_line(conjugate_instruction_label(ui, "negative"))
       say
       say "#{target_label(ui)}: #{negative_answers.join(' / ')}"
       say
@@ -1717,6 +1737,8 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
         say
         say render_cue_line(item[:person])
         say render_cue_line(item[:lemma])
+        gloss = item[:gloss].to_s.strip
+        say render_gloss_line(gloss) unless gloss.empty?
         say
         say render_instruction_line(conjugate_instruction_label(ui, current_polarity))
         say
@@ -1876,6 +1898,8 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
     say
     say render_cue_line(item[:person])
     say render_cue_line(item[:lemma])
+    gloss = item[:gloss].to_s.strip
+    say render_gloss_line(gloss) unless gloss.empty?
     say
 
     conjugate_polarities_for_item(item, polarity).each do |current_polarity|
@@ -1924,8 +1948,9 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:, timing: false)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
+  timings = []
   missed = []
 
   say
@@ -1953,6 +1978,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
   say "-" * 50
 
   selected.each_with_index do |w, idx|
+    start_time = Time.now
     say
     say "[#{idx + 1}/#{stats[:total]}]"
 
@@ -2261,7 +2287,22 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       end
       update_srs!(srs, wid, 2) if srs_enabled
       missed << w
+
     end
+    elapsed = Time.now - start_time
+    timings << elapsed if timing
+  end
+  if timing && !timings.empty?
+    total_time = timings.sum
+    avg = total_time / timings.size
+    sorted = timings.sort
+    median = sorted[timings.size / 2]
+
+    say
+    say "Timing"
+    say "Total: #{format_time(total_time)}"
+    say "Avg/item: #{avg.round(2)}s"
+    say "Median: #{median.round(2)}s"
   end
 
   [stats, missed]
@@ -2421,6 +2462,7 @@ options = {
   study: false,
   conversation: false,
   transform: false,
+  timing: false,
   conjugate: false,
   conjugate_polarity: "positive",
   match_options: "auto",
@@ -2458,6 +2500,9 @@ parser = OptionParser.new do |opts|
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
   opts.on("--listen", "Listening mode: speak target language (Piper) and type what you heard") { options[:listen] = true }
+  opts.on("--timing", "Show timing metrics for quiz runs") do
+    options[:timing] = true
+  end
 
   opts.on("--printed-voice", "With --listen, also print the exact text sent to Piper") do
     options[:printed_voice] = true
@@ -2870,7 +2915,8 @@ begin
     speech_bin: options[:speech_bin],
     speech_model: options[:speech_model],
     speech_language: options[:speech_language],
-    speech_duration: options[:speech_duration]
+    speech_duration: options[:speech_duration],
+    timing: options[:timing]
   )
 
   say

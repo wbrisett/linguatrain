@@ -1,25 +1,26 @@
-# Linguatrain standard pack template
-# Place this file under: packs/<target_lang>/
-# Rename it to match your pack, for example: basics.yaml
+# Linguatrain Complete Pack Template
+# Rename this file (for example: basics.yaml) and place it inside your packs tree.
+#
+# Recommended location:
+#   packs/<target_lang>/
 #
 # Notes:
-# - Pack files contain metadata and entries.
-# - schema_version is supported.
-# - UI strings and language metadata belong in a localisation file.
+# - Packs should now contain pack identity plus entries.
+# - UI strings and language metadata should live in a localisation file,
+#   referenced from config.yaml or passed with --localisation.
 # - `prompt` is the source-side text shown to the learner.
-# - `answer` must always be a YAML list.
-# - `alternate_prompts` is optional and adds accepted source-side variants.
-# - `spoken` is optional and stores colloquial target-side variants.
-# - `phonetic` is optional and stores a learner-friendly pronunciation guide.
-# - `speaker` is optional and mainly used for conversation-style packs.
+# - `answer` is always a YAML list, even if there is only one accepted answer.
+# - `alternate_prompts` adds accepted variants on the prompt/source side.
+# - `spoken` is optional and can be used for colloquial spoken target forms.
+# - `phonetic` is optional and is shown in study/review output.
 
 metadata:
   id: "starter_pack_id"
   version: 1
   schema_version: 1
-  author: "Your Name"
-  description: "What this pack contains."
-  tags:
+  author: "Your Name"                    # Optional
+  description: "What this pack contains."  # Optional
+  tags:                                  # Optional
     - "example"
 
 entries:
@@ -27,21 +28,67 @@ entries:
     prompt: "Example prompt in source language."
     answer:
       - "Example answer in target language."
+    alternate_prompts:                   # Optional
+      - "Accepted alternate prompt wording."
+    spoken:                              # Optional
+      - "Colloquial spoken target form."
+    phonetic: ""                         # Optional
 
   - id: "002"
     prompt: "Another example prompt."
     answer:
       - "Primary accepted answer."
       - "Alternate accepted answer."
-    alternate_prompts:
-      - "Accepted alternate prompt wording."
-    spoken:
-      - "Colloquial spoken target form."
-    phonetic: "optional pronunciation guide"
+    phonetic: "phonetic guide"           # Optional
 
-  - id: "003"
-    speaker: "A"
-    prompt: "Hello."
-    answer:
-      - "Hei."
-    phonetic: "HEI"
+# Conversation packs can include speaker names:
+#
+# entries:
+#   - id: "001"
+#     speaker: "A"
+#     prompt: "Hello."
+#     answer:
+#       - "Hei."
+#     phonetic: "HEI"
+#
+# Transform packs use a different schema:
+#
+# metadata:
+#   id: "starter_transform_pack"
+#   version: 1
+#   drill_type: "transform"
+#
+# entries:
+#   - id: "001"
+#     prompt: "Minä menen kouluun."
+#     cues:
+#       - cue: "eilen"
+#         steps:
+#           - transform: "past"
+#             answer:
+#               - "Minä menin kouluun eilen."
+#
+# Conjugation packs use a different schema:
+#
+# metadata:
+#   id: "starter_conjugate_pack"
+#   version: 1
+#   drill_type: "conjugate"
+#
+# persons:
+#   - "minä"
+#   - "sinä"
+#   - "hän"
+#   - "me"
+#   - "te"
+#   - "he"
+#
+# entries:
+#   - id: "001"
+#     lemma: "puhua"
+#     forms:
+#       minä:
+#         positive:
+#           - "puhun"
+#         negative:
+#           - "en puhu"

@@ -1,37 +1,26 @@
 # Linguatrain Conjugate Pack Template
-# Rename this file and place it under:
+# Rename this file and place it inside your packs tree.
+#
+# Recommended location:
 #   packs/<target_lang>/
 #
 # Notes:
 # - Conjugation packs must set metadata.drill_type to "conjugate".
-# - schema_version is supported.
-# - metadata.shuffle_persons can be used to randomize person order during practice.
-# - The persons list defines the drill order when shuffle_persons is not enabled.
-#
-# - Each entry contains:
-#   - lemma: the dictionary form of the verb
-#   - gloss: (optional but recommended) short meaning in source language
-#   - forms: person-by-person accepted answers
-#
-# - Each person contains:
-#   - positive: YAML list of accepted positive forms
-#   - negative: YAML list of accepted negative forms
-#
-# - Additional optional fields (preserved for future use):
-#   - notes: free-form metadata (not currently displayed)
+# - The persons list defines the drill order unless shuffle_persons is enabled elsewhere.
+# - Each entry has:
+#     - lemma: the dictionary form of the verb
+#     - forms: person-by-person accepted answers
+# - Each person can contain:
+#     - positive: YAML list of accepted positive forms
+#     - negative: YAML list of accepted negative forms
 
 metadata:
   id: "starter_conjugate_pack"
   version: 1
   drill_type: "conjugate"
-  author: "Your Name"
-  description: "Verb conjugation drills."
+  author: "Your Name"                    # Optional
+  description: "Verb conjugation drills."  # Optional
   schema_version: 1
-  tags:
-    - "conjugate"
-    - "verbs"
-  # shuffle_persons: true
-  # Use shuffle_persons to randomize person order during practice.
 
 persons:
   - "minä"
@@ -44,7 +33,6 @@ persons:
 entries:
   - id: "001"
     lemma: "puhua"
-    gloss: "to speak"
     forms:
       minä:
         positive:
@@ -79,7 +67,6 @@ entries:
 
   - id: "002"
     lemma: "syödä"
-    gloss: "to eat"
     forms:
       minä:
         positive:

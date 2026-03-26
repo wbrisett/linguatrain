@@ -1,33 +1,26 @@
-# Linguatrain transform pack template
-# Place this file under: packs/<target_lang>/
-# Rename it to match your pack, for example: transform_basics.yaml
+# Linguatrain Transform Pack Template
+# Rename this file and place it inside your packs tree.
+#
+# Recommended location:
+#   packs/<target_lang>/
 #
 # Notes:
-# - Transform packs must set `metadata.drill_type` to `transform`.
-# - `schema_version` is supported.
-# - `metadata.shuffle_cues` randomizes cue order during practice.
-# - Each entry contains:
-#   - `prompt`: the base sentence
-#   - `cues`: one or more cue-driven transformations
-# - Each cue contains:
-#   - `cue`: the transformation trigger
-#   - `steps`: one or more transformation steps
-# - Each step contains:
-#   - `transform`: a short label used in the UI
-#   - `answer`: a YAML list of accepted answers
+# - Transform packs must set metadata.drill_type to "transform".
+# - Each entry has a prompt and one or more cues.
+# - Each cue has one or more steps.
+# - Each step has:
+#     - transform: a short transform label
+#     - answer: a YAML list of accepted answers
 
 metadata:
   id: "starter_transform_pack"
   version: 1
-  schema_version: 1
   drill_type: "transform"
-  author: "Your Name"
-  description: "Cue-based sentence transformation drills."
-  tags:
+  author: "Your Name"                    # Optional
+  description: "Cue-based sentence transformation drills."  # Optional
+  tags:                                  # Optional
     - "transform"
     - "grammar"
-  # shuffle_cues: true
-  # Use shuffle_cues to randomize cue order during practice.
 
 entries:
   - id: "001"

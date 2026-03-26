@@ -4,28 +4,57 @@
 require "yaml"
 require "optparse"
 require "csv"
+require "pathname"
 
 class PackValidator
   ISO_639_1 = /\A[a-z]{2}\z/
   KNOWN_DRILL_TYPES = %w[transform conjugate].freeze
 
-  def initialize(path:, strict: false, warn_integer_ids: true, forced_mode: nil)
+  def initialize(path:, strict: false, warn_integer_ids: true, forced_mode: nil, update: false)
     @path = path
     @strict = strict
     @warn_integer_ids = warn_integer_ids
     @forced_mode = forced_mode
+    @update = update
     @errors = []
     @warnings = []
+    @updated_output_path = nil
+    @original_errors = []
+    @original_warnings = []
+    @updated_errors = []
+    @updated_warnings = []
+    @raw_yaml = nil
+    @source_entry_scalars = {}
   end
 
-  attr_reader :errors, :warnings
+  attr_reader :errors, :warnings, :updated_output_path, :original_errors, :original_warnings, :updated_errors, :updated_warnings
 
   def run
     data = load_yaml(@path)
     return report unless data
+    @source_entry_scalars = extract_entry_scalar_map
 
+    validate_loaded_data(data)
+    @original_errors = @errors.dup
+    @original_warnings = @warnings.dup
+
+    if @update && data.is_a?(Hash)
+      fixed_data = build_updated_data(data)
+      @updated_output_path = write_updated_yaml(fixed_data)
+
+      @errors = []
+      @warnings = []
+      validate_loaded_data(fixed_data)
+      @updated_errors = @errors.dup
+      @updated_warnings = @warnings.dup
+    end
+
+    report
+  end
+
+  def validate_loaded_data(data)
     validate_top_level(data)
-    return report unless data.is_a?(Hash)
+    return unless data.is_a?(Hash)
 
     metadata = data["metadata"]
     drill_type = validate_metadata(metadata)
@@ -39,8 +68,220 @@ class PackValidator
     else
       validate_word_pack(data)
     end
+  end
 
-    report
+  def build_updated_data(data)
+    updated = deep_copy(data)
+    return updated unless updated.is_a?(Hash)
+
+    metadata = updated["metadata"]
+    metadata = {} unless metadata.is_a?(Hash)
+    updated["metadata"] = metadata
+
+    metadata["version"] = 1
+    metadata["schema_version"] = 1
+
+    entries = updated["entries"]
+    if entries.is_a?(Array)
+      entries.each_with_index do |entry, entry_idx|
+        normalize_entry_scalars!(entry, entry_idx)
+      end
+      repair_duplicate_entry_ids!(entries)
+    end
+
+    updated
+  end
+
+  def repair_duplicate_entry_ids!(entries)
+    used_ids = {}
+
+    entries.each do |entry|
+      next unless entry.is_a?(Hash)
+      next unless entry.key?("id")
+
+      raw_id = entry["id"]
+      normalized_id = case raw_id
+                      when String then raw_id.strip
+                      when Integer then raw_id.to_s
+                      else nil
+                      end
+
+      next if normalized_id.nil? || normalized_id.empty?
+
+      if used_ids.key?(normalized_id)
+        entry["id"] = next_duplicate_id(normalized_id, used_ids)
+      else
+        used_ids[normalized_id] = true
+      end
+    end
+  end
+
+  def next_duplicate_id(base_id, used_ids)
+    candidate = "#{base_id}dup"
+    suffix = 2
+
+    while used_ids.key?(candidate)
+      candidate = "#{base_id}dup#{suffix}"
+      suffix += 1
+    end
+
+    used_ids[candidate] = true
+    candidate
+  end
+
+  def deep_copy(obj)
+    Marshal.load(Marshal.dump(obj))
+  end
+
+  def normalize_entry_scalars!(entry, entry_idx)
+    return unless entry.is_a?(Hash)
+
+    %w[prompt answer alternate_prompts spoken].each do |key|
+      next unless entry.key?(key)
+      entry[key] = normalize_stringish_value(entry[key], key, original_entry_scalar(entry_idx, key))
+    end
+
+    if entry["cues"].is_a?(Array)
+      entry["cues"].each do |cue_entry|
+        next unless cue_entry.is_a?(Hash)
+
+        cue_entry["cue"] = normalize_stringish_value(cue_entry["cue"], "cue") if cue_entry.key?("cue")
+
+        if cue_entry["steps"].is_a?(Array)
+          cue_entry["steps"].each do |step|
+            next unless step.is_a?(Hash)
+
+            step["transform"] = normalize_stringish_value(step["transform"], "transform") if step.key?("transform")
+            step["answer"] = normalize_stringish_value(step["answer"], "answer") if step.key?("answer")
+          end
+        end
+      end
+    end
+
+    entry["lemma"] = normalize_stringish_value(entry["lemma"], "lemma") if entry.key?("lemma")
+    entry["verb"] = normalize_stringish_value(entry["verb"], "verb") if entry.key?("verb")
+
+    forms = entry["forms"]
+    if forms.is_a?(Hash)
+      forms.each do |person, form_value|
+        case form_value
+        when Hash
+          form_value["positive"] = normalize_stringish_value(form_value["positive"], "positive") if form_value.key?("positive")
+          form_value["negative"] = normalize_stringish_value(form_value["negative"], "negative") if form_value.key?("negative")
+        when Array, String, Numeric
+          forms[person] = normalize_stringish_value(form_value, person.to_s)
+        end
+      end
+    end
+  end
+
+  def normalize_stringish_value(value, key, original_source = nil)
+    case value
+    when Array
+      original_items = original_source.is_a?(Array) ? original_source : []
+      value.each_with_index.map do |item, idx|
+        normalize_stringish_scalar(item, key, original_items[idx])
+      end
+    else
+      original_item = original_source.is_a?(String) ? original_source : nil
+      normalize_stringish_scalar(value, key, original_item)
+    end
+  end
+
+  def normalize_stringish_scalar(value, key, original_source = nil)
+    case value
+    when String
+      value
+    when Numeric
+      if original_source.is_a?(String) && !original_source.strip.empty?
+        strip_matching_quotes(original_source.strip)
+      else
+        suggested_quoted_scalar(value, key)
+      end
+    else
+      value
+    end
+  end
+
+  def write_updated_yaml(data)
+    path = Pathname.new(@path)
+    output_path = path.sub_ext(".updated#{path.extname}").to_s
+    File.write(output_path, YAML.dump(data))
+    output_path
+  end
+
+  def original_entry_scalar(entry_idx, key, item_idx = nil)
+    entry_data = @source_entry_scalars[entry_idx]
+    return nil unless entry_data.is_a?(Hash)
+
+    value = entry_data[key]
+    return value if item_idx.nil?
+    return nil unless value.is_a?(Array)
+
+    value[item_idx]
+  end
+
+  def strip_matching_quotes(text)
+    return text unless text.length >= 2
+
+    if (text.start_with?("\"") && text.end_with?("\"")) ||
+       (text.start_with?("'") && text.end_with?("'"))
+      text[1...-1]
+    else
+      text
+    end
+  end
+
+  def extract_entry_scalar_map
+    return {} unless @raw_yaml.is_a?(String) && !@raw_yaml.empty?
+
+    tracked_keys = %w[prompt answer alternate_prompts spoken]
+    result = {}
+    current_entry_idx = nil
+    current_key = nil
+
+    @raw_yaml.each_line do |line|
+      stripped = line.strip
+      next if stripped.empty? || stripped.start_with?("#")
+
+      if line.match?(/^\s*-\s+id:\s*/)
+        current_entry_idx = current_entry_idx.nil? ? 0 : current_entry_idx + 1
+        result[current_entry_idx] ||= {}
+        current_key = nil
+        next
+      end
+
+      next if current_entry_idx.nil?
+
+      if (match = line.match(/^\s+([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(.*)$/))
+        key = match[1]
+        raw_value = match[2].to_s.rstrip
+
+        if tracked_keys.include?(key)
+          if raw_value.empty?
+            result[current_entry_idx][key] = []
+            current_key = key
+          else
+            result[current_entry_idx][key] = strip_inline_comment(raw_value)
+            current_key = nil
+          end
+        else
+          current_key = nil
+        end
+        next
+      end
+
+      if current_key && (match = line.match(/^\s*-\s*(.*?)\s*$/))
+        result[current_entry_idx][current_key] ||= []
+        result[current_entry_idx][current_key] << strip_inline_comment(match[1])
+      end
+    end
+
+    result
+  end
+
+  def strip_inline_comment(text)
+    text.to_s.sub(/\s+#.*\z/, "").rstrip
   end
 
   private
@@ -52,7 +293,8 @@ class PackValidator
     end
 
     begin
-      YAML.safe_load(File.read(path), permitted_classes: [], permitted_symbols: [], aliases: false)
+      @raw_yaml = File.read(path)
+      YAML.safe_load(@raw_yaml, permitted_classes: [], permitted_symbols: [], aliases: false)
     rescue Psych::SyntaxError => e
       error("YAML syntax error: #{e.message}")
       nil
@@ -113,7 +355,7 @@ class PackValidator
       return nil
     end
 
-    required = %w[id version]
+    required = %w[id version schema_version]
     required.each do |k|
       error("metadata missing required field: #{k}") unless meta.key?(k)
     end
@@ -135,6 +377,26 @@ class PackValidator
         error("metadata.version must be >= 1") if v < 1
       else
         error("metadata.version must be an Integer. Got: #{v.class}")
+      end
+    end
+
+    if meta.key?("schema_version")
+      v = meta["schema_version"]
+      if v.is_a?(Integer)
+        error("metadata.schema_version must be >= 1") if v < 1
+      else
+        error("metadata.schema_version must be an Integer. Got: #{v.class}")
+      end
+    end
+
+    %w[shuffle_persons shuffle_cues].each do |k|
+      next unless meta.key?(k)
+
+      val = meta[k]
+      if val.nil?
+        warn("metadata.#{k} is nil (remove it or set true/false)")
+      elsif val != true && val != false
+        error("metadata.#{k} must be a Boolean. Got: #{val.class}")
       end
     end
 
@@ -245,7 +507,86 @@ class PackValidator
       warn("Top-level `persons` is ignored for standard word packs")
     end
 
+    metadata = data["metadata"]
+    if metadata.is_a?(Hash)
+      warn("metadata.shuffle_persons is ignored for standard word packs") if metadata.key?("shuffle_persons")
+      warn("metadata.shuffle_cues is ignored for standard word packs") if metadata.key?("shuffle_cues")
+    end
+
     validate_word_entries(data["entries"])
+  end
+
+  def display_entry_id(entry, idx)
+    raw_id = entry.is_a?(Hash) ? entry["id"] : nil
+    raw_id = raw_id.to_s.strip unless raw_id.nil?
+    raw_id && !raw_id.empty? ? raw_id : format("%03d", idx + 1)
+  end
+
+  def suggested_quoted_scalar(value, label)
+    return value.to_s unless value.is_a?(Numeric)
+
+    label_text = label.to_s
+    prompt_like_label = label_text == "prompt" ||
+      label_text == "cue" ||
+      label_text.include?(".prompt") ||
+      label_text.end_with?(".cue")
+
+    if prompt_like_label && value.is_a?(Integer)
+      if value >= 0
+        if (value % 3600).zero?
+          hours = value / 3600
+          return format("%02d:00", hours) if hours.between?(0, 23)
+        elsif (value % 60).zero?
+          total_minutes = value / 60
+          hours = total_minutes / 60
+          minutes = total_minutes % 60
+          return format("%02d:%02d", hours, minutes) if hours.between?(0, 23) && minutes.between?(0, 59)
+        end
+      end
+    end
+
+    value.to_s
+  end
+
+  def validate_entry_string_array(values, entry, idx, key, min: 1)
+    label = "entries[#{idx + 1}].#{key}"
+
+    if values.size < min
+      if min == 1
+        error("#{label} must contain at least one item")
+      else
+        error("#{label} must contain at least #{min} items")
+      end
+      return
+    end
+
+    values.each_with_index do |value, j|
+      if value.is_a?(String)
+        error("#{label}[#{j}] is empty") if value.strip.empty?
+      elsif value.is_a?(Numeric)
+        entry_id = display_entry_id(entry, idx)
+        suggestion = original_entry_scalar(idx, key, j)
+        suggestion = strip_matching_quotes(suggestion.to_s.strip) unless suggestion.nil?
+        suggestion = suggested_quoted_scalar(value, label) if suggestion.nil? || suggestion.empty?
+        error(%Q{Error: - id: '#{entry_id}' #{key}: - #{suggestion} must be a string. Use quotes to properly render this. "#{suggestion}"})
+      else
+        error("#{label}[#{j}] must be a String. Got: #{value.class}")
+      end
+    end
+  end
+
+  def validate_entry_scalar_string(value, entry, idx, key, label)
+    if value.is_a?(String)
+      warn("#{label} is empty") if value.strip.empty?
+    elsif value.is_a?(Numeric)
+      entry_id = display_entry_id(entry, idx)
+      suggestion = original_entry_scalar(idx, key)
+      suggestion = strip_matching_quotes(suggestion.to_s.strip) unless suggestion.nil?
+      suggestion = suggested_quoted_scalar(value, key) if suggestion.nil? || suggestion.empty?
+      error(%Q{Error: - id: '#{entry_id}' #{key}: #{suggestion} must be a string. Use quotes to properly render this. "#{suggestion}"})
+    else
+      error("#{label} must be a String. Got: #{value.class}")
+    end
   end
 
   def validate_required_string_or_string_list(entry, idx_or_label, key, min: 1)
@@ -253,12 +594,20 @@ class PackValidator
     value = entry[key]
 
     case value
-    when String
-      warn("#{label} is empty") if value.strip.empty?
     when Array
-      validate_string_array(value, label, min: min)
+      if idx_or_label.is_a?(Integer)
+        validate_entry_string_array(value, entry, idx_or_label, key, min: min)
+      else
+        validate_string_array(value, label, min: min)
+      end
     else
-      error("#{label} must be a String or a list (Array) of Strings. Got: #{value.class}")
+      if idx_or_label.is_a?(Integer)
+        validate_entry_scalar_string(value, entry, idx_or_label, key, label)
+      elsif value.is_a?(String)
+        warn("#{label} is empty") if value.strip.empty?
+      else
+        error("#{label} must be a String or a list (Array) of Strings. Got: #{value.class}")
+      end
     end
   end
 
@@ -268,10 +617,20 @@ class PackValidator
       warn("Top-level `persons` is ignored for transform packs")
     end
 
+    metadata = data["metadata"]
+    if metadata.is_a?(Hash) && metadata.key?("shuffle_persons")
+      warn("metadata.shuffle_persons is ignored for transform packs")
+    end
+
     validate_transform_entries(data["entries"])
   end
 
   def validate_conjugate_pack(data)
+    metadata = data["metadata"]
+    if metadata.is_a?(Hash) && metadata.key?("shuffle_cues")
+      warn("metadata.shuffle_cues is ignored for conjugate packs")
+    end
+
     persons = validate_persons(data["persons"])
     validate_conjugate_entries(data["entries"], persons)
   end
@@ -462,23 +821,23 @@ class PackValidator
 
   def validate_transform_cue(cue_entry, entry_idx, cue_idx)
     unless cue_entry.is_a?(Hash)
-      error("entries[#{entry_idx}].cues[#{cue_idx}] must be a mapping (Hash). Got: #{cue_entry.class}")
+      error("entries[#{entry_idx + 1}].cues[#{cue_idx}] must be a mapping (Hash). Got: #{cue_entry.class}")
       return
     end
 
-    error("entries[#{entry_idx}].cues[#{cue_idx}] missing required field: cue") unless cue_entry.key?("cue")
-    error("entries[#{entry_idx}].cues[#{cue_idx}] missing required field: steps") unless cue_entry.key?("steps")
+    error("entries[#{entry_idx + 1}].cues[#{cue_idx}] missing required field: cue") unless cue_entry.key?("cue")
+    error("entries[#{entry_idx + 1}].cues[#{cue_idx}] missing required field: steps") unless cue_entry.key?("steps")
 
-    validate_required_string(cue_entry, "entries[#{entry_idx}].cues[#{cue_idx}]", "cue")
+    validate_required_string(cue_entry, "entries[#{entry_idx + 1}].cues[#{cue_idx}]", "cue")
 
     steps = cue_entry["steps"]
     unless steps.is_a?(Array)
-      error("entries[#{entry_idx}].cues[#{cue_idx}].steps must be a list (Array). Got: #{steps.class}")
+      error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps must be a list (Array). Got: #{steps.class}")
       return
     end
 
     if steps.empty?
-      error("entries[#{entry_idx}].cues[#{cue_idx}].steps must contain at least one step")
+      error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps must contain at least one step")
     else
       steps.each_with_index do |step, step_idx|
         validate_transform_step(step, entry_idx, cue_idx, step_idx)
@@ -487,24 +846,24 @@ class PackValidator
 
     allowed = %w[cue steps]
     unknown = cue_entry.keys - allowed
-    unknown.each { |k| warn("entries[#{entry_idx}].cues[#{cue_idx}] unknown key: #{k}") } unless unknown.empty?
+    unknown.each { |k| warn("entries[#{entry_idx + 1}].cues[#{cue_idx}] unknown key: #{k}") } unless unknown.empty?
   end
 
   def validate_transform_step(step, entry_idx, cue_idx, step_idx)
     unless step.is_a?(Hash)
-      error("entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}] must be a mapping (Hash). Got: #{step.class}")
+      error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] must be a mapping (Hash). Got: #{step.class}")
       return
     end
 
-    error("entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}] missing required field: transform") unless step.key?("transform")
-    error("entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}] missing required field: answer") unless step.key?("answer")
+    error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] missing required field: transform") unless step.key?("transform")
+    error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] missing required field: answer") unless step.key?("answer")
 
-    validate_required_string(step, "entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}]", "transform")
-    validate_required_string_list(step, "entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}]", "answer", min: 1)
+    validate_required_string(step, "entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}]", "transform")
+    validate_required_string_list(step, "entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}]", "answer", min: 1)
 
     allowed = %w[transform answer]
     unknown = step.keys - allowed
-    unknown.each { |k| warn("entries[#{entry_idx}].cues[#{cue_idx}].steps[#{step_idx}] unknown key: #{k}") } unless unknown.empty?
+    unknown.each { |k| warn("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] unknown key: #{k}") } unless unknown.empty?
   end
 
   def validate_conjugate_entry(entry, idx, ids, persons)
@@ -520,6 +879,7 @@ class PackValidator
 
     lemma_key = entry.key?("lemma") ? "lemma" : (entry.key?("verb") ? "verb" : nil)
     validate_required_string(entry, idx, lemma_key) if lemma_key
+    validate_optional_string(entry, idx, "gloss")
 
     forms = entry["forms"]
     unless forms.is_a?(Hash)
@@ -546,13 +906,13 @@ class PackValidator
       warn("entries[#{idx + 1}].verb is a legacy alias; prefer `lemma`")
     end
 
-    allowed = %w[id lemma verb forms]
+    allowed = %w[id lemma verb gloss forms]
     unknown = entry.keys - allowed
     unknown.each { |k| warn("entries[#{idx + 1}] unknown key: #{k}") } unless unknown.empty?
   end
 
   def validate_conjugate_form(raw, entry_idx, person)
-    label = "entries[#{entry_idx}].forms[#{person.inspect}]"
+    label = "entries[#{entry_idx + 1}].forms[#{person.inspect}]"
 
     if raw.is_a?(Hash)
       error("#{label} missing required field: positive") unless raw.key?("positive")
@@ -595,7 +955,11 @@ class PackValidator
       return
     end
 
-    validate_string_array(value, label, min: min)
+    if idx_or_label.is_a?(Integer)
+      validate_entry_string_array(value, entry, idx_or_label, key, min: min)
+    else
+      validate_string_array(value, label, min: min)
+    end
   end
 
   def validate_optional_string(entry, idx, key)
@@ -639,6 +1003,8 @@ class PackValidator
         if value.strip.empty?
           error("#{label}[#{j}] is empty")
         end
+      elsif value.is_a?(Numeric)
+        error("#{label}[#{j}] must be a String, but YAML parsed it as #{value.class}. If this is meant to be text, quote it. For example: \"#{value}\"")
       else
         error("#{label}[#{j}] must be a String. Got: #{value.class}")
       end
@@ -652,19 +1018,42 @@ class PackValidator
     puts "Linguatrain pack validation: #{@path}"
     puts
 
-    print_messages("Warnings", @warnings) if @warnings.any?
-    print_messages("Errors", @errors) if @errors.any?
+    if @updated_output_path
+      puts "Updated YAML written to: #{@updated_output_path}"
+      puts
 
-    errors_count = @errors.size
-    warnings_count = @warnings.size
+      puts "Original file results:"
+      puts
+      print_messages("Warnings", @original_warnings) if @original_warnings.any?
+      print_messages("Errors", @original_errors) if @original_errors.any?
+      puts "Result: #{section_result(@original_errors, @original_warnings)}"
+      puts
 
-    if errors_count.positive?
-      puts "Result: FAIL (#{errors_count} errors, #{warnings_count} warnings)"
-      1
-    else
-      puts "Result: PASS (#{errors_count} errors, #{warnings_count} warnings)"
-      0
+      puts "Updated file results:"
+      puts
+      print_messages("Warnings", @updated_warnings) if @updated_warnings.any?
+      print_messages("Errors", @updated_errors) if @updated_errors.any?
+      puts "Result: #{section_result(@updated_errors, @updated_warnings)}"
+
+      @errors = @updated_errors.dup
+      @warnings = @updated_warnings.dup
+
+      return @updated_errors.any? ? 1 : 0
     end
+
+    print_messages("Warnings", @original_warnings) if @original_warnings.any?
+    print_messages("Errors", @original_errors) if @original_errors.any?
+
+    @errors = @original_errors.dup
+    @warnings = @original_warnings.dup
+
+    puts "Result: #{section_result(@original_errors, @original_warnings)}"
+    @original_errors.any? ? 1 : 0
+  end
+
+  def section_result(errors, warnings)
+    status = errors.any? ? "FAIL" : "PASS"
+    "#{status} (#{errors.size} errors, #{warnings.size} warnings)"
   end
 
   def print_messages(label, messages)
@@ -689,12 +1078,16 @@ def write_csv_report(csv_path, rows)
   end
 end
 
-options = { strict: false, all: nil, forced_mode: nil, csv: nil }
+options = { strict: false, all: nil, forced_mode: nil, csv: nil, update: false }
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: validate_pack.rb [options] path/to/pack.yaml"
 
   opts.on("--strict", "Treat some warnings as errors (stricter hygiene)") do
     options[:strict] = true
+  end
+
+  opts.on("--update", "Write a fixed YAML file alongside the original using version: 1 and schema_version: 1") do
+    options[:update] = true
   end
 
   opts.on("--transform", "Validate the pack as a transform pack") do
@@ -752,7 +1145,7 @@ if options[:all]
 
   files.each_with_index do |file, i|
     puts "=== [#{i + 1}/#{total_files}] #{file} ==="
-    validator = PackValidator.new(path: file, strict: options[:strict], forced_mode: options[:forced_mode])
+    validator = PackValidator.new(path: file, strict: options[:strict], forced_mode: options[:forced_mode], update: options[:update])
     code = validator.run
     failed_files += 1 if code != 0
 
@@ -786,6 +1179,6 @@ else
     exit 2
   end
 
-  exit_code = PackValidator.new(path: path, strict: options[:strict], forced_mode: options[:forced_mode]).run
+  exit_code = PackValidator.new(path: path, strict: options[:strict], forced_mode: options[:forced_mode], update: options[:update]).run
   exit exit_code
 end

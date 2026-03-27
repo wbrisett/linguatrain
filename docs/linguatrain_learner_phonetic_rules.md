@@ -107,11 +107,11 @@ readability
 
 ## Optional Extension
 
-Future enhancement could include:
+Potential future enhancements:
 
--   Automated phonetic generation helper in Ruby
--   Validation rule: all Finnish entries must include phonetics
 -   Toggle system allowing IPA alternative
+
+*Note*: As of now, I haven't planned on doing this, however if enough people want it, I'll investigate doing this. 
 
 ------------------------------------------------------------------------
 

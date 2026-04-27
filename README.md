@@ -1,4 +1,4 @@
-<file name=0 path=README.md># linguatrain
+# linguatrain
 
 A YAML-driven CLI language trainer for vocabulary, grammar, listening, and speaking practice.
 
@@ -73,6 +73,16 @@ This makes it easy to:
 
 Linguatrain is designed for learners who want **full control over their language practice**, while still benefiting from structured drills and progressive difficulty.
 
+## Design Philosophy
+
+Linguatrain treats language learning content the same way structured documentation treats information: as data that is independent of the system that delivers it.
+
+Each YAML pack is a self-contained, typed unit — it declares what kind of content it holds (vocabulary, conjugations, transforms, conversation exchanges), carries its own metadata, and makes no assumptions about how it will be drilled. The engine reads the pack, determines its type, and routes it to the appropriate drill flow. Content and behavior are deliberately separate concerns.
+
+This means a single pack can be used across multiple drill modes without modification. It also means the schema controls the data, so if your YAML validates, it runs. New drill types can be added to the engine without touching existing packs, and new packs can be dropped in without touching the engine.
+
+The design borrows directly from structured content principles: modularity, typed schemas, and a clean separation between authoring and delivery. I spent nearly 20 years working with structured authoring in DITA, and that experience shaped how linguatrain is built from the ground up. If you've worked in DITA, Docbook, or similar frameworks, the mental model will feel familiar. If you haven't, the practical effect is the same. That is, the content you write today will still work as the engine evolves in the future.
+
 ## Learning Modes Overview
 
 Linguatrain is designed around the idea that **language learning progresses through several stages**. Each mode in the tool maps to a specific stage of skill development.
@@ -139,7 +149,7 @@ The `prompt` is what you see.
 
 The `answer` is what you type. 
 
-That’s it.
+That's it.
 
 It can be a single word. 
 
@@ -171,7 +181,7 @@ Once you've cloned the repo, you can run a pack immediately:
 ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml
 ```
 
-You’ll see something like:
+You'll see something like:
 
 ```text
 English → Finnish Quiz — 38 word(s) (mode: typing, English→Finnish)
@@ -346,7 +356,7 @@ Once you're comfortable with the material, simply add light pressure with `--mat
 ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --match-game
 ```
 
-Now you’ll see hints:
+Now you'll see hints:
 
 ```text
 englanniksi: How are you?
@@ -590,7 +600,7 @@ This mode is useful for practicing **real conversational responses** rather than
 
 ## Getting Started
 
-Let’s walk through the minimal setup.
+Let's walk through the minimal setup.
 
 ### 1. Install Ruby
 
@@ -621,7 +631,7 @@ Run a pack immediately:
 ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml
 ```
 
-That’s enough to get started, although if you don't know Finnish, probably best to use: 
+That's enough to get started, although if you don't know Finnish, probably best to use: 
 
 ```bash
 ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --study
@@ -631,7 +641,7 @@ ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --study
 
 ### 3. Understanding the Folder Layout
 
-Here’s what matters:
+Here's what matters:
 
 ```text
 linguatrain/
@@ -648,7 +658,7 @@ The important directory is:
 packs/
 ```
 
-That’s where your study material lives.
+That's where your study material lives.
 
 You can organize packs however you like. As a best practice, use two-letter language codes:
 
@@ -688,7 +698,7 @@ Save it anywhere and run:
 ruby bin/linguatrain.rb my_pack.yaml
 ```
 
-That’s all you need. 
+That's all you need. 
 
 Without localisation of the UI elements it looks like this: 
 
@@ -758,7 +768,7 @@ You should create a config file.
 %APPDATA%\linguatrain\config.yaml
 ```
 
-Create the directory if it doesn’t exist.
+Create the directory if it doesn't exist.
 
 Example:
 
@@ -803,7 +813,7 @@ See [Whisper installation](docs/whisper-installation.md) for installation detail
 
 ---
 
-That’s it.
+That's it.
 
 You can now:
 
@@ -918,4 +928,3 @@ you may not use this file except in compliance with the License.
 See the LICENSE file for details.
 
 [LICENSE](LICENSE)
-</file>

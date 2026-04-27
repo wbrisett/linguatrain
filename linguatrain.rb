@@ -1965,7 +1965,7 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:, timing: false)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, listen_show_target:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:, timing: false)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   timings = []
   missed = []
@@ -2006,6 +2006,16 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       if listen
         say "Audible #{target_label(ui)}: (listening…)"
         spoken = choose_tts_text(w, tts_variant)
+        if reverse && listen_show_target
+          visible_target =
+            if show_variants
+              format_variants_for_display(w)
+            else
+              expected_answer_list(w, answer_variant).join(" / ")
+            end
+
+          say "#{target_label(ui)}: #{visible_target}" unless visible_target.empty?
+        end
         maybe_printed_voice(ui, printed_voice, build_tts_spoken(spoken, tts_template))
         speak_target_prompt(spoken, piper_bin: piper_bin, piper_model: piper_model, template: tts_template)
         say(ui[:replay_hint] || "(Type 'r' to replay audio)")
@@ -2475,6 +2485,7 @@ options = {
   match_game: false,
   listen: false,
   listen_no_english: false,
+  listen_show_target: false,
   reverse: false,
   study: false,
   conversation: false,
@@ -2528,6 +2539,10 @@ parser = OptionParser.new do |opts|
   opts.on("--listen-no-source", "Listening mode without showing source prompt") do
     options[:listen] = true
     options[:listen_no_english] = true
+  end
+  opts.on("--listen-show-target", "With --listen, also show the written target-language text") do
+    options[:listen] = true
+    options[:listen_show_target] = true
   end
   opts.on("--tts-variant VAR", "With --listen, speak: written|spoken (default: written)") do |v|
     options[:tts_variant] = v.to_s.strip.downcase
@@ -2914,6 +2929,7 @@ begin
     match_game: options[:match_game],
     listen: options[:listen],
     listen_no_english: options[:listen_no_english],
+    listen_show_target: options[:listen_show_target],
     reverse: options[:reverse],
     match_options: options[:match_options],
     piper_bin: options[:piper_bin],

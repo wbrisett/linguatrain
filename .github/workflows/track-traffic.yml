@@ -2,8 +2,8 @@ name: Track repo traffic
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # runs daily at 06:00 UTC
-  workflow_dispatch:       # allows manual run from Actions tab
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
   record-traffic:
@@ -15,85 +15,68 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Fetch and append traffic data
+      - name: Fetch clone traffic
         env:
           GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
           mkdir -p traffic
+          curl -sf \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/traffic/clones?per=day" \
+            > traffic/clones_raw.json
 
-          for METRIC in clones views; do
-            FILE="traffic/${METRIC}.csv"
+      - name: Fetch view traffic
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          curl -sf \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/traffic/views?per=day" \
+            > traffic/views_raw.json
 
-            # Write header if file doesn't exist yet
-            if [ ! -f "$FILE" ]; then
-              echo "date,count,uniques" > "$FILE"
-            fi
+      - name: Merge into CSVs
+        run: |
+          python3 - << 'PYEOF'
+          import json, csv, os
 
-            # Fetch data from GitHub traffic API
-            if [ "$METRIC" = "clones" ]; then
-              ENDPOINT="traffic/clones"
-              KEY="clones"
-            else
-              ENDPOINT="traffic/views"
-              KEY="views"
-            fi
+          def merge(raw_file, csv_file, key):
+              with open(raw_file) as f:
+                  data = json.load(f)
 
-            RESPONSE=$(curl -sf \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/$REPO/$ENDPOINT?per=day")
+              existing = set()
+              if os.path.exists(csv_file):
+                  with open(csv_file, newline="") as f:
+                      for row in csv.DictReader(f):
+                          existing.add(row["date"])
+              else:
+                  with open(csv_file, "w", newline="") as f:
+                      csv.DictWriter(f, fieldnames=["date","count","uniques"]).writeheader()
 
-            if [ -z "$RESPONSE" ]; then
-              echo "Failed to fetch $METRIC data"
-              exit 1
-            fi
+              new_rows = [
+                  {"date": e["timestamp"][:10], "count": e["count"], "uniques": e["uniques"]}
+                  for e in data.get(key, [])
+                  if e["timestamp"][:10] not in existing
+              ]
 
-            # Parse JSON and append only new dates (deduplication)
-            echo "$RESPONSE" | python3 - <<'PYEOF'
-import json, sys, os, csv
-from datetime import datetime
+              if new_rows:
+                  with open(csv_file, "a", newline="") as f:
+                      csv.DictWriter(f, fieldnames=["date","count","uniques"]).writerows(new_rows)
+                  print(f"{csv_file}: appended {len(new_rows)} row(s)")
+              else:
+                  print(f"{csv_file}: no new data")
 
-raw = sys.stdin.read()
-data = json.loads(raw)
-
-metric = os.environ.get("METRIC")
-key = os.environ.get("KEY")
-filepath = f"traffic/{metric}.csv"
-
-existing_dates = set()
-if os.path.exists(filepath):
-    with open(filepath, newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            existing_dates.add(row["date"])
-
-new_rows = []
-for entry in data.get(key, []):
-    # Truncate timestamp to date string (YYYY-MM-DD)
-    date_str = entry["timestamp"][:10]
-    if date_str not in existing_dates:
-        new_rows.append({
-            "date": date_str,
-            "count": entry["count"],
-            "uniques": entry["uniques"]
-        })
-
-if new_rows:
-    with open(filepath, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["date", "count", "uniques"])
-        writer.writerows(new_rows)
-    print(f"Appended {len(new_rows)} new row(s) to {filepath}")
-else:
-    print(f"No new data for {metric}")
-PYEOF
-          done
+          merge("traffic/clones_raw.json", "traffic/clones.csv", "clones")
+          merge("traffic/views_raw.json",  "traffic/views.csv",  "views")
+          PYEOF
 
       - name: Commit updated traffic data
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add traffic/
-          # Only commit if there's actually something new
+          git add traffic/clones.csv traffic/views.csv
           git diff --cached --quiet || git commit -m "chore: update traffic data [skip ci]"
           git push

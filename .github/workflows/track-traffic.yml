@@ -14,6 +14,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Switch to traffic-data branch
+        run: |
+          git fetch origin traffic-data 2>/dev/null && \
+            git checkout traffic-data || \
+            git checkout -b traffic-data
 
       - name: Fetch clone traffic
         env:
@@ -79,4 +87,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add traffic/clones.csv traffic/views.csv
           git diff --cached --quiet || git commit -m "chore: update traffic data [skip ci]"
-          git push origin HEAD:refs/heads/traffic-data
+          git push origin traffic-data

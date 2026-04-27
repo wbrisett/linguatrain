@@ -1,0 +1,99 @@
+name: Track repo traffic
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # runs daily at 06:00 UTC
+  workflow_dispatch:       # allows manual run from Actions tab
+
+jobs:
+  record-traffic:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch and append traffic data
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          mkdir -p traffic
+
+          for METRIC in clones views; do
+            FILE="traffic/${METRIC}.csv"
+
+            # Write header if file doesn't exist yet
+            if [ ! -f "$FILE" ]; then
+              echo "date,count,uniques" > "$FILE"
+            fi
+
+            # Fetch data from GitHub traffic API
+            if [ "$METRIC" = "clones" ]; then
+              ENDPOINT="traffic/clones"
+              KEY="clones"
+            else
+              ENDPOINT="traffic/views"
+              KEY="views"
+            fi
+
+            RESPONSE=$(curl -sf \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$REPO/$ENDPOINT?per=day")
+
+            if [ -z "$RESPONSE" ]; then
+              echo "Failed to fetch $METRIC data"
+              exit 1
+            fi
+
+            # Parse JSON and append only new dates (deduplication)
+            echo "$RESPONSE" | python3 - <<'PYEOF'
+import json, sys, os, csv
+from datetime import datetime
+
+raw = sys.stdin.read()
+data = json.loads(raw)
+
+metric = os.environ.get("METRIC")
+key = os.environ.get("KEY")
+filepath = f"traffic/{metric}.csv"
+
+existing_dates = set()
+if os.path.exists(filepath):
+    with open(filepath, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            existing_dates.add(row["date"])
+
+new_rows = []
+for entry in data.get(key, []):
+    # Truncate timestamp to date string (YYYY-MM-DD)
+    date_str = entry["timestamp"][:10]
+    if date_str not in existing_dates:
+        new_rows.append({
+            "date": date_str,
+            "count": entry["count"],
+            "uniques": entry["uniques"]
+        })
+
+if new_rows:
+    with open(filepath, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["date", "count", "uniques"])
+        writer.writerows(new_rows)
+    print(f"Appended {len(new_rows)} new row(s) to {filepath}")
+else:
+    print(f"No new data for {metric}")
+PYEOF
+          done
+
+      - name: Commit updated traffic data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add traffic/
+          # Only commit if there's actually something new
+          git diff --cached --quiet || git commit -m "chore: update traffic data [skip ci]"
+          git push

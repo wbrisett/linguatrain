@@ -774,8 +774,25 @@ end
 # YAML Loading
 # -----------------------------
 
+# Psych/YAML 1.1 can parse unquoted clock-like values such as 7:10 as
+# sexagesimal integers (25800). Linguatrain treats prompts/answers as study
+# text, so protect clock strings before loading the YAML document.
+def load_yaml_preserving_clock_strings(path)
+  text = File.read(path)
+
+  protected_text = text.gsub(/(^\s*-\s*)(\d{1,2}:\d{2})(\s*(?:#.*)?$)/) do
+    %(#{$1}'#{$2}'#{$3})
+  end
+
+  protected_text = protected_text.gsub(/(^\s*[^#\s][^:\n]*:\s*)(\d{1,2}:\d{2})(\s*(?:#.*)?$)/) do
+    %(#{$1}'#{$2}'#{$3})
+  end
+
+  YAML.load(protected_text)
+end
+
 def load_pack(path)
-  data = YAML.load_file(path)
+  data = load_yaml_preserving_clock_strings(path)
 
   raw_entries =
     if data.is_a?(Array)

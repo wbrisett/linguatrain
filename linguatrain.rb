@@ -980,22 +980,41 @@ def load_pack(path)
     { meta: symbolize_keys_deep(pack_meta), transform_entries: transform_entries }
 
   elsif drill_type == "conjugate"
-    persons =
+    person_defs =
       case persons_v
       when Array
-        persons_v.map { |x| x.to_s.strip }.reject(&:empty?)
+        persons_v.map do |x|
+          if x.is_a?(Hash)
+            key = (x["key"] || x[:key] || x["person"] || x[:person]).to_s.strip
+            next nil if key.empty?
+            { key: key, gloss: (x["gloss"] || x[:gloss] || x["english"] || x[:english] || "").to_s.strip }
+          else
+            key = x.to_s.strip
+            next nil if key.empty?
+            { key: key, gloss: "" }
+          end
+        end.compact
       else
         []
       end
 
-    raise "Invalid conjugate pack: missing persons list" if persons.empty?
+    raise "Invalid conjugate pack: missing persons list" if person_defs.empty?
+
+    persons = person_defs.map { |p| p[:key] }
 
     conjugate_entries = raw_entries.map do |entry|
       entry_id = entry["id"] || entry[:id]
       lemma_v = entry["lemma"] || entry[:lemma] || entry["verb"] || entry[:verb]
       gloss_v = entry["gloss"] || entry[:gloss] || entry["english"] || entry[:english]
+      prompt_v = entry["prompt"] || entry[:prompt]
       notes_v = entry["notes"] || entry[:notes]
-      forms_v = entry["forms"] || entry[:forms]
+      forms_v = entry["forms"] || entry[:forms] || entry["present"] || entry[:present]
+      phonetics_v = entry["phonetics"] || entry[:phonetics] || {}
+      lemma_phonetic_v = entry["phonetic"] || entry[:phonetic]
+
+      if (gloss_v.nil? || gloss_v.to_s.strip.empty?) && !prompt_v.nil?
+        gloss_v = prompt_v.is_a?(Array) ? prompt_v.first : prompt_v
+      end
 
       raise "Invalid conjugate entry: #{entry.inspect}" if lemma_v.nil? || forms_v.nil?
 
@@ -1063,18 +1082,32 @@ def load_pack(path)
 
       gloss_text = gloss_v.nil? ? "" : gloss_v.to_s.strip
 
+      phonetics =
+        if phonetics_v.is_a?(Hash)
+          phonetics_v.each_with_object({}) do |(person, phonetic), out|
+            person_key = person.to_s.strip
+            phonetic_text = phonetic.to_s.strip
+            out[person_key] = phonetic_text unless person_key.empty? || phonetic_text.empty?
+          end
+        else
+          {}
+        end
+
       {
         id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
         lemma: lemma_text,
         gloss: gloss_text,
         notes: notes_v,
-        forms: forms
+        forms: forms,
+        phonetics: phonetics,
+        lemma_phonetic: (lemma_phonetic_v.nil? ? "" : lemma_phonetic_v.to_s.strip)
       }
     end
 
     {
       meta: symbolize_keys_deep(pack_meta),
       conjugate_persons: persons,
+      conjugate_person_defs: person_defs,
       conjugate_entries: conjugate_entries
     }
   else
@@ -1239,17 +1272,33 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
     ordered_persons = ordered_persons.shuffle if shuffle_persons
 
     ordered_persons.map do |person|
-      person_forms = entry[:forms][person] || entry[:forms][person.to_sym] || {}
+      # Support both string and hash person definitions
+      if person.is_a?(Hash)
+        person_key = (person[:key] || person["key"]).to_s.strip
+        person_gloss = (person[:gloss] || person["gloss"] || "").to_s.strip
+      else
+        person_key = person.to_s.strip
+        person_gloss = ""
+      end
+
+      person_forms = entry[:forms][person_key] || entry[:forms][person_key.to_sym] || {}
 
       {
         entry_id: entry[:id],
-        person: person.to_s,
+        person: person_key,
+        person_gloss: person_gloss,
         lemma: entry[:lemma].to_s,
         gloss: entry[:gloss].to_s,
         notes: entry[:notes],
+        phonetic: (entry[:phonetics] || {})[person_key].to_s,
+        lemma_phonetic: entry[:lemma_phonetic].to_s,
         forms: {
-          positive: Array(person_forms[:positive] || person_forms["positive"]).map { |x| x.to_s.strip }.reject(&:empty?),
-          negative: Array(person_forms[:negative] || person_forms["negative"]).map { |x| x.to_s.strip }.reject(&:empty?)
+          positive: Array(person_forms[:positive] || person_forms["positive"])
+                      .map { |x| x.to_s.strip }
+                      .reject(&:empty?),
+          negative: Array(person_forms[:negative] || person_forms["negative"])
+                      .map { |x| x.to_s.strip }
+                      .reject(&:empty?)
         }
       }
     end
@@ -1702,18 +1751,23 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say
       say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
       say
-      say render_cue_line(item[:person])
-      say render_cue_line(item[:lemma])
-      gloss = item[:gloss].to_s.strip
-      say render_gloss_line(gloss) unless gloss.empty?
+      say render_cue_line("Person: #{conjugate_person_display(item)}")
+      say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+      lemma_phonetic = item[:lemma_phonetic].to_s.strip
+      say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
       say
       say render_instruction_line(conjugate_instruction_label(ui, "positive"))
-      say
-      say "#{target_label(ui)}: #{positive_answers.join(' / ')}"
+      positive_display = positive_answers.join(' / ')
+      positive_conjugated = "#{item[:person]} #{positive_answers.first}"
+      say "#{target_label(ui)}: #{positive_display} (#{positive_conjugated})"
+      phonetic = item[:phonetic].to_s.strip
+      say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
       say
       say render_instruction_line(conjugate_instruction_label(ui, "negative"))
       say
-      say "#{target_label(ui)}: #{negative_answers.join(' / ')}"
+      negative_display = negative_answers.join(' / ')
+      negative_conjugated = "#{item[:person]} #{negative_answers.first}"
+      say "#{target_label(ui)}: #{negative_display} (#{negative_conjugated})"
       say
 
       if listen
@@ -1752,17 +1806,21 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
         say
         say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
         say
-        say render_cue_line(item[:person])
-        say render_cue_line(item[:lemma])
-        gloss = item[:gloss].to_s.strip
-        say render_gloss_line(gloss) unless gloss.empty?
+        say render_cue_line("Person: #{conjugate_person_display(item)}")
+        say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+        lemma_phonetic = item[:lemma_phonetic].to_s.strip
+        say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
         say
         say render_instruction_line(conjugate_instruction_label(ui, current_polarity))
         say
 
         prompt("(Enter to reveal; q to quit): ")
         say
-        say "#{target_label(ui)}: #{expected.join(' / ')}"
+        expected_display = expected.join(' / ')
+        expected_conjugated = "#{item[:person]} #{expected.first}"
+        say "#{target_label(ui)}: #{expected_display} (#{expected_conjugated})"
+        phonetic = item[:phonetic].to_s.strip
+        say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
         say
 
         if listen
@@ -1875,7 +1933,17 @@ def conjugate_instruction_label(ui, polarity)
   end
 end
 
+def conjugate_person_display(item)
+  person = item[:person].to_s.strip
+  gloss = item[:person_gloss].to_s.strip
+  gloss.empty? ? person : "#{person} — #{gloss}"
+end
 
+def conjugate_verb_display(item)
+  lemma = item[:lemma].to_s.strip
+  gloss = item[:gloss].to_s.strip
+  gloss.empty? ? lemma : "#{lemma} — #{gloss}"
+end
 
 def conjugate_polarities_for_item(item, requested)
   requested = requested.to_s.strip.downcase
@@ -1913,10 +1981,11 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
     say
     say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
     say
-    say render_cue_line(item[:person])
-    say render_cue_line(item[:lemma])
-    gloss = item[:gloss].to_s.strip
-    say render_gloss_line(gloss) unless gloss.empty?
+    say render_cue_line("Person: #{conjugate_person_display(item)}")
+    say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+    lemma_phonetic = item[:lemma_phonetic].to_s.strip
+    say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
+    say unless lemma_phonetic.empty?
     say
 
     conjugate_polarities_for_item(item, polarity).each do |current_polarity|
@@ -1936,6 +2005,8 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
           say(ui[:correct] || "✅ Correct!")
           others = expected - [matched]
           say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          phonetic = item[:phonetic].to_s.strip
+          say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
           answer_ok = true
           break
         else
@@ -1946,6 +2017,8 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
       unless answer_ok
         stats[:failed] += 1
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected.join(' / ')}"
+        phonetic = item[:phonetic].to_s.strip
+        say "#{format_phonetic(ui, phonetic)}" unless phonetic.empty?
         missed << {
           person: item[:person],
           lemma: item[:lemma],
@@ -2685,6 +2758,7 @@ words = pack[:words] || []
 transform_entries = pack[:transform_entries] || []
 conjugate_entries = pack[:conjugate_entries] || []
 conjugate_persons = pack[:conjugate_persons] || []
+conjugate_person_defs = pack[:conjugate_person_defs] || conjugate_persons
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
@@ -2746,7 +2820,7 @@ if options[:transform]
 elsif options[:conjugate]
   shuffle_persons = !!pack_meta[:shuffle_persons]
   selected_entries = choose_conjugate_entries(conjugate_entries, options[:count])
-  selected = flatten_conjugate_items(selected_entries, conjugate_persons, shuffle_persons: shuffle_persons)
+  selected = flatten_conjugate_items(selected_entries, conjugate_person_defs, shuffle_persons: shuffle_persons)
 elsif srs_enabled
   srs["meta"] ||= {}
   srs["meta"]["source_file"] = File.expand_path(yaml_path)

@@ -2,204 +2,214 @@
 
 ## Purpose
 
-Conjugate packs define verb-conjugation drills for Linguatrain. These
-packs are used with `--conjugate` and are designed for grammar practice
-where the learner is given:
+Conjugate packs define verb-conjugation drills for Linguatrain. These packs are used with `--conjugate` and are designed for grammar practice where the learner is given:
 
--   a person
--   a lemma (dictionary form)
--   an optional gloss (meaning)
--   one or more expected conjugated forms
+- a person
+- a person gloss (e.g., hän — he/she)
+- a lemma (dictionary form)
+- a verb meaning
+- one or more expected conjugated forms
+- optional phonetic pronunciation aids
 
 The format supports:
 
--   positive-only drills
--   negative-only drills
--   both positive and negative drills
--   multiple accepted answers for the same form
--   backward compatibility with earlier positive-only format
+- positive-only drills
+- negative-only drills
+- both positive and negative drills
+- multiple accepted answers
+- person glosses for clarity
+- lemma and per-form phonetics
+- backward compatibility
 
-------------------------------------------------------------------------
+---
 
 ## Top-level structure
 
-A conjugate pack uses this general structure:
-
-``` yaml
+```yaml
 metadata:
-  id: "english_read_conjugation"
-  pack_name: "English Verb Example"
-  drill_type: "conjugate"
-  shuffle_persons: true
+  id: fi_verbs_type1_2_present_full
+  name: Finnish Verb Types 1 & 2 Present Tense Full
+  version: "1.3"
+  drill_type: conjugate
+  schema_version: 1
+  shuffle_persons: false
 
 persons:
-  - I
-  - you
-  - he/she
-  - we
-  - you (plural)
-  - they
+  - key: minä
+    gloss: I
+  - key: sinä
+    gloss: you singular
+  - key: hän
+    gloss: he/she
+  - key: me
+    gloss: we
+  - key: te
+    gloss: you plural
+  - key: he
+    gloss: they
 
 entries:
-  - id: "001"
-    lemma: "to read"
-    gloss: "to read"
-    forms:
-      I:
-        positive:
-          - "I read"
-        negative:
-          - "I do not read"
-          - "I don't read"
-```
-
-------------------------------------------------------------------------
-
-## Example (Finnish)
-
-``` yaml
-metadata:
-  id: "pack_id"
-  pack_name: "Human-readable name"
-  drill_type: "conjugate"
-  shuffle_persons: true
-
-persons:
-  - minä
-  - sinä
-  - hän
-  - me
-  - te
-  - he
-
-entries:
-  - id: "entry_id"
-    lemma: "lukea"
-    gloss: "to read"
-    forms:
+  - lemma: ajaa
+    prompt:
+      - to drive
+    type: 1
+    phonetic: AH-yah-ah
+    present:
       minä:
-        positive:
-          - "Minä luen"
-          - "Luen"
-        negative:
-          - "Minä en lue"
-          - "En lue"
+        positive: ajan
+        negative: en aja
+      sinä:
+        positive: ajat
+        negative: et aja
+      hän:
+        positive: ajaa
+        negative: ei aja
+      me:
+        positive: ajamme
+        negative: emme aja
+      te:
+        positive: ajatte
+        negative: ette aja
+      he:
+        positive: ajavat
+        negative: eivät aja
+    phonetics:
+      minä: AH-yahn
+      sinä: AH-yaht
+      hän: AH-yah
+      me: AH-yam-meh
+      te: AH-yat-teh
+      he: AH-ya-vaht
 ```
 
-------------------------------------------------------------------------
+---
 
-## Required top-level keys
+## Persons
 
-### metadata
+Preferred structure:
 
-Required: - id - drill_type
+```yaml
+persons:
+  - key: minä
+    gloss: I
+```
 
-Recommended: - pack_name - shuffle_persons
+The `key` must match conjugation keys. The `gloss` is optional but recommended.
 
-------------------------------------------------------------------------
+---
 
-### persons
-
-Ordered list of persons. Must match forms exactly.
-
-------------------------------------------------------------------------
-
-### entries
+## Entries
 
 Each entry represents one verb.
 
-------------------------------------------------------------------------
+Recommended fields:
 
-## Entry structure
+- lemma
+- prompt
+- type (optional)
+- phonetic
+- present or forms
+- phonetics
 
-Required: - id - lemma - forms
+---
 
-Recommended: - gloss
+## Prompt
 
-Optional: - notes
+Defines the meaning:
 
-------------------------------------------------------------------------
-
-### lemma
-
-Dictionary form of the verb.
-
-------------------------------------------------------------------------
-
-### gloss
-
-Short meaning shown during drills.
-
-------------------------------------------------------------------------
-
-### forms
-
-Each person must include:
-
--   positive
--   negative
-
-------------------------------------------------------------------------
-
-## Multiple accepted answers
-
-Use arrays for multiple valid answers.
-
-------------------------------------------------------------------------
-
-## Formatting rules
-
--   No trailing punctuation
--   Keep person labels consistent
--   Use gloss consistently
-
-------------------------------------------------------------------------
-
-## Example pack
-
-``` yaml
-metadata:
-  id: "sm2_kpt_conjugation"
-  pack_name: "Suomen Mestari 2 — KPT Conjugation"
-  drill_type: "conjugate"
-  shuffle_persons: true
-
-persons:
-  - minä
-  - sinä
-  - hän
-  - me
-  - te
-  - he
-
-entries:
-  - id: "kpt_lukea"
-    lemma: "lukea"
-    gloss: "to read"
-    forms:
-      minä:
-        positive:
-          - "Minä luen"
-          - "Luen"
-        negative:
-          - "Minä en lue"
-          - "En lue"
+```yaml
+prompt:
+  - to drive
 ```
 
-------------------------------------------------------------------------
+---
+
+## Forms
+
+Supports both `present` and `forms`.
+
+### Positive-only shorthand
+
+```yaml
+present:
+  minä: ajan
+```
+
+### Full structure
+
+```yaml
+present:
+  minä:
+    positive: ajan
+    negative: en aja
+```
+
+Multiple answers:
+
+```yaml
+positive:
+  - ajan
+  - minä ajan
+```
+
+---
+
+## Phonetics
+
+### Lemma-level
+
+```yaml
+phonetic: AH-yah-ah
+```
+
+### Per-form
+
+```yaml
+phonetics:
+  minä: AH-yahn
+```
+
+---
 
 ## CLI usage
 
-``` bash
+```bash
 ruby linguatrain.rb pack.yaml all --conjugate
 ruby linguatrain.rb pack.yaml all --conjugate --negative
 ruby linguatrain.rb pack.yaml all --conjugate --both
+ruby linguatrain.rb pack.yaml all --conjugate --study
 ```
 
-------------------------------------------------------------------------
+---
 
 ## Behavior
 
--   --conjugate → positive
--   --negative → negative
--   --both → positive + negative
+- --conjugate → positive
+- --negative → negative
+- --both → both
+- --study → reveal mode
+
+---
+
+## Study mode output example
+
+```
+Conjugate the verb.
+
+[ Person: hän — he/she ]
+[ Verb: ajaa — to drive ]
+🗣 ääntämys: AH-yah-ah
+
+Finnish: ajaa (hän ajaa)
+   (🗣 ääntämys: AH-yah)
+```
+
+---
+
+## Formatting rules
+
+- Match person keys exactly
+- Use prompt for meaning
+- Use phonetic fields consistently
+- Use arrays for multiple answers
+- Avoid punctuation in answers

@@ -1086,8 +1086,20 @@ def load_pack(path)
         if phonetics_v.is_a?(Hash)
           phonetics_v.each_with_object({}) do |(person, phonetic), out|
             person_key = person.to_s.strip
-            phonetic_text = phonetic.to_s.strip
-            out[person_key] = phonetic_text unless person_key.empty? || phonetic_text.empty?
+            next if person_key.empty?
+
+            if phonetic.is_a?(Hash)
+              positive_phonetic = (phonetic["positive"] || phonetic[:positive]).to_s.strip
+              negative_phonetic = (phonetic["negative"] || phonetic[:negative]).to_s.strip
+
+              values = {}
+              values[:positive] = positive_phonetic unless positive_phonetic.empty?
+              values[:negative] = negative_phonetic unless negative_phonetic.empty?
+              out[person_key] = values unless values.empty?
+            else
+              phonetic_text = phonetic.to_s.strip
+              out[person_key] = { positive: phonetic_text } unless phonetic_text.empty?
+            end
           end
         else
           {}
@@ -1290,7 +1302,7 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
         lemma: entry[:lemma].to_s,
         gloss: entry[:gloss].to_s,
         notes: entry[:notes],
-        phonetic: (entry[:phonetics] || {})[person_key].to_s,
+        phonetics: (entry[:phonetics] || {})[person_key] || {},
         lemma_phonetic: entry[:lemma_phonetic].to_s,
         forms: {
           positive: Array(person_forms[:positive] || person_forms["positive"])
@@ -1709,6 +1721,29 @@ def run_transform_study(selected, ui:, listen: false, piper_bin: nil, piper_mode
   say "Done."
 end
 
+def conjugate_person_display(item, show_gloss: true)
+  person = item[:person].to_s.strip
+  gloss = item[:person_gloss].to_s.strip
+  return person unless show_gloss
+  gloss.empty? ? person : "#{person} — #{gloss}"
+end
+
+def conjugate_verb_display(item, show_gloss: true)
+  lemma = item[:lemma].to_s.strip
+  gloss = item[:gloss].to_s.strip
+  return lemma unless show_gloss
+  gloss.empty? ? lemma : "#{lemma} — #{gloss}"
+end
+
+def conjugate_phonetic_for(item, polarity)
+  phonetics = item[:phonetics]
+
+  if phonetics.is_a?(Hash)
+    return (phonetics[polarity.to_sym] || phonetics[polarity.to_s] || "").to_s.strip
+  end
+
+  phonetics.to_s.strip
+end
 
 def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, piper_bin: nil, piper_model: nil, tts_template: DEFAULT_TTS_TEMPLATE, printed_voice: false)
   say
@@ -1751,23 +1786,25 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say
       say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
       say
-      say render_cue_line("Person: #{conjugate_person_display(item)}")
-      say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+      say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
+      say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
       lemma_phonetic = item[:lemma_phonetic].to_s.strip
-      say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
-      say
+      if show_phonetic?(ui) && !lemma_phonetic.empty?
+        say render_gloss_line(format_phonetic(ui, lemma_phonetic))
+        say
+      end
       say render_instruction_line(conjugate_instruction_label(ui, "positive"))
-      positive_display = positive_answers.join(' / ')
-      positive_conjugated = "#{item[:person]} #{positive_answers.first}"
-      say "#{target_label(ui)}: #{positive_display} (#{positive_conjugated})"
-      phonetic = item[:phonetic].to_s.strip
-      say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
+      positive_display = conjugate_answer_display(item, positive_answers, show_conjugated_form?(ui))
+      say "#{target_label(ui)}: #{positive_display}"
+      phonetic = conjugate_phonetic_for(item, "positive")
+      say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
       say
       say render_instruction_line(conjugate_instruction_label(ui, "negative"))
-      say
-      negative_display = negative_answers.join(' / ')
-      negative_conjugated = "#{item[:person]} #{negative_answers.first}"
-      say "#{target_label(ui)}: #{negative_display} (#{negative_conjugated})"
+      
+      negative_display = conjugate_answer_display(item, negative_answers, show_conjugated_form?(ui))
+      say "#{target_label(ui)}: #{negative_display}"
+      phonetic = conjugate_phonetic_for(item, "negative")
+      say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
       say
 
       if listen
@@ -1806,21 +1843,20 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
         say
         say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
         say
-        say render_cue_line("Person: #{conjugate_person_display(item)}")
-        say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+        say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
+        say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
         lemma_phonetic = item[:lemma_phonetic].to_s.strip
-        say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
+        say render_gloss_line(format_phonetic(ui, lemma_phonetic)) if show_phonetic?(ui) && !lemma_phonetic.empty?
         say
         say render_instruction_line(conjugate_instruction_label(ui, current_polarity))
         say
 
         prompt("(Enter to reveal; q to quit): ")
         say
-        expected_display = expected.join(' / ')
-        expected_conjugated = "#{item[:person]} #{expected.first}"
-        say "#{target_label(ui)}: #{expected_display} (#{expected_conjugated})"
-        phonetic = item[:phonetic].to_s.strip
-        say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
+        expected_display = conjugate_answer_display(item, expected, show_conjugated_form?(ui))
+        say "#{target_label(ui)}: #{expected_display}"
+        phonetic = conjugate_phonetic_for(item, current_polarity)
+        say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
         say
 
         if listen
@@ -1933,16 +1969,26 @@ def conjugate_instruction_label(ui, polarity)
   end
 end
 
-def conjugate_person_display(item)
-  person = item[:person].to_s.strip
-  gloss = item[:person_gloss].to_s.strip
-  gloss.empty? ? person : "#{person} — #{gloss}"
+
+
+def show_gloss?(ui)
+  !ui.is_a?(Hash) || ui.fetch(:show_gloss, true) != false
 end
 
-def conjugate_verb_display(item)
-  lemma = item[:lemma].to_s.strip
-  gloss = item[:gloss].to_s.strip
-  gloss.empty? ? lemma : "#{lemma} — #{gloss}"
+def show_phonetic?(ui)
+  !ui.is_a?(Hash) || ui.fetch(:show_phonetic, true) != false
+end
+
+def show_conjugated_form?(ui)
+  !ui.is_a?(Hash) || ui.fetch(:show_conjugated_form, true) != false
+end
+
+def conjugate_answer_display(item, answers, show_conjugated_form)
+  base = answers.join(" / ")
+  return base unless show_conjugated_form
+  return base if answers.empty?
+
+  "#{base} (#{item[:person]} #{answers.first})"
 end
 
 def conjugate_polarities_for_item(item, requested)
@@ -1967,28 +2013,40 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
   stats = { correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
-  total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
+  selected_with_polarities = selected.map do |item|
+    [item, conjugate_polarities_for_item(item, polarity)]
+  end.reject do |_item, polarities|
+    polarities.empty?
+  end
 
-  verbs_count = selected.map { |i| i[:lemma] }.uniq.length
+  total_steps = selected_with_polarities.sum { |_item, polarities| polarities.length }
+
+  if total_steps.zero?
+    raise "No #{polarity} conjugation forms found. If this is a conjugate pack, make sure each person uses nested positive/negative forms instead of positive-only shorthand."
+  end
+
+  verbs_count = selected_with_polarities.map { |item, _polarities| item[:lemma] }.uniq.length
 
   say
-  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{selected.length} items) (mode: conjugate, #{polarity})"
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{total_steps} items) (mode: conjugate, #{polarity})"
   say "-" * 70
 
-  selected.each_with_index do |item, idx|
+  selected_with_polarities.each_with_index do |(item, polarities), idx|
     say
     say "[#{idx + 1}/#{selected.length}]"
     say
     say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
     say
-    say render_cue_line("Person: #{conjugate_person_display(item)}")
-    say render_cue_line("Verb: #{conjugate_verb_display(item)}")
+    say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
+    say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
     lemma_phonetic = item[:lemma_phonetic].to_s.strip
-    say render_gloss_line(format_phonetic(ui, lemma_phonetic)) unless lemma_phonetic.empty?
-    say unless lemma_phonetic.empty?
+    if show_phonetic?(ui) && !lemma_phonetic.empty?
+      say render_gloss_line(format_phonetic(ui, lemma_phonetic))
+      say
+    end
     say
 
-    conjugate_polarities_for_item(item, polarity).each do |current_polarity|
+    polarities.each do |current_polarity|
       instruction = conjugate_instruction_label(ui, current_polarity)
       expected = Array(item.dig(:forms, current_polarity.to_sym) || item.dig(:forms, current_polarity)).map { |x| x.to_s.strip }.reject(&:empty?)
       next if expected.empty?
@@ -2005,8 +2063,8 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
           say(ui[:correct] || "✅ Correct!")
           others = expected - [matched]
           say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
-          phonetic = item[:phonetic].to_s.strip
-          say "   (#{format_phonetic(ui, phonetic)})" unless phonetic.empty?
+          phonetic = conjugate_phonetic_for(item, current_polarity)
+          say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
           answer_ok = true
           break
         else
@@ -2017,8 +2075,8 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive")
       unless answer_ok
         stats[:failed] += 1
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected.join(' / ')}"
-        phonetic = item[:phonetic].to_s.strip
-        say "#{format_phonetic(ui, phonetic)}" unless phonetic.empty?
+        phonetic = conjugate_phonetic_for(item, current_polarity)
+        say "#{format_phonetic(ui, phonetic)}" if show_phonetic?(ui) && !phonetic.empty?
         missed << {
           person: item[:person],
           lemma: item[:lemma],

@@ -20,6 +20,7 @@ Everything runs directly in your terminal.
 - Verb conjugation drills (`--conjugate`)
 - Conversation simulation (`--conversation`)
 - Speech practice using Whisper (`--speak`)
+- Shadow practice using Piper + Whisper (`--shadow`)
 - Optional text-to-speech with Piper (`--listen`)
 - Lightweight spaced repetition (`--srs`)
 - Fully localizable interface
@@ -90,7 +91,7 @@ Linguatrain is designed around the idea that **language learning progresses thro
 Typical progression:
 
 ```
-study → typing → listen → match-game → transform → conjugate → conversation → speak
+study → typing → listen → match-game → transform → conjugate → conversation → speak → shadow
 ```
 
 | Stage | Skill Being Trained | Linguatrain Mode |
@@ -103,6 +104,7 @@ study → typing → listen → match-game → transform → conjugate → conve
 | Morphology | Producing correct verb forms | `--conjugate` |
 | Dialogue | Responding in conversational context | `--conversation` |
 | Speech production | Speaking answers aloud | `--speak` |
+| Pronunciation shadowing | Listening to the target phrase, then repeating it aloud | `--shadow` |
 
 These modes can be layered together to progressively increase difficulty and realism.
 
@@ -117,6 +119,7 @@ Example beginner progression:
 --conjugate
 --conversation
 --speak
+--shadow
 ```
 
 ---
@@ -425,6 +428,40 @@ English: How are you?
 Installation instructions for Whisper are available in:
 
 `docs/whisper-installation.md`
+
+---
+
+### Shadow Target Phrases (Piper + Whisper)
+
+Shadow mode combines local text-to-speech and speech recognition:
+
+1. Piper plays the target-language phrase.
+2. Linguatrain shows the target phrase and phonetic guide when available.
+3. You repeat the phrase aloud.
+4. Whisper transcribes what you said.
+5. Linguatrain compares the transcription to the accepted answers.
+
+Example:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --shadow
+```
+
+For reading passages or classroom transcripts, shadow mode follows pack order instead of shuffling entries. This makes it useful for sentence-by-sentence pronunciation practice.
+
+You can limit the session to the first few entries:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml 5 --shadow
+```
+
+For longer sentences, increase the recording window:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/fi_basic_phrases.yaml --shadow --speech-duration 8
+```
+
+Shadow mode requires both Piper and Whisper settings. It cannot be combined with `--listen`, `--speak`, `--match-game`, `--conversation`, `--transform`, or `--conjugate`.
 
 ---
 
@@ -792,9 +829,9 @@ All configuration sections are optional.
 
 If omitted, English defaults are used.
 
-### Whisper configuration (for `--speak`)
+### Whisper configuration (for `--speak` and `--shadow`)
 
-If you want to use speech recognition, configure Whisper:
+If you want to use speech recognition with `--speak` or `--shadow`, configure Whisper:
 
 ```yaml
 whisper:
@@ -864,6 +901,7 @@ flowchart TD
   D -- conjugate --> H["Conjugation flow"]
   D -- conversation --> I["Conversation flow"]
   D -- speak --> J["Speech flow"]
+  D -- shadow --> K["Shadow flow"]
 
   E --> E1["Display entry"]
   E1 --> E2{"Listening enabled?"}
@@ -914,6 +952,14 @@ flowchart TD
   J4 --> J5{"SRS enabled?"}
   J5 -- yes --> J6["Update SRS state"]
   J5 -- no --> J7["Skip SRS"]
+
+  K --> K1["Select entries in pack order"]
+  K1 --> K2["Show target + phonetic"]
+  K2 --> K3["Piper speak target"]
+  K3 --> K4["Record learner speech"]
+  K4 --> K5["Whisper transcription"]
+  K5 --> K6["Compare transcript to answers"]
+  K6 --> K7["Score attempts"]
 ```
 ------------------------------------------------------------------------
 

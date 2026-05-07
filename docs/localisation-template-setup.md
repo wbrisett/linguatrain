@@ -38,6 +38,7 @@ ui:
   conjugate_prompt:
   conjugate_positive_instruction:
   conjugate_negative_instruction:
+  conjugate_category_prompt:
   show_gloss:
   show_phonetic:
   show_conjugated_form:
@@ -195,6 +196,7 @@ ui:
   conjugate_prompt: "Taivuta verbi."
   conjugate_positive_instruction: "Anna myönteinen muoto:"
   conjugate_negative_instruction: "Anna kielteinen muoto:"
+  conjugate_category_prompt: "Verbityyppi:"
   show_gloss: true
   show_phonetic: true
   show_conjugated_form: true
@@ -214,6 +216,7 @@ ui:
   conjugate_prompt: "Taivuta verbi."
   conjugate_positive_instruction: "Anna myönteinen muoto:"
   conjugate_negative_instruction: "Anna kielteinen muoto:"
+  conjugate_category_prompt: "Verbityyppi:"
 ```
 
 #### printed_voice_prefix
@@ -274,6 +277,24 @@ Default fallback:
 
 ```text
 Use the negative form:
+```
+
+#### conjugate_category_prompt
+
+Used by conjugation study/drill flows when `--drill-category` is enabled.
+
+Default fallback:
+
+```text
+Verb category:
+```
+
+Example output:
+
+```text
+Verb category:
+> type 1
+✅ Oikein!
 ```
 
 ### ui display controls

@@ -1,1633 +1,2291 @@
 metadata:
   id: fi_50_common_verbs_conjugate
-  version: 1
-  name: Finnish 50 Common Verbs – Conjugation Pack
+  version: '2.0'
+  name: Finnish 50 Common Verbs – Conjugation Pack (Full Schema)
   drill_type: conjugate
   schema_version: 1
   shuffle_persons: true
-  
 persons:
-- minä
-- sinä
-- hän
-- me
-- te
-- he
+- key: minä
+  gloss: I
+- key: sinä
+  gloss: you singular
+- key: hän
+  gloss: he/she
+- key: me
+  gloss: we
+- key: te
+  gloss: you plural
+- key: he
+  gloss: they
 entries:
 - id: '001'
   lemma: levätä
   forms:
     minä:
-      positive:
-      - lepään
-      negative:
-      - en lepää
+      positive: lepään
+      negative: en lepää
     sinä:
-      positive:
-      - lepäät
-      negative:
-      - et lepää
+      positive: lepäät
+      negative: et lepää
     hän:
-      positive:
-      - lepää
-      negative:
-      - ei lepää
+      positive: lepää
+      negative: ei lepää
     me:
-      positive:
-      - lepäämme
-      negative:
-      - emme lepää
+      positive: lepäämme
+      negative: emme lepää
     te:
-      positive:
-      - lepäätte
-      negative:
-      - ette lepää
+      positive: lepäätte
+      negative: ette lepää
     he:
-      positive:
-      - lepäävät
-      negative:
-      - eivät lepää
+      positive: lepäävät
+      negative: eivät lepää
+  prompt:
+  - to rest
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Le-hvä-tä
+  phonetics:
+    minä:
+      positive: Le-hpää-n
+      negative: en Le-hpää
+    sinä:
+      positive: Le-hpää-t
+      negative: et Le-hpää
+    hän:
+      positive: Le-hpää
+      negative: ei Le-hpää
+    me:
+      positive: Le-hpää-m-me-hh
+      negative: em-meh Le-hpää
+    te:
+      positive: Le-hpää-t-te-hh
+      negative: et-teh Le-hpää
+    he:
+      positive: Le-hpää-vä-t
+      negative: ei-vät Le-hpää
 - id: '002'
   lemma: kokata
   forms:
     minä:
-      positive:
-      - kokkaan
-      negative:
-      - en kokkaa
+      positive: kokkaan
+      negative: en kokkaa
     sinä:
-      positive:
-      - kokkaat
-      negative:
-      - et kokkaa
+      positive: kokkaat
+      negative: et kokkaa
     hän:
-      positive:
-      - kokkaa
-      negative:
-      - ei kokkaa
+      positive: kokkaa
+      negative: ei kokkaa
     me:
-      positive:
-      - kokkaamme
-      negative:
-      - emme kokkaa
+      positive: kokkaamme
+      negative: emme kokkaa
     te:
-      positive:
-      - kokkaatte
-      negative:
-      - ette kokkaa
+      positive: kokkaatte
+      negative: ette kokkaa
     he:
-      positive:
-      - kokkaavat
-      negative:
-      - eivät kokkaa
+      positive: kokkaavat
+      negative: eivät kokkaa
+  prompt:
+  - to cook
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Ko-hka-hta-h
+  phonetics:
+    minä:
+      positive: Ko-hkka-hh-a-hhn
+      negative: en Ko-hkka-hh-a-hh
+    sinä:
+      positive: Ko-hkka-hh-a-hht
+      negative: et Ko-hkka-hh-a-hh
+    hän:
+      positive: Ko-hkka-hh-a-hh
+      negative: ei Ko-hkka-hh-a-hh
+    me:
+      positive: Ko-hkka-hh-a-hhm-me-hh
+      negative: em-meh Ko-hkka-hh-a-hh
+    te:
+      positive: Ko-hkka-hh-a-hht-te-hh
+      negative: et-teh Ko-hkka-hh-a-hh
+    he:
+      positive: Ko-hkka-hh-a-hhva-ht
+      negative: ei-vät Ko-hkka-hh-a-hh
 - id: '003'
   lemma: palata
   forms:
     minä:
-      positive:
-      - palaan
-      negative:
-      - en palaa
+      positive: palaan
+      negative: en palaa
     sinä:
-      positive:
-      - palaat
-      negative:
-      - et palaa
+      positive: palaat
+      negative: et palaa
     hän:
-      positive:
-      - palaa
-      negative:
-      - ei palaa
+      positive: palaa
+      negative: ei palaa
     me:
-      positive:
-      - palaamme
-      negative:
-      - emme palaa
+      positive: palaamme
+      negative: emme palaa
     te:
-      positive:
-      - palaatte
-      negative:
-      - ette palaa
+      positive: palaatte
+      negative: ette palaa
     he:
-      positive:
-      - palaavat
-      negative:
-      - eivät palaa
+      positive: palaavat
+      negative: eivät palaa
+  prompt:
+  - to return
+  - to come back
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Pa-hla-hta-h
+  phonetics:
+    minä:
+      positive: Pa-hla-hh-a-hhn
+      negative: en Pa-hla-hh-a-hh
+    sinä:
+      positive: Pa-hla-hh-a-hht
+      negative: et Pa-hla-hh-a-hh
+    hän:
+      positive: Pa-hla-hh-a-hh
+      negative: ei Pa-hla-hh-a-hh
+    me:
+      positive: Pa-hla-hh-a-hhm-me-hh
+      negative: em-meh Pa-hla-hh-a-hh
+    te:
+      positive: Pa-hla-hh-a-hht-te-hh
+      negative: et-teh Pa-hla-hh-a-hh
+    he:
+      positive: Pa-hla-hh-a-hhva-ht
+      negative: ei-vät Pa-hla-hh-a-hh
 - id: '004'
   lemma: kylpeä
   forms:
     minä:
-      positive:
-      - kylven
-      negative:
-      - en kylve
+      positive: kylven
+      negative: en kylve
     sinä:
-      positive:
-      - kylvet
-      negative:
-      - et kylve
+      positive: kylvet
+      negative: et kylve
     hän:
-      positive:
-      - kylpee
-      negative:
-      - ei kylve
+      positive: kylpee
+      negative: ei kylve
     me:
-      positive:
-      - kylvemme
-      negative:
-      - emme kylve
+      positive: kylvemme
+      negative: emme kylve
     te:
-      positive:
-      - kylvette
-      negative:
-      - ette kylve
+      positive: kylvette
+      negative: ette kylve
     he:
-      positive:
-      - kylpevät
-      negative:
-      - eivät kylve
+      positive: kylpevät
+      negative: eivät kylve
+  prompt:
+  - to bathe
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Ky-lpe-hä
+  phonetics:
+    minä:
+      positive: Ky-lve-hn
+      negative: en Ky-lve-h
+    sinä:
+      positive: Ky-lve-ht
+      negative: et Ky-lve-h
+    hän:
+      positive: Ky-lpe-hh-e-hh
+      negative: ei Ky-lve-h
+    me:
+      positive: Ky-lve-hm-me-hh
+      negative: em-meh Ky-lve-h
+    te:
+      positive: Ky-lve-ht-te-hh
+      negative: et-teh Ky-lve-h
+    he:
+      positive: Ky-lpe-hvä-t
+      negative: ei-vät Ky-lve-h
 - id: '005'
   lemma: nukkua
   forms:
     minä:
-      positive:
-      - nukun
-      negative:
-      - en nuku
+      positive: nukun
+      negative: en nuku
     sinä:
-      positive:
-      - nukut
-      negative:
-      - et nuku
+      positive: nukut
+      negative: et nuku
     hän:
-      positive:
-      - nukkuu
-      negative:
-      - ei nuku
+      positive: nukkuu
+      negative: ei nuku
     me:
-      positive:
-      - nukumme
-      negative:
-      - emme nuku
+      positive: nukumme
+      negative: emme nuku
     te:
-      positive:
-      - nukutte
-      negative:
-      - ette nuku
+      positive: nukutte
+      negative: ette nuku
     he:
-      positive:
-      - nukkuvat
-      negative:
-      - eivät nuku
+      positive: nukkuvat
+      negative: eivät nuku
+  prompt:
+  - to sleep
+  category:
+    key: type1
+    label: Type 1
+  phonetic: NOOK-koo-ah
+  phonetics:
+    minä:
+      positive: NOO-koon
+      negative: en NOO-koo
+    sinä:
+      positive: NOO-koot
+      negative: et NOO-koo
+    hän:
+      positive: NOOK-koo
+      negative: ei NOO-koo
+    me:
+      positive: NOO-koom-meh
+      negative: em-meh NOO-koo
+    te:
+      positive: NOO-koot-teh
+      negative: et-teh NOO-koo
+    he:
+      positive: NOOK-koo-vaht
+      negative: ei-vät NOO-koo
 - id: '006'
   lemma: herätä
   forms:
     minä:
-      positive:
-      - herään
-      negative:
-      - en herää
+      positive: herään
+      negative: en herää
     sinä:
-      positive:
-      - heräät
-      negative:
-      - et herää
+      positive: heräät
+      negative: et herää
     hän:
-      positive:
-      - herää
-      negative:
-      - ei herää
+      positive: herää
+      negative: ei herää
     me:
-      positive:
-      - heräämme
-      negative:
-      - emme herää
+      positive: heräämme
+      negative: emme herää
     te:
-      positive:
-      - heräätte
-      negative:
-      - ette herää
+      positive: heräätte
+      negative: ette herää
     he:
-      positive:
-      - heräävät
-      negative:
-      - eivät herää
+      positive: heräävät
+      negative: eivät herää
+  prompt:
+  - to wake up
+  category:
+    key: type4
+    label: Type 4
+  phonetic: HEH-rä-tä
+  phonetics:
+    minä:
+      positive: HEH-rään
+      negative: en HEH-rää
+    sinä:
+      positive: HEH-räät
+      negative: et HEH-rää
+    hän:
+      positive: HEH-rää
+      negative: ei HEH-rää
+    me:
+      positive: HEH-rääm-meh
+      negative: em-meh HEH-rää
+    te:
+      positive: HEH-räät-teh
+      negative: et-teh HEH-rää
+    he:
+      positive: HEH-rää-vät
+      negative: ei-vät HEH-rää
 - id: '007'
   lemma: tuntea
   forms:
     minä:
-      positive:
-      - tunnen
-      negative:
-      - en tunne
+      positive: tunnen
+      negative: en tunne
     sinä:
-      positive:
-      - tunnet
-      negative:
-      - et tunne
+      positive: tunnet
+      negative: et tunne
     hän:
-      positive:
-      - tuntee
-      negative:
-      - ei tunne
+      positive: tuntee
+      negative: ei tunne
     me:
-      positive:
-      - tunnemme
-      negative:
-      - emme tunne
+      positive: tunnemme
+      negative: emme tunne
     te:
-      positive:
-      - tunnette
-      negative:
-      - ette tunne
+      positive: tunnette
+      negative: ette tunne
     he:
-      positive:
-      - tuntevat
-      negative:
-      - eivät tunne
+      positive: tuntevat
+      negative: eivät tunne
+  prompt:
+  - to know
+  - to feel
+  category:
+    key: type1
+    label: Type 1
+  phonetic: TOON-teh-ah
+  phonetics:
+    minä:
+      positive: TOON-nen
+      negative: en TOON-neh
+    sinä:
+      positive: TOON-net
+      negative: et TOON-neh
+    hän:
+      positive: TOON-teh
+      negative: ei TOON-neh
+    me:
+      positive: TOON-nem-meh
+      negative: em-meh TOON-neh
+    te:
+      positive: TOON-net-teh
+      negative: et-teh TOON-neh
+    he:
+      positive: TOON-teh-vaht
+      negative: ei-vät TOON-neh
 - id: 008
   lemma: piirtää
   forms:
     minä:
-      positive:
-      - piirrän
-      negative:
-      - en piirrä
+      positive: piirrän
+      negative: en piirrä
     sinä:
-      positive:
-      - piirrät
-      negative:
-      - et piirrä
+      positive: piirrät
+      negative: et piirrä
     hän:
-      positive:
-      - piirtää
-      negative:
-      - ei piirrä
+      positive: piirtää
+      negative: ei piirrä
     me:
-      positive:
-      - piirrämme
-      negative:
-      - emme piirrä
+      positive: piirrämme
+      negative: emme piirrä
     te:
-      positive:
-      - piirrätte
-      negative:
-      - ette piirrä
+      positive: piirrätte
+      negative: ette piirrä
     he:
-      positive:
-      - piirtävät
-      negative:
-      - eivät piirrä
+      positive: piirtävät
+      negative: eivät piirrä
+  prompt:
+  - to draw
+  category:
+    key: type1
+    label: Type 1
+  phonetic: PEER-tää
+  phonetics:
+    minä:
+      positive: PEER-rän
+      negative: en PEER-rä
+    sinä:
+      positive: PEER-rät
+      negative: et PEER-rä
+    hän:
+      positive: PEER-tää
+      negative: ei PEER-rä
+    me:
+      positive: PEER-räm-meh
+      negative: em-meh PEER-rä
+    te:
+      positive: PEER-rät-teh
+      negative: et-teh PEER-rä
+    he:
+      positive: PEER-tä-vät
+      negative: ei-vät PEER-rä
 - id: 009
   lemma: laittaa päälle
   forms:
     minä:
-      positive:
-      - laitan päälle
-      negative:
-      - en laita päälle
+      positive: laitan päälle
+      negative: en laita päälle
     sinä:
-      positive:
-      - laitat päälle
-      negative:
-      - et laita päälle
+      positive: laitat päälle
+      negative: et laita päälle
     hän:
-      positive:
-      - laittaa päälle
-      negative:
-      - ei laita päälle
+      positive: laittaa päälle
+      negative: ei laita päälle
     me:
-      positive:
-      - laitamme päälle
-      negative:
-      - emme laita päälle
+      positive: laitamme päälle
+      negative: emme laita päälle
     te:
-      positive:
-      - laitatte päälle
-      negative:
-      - ette laita päälle
+      positive: laitatte päälle
+      negative: ette laita päälle
     he:
-      positive:
-      - laittavat päälle
-      negative:
-      - eivät laita päälle
+      positive: laittavat päälle
+      negative: eivät laita päälle
+  prompt:
+  - to put on
+  - to turn on
+  category:
+    key: type1
+    label: Type 1
+  phonetic: La-hee-tta-hh-a-hh PÄÄL-leh
+  phonetics:
+    minä:
+      positive: La-hee-ta-hn PÄÄL-leh
+      negative: en La-hee-ta-h PÄÄL-leh
+    sinä:
+      positive: La-hee-ta-ht PÄÄL-leh
+      negative: et La-hee-ta-h PÄÄL-leh
+    hän:
+      positive: La-hee-tta-hh-a-hh PÄÄL-leh
+      negative: ei La-hee-ta-h PÄÄL-leh
+    me:
+      positive: La-hee-ta-hm-me-hh PÄÄL-leh
+      negative: em-meh La-hee-ta-h PÄÄL-leh
+    te:
+      positive: La-hee-ta-ht-te-hh PÄÄL-leh
+      negative: et-teh La-hee-ta-h PÄÄL-leh
+    he:
+      positive: La-hee-tta-hva-ht PÄÄL-leh
+      negative: ei-vät La-hee-ta-h PÄÄL-leh
 - id: '010'
   lemma: saapua
   forms:
     minä:
-      positive:
-      - saavun
-      negative:
-      - en saavu
+      positive: saavun
+      negative: en saavu
     sinä:
-      positive:
-      - saavut
-      negative:
-      - et saavu
+      positive: saavut
+      negative: et saavu
     hän:
-      positive:
-      - saapuu
-      negative:
-      - ei saavu
+      positive: saapuu
+      negative: ei saavu
     me:
-      positive:
-      - saavumme
-      negative:
-      - emme saavu
+      positive: saavumme
+      negative: emme saavu
     te:
-      positive:
-      - saavutte
-      negative:
-      - ette saavu
+      positive: saavutte
+      negative: ette saavu
     he:
-      positive:
-      - saapuvat
-      negative:
-      - eivät saavu
+      positive: saapuvat
+      negative: eivät saavu
+  prompt:
+  - to arrive
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Sa-hh-a-hhpooa-h
+  phonetics:
+    minä:
+      positive: Sa-hh-a-hhvoo-n
+      negative: en Sa-hh-a-hhvoo
+    sinä:
+      positive: Sa-hh-a-hhvoo-t
+      negative: et Sa-hh-a-hhvoo
+    hän:
+      positive: Sa-hh-a-hhpo-ho-h
+      negative: ei Sa-hh-a-hhvoo
+    me:
+      positive: Sa-hh-a-hhvoo-m-me-hh
+      negative: em-meh Sa-hh-a-hhvoo
+    te:
+      positive: Sa-hh-a-hhvoo-t-te-hh
+      negative: et-teh Sa-hh-a-hhvoo
+    he:
+      positive: Sa-hh-a-hhpoo-va-ht
+      negative: ei-vät Sa-hh-a-hhvoo
 - id: '011'
   lemma: vastata
   forms:
     minä:
-      positive:
-      - vastaan
-      negative:
-      - en vastaa
+      positive: vastaan
+      negative: en vastaa
     sinä:
-      positive:
-      - vastaat
-      negative:
-      - et vastaa
+      positive: vastaat
+      negative: et vastaa
     hän:
-      positive:
-      - vastaa
-      negative:
-      - ei vastaa
+      positive: vastaa
+      negative: ei vastaa
     me:
-      positive:
-      - vastaamme
-      negative:
-      - emme vastaa
+      positive: vastaamme
+      negative: emme vastaa
     te:
-      positive:
-      - vastaatte
-      negative:
-      - ette vastaa
+      positive: vastaatte
+      negative: ette vastaa
     he:
-      positive:
-      - vastaavat
-      negative:
-      - eivät vastaa
+      positive: vastaavat
+      negative: eivät vastaa
+  prompt:
+  - to answer
+  - to respond
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Va-hsta-hta-h
+  phonetics:
+    minä:
+      positive: Va-hsta-hh-a-hhn
+      negative: en Va-hsta-hh-a-hh
+    sinä:
+      positive: Va-hsta-hh-a-hht
+      negative: et Va-hsta-hh-a-hh
+    hän:
+      positive: Va-hsta-hh-a-hh
+      negative: ei Va-hsta-hh-a-hh
+    me:
+      positive: Va-hsta-hh-a-hhm-me-hh
+      negative: em-meh Va-hsta-hh-a-hh
+    te:
+      positive: Va-hsta-hh-a-hht-te-hh
+      negative: et-teh Va-hsta-hh-a-hh
+    he:
+      positive: Va-hsta-hh-a-hhva-ht
+      negative: ei-vät Va-hsta-hh-a-hh
 - id: '012'
   lemma: opettaa
   forms:
     minä:
-      positive:
-      - opetan
-      negative:
-      - en opeta
+      positive: opetan
+      negative: en opeta
     sinä:
-      positive:
-      - opetat
-      negative:
-      - et opeta
+      positive: opetat
+      negative: et opeta
     hän:
-      positive:
-      - opettaa
-      negative:
-      - ei opeta
+      positive: opettaa
+      negative: ei opeta
     me:
-      positive:
-      - opetamme
-      negative:
-      - emme opeta
+      positive: opetamme
+      negative: emme opeta
     te:
-      positive:
-      - opetatte
-      negative:
-      - ette opeta
+      positive: opetatte
+      negative: ette opeta
     he:
-      positive:
-      - opettavat
-      negative:
-      - eivät opeta
+      positive: opettavat
+      negative: eivät opeta
+  prompt:
+  - to teach
+  category:
+    key: type1
+    label: Type 1
+  phonetic: O-hpe-htta-hh-a-hh
+  phonetics:
+    minä:
+      positive: O-hpe-hta-hn
+      negative: en O-hpe-hta-h
+    sinä:
+      positive: O-hpe-hta-ht
+      negative: et O-hpe-hta-h
+    hän:
+      positive: O-hpe-htta-hh-a-hh
+      negative: ei O-hpe-hta-h
+    me:
+      positive: O-hpe-hta-hm-me-hh
+      negative: em-meh O-hpe-hta-h
+    te:
+      positive: O-hpe-hta-ht-te-hh
+      negative: et-teh O-hpe-hta-h
+    he:
+      positive: O-hpe-htta-hva-ht
+      negative: ei-vät O-hpe-hta-h
 - id: '013'
   lemma: kysyä
   forms:
     minä:
-      positive:
-      - kysyn
-      negative:
-      - en kysy
+      positive: kysyn
+      negative: en kysy
     sinä:
-      positive:
-      - kysyt
-      negative:
-      - et kysy
+      positive: kysyt
+      negative: et kysy
     hän:
-      positive:
-      - kysyy
-      negative:
-      - ei kysy
+      positive: kysyy
+      negative: ei kysy
     me:
-      positive:
-      - kysymme
-      negative:
-      - emme kysy
+      positive: kysymme
+      negative: emme kysy
     te:
-      positive:
-      - kysytte
-      negative:
-      - ette kysy
+      positive: kysytte
+      negative: ette kysy
     he:
-      positive:
-      - kysyvät
-      negative:
-      - eivät kysy
+      positive: kysyvät
+      negative: eivät kysy
+  prompt:
+  - to ask
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Ky-syä
+  phonetics:
+    minä:
+      positive: Ky-sy-n
+      negative: en Ky-sy
+    sinä:
+      positive: Ky-sy-t
+      negative: et Ky-sy
+    hän:
+      positive: Ky-syy
+      negative: ei Ky-sy
+    me:
+      positive: Ky-sy-m-me-hh
+      negative: em-meh Ky-sy
+    te:
+      positive: Ky-sy-t-te-hh
+      negative: et-teh Ky-sy
+    he:
+      positive: Ky-sy-vä-t
+      negative: ei-vät Ky-sy
 - id: '014'
   lemma: vastaanottaa
   forms:
     minä:
-      positive:
-      - vastaanotan
-      negative:
-      - en vastaanota
+      positive: vastaanotan
+      negative: en vastaanota
     sinä:
-      positive:
-      - vastaanotat
-      negative:
-      - et vastaanota
+      positive: vastaanotat
+      negative: et vastaanota
     hän:
-      positive:
-      - vastaanottaa
-      negative:
-      - ei vastaanota
+      positive: vastaanottaa
+      negative: ei vastaanota
     me:
-      positive:
-      - vastaanotamme
-      negative:
-      - emme vastaanota
+      positive: vastaanotamme
+      negative: emme vastaanota
     te:
-      positive:
-      - vastaanotatte
-      negative:
-      - ette vastaanota
+      positive: vastaanotatte
+      negative: ette vastaanota
     he:
-      positive:
-      - vastaanottavat
-      negative:
-      - eivät vastaanota
+      positive: vastaanottavat
+      negative: eivät vastaanota
+  prompt:
+  - to receive
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Va-hsta-hh-a-hhno-htta-hh-a-hh
+  phonetics:
+    minä:
+      positive: Va-hsta-hh-a-hhno-hta-hn
+      negative: en Va-hsta-hh-a-hhno-hta-h
+    sinä:
+      positive: Va-hsta-hh-a-hhno-hta-ht
+      negative: et Va-hsta-hh-a-hhno-hta-h
+    hän:
+      positive: Va-hsta-hh-a-hhno-htta-hh-a-hh
+      negative: ei Va-hsta-hh-a-hhno-hta-h
+    me:
+      positive: Va-hsta-hh-a-hhno-hta-hm-me-hh
+      negative: em-meh Va-hsta-hh-a-hhno-hta-h
+    te:
+      positive: Va-hsta-hh-a-hhno-hta-ht-te-hh
+      negative: et-teh Va-hsta-hh-a-hhno-hta-h
+    he:
+      positive: Va-hsta-hh-a-hhno-htta-hva-ht
+      negative: ei-vät Va-hsta-hh-a-hhno-hta-h
 - id: '015'
   lemma: suunnitella
   forms:
     minä:
-      positive:
-      - suunnittelen
-      negative:
-      - en suunnittele
+      positive: suunnittelen
+      negative: en suunnittele
     sinä:
-      positive:
-      - suunnittelet
-      negative:
-      - et suunnittele
+      positive: suunnittelet
+      negative: et suunnittele
     hän:
-      positive:
-      - suunnittelee
-      negative:
-      - ei suunnittele
+      positive: suunnittelee
+      negative: ei suunnittele
     me:
-      positive:
-      - suunnittelemme
-      negative:
-      - emme suunnittele
+      positive: suunnittelemme
+      negative: emme suunnittele
     te:
-      positive:
-      - suunnittelette
-      negative:
-      - ette suunnittele
+      positive: suunnittelette
+      negative: ette suunnittele
     he:
-      positive:
-      - suunnittelevat
-      negative:
-      - eivät suunnittele
+      positive: suunnittelevat
+      negative: eivät suunnittele
+  prompt:
+  - to plan
+  category:
+    key: type3
+    label: Type 3
+  phonetic: So-ho-hnnee-te-hlla-h
+  phonetics:
+    minä:
+      positive: So-ho-hnnee-t-te-hhle-hn
+      negative: en So-ho-hnnee-t-te-hhle-h
+    sinä:
+      positive: So-ho-hnnee-t-te-hhle-ht
+      negative: et So-ho-hnnee-t-te-hhle-h
+    hän:
+      positive: So-ho-hnnee-t-te-hhle-hh-e-hh
+      negative: ei So-ho-hnnee-t-te-hhle-h
+    me:
+      positive: So-ho-hnnee-t-te-hhle-hm-me-hh
+      negative: em-meh So-ho-hnnee-t-te-hhle-h
+    te:
+      positive: So-ho-hnnee-t-te-hhle-ht-te-hh
+      negative: et-teh So-ho-hnnee-t-te-hhle-h
+    he:
+      positive: So-ho-hnnee-t-te-hhle-hva-ht
+      negative: ei-vät So-ho-hnnee-t-te-hhle-h
 - id: '016'
   lemma: selittää
   forms:
     minä:
-      positive:
-      - selitän
-      negative:
-      - en selitä
+      positive: selitän
+      negative: en selitä
     sinä:
-      positive:
-      - selität
-      negative:
-      - et selitä
+      positive: selität
+      negative: et selitä
     hän:
-      positive:
-      - selittää
-      negative:
-      - ei selitä
+      positive: selittää
+      negative: ei selitä
     me:
-      positive:
-      - selitämme
-      negative:
-      - emme selitä
+      positive: selitämme
+      negative: emme selitä
     te:
-      positive:
-      - selitätte
-      negative:
-      - ette selitä
+      positive: selitätte
+      negative: ette selitä
     he:
-      positive:
-      - selittävät
-      negative:
-      - eivät selitä
+      positive: selittävät
+      negative: eivät selitä
+  prompt:
+  - to explain
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Se-hlee-ttää
+  phonetics:
+    minä:
+      positive: Se-hlee-tä-n
+      negative: en Se-hlee-tä
+    sinä:
+      positive: Se-hlee-tä-t
+      negative: et Se-hlee-tä
+    hän:
+      positive: Se-hlee-ttää
+      negative: ei Se-hlee-tä
+    me:
+      positive: Se-hlee-tä-m-me-hh
+      negative: em-meh Se-hlee-tä
+    te:
+      positive: Se-hlee-tä-t-te-hh
+      negative: et-teh Se-hlee-tä
+    he:
+      positive: Se-hlee-ttä-vä-t
+      negative: ei-vät Se-hlee-tä
 - id: '017'
   lemma: voida
   forms:
     minä:
-      positive:
-      - voin
-      negative:
-      - en voi
+      positive: voin
+      negative: en voi
     sinä:
-      positive:
-      - voit
-      negative:
-      - et voi
+      positive: voit
+      negative: et voi
     hän:
-      positive:
-      - voi
-      negative:
-      - ei voi
+      positive: voi
+      negative: ei voi
     me:
-      positive:
-      - voimme
-      negative:
-      - emme voi
+      positive: voimme
+      negative: emme voi
     te:
-      positive:
-      - voitte
-      negative:
-      - ette voi
+      positive: voitte
+      negative: ette voi
     he:
-      positive:
-      - voivat
-      negative:
-      - eivät voi
+      positive: voivat
+      negative: eivät voi
+  prompt:
+  - can
+  - to be able to
+  category:
+    key: type2
+    label: Type 2
+  phonetic: VOI-dah
+  phonetics:
+    minä:
+      positive: VOIN
+      negative: en VOI
+    sinä:
+      positive: VOIT
+      negative: et VOI
+    hän:
+      positive: VOI
+      negative: ei VOI
+    me:
+      positive: VOIM-meh
+      negative: em-meh VOI
+    te:
+      positive: VOIT-teh
+      negative: et-teh VOI
+    he:
+      positive: VOI-vaht
+      negative: ei-vät VOI
 - id: 018
   lemma: sulkea
   forms:
     minä:
-      positive:
-      - suljen
-      negative:
-      - en sulje
+      positive: suljen
+      negative: en sulje
     sinä:
-      positive:
-      - suljet
-      negative:
-      - et sulje
+      positive: suljet
+      negative: et sulje
     hän:
-      positive:
-      - sulkee
-      negative:
-      - ei sulje
+      positive: sulkee
+      negative: ei sulje
     me:
-      positive:
-      - suljemme
-      negative:
-      - emme sulje
+      positive: suljemme
+      negative: emme sulje
     te:
-      positive:
-      - suljette
-      negative:
-      - ette sulje
+      positive: suljette
+      negative: ette sulje
     he:
-      positive:
-      - sulkevat
-      negative:
-      - eivät sulje
+      positive: sulkevat
+      negative: eivät sulje
+  prompt:
+  - to close
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Soo-lke-ha-h
+  phonetics:
+    minä:
+      positive: Soo-lye-hn
+      negative: en Soo-lye-h
+    sinä:
+      positive: Soo-lye-ht
+      negative: et Soo-lye-h
+    hän:
+      positive: Soo-lke-hh-e-hh
+      negative: ei Soo-lye-h
+    me:
+      positive: Soo-lye-hm-me-hh
+      negative: em-meh Soo-lye-h
+    te:
+      positive: Soo-lye-ht-te-hh
+      negative: et-teh Soo-lye-h
+    he:
+      positive: Soo-lke-hva-ht
+      negative: ei-vät Soo-lye-h
 - id: 019
   lemma: ostaa
   forms:
     minä:
-      positive:
-      - ostan
-      negative:
-      - en osta
+      positive: ostan
+      negative: en osta
     sinä:
-      positive:
-      - ostat
-      negative:
-      - et osta
+      positive: ostat
+      negative: et osta
     hän:
-      positive:
-      - ostaa
-      negative:
-      - ei osta
+      positive: ostaa
+      negative: ei osta
     me:
-      positive:
-      - ostamme
-      negative:
-      - emme osta
+      positive: ostamme
+      negative: emme osta
     te:
-      positive:
-      - ostatte
-      negative:
-      - ette osta
+      positive: ostatte
+      negative: ette osta
     he:
-      positive:
-      - ostavat
-      negative:
-      - eivät osta
+      positive: ostavat
+      negative: eivät osta
+  prompt:
+  - to buy
+  category:
+    key: type1
+    label: Type 1
+  phonetic: OS-tah
+  phonetics:
+    minä:
+      positive: OS-tahn
+      negative: en OS-tah
+    sinä:
+      positive: OS-taht
+      negative: et OS-tah
+    hän:
+      positive: OS-tah
+      negative: ei OS-tah
+    me:
+      positive: OS-tam-meh
+      negative: em-meh OS-tah
+    te:
+      positive: OS-tat-teh
+      negative: et-teh OS-tah
+    he:
+      positive: OS-ta-vaht
+      negative: ei-vät OS-tah
 - id: '020'
   lemma: juosta
   forms:
     minä:
-      positive:
-      - juoksen
-      negative:
-      - en juokse
+      positive: juoksen
+      negative: en juokse
     sinä:
-      positive:
-      - juokset
-      negative:
-      - et juokse
+      positive: juokset
+      negative: et juokse
     hän:
-      positive:
-      - juoksee
-      negative:
-      - ei juokse
+      positive: juoksee
+      negative: ei juokse
     me:
-      positive:
-      - juoksemme
-      negative:
-      - emme juokse
+      positive: juoksemme
+      negative: emme juokse
     te:
-      positive:
-      - juoksette
-      negative:
-      - ette juokse
+      positive: juoksette
+      negative: ette juokse
     he:
-      positive:
-      - juoksevat
-      negative:
-      - eivät juokse
+      positive: juoksevat
+      negative: eivät juokse
+  prompt:
+  - to run
+  category:
+    key: type3
+    label: Type 3
+  phonetic: YOO-ohs-tah
+  phonetics:
+    minä:
+      positive: YOO-ok-sen
+      negative: en YOO-ok-seh
+    sinä:
+      positive: YOO-ok-set
+      negative: et YOO-ok-seh
+    hän:
+      positive: YOO-ok-seh
+      negative: ei YOO-ok-seh
+    me:
+      positive: YOO-ok-sem-meh
+      negative: em-meh YOO-ok-seh
+    te:
+      positive: YOO-ok-set-teh
+      negative: et-teh YOO-ok-seh
+    he:
+      positive: YOO-ok-seh-vaht
+      negative: ei-vät YOO-ok-seh
 - id: '021'
   lemma: haluta
   forms:
     minä:
-      positive:
-      - haluan
-      negative:
-      - en halua
+      positive: haluan
+      negative: en halua
     sinä:
-      positive:
-      - haluat
-      negative:
-      - et halua
+      positive: haluat
+      negative: et halua
     hän:
-      positive:
-      - haluaa
-      negative:
-      - ei halua
+      positive: haluaa
+      negative: ei halua
     me:
-      positive:
-      - haluamme
-      negative:
-      - emme halua
+      positive: haluamme
+      negative: emme halua
     te:
-      positive:
-      - haluatte
-      negative:
-      - ette halua
+      positive: haluatte
+      negative: ette halua
     he:
-      positive:
-      - haluavat
-      negative:
-      - eivät halua
+      positive: haluavat
+      negative: eivät halua
+  prompt:
+  - to want
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Ha-hloo-ta-h
+  phonetics:
+    minä:
+      positive: Ha-hlooa-hn
+      negative: en Ha-hlooa-h
+    sinä:
+      positive: Ha-hlooa-ht
+      negative: et Ha-hlooa-h
+    hän:
+      positive: Ha-hlooa-hh-a-hh
+      negative: ei Ha-hlooa-h
+    me:
+      positive: Ha-hlooa-hm-me-hh
+      negative: em-meh Ha-hlooa-h
+    te:
+      positive: Ha-hlooa-ht-te-hh
+      negative: et-teh Ha-hlooa-h
+    he:
+      positive: Ha-hlooa-hva-ht
+      negative: ei-vät Ha-hlooa-h
 - id: '022'
   lemma: lukea
   forms:
     minä:
-      positive:
-      - luen
-      negative:
-      - en lue
+      positive: luen
+      negative: en lue
     sinä:
-      positive:
-      - luet
-      negative:
-      - et lue
+      positive: luet
+      negative: et lue
     hän:
-      positive:
-      - lukee
-      negative:
-      - ei lue
+      positive: lukee
+      negative: ei lue
     me:
-      positive:
-      - luemme
-      negative:
-      - emme lue
+      positive: luemme
+      negative: emme lue
     te:
-      positive:
-      - luette
-      negative:
-      - ette lue
+      positive: luette
+      negative: ette lue
     he:
-      positive:
-      - lukevat
-      negative:
-      - eivät lue
+      positive: lukevat
+      negative: eivät lue
+  prompt:
+  - to read
+  category:
+    key: type1
+    label: Type 1
+  phonetic: LOO-keh-ah
+  phonetics:
+    minä:
+      positive: LOO-en
+      negative: en LOO-eh
+    sinä:
+      positive: LOO-et
+      negative: et LOO-eh
+    hän:
+      positive: LOO-keh
+      negative: ei LOO-eh
+    me:
+      positive: LOO-em-meh
+      negative: em-meh LOO-eh
+    te:
+      positive: LOO-et-teh
+      negative: et-teh LOO-eh
+    he:
+      positive: LOO-keh-vaht
+      negative: ei-vät LOO-eh
 - id: '023'
   lemma: etsiä
   forms:
     minä:
-      positive:
-      - etsin
-      negative:
-      - en etsi
+      positive: etsin
+      negative: en etsi
     sinä:
-      positive:
-      - etsit
-      negative:
-      - et etsi
+      positive: etsit
+      negative: et etsi
     hän:
-      positive:
-      - etsii
-      negative:
-      - ei etsi
+      positive: etsii
+      negative: ei etsi
     me:
-      positive:
-      - etsimme
-      negative:
-      - emme etsi
+      positive: etsimme
+      negative: emme etsi
     te:
-      positive:
-      - etsitte
-      negative:
-      - ette etsi
+      positive: etsitte
+      negative: ette etsi
     he:
-      positive:
-      - etsivät
-      negative:
-      - eivät etsi
+      positive: etsivät
+      negative: eivät etsi
+  prompt:
+  - to look for
+  - to search
+  category:
+    key: type1
+    label: Type 1
+  phonetic: E-htseeä
+  phonetics:
+    minä:
+      positive: E-htsee-n
+      negative: en E-htsee
+    sinä:
+      positive: E-htsee-t
+      negative: et E-htsee
+    hän:
+      positive: E-htse-he-h
+      negative: ei E-htsee
+    me:
+      positive: E-htsee-m-me-hh
+      negative: em-meh E-htsee
+    te:
+      positive: E-htsee-t-te-hh
+      negative: et-teh E-htsee
+    he:
+      positive: E-htsee-vä-t
+      negative: ei-vät E-htsee
 - id: '024'
   lemma: kiertää
   forms:
     minä:
-      positive:
-      - kierrän
-      negative:
-      - en kierrä
+      positive: kierrän
+      negative: en kierrä
     sinä:
-      positive:
-      - kierrät
-      negative:
-      - et kierrä
+      positive: kierrät
+      negative: et kierrä
     hän:
-      positive:
-      - kiertää
-      negative:
-      - ei kierrä
+      positive: kiertää
+      negative: ei kierrä
     me:
-      positive:
-      - kierrämme
-      negative:
-      - emme kierrä
+      positive: kierrämme
+      negative: emme kierrä
     te:
-      positive:
-      - kierrätte
-      negative:
-      - ette kierrä
+      positive: kierrätte
+      negative: ette kierrä
     he:
-      positive:
-      - kiertävät
-      negative:
-      - eivät kierrä
+      positive: kiertävät
+      negative: eivät kierrä
+  prompt:
+  - to go around
+  - to tour
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Keee-hrtää
+  phonetics:
+    minä:
+      positive: Keee-hrrä-n
+      negative: en Keee-hrrä
+    sinä:
+      positive: Keee-hrrä-t
+      negative: et Keee-hrrä
+    hän:
+      positive: Keee-hrtää
+      negative: ei Keee-hrrä
+    me:
+      positive: Keee-hrrä-m-me-hh
+      negative: em-meh Keee-hrrä
+    te:
+      positive: Keee-hrrä-t-te-hh
+      negative: et-teh Keee-hrrä
+    he:
+      positive: Keee-hrtä-vä-t
+      negative: ei-vät Keee-hrrä
 - id: '025'
   lemma: laittaa
   forms:
     minä:
-      positive:
-      - laitan
-      negative:
-      - en laita
+      positive: laitan
+      negative: en laita
     sinä:
-      positive:
-      - laitat
-      negative:
-      - et laita
+      positive: laitat
+      negative: et laita
     hän:
-      positive:
-      - laittaa
-      negative:
-      - ei laita
+      positive: laittaa
+      negative: ei laita
     me:
-      positive:
-      - laitamme
-      negative:
-      - emme laita
+      positive: laitamme
+      negative: emme laita
     te:
-      positive:
-      - laitatte
-      negative:
-      - ette laita
+      positive: laitatte
+      negative: ette laita
     he:
-      positive:
-      - laittavat
-      negative:
-      - eivät laita
+      positive: laittavat
+      negative: eivät laita
+  prompt:
+  - to put
+  - to make
+  - to turn on
+  category:
+    key: type1
+    label: Type 1
+  phonetic: La-hee-tta-hh-a-hh
+  phonetics:
+    minä:
+      positive: La-hee-ta-hn
+      negative: en La-hee-ta-h
+    sinä:
+      positive: La-hee-ta-ht
+      negative: et La-hee-ta-h
+    hän:
+      positive: La-hee-tta-hh-a-hh
+      negative: ei La-hee-ta-h
+    me:
+      positive: La-hee-ta-hm-me-hh
+      negative: em-meh La-hee-ta-h
+    te:
+      positive: La-hee-ta-ht-te-hh
+      negative: et-teh La-hee-ta-h
+    he:
+      positive: La-hee-tta-hva-ht
+      negative: ei-vät La-hee-ta-h
 - id: '026'
   lemma: käyttää
   forms:
     minä:
-      positive:
-      - käytän
-      negative:
-      - en käytä
+      positive: käytän
+      negative: en käytä
     sinä:
-      positive:
-      - käytät
-      negative:
-      - et käytä
+      positive: käytät
+      negative: et käytä
     hän:
-      positive:
-      - käyttää
-      negative:
-      - ei käytä
+      positive: käyttää
+      negative: ei käytä
     me:
-      positive:
-      - käytämme
-      negative:
-      - emme käytä
+      positive: käytämme
+      negative: emme käytä
     te:
-      positive:
-      - käytätte
-      negative:
-      - ette käytä
+      positive: käytätte
+      negative: ette käytä
     he:
-      positive:
-      - käyttävät
-      negative:
-      - eivät käytä
+      positive: käyttävät
+      negative: eivät käytä
+  prompt:
+  - to use
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Käy-ttää
+  phonetics:
+    minä:
+      positive: Käy-tä-n
+      negative: en Käy-tä
+    sinä:
+      positive: Käy-tä-t
+      negative: et Käy-tä
+    hän:
+      positive: Käy-ttää
+      negative: ei Käy-tä
+    me:
+      positive: Käy-tä-m-me-hh
+      negative: em-meh Käy-tä
+    te:
+      positive: Käy-tä-t-te-hh
+      negative: et-teh Käy-tä
+    he:
+      positive: Käy-ttä-vä-t
+      negative: ei-vät Käy-tä
 - id: '027'
   lemma: matkustaa
   forms:
     minä:
-      positive:
-      - matkustan
-      negative:
-      - en matkusta
+      positive: matkustan
+      negative: en matkusta
     sinä:
-      positive:
-      - matkustat
-      negative:
-      - et matkusta
+      positive: matkustat
+      negative: et matkusta
     hän:
-      positive:
-      - matkustaa
-      negative:
-      - ei matkusta
+      positive: matkustaa
+      negative: ei matkusta
     me:
-      positive:
-      - matkustamme
-      negative:
-      - emme matkusta
+      positive: matkustamme
+      negative: emme matkusta
     te:
-      positive:
-      - matkustatte
-      negative:
-      - ette matkusta
+      positive: matkustatte
+      negative: ette matkusta
     he:
-      positive:
-      - matkustavat
-      negative:
-      - eivät matkusta
+      positive: matkustavat
+      negative: eivät matkusta
+  prompt:
+  - to travel
+  category:
+    key: type1
+    label: Type 1
+  phonetic: MAHT-koo-stah
+  phonetics:
+    minä:
+      positive: MAHT-koo-stahn
+      negative: en MAHT-koo-stah
+    sinä:
+      positive: MAHT-koo-staht
+      negative: et MAHT-koo-stah
+    hän:
+      positive: MAHT-koo-stah
+      negative: ei MAHT-koo-stah
+    me:
+      positive: MAHT-koo-stam-meh
+      negative: em-meh MAHT-koo-stah
+    te:
+      positive: MAHT-koo-stat-teh
+      negative: et-teh MAHT-koo-stah
+    he:
+      positive: MAHT-koo-sta-vaht
+      negative: ei-vät MAHT-koo-stah
 - id: 028
   lemma: peruuttaa
   forms:
     minä:
-      positive:
-      - peruutan
-      negative:
-      - en peruuta
+      positive: peruutan
+      negative: en peruuta
     sinä:
-      positive:
-      - peruutat
-      negative:
-      - et peruuta
+      positive: peruutat
+      negative: et peruuta
     hän:
-      positive:
-      - peruuttaa
-      negative:
-      - ei peruuta
+      positive: peruuttaa
+      negative: ei peruuta
     me:
-      positive:
-      - peruutamme
-      negative:
-      - emme peruuta
+      positive: peruutamme
+      negative: emme peruuta
     te:
-      positive:
-      - peruutatte
-      negative:
-      - ette peruuta
+      positive: peruutatte
+      negative: ette peruuta
     he:
-      positive:
-      - peruuttavat
-      negative:
-      - eivät peruuta
+      positive: peruuttavat
+      negative: eivät peruuta
+  prompt:
+  - to cancel
+  - to reverse
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Pe-hro-ho-htta-hh-a-hh
+  phonetics:
+    minä:
+      positive: Pe-hro-ho-hta-hn
+      negative: en Pe-hro-ho-hta-h
+    sinä:
+      positive: Pe-hro-ho-hta-ht
+      negative: et Pe-hro-ho-hta-h
+    hän:
+      positive: Pe-hro-ho-htta-hh-a-hh
+      negative: ei Pe-hro-ho-hta-h
+    me:
+      positive: Pe-hro-ho-hta-hm-me-hh
+      negative: em-meh Pe-hro-ho-hta-h
+    te:
+      positive: Pe-hro-ho-hta-ht-te-hh
+      negative: et-teh Pe-hro-ho-hta-h
+    he:
+      positive: Pe-hro-ho-htta-hva-ht
+      negative: ei-vät Pe-hro-ho-hta-h
 - id: 029
   lemma: tehdä
   forms:
     minä:
-      positive:
-      - teen
-      negative:
-      - en tee
+      positive: teen
+      negative: en tee
     sinä:
-      positive:
-      - teet
-      negative:
-      - et tee
+      positive: teet
+      negative: et tee
     hän:
-      positive:
-      - tekee
-      negative:
-      - ei tee
+      positive: tekee
+      negative: ei tee
     me:
-      positive:
-      - teemme
-      negative:
-      - emme tee
+      positive: teemme
+      negative: emme tee
     te:
-      positive:
-      - teette
-      negative:
-      - ette tee
+      positive: teette
+      negative: ette tee
     he:
-      positive:
-      - tekevät
-      negative:
-      - eivät tee
+      positive: tekevät
+      negative: eivät tee
+  prompt:
+  - to do
+  - to make
+  category:
+    key: type2
+    label: Type 2
+  phonetic: TEH-däh
+  phonetics:
+    minä:
+      positive: TEEN
+      negative: en TEE
+    sinä:
+      positive: TEET
+      negative: et TEE
+    hän:
+      positive: TEH-keh
+      negative: ei TEE
+    me:
+      positive: TEEM-meh
+      negative: em-meh TEE
+    te:
+      positive: TEET-teh
+      negative: et-teh TEE
+    he:
+      positive: TEH-keh-vät
+      negative: ei-vät TEE
 - id: '030'
   lemma: mennä
   forms:
     minä:
-      positive:
-      - menen
-      negative:
-      - en mene
+      positive: menen
+      negative: en mene
     sinä:
-      positive:
-      - menet
-      negative:
-      - et mene
+      positive: menet
+      negative: et mene
     hän:
-      positive:
-      - menee
-      negative:
-      - ei mene
+      positive: menee
+      negative: ei mene
     me:
-      positive:
-      - menemme
-      negative:
-      - emme mene
+      positive: menemme
+      negative: emme mene
     te:
-      positive:
-      - menette
-      negative:
-      - ette mene
+      positive: menette
+      negative: ette mene
     he:
-      positive:
-      - menevät
-      negative:
-      - eivät mene
+      positive: menevät
+      negative: eivät mene
+  prompt:
+  - to go
+  category:
+    key: type3
+    label: Type 3
+  phonetic: MEN-nä
+  phonetics:
+    minä:
+      positive: MEH-nen
+      negative: en MEH-neh
+    sinä:
+      positive: MEH-net
+      negative: et MEH-neh
+    hän:
+      positive: MEH-neh
+      negative: ei MEH-neh
+    me:
+      positive: MEH-nem-meh
+      negative: em-meh MEH-neh
+    te:
+      positive: MEH-net-teh
+      negative: et-teh MEH-neh
+    he:
+      positive: MEH-neh-vät
+      negative: ei-vät MEH-neh
 - id: '031'
   lemma: syödä
   forms:
     minä:
-      positive:
-      - syön
-      negative:
-      - en syö
+      positive: syön
+      negative: en syö
     sinä:
-      positive:
-      - syöt
-      negative:
-      - et syö
+      positive: syöt
+      negative: et syö
     hän:
-      positive:
-      - syö
-      negative:
-      - ei syö
+      positive: syö
+      negative: ei syö
     me:
-      positive:
-      - syömme
-      negative:
-      - emme syö
+      positive: syömme
+      negative: emme syö
     te:
-      positive:
-      - syötte
-      negative:
-      - ette syö
+      positive: syötte
+      negative: ette syö
     he:
-      positive:
-      - syövät
-      negative:
-      - eivät syö
+      positive: syövät
+      negative: eivät syö
+  prompt:
+  - to eat
+  category:
+    key: type2
+    label: Type 2
+  phonetic: SYÖ-däh
+  phonetics:
+    minä:
+      positive: SYÖN
+      negative: en SYÖ
+    sinä:
+      positive: SYÖT
+      negative: et SYÖ
+    hän:
+      positive: SYÖ
+      negative: ei SYÖ
+    me:
+      positive: SYÖM-meh
+      negative: em-meh SYÖ
+    te:
+      positive: SYÖT-teh
+      negative: et-teh SYÖ
+    he:
+      positive: SYÖ-vät
+      negative: ei-vät SYÖ
 - id: '032'
   lemma: tulla
   forms:
     minä:
-      positive:
-      - tulen
-      negative:
-      - en tule
+      positive: tulen
+      negative: en tule
     sinä:
-      positive:
-      - tulet
-      negative:
-      - et tule
+      positive: tulet
+      negative: et tule
     hän:
-      positive:
-      - tulee
-      negative:
-      - ei tule
+      positive: tulee
+      negative: ei tule
     me:
-      positive:
-      - tulemme
-      negative:
-      - emme tule
+      positive: tulemme
+      negative: emme tule
     te:
-      positive:
-      - tulette
-      negative:
-      - ette tule
+      positive: tulette
+      negative: ette tule
     he:
-      positive:
-      - tulevat
-      negative:
-      - eivät tule
+      positive: tulevat
+      negative: eivät tule
+  prompt:
+  - to come
+  category:
+    key: type3
+    label: Type 3
+  phonetic: TOOL-lah
+  phonetics:
+    minä:
+      positive: TOO-len
+      negative: en TOO-leh
+    sinä:
+      positive: TOO-let
+      negative: et TOO-leh
+    hän:
+      positive: TOO-leh
+      negative: ei TOO-leh
+    me:
+      positive: TOO-lem-meh
+      negative: em-meh TOO-leh
+    te:
+      positive: TOO-let-teh
+      negative: et-teh TOO-leh
+    he:
+      positive: TOO-leh-vaht
+      negative: ei-vät TOO-leh
 - id: '033'
   lemma: seistä
   forms:
     minä:
-      positive:
-      - seison
-      negative:
-      - en seiso
+      positive: seison
+      negative: en seiso
     sinä:
-      positive:
-      - seisot
-      negative:
-      - et seiso
+      positive: seisot
+      negative: et seiso
     hän:
-      positive:
-      - seisoo
-      negative:
-      - ei seiso
+      positive: seisoo
+      negative: ei seiso
     me:
-      positive:
-      - seisomme
-      negative:
-      - emme seiso
+      positive: seisomme
+      negative: emme seiso
     te:
-      positive:
-      - seisotte
-      negative:
-      - ette seiso
+      positive: seisotte
+      negative: ette seiso
     he:
-      positive:
-      - seisovat
-      negative:
-      - eivät seiso
+      positive: seisovat
+      negative: eivät seiso
+  prompt:
+  - to stand
+  category:
+    key: type3
+    label: Type 3
+  phonetic: SEIS-tä
+  phonetics:
+    minä:
+      positive: SEI-son
+      negative: en SEI-so
+    sinä:
+      positive: SEI-sot
+      negative: et SEI-so
+    hän:
+      positive: SEI-soh
+      negative: ei SEI-so
+    me:
+      positive: SEI-som-meh
+      negative: em-meh SEI-so
+    te:
+      positive: SEI-sot-teh
+      negative: et-teh SEI-so
+    he:
+      positive: SEI-so-vaht
+      negative: ei-vät SEI-so
 - id: '034'
   lemma: sanoa
   forms:
     minä:
-      positive:
-      - sanon
-      negative:
-      - en sano
+      positive: sanon
+      negative: en sano
     sinä:
-      positive:
-      - sanot
-      negative:
-      - et sano
+      positive: sanot
+      negative: et sano
     hän:
-      positive:
-      - sanoo
-      negative:
-      - ei sano
+      positive: sanoo
+      negative: ei sano
     me:
-      positive:
-      - sanomme
-      negative:
-      - emme sano
+      positive: sanomme
+      negative: emme sano
     te:
-      positive:
-      - sanotte
-      negative:
-      - ette sano
+      positive: sanotte
+      negative: ette sano
     he:
-      positive:
-      - sanovat
-      negative:
-      - eivät sano
+      positive: sanovat
+      negative: eivät sano
+  prompt:
+  - to say
+  category:
+    key: type1
+    label: Type 1
+  phonetic: SAH-no-ah
+  phonetics:
+    minä:
+      positive: SAH-non
+      negative: en SAH-no
+    sinä:
+      positive: SAH-not
+      negative: et SAH-no
+    hän:
+      positive: SAH-noh
+      negative: ei SAH-no
+    me:
+      positive: SAH-nom-meh
+      negative: em-meh SAH-no
+    te:
+      positive: SAH-not-teh
+      negative: et-teh SAH-no
+    he:
+      positive: SAH-no-vaht
+      negative: ei-vät SAH-no
 - id: '035'
   lemma: soittaa
   forms:
     minä:
-      positive:
-      - soitan
-      negative:
-      - en soita
+      positive: soitan
+      negative: en soita
     sinä:
-      positive:
-      - soitat
-      negative:
-      - et soita
+      positive: soitat
+      negative: et soita
     hän:
-      positive:
-      - soittaa
-      negative:
-      - ei soita
+      positive: soittaa
+      negative: ei soita
     me:
-      positive:
-      - soitamme
-      negative:
-      - emme soita
+      positive: soitamme
+      negative: emme soita
     te:
-      positive:
-      - soitatte
-      negative:
-      - ette soita
+      positive: soitatte
+      negative: ette soita
     he:
-      positive:
-      - soittavat
-      negative:
-      - eivät soita
+      positive: soittavat
+      negative: eivät soita
+  prompt:
+  - to play
+  - to call
+  category:
+    key: type1
+    label: Type 1
+  phonetic: SOI-tah
+  phonetics:
+    minä:
+      positive: SOI-tahn
+      negative: en SOI-tah
+    sinä:
+      positive: SOI-taht
+      negative: et SOI-tah
+    hän:
+      positive: SOI-tah
+      negative: ei SOI-tah
+    me:
+      positive: SOI-tam-meh
+      negative: em-meh SOI-tah
+    te:
+      positive: SOI-tat-teh
+      negative: et-teh SOI-tah
+    he:
+      positive: SOI-ta-vaht
+      negative: ei-vät SOI-tah
 - id: '036'
   lemma: nauraa
   forms:
     minä:
-      positive:
-      - nauran
-      negative:
-      - en naura
+      positive: nauran
+      negative: en naura
     sinä:
-      positive:
-      - naurat
-      negative:
-      - et naura
+      positive: naurat
+      negative: et naura
     hän:
-      positive:
-      - nauraa
-      negative:
-      - ei naura
+      positive: nauraa
+      negative: ei naura
     me:
-      positive:
-      - nauramme
-      negative:
-      - emme naura
+      positive: nauramme
+      negative: emme naura
     te:
-      positive:
-      - nauratte
-      negative:
-      - ette naura
+      positive: nauratte
+      negative: ette naura
     he:
-      positive:
-      - nauravat
-      negative:
-      - eivät naura
+      positive: nauravat
+      negative: eivät naura
+  prompt:
+  - to laugh
+  category:
+    key: type1
+    label: Type 1
+  phonetic: NAU-rah
+  phonetics:
+    minä:
+      positive: NAU-rahn
+      negative: en NAU-rah
+    sinä:
+      positive: NAU-raht
+      negative: et NAU-rah
+    hän:
+      positive: NAU-rah
+      negative: ei NAU-rah
+    me:
+      positive: NAU-ram-meh
+      negative: em-meh NAU-rah
+    te:
+      positive: NAU-rat-teh
+      negative: et-teh NAU-rah
+    he:
+      positive: NAU-ra-vaht
+      negative: ei-vät NAU-rah
 - id: '037'
   lemma: muistaa
   forms:
     minä:
-      positive:
-      - muistan
-      negative:
-      - en muista
+      positive: muistan
+      negative: en muista
     sinä:
-      positive:
-      - muistat
-      negative:
-      - et muista
+      positive: muistat
+      negative: et muista
     hän:
-      positive:
-      - muistaa
-      negative:
-      - ei muista
+      positive: muistaa
+      negative: ei muista
     me:
-      positive:
-      - muistamme
-      negative:
-      - emme muista
+      positive: muistamme
+      negative: emme muista
     te:
-      positive:
-      - muistatte
-      negative:
-      - ette muista
+      positive: muistatte
+      negative: ette muista
     he:
-      positive:
-      - muistavat
-      negative:
-      - eivät muista
+      positive: muistavat
+      negative: eivät muista
+  prompt:
+  - to remember
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Mooee-sta-hh-a-hh
+  phonetics:
+    minä:
+      positive: Mooee-sta-hn
+      negative: en Mooee-sta-h
+    sinä:
+      positive: Mooee-sta-ht
+      negative: et Mooee-sta-h
+    hän:
+      positive: Mooee-sta-hh-a-hh
+      negative: ei Mooee-sta-h
+    me:
+      positive: Mooee-sta-hm-me-hh
+      negative: em-meh Mooee-sta-h
+    te:
+      positive: Mooee-sta-ht-te-hh
+      negative: et-teh Mooee-sta-h
+    he:
+      positive: Mooee-sta-hva-ht
+      negative: ei-vät Mooee-sta-h
 - id: 038
   lemma: nähdä
   forms:
     minä:
-      positive:
-      - näen
-      negative:
-      - en näe
+      positive: näen
+      negative: en näe
     sinä:
-      positive:
-      - näet
-      negative:
-      - et näe
+      positive: näet
+      negative: et näe
     hän:
-      positive:
-      - näkee
-      negative:
-      - ei näe
+      positive: näkee
+      negative: ei näe
     me:
-      positive:
-      - näemme
-      negative:
-      - emme näe
+      positive: näemme
+      negative: emme näe
     te:
-      positive:
-      - näette
-      negative:
-      - ette näe
+      positive: näette
+      negative: ette näe
     he:
-      positive:
-      - näkevät
-      negative:
-      - eivät näe
+      positive: näkevät
+      negative: eivät näe
+  prompt:
+  - to see
+  category:
+    key: type2
+    label: Type 2
+  phonetic: NÄH-däh
+  phonetics:
+    minä:
+      positive: NÄ-en
+      negative: en NÄ-eh
+    sinä:
+      positive: NÄ-et
+      negative: et NÄ-eh
+    hän:
+      positive: NÄ-keh
+      negative: ei NÄ-eh
+    me:
+      positive: NÄ-em-meh
+      negative: em-meh NÄ-eh
+    te:
+      positive: NÄ-et-teh
+      negative: et-teh NÄ-eh
+    he:
+      positive: NÄ-keh-vät
+      negative: ei-vät NÄ-eh
 - id: 039
   lemma: harjata
   forms:
     minä:
-      positive:
-      - harjaan
-      negative:
-      - en harjaa
+      positive: harjaan
+      negative: en harjaa
     sinä:
-      positive:
-      - harjaat
-      negative:
-      - et harjaa
+      positive: harjaat
+      negative: et harjaa
     hän:
-      positive:
-      - harjaa
-      negative:
-      - ei harjaa
+      positive: harjaa
+      negative: ei harjaa
     me:
-      positive:
-      - harjaamme
-      negative:
-      - emme harjaa
+      positive: harjaamme
+      negative: emme harjaa
     te:
-      positive:
-      - harjaatte
-      negative:
-      - ette harjaa
+      positive: harjaatte
+      negative: ette harjaa
     he:
-      positive:
-      - harjaavat
-      negative:
-      - eivät harjaa
+      positive: harjaavat
+      negative: eivät harjaa
+  prompt:
+  - to brush
+  category:
+    key: type4
+    label: Type 4
+  phonetic: Ha-hrya-hta-h
+  phonetics:
+    minä:
+      positive: Ha-hrya-hh-a-hhn
+      negative: en Ha-hrya-hh-a-hh
+    sinä:
+      positive: Ha-hrya-hh-a-hht
+      negative: et Ha-hrya-hh-a-hh
+    hän:
+      positive: Ha-hrya-hh-a-hh
+      negative: ei Ha-hrya-hh-a-hh
+    me:
+      positive: Ha-hrya-hh-a-hhm-me-hh
+      negative: em-meh Ha-hrya-hh-a-hh
+    te:
+      positive: Ha-hrya-hh-a-hht-te-hh
+      negative: et-teh Ha-hrya-hh-a-hh
+    he:
+      positive: Ha-hrya-hh-a-hhva-ht
+      negative: ei-vät Ha-hrya-hh-a-hh
 - id: '040'
   lemma: käydä suihkussa
   forms:
     minä:
-      positive:
-      - käyn suihkussa
-      negative:
-      - en käy suihkussa
+      positive: käyn suihkussa
+      negative: en käy suihkussa
     sinä:
-      positive:
-      - käyt suihkussa
-      negative:
-      - et käy suihkussa
+      positive: käyt suihkussa
+      negative: et käy suihkussa
     hän:
-      positive:
-      - käy suihkussa
-      negative:
-      - ei käy suihkussa
+      positive: käy suihkussa
+      negative: ei käy suihkussa
     me:
-      positive:
-      - käymme suihkussa
-      negative:
-      - emme käy suihkussa
+      positive: käymme suihkussa
+      negative: emme käy suihkussa
     te:
-      positive:
-      - käytte suihkussa
-      negative:
-      - ette käy suihkussa
+      positive: käytte suihkussa
+      negative: ette käy suihkussa
     he:
-      positive:
-      - käyvät suihkussa
-      negative:
-      - eivät käy suihkussa
+      positive: käyvät suihkussa
+      negative: eivät käy suihkussa
+  prompt:
+  - to take a shower
+  - to shower
+  category:
+    key: type2
+    label: Type 2
+  phonetic: Käy-dä SOO-eeh-koos-sah
+  phonetics:
+    minä:
+      positive: Käy-n SOO-eeh-koos-sah
+      negative: en Käy SOO-eeh-koos-sah
+    sinä:
+      positive: Käy-t SOO-eeh-koos-sah
+      negative: et Käy SOO-eeh-koos-sah
+    hän:
+      positive: Käy SOO-eeh-koos-sah
+      negative: ei Käy SOO-eeh-koos-sah
+    me:
+      positive: Käy-m-me-hh SOO-eeh-koos-sah
+      negative: em-meh Käy SOO-eeh-koos-sah
+    te:
+      positive: Käy-t-te-hh SOO-eeh-koos-sah
+      negative: et-teh Käy SOO-eeh-koos-sah
+    he:
+      positive: Käy-vä-t SOO-eeh-koos-sah
+      negative: ei-vät Käy SOO-eeh-koos-sah
 - id: '041'
   lemma: pestä
   forms:
     minä:
-      positive:
-      - pesen
-      negative:
-      - en pese
+      positive: pesen
+      negative: en pese
     sinä:
-      positive:
-      - peset
-      negative:
-      - et pese
+      positive: peset
+      negative: et pese
     hän:
-      positive:
-      - pesee
-      negative:
-      - ei pese
+      positive: pesee
+      negative: ei pese
     me:
-      positive:
-      - pesemme
-      negative:
-      - emme pese
+      positive: pesemme
+      negative: emme pese
     te:
-      positive:
-      - pesette
-      negative:
-      - ette pese
+      positive: pesette
+      negative: ette pese
     he:
-      positive:
-      - pesevät
-      negative:
-      - eivät pese
+      positive: pesevät
+      negative: eivät pese
+  prompt:
+  - to wash
+  category:
+    key: type3
+    label: Type 3
+  phonetic: PES-tä
+  phonetics:
+    minä:
+      positive: PEH-sen
+      negative: en PEH-seh
+    sinä:
+      positive: PEH-set
+      negative: et PEH-seh
+    hän:
+      positive: PEH-seh
+      negative: ei PEH-seh
+    me:
+      positive: PEH-sem-meh
+      negative: em-meh PEH-seh
+    te:
+      positive: PEH-set-teh
+      negative: et-teh PEH-seh
+    he:
+      positive: PEH-seh-vät
+      negative: ei-vät PEH-seh
 - id: '042'
   lemma: puhua
   forms:
     minä:
-      positive:
-      - puhun
-      negative:
-      - en puhu
+      positive: puhun
+      negative: en puhu
     sinä:
-      positive:
-      - puhut
-      negative:
-      - et puhu
+      positive: puhut
+      negative: et puhu
     hän:
-      positive:
-      - puhuu
-      negative:
-      - ei puhu
+      positive: puhuu
+      negative: ei puhu
     me:
-      positive:
-      - puhumme
-      negative:
-      - emme puhu
+      positive: puhumme
+      negative: emme puhu
     te:
-      positive:
-      - puhutte
-      negative:
-      - ette puhu
+      positive: puhutte
+      negative: ette puhu
     he:
-      positive:
-      - puhuvat
-      negative:
-      - eivät puhu
+      positive: puhuvat
+      negative: eivät puhu
+  prompt:
+  - to speak
+  - to talk
+  category:
+    key: type1
+    label: Type 1
+  phonetic: POO-hoo-ah
+  phonetics:
+    minä:
+      positive: POO-hoon
+      negative: en POO-hoo
+    sinä:
+      positive: POO-hoot
+      negative: et POO-hoo
+    hän:
+      positive: POO-hoo
+      negative: ei POO-hoo
+    me:
+      positive: POO-hoom-meh
+      negative: em-meh POO-hoo
+    te:
+      positive: POO-hoot-teh
+      negative: et-teh POO-hoo
+    he:
+      positive: POO-hoo-vaht
+      negative: ei-vät POO-hoo
 - id: '043'
   lemma: avata
   forms:
     minä:
-      positive:
-      - avaan
-      negative:
-      - en avaa
+      positive: avaan
+      negative: en avaa
     sinä:
-      positive:
-      - avaat
-      negative:
-      - et avaa
+      positive: avaat
+      negative: et avaa
     hän:
-      positive:
-      - avaa
-      negative:
-      - ei avaa
+      positive: avaa
+      negative: ei avaa
     me:
-      positive:
-      - avaamme
-      negative:
-      - emme avaa
+      positive: avaamme
+      negative: emme avaa
     te:
-      positive:
-      - avaatte
-      negative:
-      - ette avaa
+      positive: avaatte
+      negative: ette avaa
     he:
-      positive:
-      - avaavat
-      negative:
-      - eivät avaa
+      positive: avaavat
+      negative: eivät avaa
+  prompt:
+  - to open
+  category:
+    key: type4
+    label: Type 4
+  phonetic: AH-vah-tah
+  phonetics:
+    minä:
+      positive: AH-vahn
+      negative: en AH-vah
+    sinä:
+      positive: AH-vaht
+      negative: et AH-vah
+    hän:
+      positive: AH-vah
+      negative: ei AH-vah
+    me:
+      positive: AH-vahm-meh
+      negative: em-meh AH-vah
+    te:
+      positive: AH-vaht-teh
+      negative: et-teh AH-vah
+    he:
+      positive: AH-vah-vaht
+      negative: ei-vät AH-vah
 - id: '044'
   lemma: lopettaa
   forms:
     minä:
-      positive:
-      - lopetan
-      negative:
-      - en lopeta
+      positive: lopetan
+      negative: en lopeta
     sinä:
-      positive:
-      - lopetat
-      negative:
-      - et lopeta
+      positive: lopetat
+      negative: et lopeta
     hän:
-      positive:
-      - lopettaa
-      negative:
-      - ei lopeta
+      positive: lopettaa
+      negative: ei lopeta
     me:
-      positive:
-      - lopetamme
-      negative:
-      - emme lopeta
+      positive: lopetamme
+      negative: emme lopeta
     te:
-      positive:
-      - lopetatte
-      negative:
-      - ette lopeta
+      positive: lopetatte
+      negative: ette lopeta
     he:
-      positive:
-      - lopettavat
-      negative:
-      - eivät lopeta
+      positive: lopettavat
+      negative: eivät lopeta
+  prompt:
+  - to stop
+  - to finish
+  category:
+    key: type1
+    label: Type 1
+  phonetic: Lo-hpe-htta-hh-a-hh
+  phonetics:
+    minä:
+      positive: Lo-hpe-hta-hn
+      negative: en Lo-hpe-hta-h
+    sinä:
+      positive: Lo-hpe-hta-ht
+      negative: et Lo-hpe-hta-h
+    hän:
+      positive: Lo-hpe-htta-hh-a-hh
+      negative: ei Lo-hpe-hta-h
+    me:
+      positive: Lo-hpe-hta-hm-me-hh
+      negative: em-meh Lo-hpe-hta-h
+    te:
+      positive: Lo-hpe-hta-ht-te-hh
+      negative: et-teh Lo-hpe-hta-h
+    he:
+      positive: Lo-hpe-htta-hva-ht
+      negative: ei-vät Lo-hpe-hta-h
 - id: '045'
   lemma: katsoa
   forms:
     minä:
-      positive:
-      - katson
-      negative:
-      - en katso
+      positive: katson
+      negative: en katso
     sinä:
-      positive:
-      - katsot
-      negative:
-      - et katso
+      positive: katsot
+      negative: et katso
     hän:
-      positive:
-      - katsoo
-      negative:
-      - ei katso
+      positive: katsoo
+      negative: ei katso
     me:
-      positive:
-      - katsomme
-      negative:
-      - emme katso
+      positive: katsomme
+      negative: emme katso
     te:
-      positive:
-      - katsotte
-      negative:
-      - ette katso
+      positive: katsotte
+      negative: ette katso
     he:
-      positive:
-      - katsovat
-      negative:
-      - eivät katso
+      positive: katsovat
+      negative: eivät katso
+  prompt:
+  - to watch
+  - to look
+  category:
+    key: type1
+    label: Type 1
+  phonetic: KAHT-so-ah
+  phonetics:
+    minä:
+      positive: KAHT-son
+      negative: en KAHT-so
+    sinä:
+      positive: KAHT-sot
+      negative: et KAHT-so
+    hän:
+      positive: KAHT-soh
+      negative: ei KAHT-so
+    me:
+      positive: KAHT-som-meh
+      negative: em-meh KAHT-so
+    te:
+      positive: KAHT-sot-teh
+      negative: et-teh KAHT-so
+    he:
+      positive: KAHT-so-vaht
+      negative: ei-vät KAHT-so
 - id: '046'
   lemma: opiskella
   forms:
     minä:
-      positive:
-      - opiskelen
-      negative:
-      - en opiskele
+      positive: opiskelen
+      negative: en opiskele
     sinä:
-      positive:
-      - opiskelet
-      negative:
-      - et opiskele
+      positive: opiskelet
+      negative: et opiskele
     hän:
-      positive:
-      - opiskelee
-      negative:
-      - ei opiskele
+      positive: opiskelee
+      negative: ei opiskele
     me:
-      positive:
-      - opiskelemme
-      negative:
-      - emme opiskele
+      positive: opiskelemme
+      negative: emme opiskele
     te:
-      positive:
-      - opiskelette
-      negative:
-      - ette opiskele
+      positive: opiskelette
+      negative: ette opiskele
     he:
-      positive:
-      - opiskelevat
-      negative:
-      - eivät opiskele
+      positive: opiskelevat
+      negative: eivät opiskele
+  prompt:
+  - to study
+  category:
+    key: type3
+    label: Type 3
+  phonetic: OH-pees-kel-lah
+  phonetics:
+    minä:
+      positive: OH-pees-keh-len
+      negative: en OH-pees-keh-leh
+    sinä:
+      positive: OH-pees-keh-let
+      negative: et OH-pees-keh-leh
+    hän:
+      positive: OH-pees-keh-leh
+      negative: ei OH-pees-keh-leh
+    me:
+      positive: OH-pees-keh-lem-meh
+      negative: em-meh OH-pees-keh-leh
+    te:
+      positive: OH-pees-keh-let-teh
+      negative: et-teh OH-pees-keh-leh
+    he:
+      positive: OH-pees-keh-leh-vaht
+      negative: ei-vät OH-pees-keh-leh
 - id: '047'
   lemma: kuunnella
   forms:
     minä:
-      positive:
-      - kuuntelen
-      negative:
-      - en kuuntele
+      positive: kuuntelen
+      negative: en kuuntele
     sinä:
-      positive:
-      - kuuntelet
-      negative:
-      - et kuuntele
+      positive: kuuntelet
+      negative: et kuuntele
     hän:
-      positive:
-      - kuuntelee
-      negative:
-      - ei kuuntele
+      positive: kuuntelee
+      negative: ei kuuntele
     me:
-      positive:
-      - kuuntelemme
-      negative:
-      - emme kuuntele
+      positive: kuuntelemme
+      negative: emme kuuntele
     te:
-      positive:
-      - kuuntelette
-      negative:
-      - ette kuuntele
+      positive: kuuntelette
+      negative: ette kuuntele
     he:
-      positive:
-      - kuuntelevat
-      negative:
-      - eivät kuuntele
+      positive: kuuntelevat
+      negative: eivät kuuntele
+  prompt:
+  - to listen
+  category:
+    key: type3
+    label: Type 3
+  phonetic: KOON-nel-lah
+  phonetics:
+    minä:
+      positive: KOON-teh-len
+      negative: en KOON-teh-leh
+    sinä:
+      positive: KOON-teh-let
+      negative: et KOON-teh-leh
+    hän:
+      positive: KOON-teh-leh
+      negative: ei KOON-teh-leh
+    me:
+      positive: KOON-teh-lem-meh
+      negative: em-meh KOON-teh-leh
+    te:
+      positive: KOON-teh-let-teh
+      negative: et-teh KOON-teh-leh
+    he:
+      positive: KOON-teh-leh-vaht
+      negative: ei-vät KOON-teh-leh
 - id: 048
   lemma: kuolla
   forms:
     minä:
-      positive:
-      - kuolen
-      negative:
-      - en kuole
+      positive: kuolen
+      negative: en kuole
     sinä:
-      positive:
-      - kuolet
-      negative:
-      - et kuole
+      positive: kuolet
+      negative: et kuole
     hän:
-      positive:
-      - kuolee
-      negative:
-      - ei kuole
+      positive: kuolee
+      negative: ei kuole
     me:
-      positive:
-      - kuolemme
-      negative:
-      - emme kuole
+      positive: kuolemme
+      negative: emme kuole
     te:
-      positive:
-      - kuolette
-      negative:
-      - ette kuole
+      positive: kuolette
+      negative: ette kuole
     he:
-      positive:
-      - kuolevat
-      negative:
-      - eivät kuole
+      positive: kuolevat
+      negative: eivät kuole
+  prompt:
+  - to die
+  category:
+    key: type3
+    label: Type 3
+  phonetic: KOO-ol-lah
+  phonetics:
+    minä:
+      positive: KOO-oh-len
+      negative: en KOO-oh-leh
+    sinä:
+      positive: KOO-oh-let
+      negative: et KOO-oh-leh
+    hän:
+      positive: KOO-oh-leh
+      negative: ei KOO-oh-leh
+    me:
+      positive: KOO-oh-lem-meh
+      negative: em-meh KOO-oh-leh
+    te:
+      positive: KOO-oh-let-teh
+      negative: et-teh KOO-oh-leh
+    he:
+      positive: KOO-oh-leh-vaht
+      negative: ei-vät KOO-oh-leh
 - id: 049
   lemma: odottaa
   forms:
     minä:
-      positive:
-      - odotan
-      negative:
-      - en odota
+      positive: odotan
+      negative: en odota
     sinä:
-      positive:
-      - odotat
-      negative:
-      - et odota
+      positive: odotat
+      negative: et odota
     hän:
-      positive:
-      - odottaa
-      negative:
-      - ei odota
+      positive: odottaa
+      negative: ei odota
     me:
-      positive:
-      - odotamme
-      negative:
-      - emme odota
+      positive: odotamme
+      negative: emme odota
     te:
-      positive:
-      - odotatte
-      negative:
-      - ette odota
+      positive: odotatte
+      negative: ette odota
     he:
-      positive:
-      - odottavat
-      negative:
-      - eivät odota
+      positive: odottavat
+      negative: eivät odota
+  prompt:
+  - to wait
+  category:
+    key: type1
+    label: Type 1
+  phonetic: OH-doht-tah
+  phonetics:
+    minä:
+      positive: OH-doh-tahn
+      negative: en OH-doh-tah
+    sinä:
+      positive: OH-doh-taht
+      negative: et OH-doh-tah
+    hän:
+      positive: OH-doht-tah
+      negative: ei OH-doh-tah
+    me:
+      positive: OH-doh-tam-meh
+      negative: em-meh OH-doh-tah
+    te:
+      positive: OH-doh-tat-teh
+      negative: et-teh OH-doh-tah
+    he:
+      positive: OH-doht-ta-vaht
+      negative: ei-vät OH-doh-tah

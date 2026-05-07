@@ -32,6 +32,7 @@ ui:
   #conjugate_positive_instruction: "Anna myönteinen muoto:"
   #conjugate_negative_instruction: "Anna kielteinen muoto:"
   #conjugate_prompt: "Taivuta verbi."
-  show_gloss: false
-  show_phonetic: false
+  show_gloss: true
+  show_phonetic: true
   show_conjugated_form: true
+  conjugate_category_prompt: "Verb category:"

@@ -100,7 +100,8 @@ DEFAULT_UI = {
   conjugate_prompt: "Conjugate the verb.",
   conjugate_instruction: "Use the correct form:",
   conjugate_positive_instruction: "Use the positive form:",
-  conjugate_negative_instruction: "Use the negative form:"
+  conjugate_negative_instruction: "Use the negative form:",
+  show_notes: true
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -973,6 +974,7 @@ def load_pack(path)
       {
         id: (entry_id.nil? ? derived_id : entry_id.to_s.strip),
         prompt: prompt_text,
+        notes: (entry["notes"] || entry[:notes] || "").to_s.strip,
         cues: cues
       }
     end
@@ -1272,6 +1274,7 @@ def flatten_transform_items(transform_entries, shuffle_cues: false)
       {
         entry_id: entry[:id],
         prompt: entry[:prompt].to_s,
+        notes: entry[:notes].to_s,
         cue: cue_entry[:cue].to_s,
         steps: Array(cue_entry[:steps]).map do |step|
           {
@@ -1331,6 +1334,35 @@ end
 def conjugate_category_prompt_label(ui)
   value = ui[:conjugate_category_prompt].to_s.strip if ui.is_a?(Hash)
   value.nil? || value.empty? ? "Verb category:" : value
+end
+
+# Helper: prompt for the source-language meaning after a correct listening answer
+def prompt_source_meaning(word, ui:, lenient: false)
+  source_answers = Array(word[:prompt]).map { |x| x.to_s.strip }.reject(&:empty?)
+  return true if source_answers.empty?
+
+  meaning_label = source_label(ui)
+  prompt_text = ui[:listen_source_prompt].to_s.strip if ui.is_a?(Hash)
+  prompt_text = "Type the #{meaning_label} meaning:" if prompt_text.nil? || prompt_text.empty?
+
+  say render_instruction_line(prompt_text)
+
+  1.upto(2) do |attempt|
+    input = prompt("> ")
+    _kind, ok, matched = match_answer(input, source_answers, lenient: lenient)
+
+    if ok
+      say(ui[:correct] || "✅ Correct!")
+      others = source_answers - [matched]
+      say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+      return true
+    end
+
+    say(ui[:try_again] || "Try again.") if attempt < 2
+  end
+
+  say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{source_answers.join(' / ')}"
+  false
 end
 
 def drill_conjugate_category(item, ui:, lenient: false, study: false)
@@ -1775,6 +1807,11 @@ def run_transform_study(selected, ui:, listen: false, piper_bin: nil, piper_mode
   selected.each do |item|
     say
     say render_prompt_line(item[:prompt].to_s)
+
+    if show_notes?(ui) && !item[:notes].to_s.strip.empty?
+      say render_gloss_line(item[:notes].to_s)
+    end
+
     say
     say render_cue_line(item[:cue].to_s)
     say
@@ -1895,7 +1932,7 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
       say
       say render_instruction_line(conjugate_instruction_label(ui, "negative"))
-      
+
       negative_display = conjugate_answer_display(item, negative_answers, show_conjugated_form?(ui))
       say "#{target_label(ui)}: #{negative_display}"
       phonetic = conjugate_phonetic_for(item, "negative")
@@ -2008,6 +2045,11 @@ def run_transform(selected, ui:, lenient:)
     say "[#{idx + 1}/#{selected.length}]"
     say
     say render_prompt_line(item[:prompt].to_s)
+
+    if show_notes?(ui) && !item[:notes].to_s.strip.empty?
+      say render_gloss_line(item[:notes].to_s)
+    end
+
     say
     say render_cue_line(item[:cue].to_s)
     say
@@ -2068,7 +2110,9 @@ def conjugate_instruction_label(ui, polarity)
   end
 end
 
-
+def show_notes?(ui)
+  !ui.is_a?(Hash) || ui.fetch(:show_notes, true) != false
+end
 
 def show_gloss?(ui)
   !ui.is_a?(Hash) || ui.fetch(:show_gloss, true) != false
@@ -2199,7 +2243,7 @@ end
 # Quiz Engine
 # -----------------------------
 
-def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, listen_show_target:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, shadow:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:, timing: false)
+def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:, listen_show_target:, reverse:, match_options:, piper_bin:, piper_model:, tts_template:, audio_player:, ui:, srs_enabled:, srs:, tts_variant:, answer_variant:, show_variants:, printed_voice:, speak:, shadow:, speech_record_cmd:, speech_bin:, speech_model:, speech_language:, speech_duration:, timing: false, listen_require_source: false)
   stats = { total: selected.length, correct_1: 0, correct_2: 0, failed: 0 }
   timings = []
   missed = []
@@ -2426,6 +2470,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             kind, ok, matched = match_answer(input, correct_list, lenient: lenient)
 
             if ok
+              if listen_require_source && !prompt_source_meaning(w, ui: ui, lenient: false)
+                break
+              end
+
               stats[:"correct_#{attempt}"] += 1
 
               if kind == :umlaut_lenient
@@ -2503,6 +2551,10 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
         end
 
         if ok
+          if !reverse && listen_require_source && !prompt_source_meaning(w, ui: ui, lenient: false)
+            break
+          end
+
           stats[:"correct_#{attempt}"] += 1
 
           if kind == :close
@@ -2747,6 +2799,7 @@ options = {
   listen: false,
   listen_no_english: false,
   listen_show_target: false,
+  listen_require_source: false,
   reverse: false,
   study: false,
   conversation: false,
@@ -2806,6 +2859,11 @@ parser = OptionParser.new do |opts|
   opts.on("--listen-show-target", "With --listen, also show the written target-language text") do
     options[:listen] = true
     options[:listen_show_target] = true
+  end
+  opts.on("--listen-require-source", "With --listen, also require typing the source-language meaning after what you heard") do
+    options[:listen] = true
+    options[:listen_no_english] = true
+    options[:listen_require_source] = true
   end
   opts.on("--tts-variant VAR", "With --listen, speak: written|spoken (default: written)") do |v|
     options[:tts_variant] = v.to_s.strip.downcase
@@ -2923,6 +2981,9 @@ abort("--speak cannot be combined with --shadow") if options[:speak] && options[
 abort("--shadow cannot be combined with --match-game") if options[:shadow] && options[:match_game]
 abort("--shadow cannot be combined with --listen") if options[:shadow] && options[:listen]
 abort("--shadow cannot be combined with --conversation") if options[:shadow] && options[:conversation]
+abort("--listen-require-source cannot be combined with --reverse") if options[:listen_require_source] && options[:reverse]
+abort("--listen-require-source cannot be combined with --speak") if options[:listen_require_source] && options[:speak]
+abort("--listen-require-source cannot be combined with --shadow") if options[:listen_require_source] && options[:shadow]
 
 if options[:transform]
   abort("--transform cannot be combined with --match-game") if options[:match_game]
@@ -3237,7 +3298,8 @@ begin
     speech_model: options[:speech_model],
     speech_language: options[:speech_language],
     speech_duration: options[:speech_duration],
-    timing: options[:timing]
+    timing: options[:timing],
+    listen_require_source: options[:listen_require_source]
   )
 
   say

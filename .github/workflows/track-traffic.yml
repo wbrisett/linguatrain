@@ -25,7 +25,7 @@ jobs:
 
       - name: Fetch clone traffic
         env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
           mkdir -p traffic
@@ -37,7 +37,7 @@ jobs:
 
       - name: Fetch view traffic
         env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           REPO: ${{ github.repository }}
         run: |
           curl -sf \

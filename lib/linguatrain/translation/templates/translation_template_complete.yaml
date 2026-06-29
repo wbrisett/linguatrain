@@ -1,0 +1,32 @@
+metadata:
+  id: translation_id              # Unique identifier
+  title: Translation Title
+  type: translation
+  format: dialogue                # dialogue | mixed | narrative
+  version: 1
+  schema_version: 2
+  source_language: fi
+  target_language: en-US
+
+entries:
+  - id: e001
+    type: dialogue                # dialogue | narrative
+    speaker: Speaker Name         # Omit for narrative entries
+
+    source: ""
+    literal: ""                   # Optional
+    target: ""
+
+    chunks:
+      - id: c001
+        source: ""
+        literal: ""
+        target: ""
+        hint: ""                  # Optional
+
+    vocabulary_refs:
+      - ""
+
+    grammar:
+      refs:
+        - ""

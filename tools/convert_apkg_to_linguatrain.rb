@@ -12,6 +12,34 @@ require "zip"
 
 FIELD_SEPARATOR = "\u001F"
 
+PROMPT_FIELD_CANDIDATES = %w[
+  Finnish Front Prompt Question Term Word Expression Source
+].freeze
+
+ANSWER_FIELD_CANDIDATES = %w[
+  English Back Answer Answers Meaning Meanings Translation Definition Target
+].freeze
+
+AUDIO_FIELD_CANDIDATES = %w[
+  Audio Sound Pronunciation
+].freeze
+
+IMAGE_FIELD_CANDIDATES = %w[
+  Image Picture Data
+].freeze
+
+CATEGORY_FIELD_CANDIDATES = %w[
+  Category Tags Deck Group IsKotus
+].freeze
+
+SAMPLE_ANSWER_FIELD_CANDIDATES = %w[
+  Examples Example SampleAnswer Sample_Answer SampleTranslation Sample_Translation
+].freeze
+
+SAMPLE_PROMPT_FIELD_CANDIDATES = %w[
+  Annotations Annotation Notes Note SamplePrompt Sample_Prompt
+].freeze
+
 def parse_media_tag(str)
   match = (str || "").match(/\[sound:(.+?)\]/)
   match ? match[1] : ""
@@ -30,6 +58,7 @@ def strip_html(text)
     .gsub(%r{</p>}i, "\n")
     .gsub(%r{</div>}i, "\n")
     .gsub(%r{<div[^>]*>}i, "")
+    .gsub(%r{<noscript>.*?</noscript>}i, "")
     .gsub(%r{<[^>]+>}, "")
     .gsub("&nbsp;", " ")
     .strip
@@ -45,9 +74,53 @@ def normalize_answers(text)
     .uniq
 end
 
+def field_hash(parts, field_names)
+  return {} if field_names.nil? || field_names.empty?
 
-def map_note_fields(parts)
+  field_names.each_with_index.each_with_object({}) do |(name, index), memo|
+    memo[name.to_s] = parts[index].to_s
+  end
+end
+
+def pick_field(fields, candidates)
+  candidates.each do |candidate|
+    return fields[candidate] if fields.key?(candidate)
+  end
+
+  nil
+end
+
+def map_note_fields_by_name(parts, field_names)
+  fields = field_hash(parts, field_names)
+  return nil if fields.empty?
+
+  prompt_text = pick_field(fields, PROMPT_FIELD_CANDIDATES)
+  answer_text = pick_field(fields, ANSWER_FIELD_CANDIDATES)
+
+  return nil if prompt_text.to_s.strip.empty? || answer_text.to_s.strip.empty?
+
+  audio = pick_field(fields, AUDIO_FIELD_CANDIDATES).to_s
+  image = pick_field(fields, IMAGE_FIELD_CANDIDATES).to_s
+
+  # This specific APKG uses:
+  # Order, Finnish, English, IsKotus, Annotations, Examples, CounterExamples, Data
+  # The old positional mapping interpreted Order as the answer and Finnish as the prompt.
+  {
+    "answer_text" => answer_text,
+    "prompt_text" => prompt_text,
+    "image" => image,
+    "audio" => audio,
+    "category" => pick_field(fields, CATEGORY_FIELD_CANDIDATES).to_s,
+    "sample_answer" => pick_field(fields, SAMPLE_ANSWER_FIELD_CANDIDATES).to_s,
+    "sample_prompt" => pick_field(fields, SAMPLE_PROMPT_FIELD_CANDIDATES).to_s
+  }
+end
+
+def map_note_fields(parts, field_names = nil)
   parts = Array(parts).map { |p| p.to_s }
+
+  named_mapping = map_note_fields_by_name(parts, field_names)
+  return named_mapping if named_mapping
 
   if parts.length >= 6
     answer_text, prompt_text, img_html, audio_tag, category, _color = parts[0, 6]
@@ -109,6 +182,7 @@ def find_collection_db(tmp)
     path = File.join(tmp, name)
     next unless File.exist?(path)
 
+    db = nil
     begin
       db = SQLite3::Database.new(path)
       note_count = db.get_first_value("select count(*) from notes")
@@ -120,6 +194,15 @@ def find_collection_db(tmp)
   end
 
   nil
+end
+
+def note_model_fields(db)
+  models_json = db.get_first_value("select models from col")
+  models = JSON.parse(models_json)
+
+  models.each_with_object({}) do |(model_id, model), memo|
+    memo[model_id.to_s] = Array(model["flds"]).map { |field| field["name"].to_s }
+  end
 end
 
 def convert(apkg_path, outdir)
@@ -153,13 +236,15 @@ def convert(apkg_path, outdir)
     media_map = JSON.parse(File.read(media_json_path, encoding: "UTF-8"))
     db = SQLite3::Database.new(db_path)
     db.results_as_hash = false
+    fields_by_model_id = note_model_fields(db)
 
-    rows = db.execute("select flds from notes")
+    rows = db.execute("select mid, flds from notes")
     rows.each do |row|
-      flds = row[0]
+      model_id = row[0].to_s
+      flds = row[1]
       parts = (flds || "").split(FIELD_SEPARATOR)
 
-      mapped = map_note_fields(parts)
+      mapped = map_note_fields(parts, fields_by_model_id[model_id])
       next unless mapped
 
       answers = normalize_answers(mapped["answer_text"])
@@ -192,7 +277,6 @@ def convert(apkg_path, outdir)
       rec["sample_answer"] = clean_sample_answer if rec["sample_answer"].to_s.empty? && !clean_sample_answer.empty?
       rec["sample_prompt"] = clean_sample_prompt if rec["sample_prompt"].to_s.empty? && !clean_sample_prompt.empty?
       unique[key] = rec
-
     end
 
     db.close
@@ -239,10 +323,13 @@ def convert(apkg_path, outdir)
     "# Conversion notes",
     "",
     "This pack was converted from the Anki file: #{source_name}.",
-    ""
+    "",
+    "Field mapping prefers Anki note-model field names when available.",
+    "This avoids treating fields such as Order/Frequency as answers."
   ]
 
   unless exported_images.empty? && exported_audio.empty?
+    readme_lines << ""
     readme_lines << "Extracted rich media files are available in media/."
     readme_lines << ""
     readme_lines << "Exported rich media summary:"

@@ -3,89 +3,128 @@
 
 # tools/fi_phonetic.rb
 #
-
-# Goals:
-# - learner-readable, non-IPA phonetics
-# - stable output for study packs
-# - easy YAML integration
+# Beginner-friendly Finnish pronunciation helper for Linguatrain.
+#
+# This intentionally does not emit IPA. It creates stable, learner-readable
+# pronunciation hints such as:
+#   olla      -> OHL-lah
+#   kirja     -> KEER-yah
+#   kirjasto  -> KEER-yahs-toh
+#   läpikulku -> LAP-ee-KOOL-koo
 #
 # Usage:
-#   ruby bin/fi_phonetic.rb "Helsingissä"
-#   ruby bin/fi_phonetic.rb --yaml packs/fi/some_pack.yml
-#   ruby bin/fi_phonetic.rb --yaml packs/fi/some_pack.yml --in-place
+#   ruby tools/fi_phonetic.rb "Helsingissä"
+#   ruby tools/fi_phonetic.rb --yaml packs/fi/some_pack.yaml
+#   ruby tools/fi_phonetic.rb --yaml packs/fi/some_pack.yaml --output out.yaml
+#   ruby tools/fi_phonetic.rb --yaml packs/fi/some_pack.yaml --in-place
+#   ruby tools/fi_phonetic.rb --yaml packs/fi/some_pack.yaml --field prompt --key phonetics --force
 #
-# Notes:
-# - This is intentionally operational learner phonetics, not linguistic IPA.
-# - Output conventions are optimized for consistency and readability.
+# YAML behavior:
+# - Default input field is entry["prompt"], because Linguatrain Finnish packs usually
+#   prompt with Finnish and answer with English.
+# - Default output key is "phonetics".
+# - Also supports older nested answer shapes where answer items contain { "fi" => ... }.
 
 require "optparse"
 require "yaml"
 
 module Linguatrain
-  class FinnishBestPhonetics
-    VOWELS = %w[a e i o u y ä ö å].freeze
-    VOWEL_RE = /[aeiouyäöå]/i
+  class FinnishPhonetic
+    VOWELS = "aeiouyäöå".chars.freeze
 
     DIPHTHONGS = %w[
-      aa ee ii oo uu yy ää öö
       ai ei oi ui yi äi öi
-      au eu iu ou
-      ey äy öy
+      au eu iu ou äy öy ey
       ie uo yö
     ].freeze
 
-    # Two-character vowel mappings first, then single characters.
-    PAIR_MAP = {
-      "aa" => "ah",
-      "ee" => "eh",
-      "ii" => "ee",
-      "oo" => "oh",
-      "uu" => "oo",
-      "yy" => "uu",
-      "ää" => "ae",
-      "öö" => "uh",
-      "ai" => "ai",
-      "ei" => "ei",
-      "oi" => "oi",
-      "ui" => "ui",
-      "yi" => "ui",
-      "äi" => "ai",
-      "öi" => "oi",
-      "au" => "ow",
-      "eu" => "eu",
-      "iu" => "iu",
-      "ou" => "ou",
-      "ey" => "ey",
-      "äy" => "ai",
-      "öy" => "oi",
-      "ie" => "ie",
-      "uo" => "uo",
-      "yö" => "ue-uh"
+    OVERRIDES = {
+      "olla" => "OHL-lah",
+      "ei" => "AY",
+      "se" => "SEH",
+      "hän" => "HAN",
+      "minä" => "MEE-na",
+      "sinä" => "SEE-na",
+      "mikä" => "MEE-ka",
+      "ja" => "yah",
+      "tämä" => "TA-ma",
+      "tehdä" => "TEH-da",
+      "tie" => "TEE-eh",
+      "tietää" => "TEE-eh-taa",
+      "tulla" => "TOOL-lah",
+      "haluta" => "HAH-loo-tah",
+      "niin" => "NEEN",
+      "saada" => "SAH-dah",
+      "pitää" => "PEE-taa",
+      "mutta" => "MOOT-tah",
+      "hyvä" => "HUU-va",
+      "mennä" => "MEN-na",
+      "vain" => "VINE",
+      "kaikki" => "KIKE-kee",
+      "jos" => "yohs",
+      "nyt" => "NUUT",
+      "joka" => "YOH-kah",
+      "sana" => "SAH-nah",
+      "sanoa" => "SAH-noh-ah",
+      "kun" => "koon",
+      "kuin" => "koo-een",
+      "nähdä" => "NAH-da",
+      "antaa" => "AHN-tah",
+      "tuo" => "TOO-oh",
+      "täällä" => "TAAL-la",
+      "kiitos" => "KEE-tohs",
+      "mies" => "MEE-ehs",
+      "hei" => "HAY",
+      "kuka" => "KOO-kah",
+      "katsoa" => "KAHT-soh-ah",
+      "isä" => "EE-sa",
+      "lähteä" => "LAHT-eh-ah",
+      "yksi" => "UUK-see",
+      "äiti" => "AI-tee",
+      "kuulla" => "KOOL-lah",
+      "hyvin" => "HUU-veen",
+      "apu" => "AH-poo",
+      "anteeksi" => "AHN-tehk-see",
+      "poika" => "POY-kah",
+      "päivä" => "PAI-va",
+      "työ" => "TUU-uh",
+      "kaksi" => "KAHK-see",
+      "siellä" => "SEE-el-la",
+      "ymmärtää" => "UUM-mar-taa",
+      "nimi" => "NEE-mee",
+      "lapsi" => "LAHP-see",
+      "takaisin" => "TAH-kah-ee-seen",
+      "nainen" => "NIGH-nen",
+      "uusi" => "OO-see",
+      "ajaa" => "AH-yah",
+      "ajatella" => "AH-yah-tehl-lah",
+      "ystävä" => "UUS-ta-va",
+      "tyttö" => "TUUT-tuh",
+      "auto" => "OW-toh",
+      "elää" => "EH-laa",
+      "elämä" => "EH-la-ma",
+      "käyttää" => "KAYT-taa",
+      "jäädä" => "YAA-da",
+      "kirja" => "KEER-yah",
+      "kirjasto" => "KEER-yahs-toh",
+      "läpi" => "LAP-ee",
+      "kulku" => "KOOL-koo",
+      "läpikulku" => "LAP-ee-KOOL-koo",
+      "alue" => "AH-loo-eh",
+      "yksityinen" => "UUK-see-too-yee-nen",
+      "yksityisalue" => "UUK-see-too-yees-AH-loo-eh"
     }.freeze
 
-    CHAR_MAP = {
-      "a" => "ah",
-      "e" => "eh",
-      "i" => "ee",
-      "o" => "oh",
-      "u" => "oo",
-      "y" => "ue",
-      "ä" => "ae",
-      "ö" => "uh",
-      "å" => "o",
-      "j" => "y",
-      "c" => "k",
-      "q" => "k",
-      "w" => "v",
-      "x" => "ks",
-      "z" => "ts"
+    LETTER_SOUNDS = {
+      "a" => "ah", "e" => "eh", "i" => "ee", "o" => "oh", "u" => "oo",
+      "y" => "uu", "ä" => "a", "ö" => "uh", "å" => "oh",
+      "b" => "b", "c" => "k", "d" => "d", "f" => "f", "g" => "g",
+      "h" => "h", "j" => "y", "k" => "k", "l" => "l", "m" => "m",
+      "n" => "n", "p" => "p", "q" => "k", "r" => "r", "s" => "s",
+      "t" => "t", "v" => "v", "w" => "v", "x" => "ks", "z" => "ts"
     }.freeze
 
-    CLUSTER_MAP = [
-      [/ng/i, "ng"],
-      [/nk/i, "nk"],
-      [/ks/i, "ks"]
-    ].freeze
+    WORD_RE = /[[:alpha:]ÄÖÅäöå]+(?:-[[:alpha:]ÄÖÅäöå]+)*/
 
     def self.phonetic(text)
       new.phonetic(text)
@@ -94,182 +133,184 @@ module Linguatrain
     def phonetic(text)
       return "" if text.nil? || text.to_s.strip.empty?
 
-      alternatives = text.split("/").map(&:strip).reject(&:empty?)
-      return "" if alternatives.empty?
+      raw_text = text.to_s.dup
+      raw_text.force_encoding("UTF-8")
+      clean_text = raw_text.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
 
-      alternatives.map { |part| phonetic_phrase(part) }.join(" / ")
+      clean_text.split("/").map(&:strip).reject(&:empty?).map do |part|
+        phonetic_phrase(part)
+      end.join(" / ")
     end
 
     private
 
     def phonetic_phrase(text)
-      tokens = tokenize(text)
-
-      out = tokens.map do |tok|
-        if tok[:type] == :word
-          word_to_phonetic(tok[:value])
-        else
-          tok[:value]
-        end
-      end
-
-      out.join
-         .gsub(/\s+([,.;:!?])/, '\1')
-         .gsub(/([(\[])\s+/, '\1')
-         .gsub(/\s+([)\]])/, '\1')
-         .gsub(/\s{2,}/, " ")
-         .strip
+      text.scan(/#{WORD_RE}|[^[:alpha:]ÄÖÅäöå]+/).map do |token|
+        token.match?(/\A#{WORD_RE}\z/) ? phonetic_word(token) : token
+      end.join.gsub(/\s+([,.;:!?])/, '\\1').gsub(/\s{2,}/, " ").strip
     end
 
-    def tokenize(text)
-      parts = text.scan(/[A-Za-zÄÖÅäöå]+|[^A-Za-zÄÖÅäöå]+/)
-      parts.map do |part|
-        if part.match?(/\A[A-Za-zÄÖÅäöå]+\z/)
-          { type: :word, value: part }
-        else
-          { type: :other, value: part }
-        end
-      end
+    def phonetic_word(word)
+      normalized = normalize_word(word)
+      return "" if normalized.empty?
+      return OVERRIDES[normalized] if OVERRIDES.key?(normalized)
+
+      syllables = syllabify(normalized).map { |s| pronounce_syllable(s) }
+      return "" if syllables.empty?
+
+      syllables[0] = syllables[0].upcase
+      syllables.join("-")
     end
 
-    def word_to_phonetic(word)
-      w = word.dup
-      CLUSTER_MAP.each { |re, rep| w.gsub!(re, rep) }
-
-      syllables = syllabify(w)
-      return map_chunk(w).upcase if syllables.empty?
-
-      phon_sylls = syllables.map { |syllable| map_chunk(syllable) }
-      phon_sylls[0] = phon_sylls[0].upcase if phon_sylls[0]
-      phon_sylls.join("-")
+    def normalize_word(word)
+      raw_word = word.to_s.dup
+      raw_word.force_encoding("UTF-8")
+      raw_word.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
+          .strip.downcase.gsub(/\A[^[:alpha:]ÄÖÅäöå]+|[^[:alpha:]ÄÖÅäöå]+\z/, "")
     end
 
-    # Finnish-friendly syllabification:
-    # - find onset
-    # - consume nucleus including long vowels and known diphthongs
-    # - between nuclei:
-    #   - 0 consonants => hiatus split
-    #   - 1 consonant => consonant starts next syllable
-    #   - 2+ consonants => first closes previous, rest start next
-    def syllabify(word)
-      w = word.downcase
-      return [w] unless w.match?(VOWEL_RE)
+    def vowel?(char)
+      VOWELS.include?(char)
+    end
 
-      chars = w.chars
-      syllables = []
+    def consonant?(char)
+      char.match?(/[[:alpha:]ÄÖÅäöå]/) && !vowel?(char)
+    end
+
+    def split_vowel_group(group)
+      return [group] if group.length <= 1
+      return [group] if group.chars.uniq.length == 1
+      return [group] if DIPHTHONGS.include?(group)
+
+      group.chars
+    end
+
+    def expanded_units(word)
+      units = []
       i = 0
 
-      while i < chars.length
-        syllable = +""
-
-        while i < chars.length && !vowel?(chars[i])
-          syllable << chars[i]
+      while i < word.length
+        if vowel?(word[i])
+          start = i
           i += 1
-        end
-
-        if i < chars.length && vowel?(chars[i])
-          syllable << chars[i]
-          i += 1
-
-          while i < chars.length && vowel?(chars[i])
-            prev = syllable[-1]
-            pair = "#{prev}#{chars[i]}"
-
-            if prev == chars[i] || diphthong?(pair)
-              syllable << chars[i]
-              i += 1
-            else
-              break
-            end
-          end
-        end
-
-        break if syllable.empty?
-
-        cons_start = i
-        while i < chars.length && !vowel?(chars[i])
-          i += 1
-        end
-        cons_cluster = chars[cons_start...i].join
-
-        if i >= chars.length
-          syllable << cons_cluster
-          syllables << syllable
-          break
-        end
-
-        if cons_cluster.empty?
-          syllables << syllable
-        elsif cons_cluster.length == 1
-          syllables << syllable
-          i = cons_start
+          i += 1 while i < word.length && vowel?(word[i])
+          split_vowel_group(word[start...i]).each { |unit| units << unit }
         else
-          syllable << cons_cluster[0]
-          syllables << syllable
-          i = cons_start + 1
+          units << word[i]
+          i += 1
         end
       end
 
+      units
+    end
+
+    def syllabify(word)
+      units = expanded_units(word)
+      vowel_indexes = units.each_index.select { |i| units[i].chars.any? { |char| vowel?(char) } }
+      return [word] if vowel_indexes.length <= 1
+
+      syllables = []
+      start = 0
+
+      vowel_indexes.each_cons(2) do |v1, v2|
+        cluster_start = v1 + 1
+        cluster_end = v2 - 1
+        cluster_len = cluster_end >= cluster_start ? cluster_end - cluster_start + 1 : 0
+
+        boundary = if cluster_len <= 0
+                     v1
+                   elsif cluster_len == 1
+                     cluster_start - 1
+                   else
+                     cluster_end - 1
+                   end
+
+        syllables << units[start..boundary].join
+        start = boundary + 1
+      end
+
+      syllables << units[start..].join
       syllables.reject(&:empty?)
     end
 
-    def map_chunk(chunk)
-      s = chunk.downcase.gsub("-", "")
-      out = +""
+    def vowel_sound(group)
+      return LETTER_SOUNDS.fetch(group, group) if group.length == 1
+      return vowel_sound(group[0]) if group.chars.uniq.length == 1
+
+      case group
+      when "ai", "äi" then "ai"
+      when "ei" then "ay"
+      when "oi" then "oy"
+      when "ui" then "oo-ee"
+      when "yi" then "uu-ee"
+      when "öi" then "uh-ee"
+      when "au" then "ow"
+      when "eu" then "eh-oo"
+      when "iu" then "ee-oo"
+      when "ou" then "oh-oo"
+      when "äy" then "ay"
+      when "öy" then "uh-ee"
+      when "ie" then "ee-eh"
+      when "uo" then "oo-oh"
+      when "yö" then "uu-uh"
+      else group.chars.map { |char| LETTER_SOUNDS.fetch(char, char) }.join
+      end
+    end
+
+    def pronounce_syllable(syllable)
+      out = []
       i = 0
 
-      while i < s.length
-        two = s[i, 2]
-        one = s[i, 1]
+      while i < syllable.length
+        char = syllable[i]
 
-        if two && PAIR_MAP.key?(two)
-          out << PAIR_MAP[two]
-          i += 2
+        if vowel?(char)
+          start = i
+          i += 1
+          i += 1 while i < syllable.length && vowel?(syllable[i])
+          out << vowel_sound(syllable[start...i])
           next
         end
 
-        out << (CHAR_MAP[one] || one)
-        i += 1
+        if i + 1 < syllable.length && syllable[i + 1] == char && consonant?(char)
+          out << LETTER_SOUNDS.fetch(char, char) * 2
+          i += 2
+        else
+          out << LETTER_SOUNDS.fetch(char, char)
+          i += 1
+        end
       end
 
-      out
-    end
-
-    def diphthong?(pair)
-      DIPHTHONGS.include?(pair)
-    end
-
-    def vowel?(ch)
-      VOWELS.include?(ch)
+      out.join.gsub("eeh", "ee").gsub("ohh", "oh").gsub("ooh", "oo")
     end
   end
 end
 
 options = {
   yaml: nil,
+  output: nil,
   in_place: false,
-  force: false
+  force: false,
+  field: "prompt",
+  key: "phonetics"
 }
 
 parser = OptionParser.new do |opts|
   opts.banner = <<~BANNER
     Usage:
-      ruby bin/fi_phonetic_best.rb "Finnish text"
-      ruby bin/fi_phonetic_best.rb --yaml path.yml [--in-place]
+      ruby tools/fi_phonetic.rb "Finnish text"
+      ruby tools/fi_phonetic.rb --yaml path.yaml [--output out.yaml]
+      ruby tools/fi_phonetic.rb --yaml path.yaml --in-place
+
+    Options:
   BANNER
 
-  opts.on("--yaml PATH", "Update YAML pack entries in PATH") do |v|
-    options[:yaml] = v
-  end
-
-  opts.on("--in-place", "Write YAML changes back to file (otherwise print to STDOUT)") do
-    options[:in_place] = true
-  end
-
-  opts.on("--force", "Replace existing phonetic values instead of only filling blanks") do
-    options[:force] = true
-  end
-
+  opts.on("--yaml PATH", "Read and update a Linguatrain YAML pack") { |v| options[:yaml] = v }
+  opts.on("--output PATH", "Write YAML output to PATH") { |v| options[:output] = v }
+  opts.on("--in-place", "Write YAML changes back to the input file") { options[:in_place] = true }
+  opts.on("--force", "Replace existing phonetics/phonetic values") { options[:force] = true }
+  opts.on("--field NAME", "Entry field to phoneticize; default: prompt") { |v| options[:field] = v }
+  opts.on("--key NAME", "Output key; default: phonetics") { |v| options[:key] = v }
   opts.on("-h", "--help", "Show help") do
     puts opts
     exit 0
@@ -278,38 +319,34 @@ end
 
 parser.parse!(ARGV)
 
-def update_entry_phonetic!(entry, force: false)
-  updated = 0
+def add_entry_phonetics!(entry, options)
+  return 0 unless entry.is_a?(Hash)
 
-  # Newer simple pack shape:
-  # answer:
-  #   - "Hei"
-  # phonetic: "HEI"
-  if entry["answer"].is_a?(Array) && entry["phonetic"].to_s.strip.empty? || force
-    answers = entry["answer"]
-    first_string = answers.find { |item| item.is_a?(String) && !item.strip.empty? }
-    if first_string
-      if force || !entry.key?("phonetic") || entry["phonetic"].to_s.strip.empty?
-        entry["phonetic"] = Linguatrain::FinnishBestPhonetics.phonetic(first_string)
-        updated += 1
-      end
+  updated = 0
+  key = options[:key]
+  source_value = entry[options[:field]]
+
+  if source_value.is_a?(String) && !source_value.strip.empty?
+    if options[:force] || !entry.key?(key) || entry[key].to_s.strip.empty?
+      entry[key] = Linguatrain::FinnishPhonetic.phonetic(source_value)
+      updated += 1
     end
   end
 
-  # Older nested answer object shape:
+  # Backward-compatible nested answer shape:
   # answer:
-  #   - fi: "kaurapuuro"
-  #     en: "oatmeal"
-  #     phonetic: "KAU-ra-puu-ro"
+  #   - fi: kaurapuuro
+  #     en: oatmeal
+  #     phonetic: KOW-rah-poo-roh
   if entry["answer"].is_a?(Array)
-    entry["answer"].each do |ans|
-      next unless ans.is_a?(Hash)
+    entry["answer"].each do |answer_item|
+      next unless answer_item.is_a?(Hash)
 
-      fi = ans["fi"]
+      fi = answer_item["fi"]
       next unless fi.is_a?(String) && !fi.strip.empty?
 
-      if force || !ans.key?("phonetic") || ans["phonetic"].to_s.strip.empty?
-        ans["phonetic"] = Linguatrain::FinnishBestPhonetics.phonetic(fi)
+      if options[:force] || !answer_item.key?("phonetic") || answer_item["phonetic"].to_s.strip.empty?
+        answer_item["phonetic"] = Linguatrain::FinnishPhonetic.phonetic(fi)
         updated += 1
       end
     end
@@ -320,34 +357,32 @@ end
 
 if options[:yaml]
   path = options[:yaml]
-  data = YAML.safe_load(File.read(path), permitted_classes: [], aliases: true)
 
-  unless data.is_a?(Hash)
-    warn "YAML root must be a mapping (Hash)"
+  unless File.exist?(path)
+    warn "YAML input not found: #{path}"
     exit 1
   end
 
-  entries = data["entries"]
-  unless entries.is_a?(Array)
-    warn "YAML file must contain an entries array"
+  data = YAML.safe_load(File.read(path, encoding: "UTF-8"), permitted_classes: [], aliases: true)
+  unless data.is_a?(Hash) && data["entries"].is_a?(Array)
+    warn "YAML root must be a mapping with an entries array"
     exit 1
   end
 
-  updated = 0
-  entries.each do |entry|
-    next unless entry.is_a?(Hash)
-    updated += update_entry_phonetic!(entry, force: options[:force])
-  end
-
+  updated = data["entries"].sum { |entry| add_entry_phonetics!(entry, options) }
   out_yaml = YAML.dump(data)
 
   if options[:in_place]
-    File.write(path, out_yaml)
+    File.write(path, out_yaml, encoding: "UTF-8")
     warn "Updated #{updated} phonetic field(s) in #{path}"
+  elsif options[:output]
+    File.write(options[:output], out_yaml, encoding: "UTF-8")
+    warn "Updated #{updated} phonetic field(s); wrote #{options[:output]}"
   else
     puts out_yaml
-    warn "Would update #{updated} phonetic field(s) (use --in-place to write)"
+    warn "Would update #{updated} phonetic field(s). Use --in-place or --output to write."
   end
+
   exit 0
 end
 
@@ -357,4 +392,4 @@ if text.empty?
   exit 1
 end
 
-puts Linguatrain::FinnishBestPhonetics.phonetic(text)
+puts Linguatrain::FinnishPhonetic.phonetic(text)

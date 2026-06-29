@@ -1,0 +1,16 @@
+metadata:
+  id: translation_id
+  title: Translation Title
+  type: translation
+  format: dialogue
+  version: 1
+  schema_version: 2
+  source_language: fi
+  target_language: en-US
+
+entries:
+  - id: e001
+    type: dialogue
+    speaker: Speaker Name
+    source: ""
+    target: ""

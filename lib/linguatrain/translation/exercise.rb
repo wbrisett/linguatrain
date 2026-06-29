@@ -1,0 +1,472 @@
+# frozen_string_literal: true
+require_relative "chunk"
+require_relative "normalizer"
+require_relative "scorer"
+
+module Linguatrain
+  module Translation
+    class Exercise
+      def initialize(entries, scorer:, input: $stdin, output: $stdout)
+        @entries = entries
+        @scorer = scorer
+        @input = input
+        @output = output
+        @quit_requested = false
+      end
+
+      def self.run(entries, scorer:, input: $stdin, output: $stdout)
+        new(entries, scorer: scorer, input: input, output: output).run
+      end
+
+      def run
+        entries.each do |entry|
+          break if quit_requested?
+
+          run_entry(entry)
+        end
+      end
+
+      private
+
+      attr_reader :entries, :scorer, :input, :output
+
+      def run_entry(entry)
+
+        loop do
+          display_prompt(entry)
+          answer = read_answer
+
+          if answer.empty?
+            output.puts "No answer entered. Moving to the next sentence."
+            return
+          end
+
+          result = scorer.score(answer, entry)
+          display_result(result)
+
+          if fully_correct?(result)
+            display_answer(entry)
+            follow_up_action = prompt_after_answer(result)
+
+            case follow_up_action
+            when :next
+              return
+            when :quit
+              @quit_requested = true
+              return
+            end
+          end
+
+          action = prompt_for_action(result)
+
+          case action
+          when :retry
+            entry = retry_entry(entry, result)
+            next
+          when :show_hint
+            loop do
+              display_hint(entry, result)
+              follow_up_action = prompt_after_hint(result)
+
+              case follow_up_action
+              when :show_hint
+                next
+              when :retry
+                entry = retry_entry(entry, result)
+                break
+              when :show_answer
+                display_answer(entry)
+                follow_up_action = prompt_after_answer(result)
+
+                case follow_up_action
+                when :retry
+                  entry = retry_entry(entry, result)
+                  break
+                when :next
+                  return
+                when :quit
+                  @quit_requested = true
+                  return
+                end
+              when :next
+                return
+              when :quit
+                @quit_requested = true
+                return
+              end
+            end
+            next
+          when :show_answer
+            display_answer(entry)
+            follow_up_action = prompt_after_answer(result)
+
+            case follow_up_action
+            when :retry
+              entry = retry_entry(entry, result)
+              next
+            when :next
+              return
+            when :quit
+              @quit_requested = true
+              return
+            end
+          when :next
+            return
+          when :quit
+            @quit_requested = true
+            return
+          end
+        end
+      end
+
+      def display_prompt(entry)
+        output.puts
+        output.puts "-" * 50
+        output.puts "Translation Exercise"
+        output.puts "-" * 50
+        output.puts
+        completed_matches_displayed = display_completed_matches(entry)
+
+        if completed_matches_displayed
+          output.puts "Remaining translation:"
+          output.puts entry.fetch("source")
+        else
+          output.puts entry.fetch("source")
+        end
+
+        output.puts
+        output.print "> "
+      end
+
+      def display_completed_matches(entry)
+        completed_matches = entry.fetch("completed_matches", [])
+        return false if completed_matches.empty?
+
+        completed_matches.each do |match|
+          matched_text = match.fetch(:matched_text, nil)
+          source = match.fetch(:source)
+
+          if matched_text
+            output.puts "✓ #{source} : #{matched_text}"
+          else
+            output.puts "✓ #{source}"
+          end
+        end
+
+        output.puts
+        true
+      end
+
+      def retry_entry(entry, result)
+
+        missed = result.fetch(:missed)
+
+        retry_source = missed.map { |match| match.fetch(:source) }.join(" / ")
+        retry_chunks = missed.map do |match|
+          chunk = {
+            "id" => match[:id] || match["id"],
+            "source" => match.fetch(:source),
+            "targets" => match.fetch(:targets),
+            "hint" => hint_for_chunk(entry, match)
+          }
+
+          chunk.reject { |_key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
+        end
+
+        completed_matches = entry.fetch("completed_matches", []) +
+                            result.fetch(:matches).select { |match| match.fetch(:matched) }
+
+        entry.merge(
+          "source" => retry_source,
+          "chunks" => retry_chunks,
+          "target" => entry.fetch("target", nil),
+          "completed_matches" => completed_matches
+        )
+      end
+
+      def read_answer
+        input.gets&.chomp.to_s.strip
+      end
+
+      def display_result(result)
+        output.puts
+        output.puts "-" * 50
+        output.puts "Results"
+        output.puts "-" * 50
+        output.puts
+
+        matches_to_display(result).each do |match|
+          marker = match.fetch(:matched) ? "✓" : "✗"
+          matched_text = match.fetch(:matched_text, nil)
+
+          if match.fetch(:matched) && matched_text
+            output.puts "#{marker} #{match.fetch(:source)} : #{matched_text}"
+          else
+            output.puts "#{marker} #{match.fetch(:source)}"
+          end
+        end
+
+        output.puts
+        output.puts "Score: #{result.fetch(:correct)}/#{result.fetch(:total)} (#{percentage(result)}%)"
+      end
+
+      def matches_to_display(result)
+        result.fetch(:matches)
+      end
+
+      def fully_correct?(result)
+        result.fetch(:correct) == result.fetch(:total)
+      end
+
+      def prompt_for_action(result)
+        loop do
+          output.puts
+          output.puts available_actions(result)
+          output.print "Choice: "
+
+          case read_answer.downcase
+          when "h", "hint", "l", "literal", "literal hint"
+            return :show_hint if hints_available?(result)
+
+            output.puts "No hint is available for this sentence."
+          when "r", "retry"
+            return :retry if retry_available?(result)
+
+            output.puts "There are no missed chunks to retry."
+          when "s", "show", "show answer", "answer"
+            return :show_answer
+          when "n", "next"
+            return :next
+          when "q", "quit"
+            return :quit
+          else
+            output.puts "Please choose one of the listed options."
+          end
+        end
+      end
+
+      def prompt_after_hint(result)
+        loop do
+          output.puts
+          output.puts after_hint_actions(result)
+          output.print "Choice: "
+
+          case read_answer.downcase
+          when "h", "hint", "l", "literal", "literal hint"
+            return :show_hint if hints_available?(result)
+
+            output.puts "No more hints are available for this sentence."
+          when "r", "retry"
+            return :retry if retry_available?(result)
+
+            output.puts "There are no missed chunks to retry."
+          when "s", "show", "show answer", "answer"
+            return :show_answer
+          when "n", "next"
+            return :next
+          when "q", "quit"
+            return :quit
+          else
+            output.puts "Please choose one of the listed options."
+          end
+        end
+      end
+
+      def prompt_after_answer(result)
+        loop do
+          output.puts
+          output.puts after_answer_actions(result)
+          output.print "Choice: "
+
+          case read_answer.downcase
+          when "r", "retry"
+            return :retry if retry_available?(result)
+
+            output.puts "There are no missed chunks to retry."
+          when "n", "next"
+            return :next
+          when "q", "quit"
+            return :quit
+          else
+            output.puts "Please choose one of the listed options."
+          end
+        end
+      end
+
+      def available_actions(result)
+        actions = []
+        actions << "[H]int" if hints_available?(result)
+        actions << "[R]etry" if retry_available?(result)
+        actions << "[S]how answer"
+        actions << "[N]ext"
+        actions << "[Q]uit"
+        actions.join("  ")
+      end
+
+      def after_hint_actions(result)
+        actions = []
+        actions << "[H]int" if hints_available?(result)
+        actions << "[R]etry" if retry_available?(result)
+        actions << "[S]how answer"
+        actions << "[N]ext"
+        actions << "[Q]uit"
+        actions.join("  ")
+      end
+
+      def after_answer_actions(result)
+        actions = []
+        actions << "[R]etry" if retry_available?(result)
+        actions << "[N]ext"
+        actions << "[Q]uit"
+        actions.join("  ")
+      end
+
+      def retry_available?(result)
+        result.fetch(:correct) < result.fetch(:total)
+      end
+
+      def hints_available?(result)
+        !hints_for(result.fetch(:entry, {}), result.fetch(:missed, [])).empty?
+      end
+
+      def display_hint(entry, result = nil)
+        missed = result ? result.fetch(:missed, []) : []
+        hints = hints_for(entry, missed)
+
+        output.puts
+        output.puts "Hint:"
+
+        if hints.empty?
+          output.puts "No hint available."
+          return
+        end
+
+        index = next_hint_index(entry, hints.length)
+        output.puts hints[index]
+      end
+
+      def next_hint_index(entry, hint_count)
+        @hint_indexes ||= Hash.new(0)
+        key = entry.fetch("id", entry.fetch("source"))
+        index = @hint_indexes[key] % hint_count
+        @hint_indexes[key] += 1
+        index
+      end
+
+      def hints_for(entry, missed_chunks = [])
+        hints = []
+
+        Array(missed_chunks).each do |chunk|
+          hint = hint_for_chunk(entry, chunk)
+
+          source = chunk[:source] || chunk["source"]
+          targets = chunk[:targets] || chunk["targets"] || chunk[:target] || chunk["target"]
+
+          source = source.to_s.strip
+          target = Array(targets).map { |x| x.to_s.strip }.reject(&:empty?).first
+
+          if !hint.empty?
+            hints << hint
+            next
+          end
+
+          if !source.empty? && target && !target.empty?
+            hints << "\"#{source}\" means \"#{target}\"."
+          end
+        end
+
+        vocabulary = entry["vocabulary"] || entry[:vocabulary] || []
+        Array(vocabulary).each do |item|
+          if item.is_a?(Hash)
+            word = item["word"] || item[:word]
+            meaning = item["meaning"] || item[:meaning]
+
+            word = word.to_s.strip
+            meaning = meaning.to_s.strip
+
+            if !word.empty? && !meaning.empty?
+              hints << "#{word} means #{meaning}."
+            elsif !word.empty?
+              hints << word
+            end
+          else
+            text = item.to_s.strip
+            hints << text unless text.empty?
+          end
+        end
+
+        grammar = entry["grammar"] || entry[:grammar]
+
+        case grammar
+        when Array
+          grammar.each do |item|
+            next unless item.is_a?(Hash)
+
+            note = item["note"] || item[:note]
+            note = note.to_s.strip
+            hints << note unless note.empty?
+          end
+        when Hash
+          notes = grammar["notes"] || grammar[:notes] || []
+
+          Array(notes).each do |note|
+            note = note.to_s.strip
+            hints << note unless note.empty?
+          end
+        end
+
+        literal = entry["literal"] || entry[:literal]
+        literal = literal.to_s.strip
+        hints << literal unless literal.empty?
+
+        hints.uniq
+      end
+
+      def hint_for_chunk(entry, chunk)
+        explicit_hint = chunk[:hint] || chunk["hint"]
+        explicit_hint = explicit_hint.to_s.strip
+        return explicit_hint unless explicit_hint.empty?
+
+        chunk_id = chunk[:id] || chunk["id"]
+        chunk_source = chunk[:source] || chunk["source"]
+
+        matching_chunk = Array(entry["chunks"] || entry[:chunks]).find do |candidate|
+          candidate_id = candidate["id"] || candidate[:id]
+          candidate_source = candidate["source"] || candidate[:source]
+
+          (!chunk_id.to_s.strip.empty? && candidate_id.to_s.strip == chunk_id.to_s.strip) ||
+            (!chunk_source.to_s.strip.empty? && candidate_source.to_s.strip == chunk_source.to_s.strip)
+        end
+
+        return "" unless matching_chunk
+
+        hint = matching_chunk["hint"] || matching_chunk[:hint]
+        hint.to_s.strip
+      end
+
+      def display_answer(entry)
+        output.puts
+
+        if entry.key?("literal")
+          output.puts "Literal:"
+          output.puts entry.fetch("literal")
+          output.puts
+        end
+
+        output.puts "Answer:"
+        output.puts entry.fetch("target", "No full target answer provided.")
+      end
+
+      def percentage(result)
+        total = result.fetch(:total)
+        return 0 if total.zero?
+
+        ((result.fetch(:correct).to_f / total) * 100).round
+      end
+
+      def quit_requested?
+        @quit_requested
+      end
+    end
+  end
+end

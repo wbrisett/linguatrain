@@ -12,6 +12,7 @@ require "digest"
 require "fileutils"
 require "json"
 require "pathname"
+require_relative "lib/linguatrain/translation/exercise"
 
 # -----------------------------
 # Utility
@@ -865,10 +866,13 @@ def load_pack(path)
       end
 
       entries = data["entries"] || data[:entries]
+      turns = data["turns"] || data[:turns]
       persons_v = data["persons"] || data[:persons]
       drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
       if entries.is_a?(Array)
         entries
+      elsif turns.is_a?(Array)
+        turns
       else
         # Legacy support (kept for backward compatibility):
         # A) {items: [ ... ], meta: {...}}  -> use items
@@ -1137,6 +1141,106 @@ def load_pack(path)
       conjugate_person_defs: person_defs,
       conjugate_entries: conjugate_entries
     }
+  elsif translation_pack?(pack_meta, raw_entries)
+    translation_entries = raw_entries.map.with_index do |entry, idx|
+      entry_id = entry["id"] || entry[:id] || format("t%03d", idx + 1)
+      speaker_v = entry["speaker"] || entry[:speaker]
+      source_v = entry["source"] || entry[:source] || entry["prompt"] || entry[:prompt]
+      target_v = entry["target"] || entry[:target] || entry["answer"] || entry[:answer]
+      literal_v = entry["literal"] || entry[:literal]
+      chunks_v = entry["chunks"] || entry[:chunks] || []
+      vocabulary_refs_v = entry["vocabulary_refs"] || entry[:vocabulary_refs] || []
+      vocabulary_v = entry["vocabulary"] || entry[:vocabulary] || []
+      grammar_v = entry["grammar"] || entry[:grammar]
+
+      raise "Invalid translation entry: #{entry.inspect}" if source_v.nil? || target_v.nil?
+
+      source_text = source_v.to_s.strip
+      raise "Invalid translation entry: #{entry.inspect}" if source_text.empty?
+
+      targets =
+        case target_v
+        when Array
+          target_v.map { |x| x.to_s.strip }.reject(&:empty?)
+        else
+          [target_v.to_s.strip]
+        end
+      raise "Invalid translation entry: #{entry.inspect}" if targets.empty?
+
+      chunks =
+        if chunks_v.is_a?(Array)
+          chunks_v.map.with_index do |chunk, cidx|
+            if chunk.is_a?(Hash)
+              chunk_source = chunk["source"] || chunk[:source]
+              chunk_target = chunk["target"] || chunk[:target] || chunk["targets"] || chunk[:targets]
+              chunk_hint = chunk["hint"] || chunk[:hint]
+              chunk_id = chunk["id"] || chunk[:id] || format("c%03d", cidx + 1)
+            else
+              chunk_source = chunk
+              chunk_target = nil
+              chunk_id = format("c%03d", cidx + 1)
+            end
+
+            next nil if chunk_source.nil?
+
+            chunk_targets =
+              case chunk_target
+              when Array
+                chunk_target.map { |x| x.to_s.strip }.reject(&:empty?)
+              when NilClass
+                []
+              else
+                [chunk_target.to_s.strip].reject(&:empty?)
+              end
+
+            normalized_chunk = {
+              id: chunk_id.to_s.strip,
+              source: chunk_source.to_s.strip,
+              targets: chunk_targets
+            }
+
+            hint_text = chunk_hint.to_s.strip
+            normalized_chunk[:hint] = hint_text unless hint_text.empty?
+            normalized_chunk
+
+          end.compact.reject { |c| c[:source].empty? }
+        else
+          []
+        end
+
+      chunks = [{ id: "c001", source: source_text, targets: targets }] if chunks.empty?
+
+      grammar =
+        if grammar_v.is_a?(Hash)
+          refs = grammar_v["refs"] || grammar_v[:refs] || []
+          notes = grammar_v["notes"] || grammar_v[:notes] || []
+          {
+            refs: Array(refs).map { |x| x.to_s.strip }.reject(&:empty?),
+            notes: Array(notes).map { |x| x.to_s.strip }.reject(&:empty?)
+          }
+        elsif grammar_v.is_a?(Array)
+          {
+            refs: grammar_v.map { |x| x.to_s.strip }.reject(&:empty?),
+            notes: []
+          }
+        else
+          { refs: [], notes: [] }
+        end
+
+      {
+        id: entry_id.to_s.strip,
+        speaker: (speaker_v.nil? ? "" : speaker_v.to_s.strip),
+        source: source_text,
+        target: targets,
+        literal: (literal_v.nil? ? "" : literal_v.to_s.strip),
+        chunks: chunks,
+        vocabulary_refs: Array(vocabulary_refs_v).map { |x| x.to_s.strip }.reject(&:empty?),
+        vocabulary: Array(vocabulary_v),
+        grammar: grammar
+      }
+    end
+
+    { meta: symbolize_keys_deep(pack_meta), translation_entries: translation_entries }
   else
     raw_entries.map do |w|
       # Optional conversation speaker name (used by --conversation only)
@@ -1225,6 +1329,23 @@ def load_pack(path)
     end.then do |words|
       { meta: symbolize_keys_deep(pack_meta), words: words }
     end
+  end
+end
+
+# Helper to detect if a pack is a translation pack.
+def translation_pack?(pack_meta, raw_entries)
+  type = (pack_meta["type"] || pack_meta[:type]).to_s.strip.downcase
+  format = (pack_meta["format"] || pack_meta[:format]).to_s.strip.downcase
+  drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
+
+  return true if type == "translation"
+  return true if format == "dialog"
+  return true if drill_type == "translation"
+
+  Array(raw_entries).any? do |entry|
+    entry.is_a?(Hash) &&
+      (entry.key?("source") || entry.key?(:source)) &&
+      (entry.key?("target") || entry.key?(:target))
   end
 end
 
@@ -2794,8 +2915,6 @@ end
 options = {
   config: nil,
   localisation: nil,
-  lenient: false,
-  match_game: false,
   listen: false,
   listen_no_english: false,
   listen_show_target: false,
@@ -2803,6 +2922,7 @@ options = {
   reverse: false,
   study: false,
   conversation: false,
+  translation: false,
   transform: false,
   timing: false,
   conjugate: false,
@@ -2832,6 +2952,9 @@ options = {
   speech_language: ENV["WHISPER_LANGUAGE"] || ENV["SPEECH_LANGUAGE"],
   speech_duration: (ENV.key?("SPEECH_DURATION") ? ENV["SPEECH_DURATION"].to_i : nil),
   missed_output_dir: nil,
+  # Quiz options
+  lenient: false,
+  match_game: false,
 }
 
 parser = OptionParser.new do |opts|
@@ -2955,6 +3078,13 @@ parser = OptionParser.new do |opts|
   opts.on("--new N", Integer, "With --srs, include up to N new items (default: 5)") { |v| options[:srs_new] = v }
   opts.on("--reset-srs", "With --srs, reset scheduling state for this pack") { options[:srs_reset] = true }
   opts.on("--srs-file PATH", "Override SRS state file location") { |v| options[:srs_file] = v }
+  opts.on("--translation", "Translation mode: translate source text using chunks and retry") do
+    options[:translation] = true
+  end
+
+  opts.on("--translate", "Alias for --translation") do
+    options[:translation] = true
+  end
 end
 
 parser.parse!
@@ -2967,6 +3097,7 @@ if options[:study]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
   abort("--study cannot be combined with --speak") if options[:speak]
   abort("--study cannot be combined with --conversation") if options[:conversation]
+  abort("--study cannot be combined with --translation") if options[:translation]
   abort("--study cannot be combined with --reverse when used with --conjugate") if options[:conjugate] && options[:reverse]
 
   if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
@@ -2977,13 +3108,19 @@ end
 abort("--speak cannot be combined with --match-game") if options[:speak] && options[:match_game]
 abort("--speak cannot be combined with --listen") if options[:speak] && options[:listen]
 abort("--speak cannot be combined with --conversation") if options[:speak] && options[:conversation]
+abort("--speak cannot be combined with --translation") if options[:speak] && options[:translation]
 abort("--speak cannot be combined with --shadow") if options[:speak] && options[:shadow]
 abort("--shadow cannot be combined with --match-game") if options[:shadow] && options[:match_game]
 abort("--shadow cannot be combined with --listen") if options[:shadow] && options[:listen]
 abort("--shadow cannot be combined with --conversation") if options[:shadow] && options[:conversation]
+abort("--shadow cannot be combined with --translation") if options[:shadow] && options[:translation]
 abort("--listen-require-source cannot be combined with --reverse") if options[:listen_require_source] && options[:reverse]
 abort("--listen-require-source cannot be combined with --speak") if options[:listen_require_source] && options[:speak]
 abort("--listen-require-source cannot be combined with --shadow") if options[:listen_require_source] && options[:shadow]
+abort("--translation cannot be combined with --match-game") if options[:translation] && options[:match_game]
+abort("--translation cannot be combined with --listen") if options[:translation] && options[:listen]
+abort("--translation cannot be combined with --conversation") if options[:translation] && options[:conversation]
+abort("--translation cannot be combined with --reverse") if options[:translation] && options[:reverse]
 
 if options[:transform]
   abort("--transform cannot be combined with --match-game") if options[:match_game]
@@ -2993,6 +3130,7 @@ if options[:transform]
   abort("--transform cannot be combined with --reverse") if options[:reverse]
   abort("--transform cannot be combined with --listen unless used with --study") if options[:listen] && !options[:study]
   abort("--transform cannot be combined with --conversation") if options[:conversation]
+  abort("--transform cannot be combined with --translation") if options[:translation]
 
   if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
     abort("--transform does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
@@ -3007,6 +3145,7 @@ if options[:conjugate]
   abort("--conjugate cannot be combined with --reverse") if options[:reverse]
   abort("--conjugate cannot be combined with --conversation") if options[:conversation]
   abort("--conjugate cannot be combined with --transform") if options[:transform]
+  abort("--conjugate cannot be combined with --translation") if options[:translation]
   unless %w[positive negative both].include?(options[:conjugate_polarity].to_s)
     abort("--conjugate polarity must be one of: positive, negative, both")
   end
@@ -3020,6 +3159,7 @@ pack = load_pack(yaml_path)
 pack_meta = pack[:meta] || {}
 words = pack[:words] || []
 transform_entries = pack[:transform_entries] || []
+translation_entries = pack[:translation_entries] || []
 conjugate_entries = pack[:conjugate_entries] || []
 conjugate_persons = pack[:conjugate_persons] || []
 conjugate_person_defs = pack[:conjugate_person_defs] || conjugate_persons
@@ -3071,6 +3211,8 @@ if options[:transform]
   abort("This pack does not contain transform entries.") if transform_entries.empty?
 elsif options[:conjugate]
   abort("This pack does not contain conjugate entries.") if conjugate_entries.empty?
+elsif options[:translation]
+  abort("This pack does not contain translation entries.") if translation_entries.empty?
 else
   drill_type = pack_meta[:drill_type].to_s.strip.downcase
   abort("This pack is a transform pack. Use --transform.") if drill_type == "transform"
@@ -3085,6 +3227,12 @@ elsif options[:conjugate]
   shuffle_persons = !!pack_meta[:shuffle_persons]
   selected_entries = choose_conjugate_entries(conjugate_entries, options[:count])
   selected = flatten_conjugate_items(selected_entries, conjugate_person_defs, shuffle_persons: shuffle_persons)
+elsif options[:translation]
+  if options[:count].nil? || options[:count] == "all"
+    selected = translation_entries
+  else
+    selected = translation_entries.take(Integer(options[:count]))
+  end
 elsif srs_enabled
   srs["meta"] ||= {}
   srs["meta"]["source_file"] = File.expand_path(yaml_path)
@@ -3112,7 +3260,8 @@ else
     selected = choose_words(words, options[:count])
   end
 end
-# Conversation mode and shadow mode should always follow the pack order (no shuffling / no SRS ordering).
+
+  # Conversation mode and shadow mode should always follow the pack order (no shuffling / no SRS ordering).
 if options[:conversation]
   if options[:count].nil? || options[:count] == "all"
     selected = words
@@ -3140,6 +3289,18 @@ if srs_enabled
   say
 end
 begin
+
+  if options[:translation]
+    scorer = Linguatrain::Translation::Scorer.new
+    translation_selected = selected.map { |entry| stringify_keys_deep(entry) }
+
+    Linguatrain::Translation::Exercise.run(
+      translation_selected,
+      scorer: scorer
+    )
+
+    exit(0)
+  end
 
   if options[:conversation]
     run_conversation(

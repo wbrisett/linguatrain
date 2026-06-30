@@ -1,0 +1,294 @@
+metadata:
+  id: suomen_mestari_1_kappale_01_vocabulary
+  title: Suomen Mestari 1 - Kappale 1 Vocabulary
+  type: vocabulary
+  format: canonical
+  version: 1
+  schema_version: 1
+  source_language: fi
+  target_language: en-US
+  source_pack: suomen_mestari_1_kappale_01_translation
+entries:
+- id: anteeksi
+  prompt: anteeksi
+  answer:
+  - excuse me
+  - sorry
+  type: phrase
+  notes:
+  - Useful for getting attention politely or apologizing.
+- id: olla
+  prompt: olla
+  answer: to be
+  type: verb
+  forms:
+    minä: olen
+    sinä: olet
+    hän/se: 'on'
+    me: olemme
+    te: olette
+    he/ne: ovat
+  notes:
+  - Basic verb “to be”. The yes/no question form is “onko”.
+- id: taalla
+  prompt: täällä
+  answer: here
+  type: adverb
+  notes:
+  - Means “here”, referring to the place where the speaker is.
+- id: suomen_kurssi
+  prompt: suomen kurssi
+  answer:
+  - Finnish course
+  - the Finnish course
+  literal: Finnish’s course
+  type: noun_phrase
+  notes:
+  - “Suomen” is the genitive form of “Suomi/suomi” and modifies “kurssi”.
+- id: joo
+  prompt: joo
+  answer:
+  - 'yes'
+  - yeah
+  type: interjection
+  notes:
+  - Common informal “yes”.
+- id: tama
+  prompt: tämä
+  answer: this
+  type: pronoun
+  notes:
+  - Used for something near the speaker.
+- id: hyva
+  prompt: hyvä
+  answer:
+  - good
+  - well
+  type: adjective
+  notes:
+  - In “kuuluu hyvää”, the form “hyvää” is partitive.
+- id: paikka
+  prompt: paikka
+  answer:
+  - place
+  - seat
+  type: noun
+  notes:
+  - Can mean “place” generally or “seat” in a classroom/context.
+- id: vapaa
+  prompt: vapaa
+  answer:
+  - free
+  - available
+  type: adjective
+  notes:
+  - Can mean free as in available/unoccupied.
+- id: kiva
+  prompt: kiva
+  answer:
+  - nice
+  - pleasant
+  type: adjective
+  notes:
+  - Common conversational word meaning “nice”.
+- id: mina
+  prompt: minä
+  answer: I
+  type: pronoun
+  forms:
+    genitive: minun
+    allative: minulle
+  notes:
+  - Often omitted in spoken Finnish when the verb ending makes the subject clear.
+- id: kuka
+  prompt: kuka
+  answer: who
+  type: question_word
+- id: sina
+  prompt: sinä
+  answer: you
+  type: pronoun
+  forms:
+    allative: sinulle
+  notes:
+  - Singular “you”. Often shortened to “sä” in spoken Finnish.
+- id: hauska_tutustua
+  prompt: hauska tutustua
+  answer: nice to meet you
+  literal: nice to become acquainted
+  type: phrase
+  notes:
+  - Standard phrase when meeting someone.
+- id: kiitos_samoin
+  prompt: kiitos samoin
+  answer:
+  - thanks, same to you
+  - thanks, likewise
+  literal: thanks likewise
+  type: phrase
+  notes:
+  - Fixed response when returning a greeting or polite sentiment.
+- id: moi
+  prompt: moi
+  answer:
+  - hi
+  - hello
+  type: greeting
+  notes:
+  - Casual greeting. Also used as goodbye in informal speech.
+- id: mita_kuuluu
+  prompt: mitä kuuluu
+  answer:
+  - how are you?
+  - how’s it going?
+  literal: what is heard?
+  type: phrase
+  notes:
+  - Idiomatic greeting/check-in expression.
+- id: terve
+  prompt: terve
+  answer:
+  - hi
+  - hello
+  type: greeting
+  notes:
+  - Can also mean “healthy”, but here it is a greeting.
+- id: kiitos
+  prompt: kiitos
+  answer:
+  - thanks
+  - thank you
+  type: phrase
+- id: kuulua
+  prompt: kuulua
+  answer:
+  - to be heard
+  - to belong
+  - to be going
+  type: verb
+  notes:
+  - In “Mitä kuuluu?” and “minulle kuuluu hyvää”, it describes how someone is doing.
+- id: enta
+  prompt: entä
+  answer:
+  - what about
+  - and
+  type: question_word
+  notes:
+  - 'Used to ask the same question back: “Entä sinulle?” = “And you?”'
+- id: ihan
+  prompt: ihan
+  answer:
+  - quite
+  - pretty
+  - completely
+  type: adverb
+  notes:
+  - Meaning depends on context. “Ihan hyvää” = “pretty good / quite good”.
+- id: tassa
+  prompt: tässä
+  answer:
+  - here
+  - this
+  type: adverb_pronoun
+  notes:
+  - “Tässä on...” is often used when introducing someone or presenting something.
+- id: hei
+  prompt: hei
+  answer:
+  - hi
+  - hello
+  type: greeting
+- id: nimi
+  prompt: nimi
+  answer: name
+  type: noun
+- id: ja
+  prompt: ja
+  answer: and
+  type: conjunction
+- id: tervetuloa
+  prompt: tervetuloa
+  answer: welcome
+  type: phrase
+  notes:
+  - 'Often followed by the allative case: “kurssille” = “to the course”.'
+- id: kurssi
+  prompt: kurssi
+  answer: course
+  type: noun
+- id: opettaja
+  prompt: opettaja
+  answer: teacher
+  type: noun
+- id: miten
+  prompt: miten
+  answer: how
+  type: question_word
+- id: se
+  prompt: se
+  answer:
+  - it
+  - that
+  type: pronoun
+  notes:
+  - Can mean “it” or “that”. In spoken Finnish it is also often used for people.
+- id: kirjoittaa
+  prompt: kirjoittaa
+  answer:
+  - to write
+  - to spell
+  type: verb
+  notes:
+  - In spelling questions, Finnish often uses passive “kirjoitetaan” = “is written/spelled”.
+- id: etunimi
+  prompt: etunimi
+  answer: first name
+  literal: front-name
+  type: noun
+  notes:
+  - 'Compound: etu + nimi.'
+- id: sukunimi
+  prompt: sukunimi
+  answer:
+  - last name
+  - surname
+  literal: family-name
+  type: noun
+  notes:
+  - 'Compound: suku + nimi.'
+- id: okei
+  prompt: okei
+  answer:
+  - okay
+  - OK
+  type: interjection
+- id: kurssipaiva
+  prompt: kurssipäivä
+  answer: course day
+  literal: course-day
+  type: noun
+  notes:
+  - 'Compound: kurssi + päivä. Plural: kurssipäivät.'
+- id: maanantai
+  prompt: maanantai
+  answer: Monday
+  type: weekday
+- id: keskiviikko
+  prompt: keskiviikko
+  answer: Wednesday
+  literal: middle-week
+  type: weekday
+- id: torstai
+  prompt: torstai
+  answer: Thursday
+  type: weekday
+- id: kello
+  prompt: kello
+  answer:
+  - clock
+  - time
+  - o’clock
+  type: noun
+  notes:
+  - 'Used in time expressions: “kello 18–20”.'

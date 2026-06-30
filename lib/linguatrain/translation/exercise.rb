@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require_relative "chunk"
-require_relative "normalizer"
+
 require_relative "scorer"
 
 module Linguatrain

@@ -1175,13 +1175,14 @@ def load_pack(path)
       conjugate_person_defs: person_defs,
       conjugate_entries: conjugate_entries
     }
-  elsif translation_pack?(pack_meta, raw_entries)
+elsif translation_pack?(pack_meta, raw_entries)
     translation_entries = raw_entries.map.with_index do |entry, idx|
       entry_id = entry["id"] || entry[:id] || format("t%03d", idx + 1)
       speaker_v = entry["speaker"] || entry[:speaker]
       source_v = entry["source"] || entry[:source] || entry["prompt"] || entry[:prompt]
       target_v = entry["target"] || entry[:target] || entry["answer"] || entry[:answer]
       literal_v = entry["literal"] || entry[:literal]
+      phonetic_v = entry["phonetic"] || entry[:phonetic] || entry["phonetics"] || entry[:phonetics]
       chunks_v = entry["chunks"] || entry[:chunks] || []
       vocabulary_refs_v = entry["vocabulary_refs"] || entry[:vocabulary_refs] || []
       vocabulary_v = entry["vocabulary"] || entry[:vocabulary] || []
@@ -1208,10 +1209,12 @@ def load_pack(path)
               chunk_source = chunk["source"] || chunk[:source]
               chunk_target = chunk["target"] || chunk[:target] || chunk["targets"] || chunk[:targets]
               chunk_hint = chunk["hint"] || chunk[:hint]
+              chunk_phonetic = chunk["phonetic"] || chunk[:phonetic] || chunk["phonetics"] || chunk[:phonetics]
               chunk_id = chunk["id"] || chunk[:id] || format("c%03d", cidx + 1)
             else
               chunk_source = chunk
               chunk_target = nil
+              chunk_phonetic = nil
               chunk_id = format("c%03d", cidx + 1)
             end
 
@@ -1235,6 +1238,8 @@ def load_pack(path)
 
             hint_text = chunk_hint.to_s.strip
             normalized_chunk[:hint] = hint_text unless hint_text.empty?
+            phonetic_text = chunk_phonetic.to_s.strip
+            normalized_chunk[:phonetic] = phonetic_text unless phonetic_text.empty?
             normalized_chunk
 
           end.compact.reject { |c| c[:source].empty? }
@@ -1267,6 +1272,7 @@ def load_pack(path)
         source: source_text,
         target: targets,
         literal: (literal_v.nil? ? "" : literal_v.to_s.strip),
+        phonetic: (phonetic_v.nil? ? "" : phonetic_v.to_s.strip),
         chunks: chunks,
         vocabulary_refs: Array(vocabulary_refs_v).map { |x| x.to_s.strip }.reject(&:empty?),
         vocabulary: Array(vocabulary_v),
@@ -2962,6 +2968,7 @@ options = {
   study: false,
   conversation: false,
   translation: false,
+  show_phonetic: false,
   transform: false,
   timing: false,
   conjugate: false,
@@ -3123,6 +3130,9 @@ parser = OptionParser.new do |opts|
 
   opts.on("--translate", "Alias for --translation") do
     options[:translation] = true
+  end
+  opts.on("--show-phonetic", "With --translation, show pronunciation guidance when available") do
+    options[:show_phonetic] = true
   end
 end
 
@@ -3335,7 +3345,8 @@ begin
 
     Linguatrain::Translation::Exercise.run(
       translation_selected,
-      scorer: scorer
+      scorer: scorer,
+      show_phonetic: options[:show_phonetic]
     )
 
     exit(0)

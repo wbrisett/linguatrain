@@ -17,6 +17,7 @@ entries:
   type: phrase
   notes:
   - Useful for getting attention politely or apologizing.
+  phonetic: AHN-tehk-see
 - id: olla
   prompt: olla
   answer: to be
@@ -30,12 +31,14 @@ entries:
     he/ne: ovat
   notes:
   - Basic verb “to be”. The yes/no question form is “onko”.
+  phonetic: OHL-lah
 - id: taalla
   prompt: täällä
   answer: here
   type: adverb
   notes:
   - Means “here”, referring to the place where the speaker is.
+  phonetic: TAAH-la
 - id: suomen_kurssi
   prompt: suomen kurssi
   answer:
@@ -45,6 +48,7 @@ entries:
   type: noun_phrase
   notes:
   - “Suomen” is the genitive form of “Suomi/suomi” and modifies “kurssi”.
+  phonetic: SOO-oh-men KOORS-see
 - id: joo
   prompt: joo
   answer:
@@ -53,12 +57,14 @@ entries:
   type: interjection
   notes:
   - Common informal “yes”.
+  phonetic: YOH
 - id: tama
   prompt: tämä
   answer: this
   type: pronoun
   notes:
   - Used for something near the speaker.
+  phonetic: TA-ma
 - id: hyva
   prompt: hyvä
   answer:
@@ -67,6 +73,7 @@ entries:
   type: adjective
   notes:
   - In “kuuluu hyvää”, the form “hyvää” is partitive.
+  phonetic: HÜ-vä
 - id: paikka
   prompt: paikka
   answer:
@@ -75,6 +82,7 @@ entries:
   type: noun
   notes:
   - Can mean “place” generally or “seat” in a classroom/context.
+  phonetic: PAIK-kah
 - id: vapaa
   prompt: vapaa
   answer:
@@ -83,6 +91,7 @@ entries:
   type: adjective
   notes:
   - Can mean free as in available/unoccupied.
+  phonetic: VAH-pah
 - id: kiva
   prompt: kiva
   answer:
@@ -91,6 +100,7 @@ entries:
   type: adjective
   notes:
   - Common conversational word meaning “nice”.
+  phonetic: KEE-vah
 - id: mina
   prompt: minä
   answer: I
@@ -100,10 +110,12 @@ entries:
     allative: minulle
   notes:
   - Often omitted in spoken Finnish when the verb ending makes the subject clear.
+  phonetic: MEE-na
 - id: kuka
   prompt: kuka
   answer: who
   type: question_word
+  phonetic: KOO-kah
 - id: sina
   prompt: sinä
   answer: you
@@ -112,6 +124,7 @@ entries:
     allative: sinulle
   notes:
   - Singular “you”. Often shortened to “sä” in spoken Finnish.
+  phonetic: SEE-na
 - id: hauska_tutustua
   prompt: hauska tutustua
   answer: nice to meet you
@@ -119,6 +132,7 @@ entries:
   type: phrase
   notes:
   - Standard phrase when meeting someone.
+  phonetic: HOWS-kah TOO-toos-too-ah
 - id: kiitos_samoin
   prompt: kiitos samoin
   answer:
@@ -128,6 +142,7 @@ entries:
   type: phrase
   notes:
   - Fixed response when returning a greeting or polite sentiment.
+  phonetic: KEE-tohs SAH-moyn
 - id: moi
   prompt: moi
   answer:
@@ -136,6 +151,7 @@ entries:
   type: greeting
   notes:
   - Casual greeting. Also used as goodbye in informal speech.
+  phonetic: MOY
 - id: mita_kuuluu
   prompt: mitä kuuluu
   answer:
@@ -145,6 +161,7 @@ entries:
   type: phrase
   notes:
   - Idiomatic greeting/check-in expression.
+  phonetic: MEE-ta KOO-loo
 - id: terve
   prompt: terve
   answer:
@@ -153,12 +170,14 @@ entries:
   type: greeting
   notes:
   - Can also mean “healthy”, but here it is a greeting.
+  phonetic: TEHR-veh
 - id: kiitos
   prompt: kiitos
   answer:
   - thanks
   - thank you
   type: phrase
+  phonetic: KEE-tohs
 - id: kuulua
   prompt: kuulua
   answer:
@@ -168,6 +187,7 @@ entries:
   type: verb
   notes:
   - In “Mitä kuuluu?” and “minulle kuuluu hyvää”, it describes how someone is doing.
+  phonetic: KOO-loo-ah
 - id: enta
   prompt: entä
   answer:
@@ -176,6 +196,7 @@ entries:
   type: question_word
   notes:
   - 'Used to ask the same question back: “Entä sinulle?” = “And you?”'
+  phonetic: EHN-ta
 - id: ihan
   prompt: ihan
   answer:
@@ -185,6 +206,7 @@ entries:
   type: adverb
   notes:
   - Meaning depends on context. “Ihan hyvää” = “pretty good / quite good”.
+  phonetic: EE-hahn
 - id: tassa
   prompt: tässä
   answer:
@@ -193,38 +215,46 @@ entries:
   type: adverb_pronoun
   notes:
   - “Tässä on...” is often used when introducing someone or presenting something.
+  phonetic: TAS-sa
 - id: hei
   prompt: hei
   answer:
   - hi
   - hello
   type: greeting
+  phonetic: HAY
 - id: nimi
   prompt: nimi
   answer: name
   type: noun
+  phonetic: NEE-mee
 - id: ja
   prompt: ja
   answer: and
   type: conjunction
+  phonetic: YAH
 - id: tervetuloa
   prompt: tervetuloa
   answer: welcome
   type: phrase
   notes:
   - 'Often followed by the allative case: “kurssille” = “to the course”.'
+  phonetic: TEHR-veh-TOO-loh-ah
 - id: kurssi
   prompt: kurssi
   answer: course
   type: noun
+  phonetic: KOORS-see
 - id: opettaja
   prompt: opettaja
   answer: teacher
   type: noun
+  phonetic: OH-peht-tah-yah
 - id: miten
   prompt: miten
   answer: how
   type: question_word
+  phonetic: MEE-tehn
 - id: se
   prompt: se
   answer:
@@ -233,6 +263,7 @@ entries:
   type: pronoun
   notes:
   - Can mean “it” or “that”. In spoken Finnish it is also often used for people.
+  phonetic: SEH
 - id: kirjoittaa
   prompt: kirjoittaa
   answer:
@@ -241,6 +272,7 @@ entries:
   type: verb
   notes:
   - In spelling questions, Finnish often uses passive “kirjoitetaan” = “is written/spelled”.
+  phonetic: KEER-yoyt-taa
 - id: etunimi
   prompt: etunimi
   answer: first name
@@ -248,6 +280,7 @@ entries:
   type: noun
   notes:
   - 'Compound: etu + nimi.'
+  phonetic: EH-too-NEE-mee
 - id: sukunimi
   prompt: sukunimi
   answer:
@@ -257,12 +290,14 @@ entries:
   type: noun
   notes:
   - 'Compound: suku + nimi.'
+  phonetic: SOO-koo-NEE-mee
 - id: okei
   prompt: okei
   answer:
   - okay
   - OK
   type: interjection
+  phonetic: OH-kay
 - id: kurssipaiva
   prompt: kurssipäivä
   answer: course day
@@ -270,19 +305,23 @@ entries:
   type: noun
   notes:
   - 'Compound: kurssi + päivä. Plural: kurssipäivät.'
+  phonetic: KOORS-see-pai-va
 - id: maanantai
   prompt: maanantai
   answer: Monday
   type: weekday
+  phonetic: MAH-nahn-tai
 - id: keskiviikko
   prompt: keskiviikko
   answer: Wednesday
   literal: middle-week
   type: weekday
+  phonetic: KEHS-kee-VEEK-koh
 - id: torstai
   prompt: torstai
   answer: Thursday
   type: weekday
+  phonetic: TOHRS-tai
 - id: kello
   prompt: kello
   answer:
@@ -292,3 +331,4 @@ entries:
   type: noun
   notes:
   - 'Used in time expressions: “kello 18–20”.'
+  phonetic: KEHL-loh

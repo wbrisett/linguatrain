@@ -1,654 +1,716 @@
 metadata:
   id: suomen_mestari_1_kappale_01_translation
-  title: "Suomen Mestari 1 - Kappale 1"
+  title: Suomen Mestari 1 - Kappale 1
   type: translation
   format: dialogue
   version: 2
   schema_version: 2
   source_language: fi
   target_language: en-US
-
 entries:
-  - id: e001
-    type: dialogue
-    speaker: Alex
-    source: "Anteeksi, onko täällä suomen kurssi?"
-    target: "Excuse me, is the Finnish course here?"
-    literal: "Excuse me, is here Finnish course?"
-    chunks:
-      - id: c001
-        source: "Anteeksi"
-        literal: "Excuse me"
-        target: "Excuse me"
-      - id: c002
-        source: "onko"
-        literal: "is?"
-        target:
-          - "is"
-          - "is it"
-          - "is there"
-        hint: "\"onko\" is the yes/no question form of \"olla\"."
-      - id: c003
-        source: "täällä"
-        literal: "here"
-        target: "here"
-      - id: c004
-        source: "suomen kurssi"
-        literal: "Finnish course"
-        target:
-          - "Finnish course"
-          - "the Finnish course"
-          - "a Finnish course"
-    vocabulary_refs:
-      - anteeksi
-      - olla
-      - täällä
-      - suomen kurssi
-    grammar:
-      refs:
-        - yes_no_question
-
-  - id: e002
-    type: dialogue
-    speaker: Olga
-    source: "Joo, on. Tämä on Suomi 1."
-    target: "Yes, it is. This is Suomi 1."
-    literal: "Yes, is. This is Suomi 1."
-    chunks:
-      - id: c001
-        source: "Joo"
-        literal: "Yes"
-        target: "Yes"
-      - id: c002
-        source: "on"
-        literal: "is"
-        target:
-          - "it is"
-          - "is"
-      - id: c003
-        source: "Tämä on"
-        literal: "This is"
-        target: "This is"
-      - id: c004
-        source: "Suomi 1"
-        literal: "Suomi 1"
-        target: "Suomi 1"
-    vocabulary_refs:
-      - joo
-      - olla
-      - tämä
-
-  - id: e003
-    type: dialogue
-    speaker: Alex
-    source: "Hyvä. Onko tämä paikka vapaa?"
-    target: "Good. Is this seat free?"
-    literal: "Good. Is this place free?"
-    chunks:
-      - id: c001
-        source: "Hyvä"
-        literal: "Good"
-        target: "Good"
-      - id: c002
-        source: "Onko"
-        literal: "is?"
-        target:
-          - "is"
-          - "is it"
-      - id: c003
-        source: "tämä paikka"
-        literal: "this place"
-        target:
-          - "this seat"
-          - "this place"
-        hint: "\"paikka\" can mean \"place\" or \"seat\" depending on context."
-      - id: c004
-        source: "vapaa"
-        literal: "free"
-        target:
-          - "free"
-          - "available"
-    vocabulary_refs:
-      - hyvä
-      - olla
-      - tämä
-      - paikka
-      - vapaa
-    grammar:
-      refs:
-        - yes_no_question
-
-  - id: e004
-    type: dialogue
-    speaker: Olga
-    source: "Joo, on."
-    target: "Yes, it is."
-    literal: "Yes, is."
-    chunks:
-      - id: c001
-        source: "Joo"
-        literal: "Yes"
-        target: "Yes"
-      - id: c002
-        source: "on"
-        literal: "is"
-        target:
-          - "it is"
-          - "is"
-    vocabulary_refs:
-      - joo
-      - olla
-
-  - id: e005
-    type: dialogue
-    speaker: Alex
-    source: "Kiva. Minä olen Alex. Kuka sinä olet?"
-    target: "Nice. I am Alex. Who are you?"
-    literal: "Nice. I am Alex. Who you are?"
-    chunks:
-      - id: c001
-        source: "Kiva"
-        literal: "Nice"
-        target: "Nice"
-      - id: c002
-        source: "Minä olen"
-        literal: "I am"
-        target:
-          - "I am"
-          - "I'm"
-      - id: c003
-        source: "Alex"
-        literal: "Alex"
-        target: "Alex"
-      - id: c004
-        source: "Kuka"
-        literal: "Who"
-        target: "Who"
-      - id: c005
-        source: "sinä olet"
-        literal: "you are"
-        target:
-          - "are you"
-          - "you are"
-    vocabulary_refs:
-      - kiva
-      - minä
-      - olla
-      - kuka
-      - sinä
-
-  - id: e006
-    type: dialogue
-    speaker: Olga
-    source: "Minä olen Olga. Hauska tutustua."
-    target: "I am Olga. Nice to meet you."
-    literal: "I am Olga. Nice to become acquainted."
-    chunks:
-      - id: c001
-        source: "Minä olen"
-        literal: "I am"
-        target:
-          - "I am"
-          - "I'm"
-      - id: c002
-        source: "Olga"
-        literal: "Olga"
-        target: "Olga"
-      - id: c003
-        source: "Hauska tutustua"
-        literal: "Nice to become acquainted"
-        target:
-          - "Nice to meet you"
-        hint: "\"Hauska tutustua\" is the standard phrase for \"Nice to meet you\"."
-    vocabulary_refs:
-      - minä
-      - olla
-      - hauska tutustua
-
-  - id: e007
-    type: dialogue
-    speaker: Alex
-    source: "Kiitos samoin."
-    target: "Thanks, same to you."
-    literal: "Thanks, likewise."
-    chunks:
-      - id: c001
-        source: "Kiitos samoin"
-        literal: "Thanks likewise"
-        target:
-          - "Thanks, same to you"
-          - "Thank you, same to you"
-          - "Thanks, likewise"
-        hint: "\"Kiitos samoin\" is a fixed response meaning \"Thanks, same to you\"."
-    vocabulary_refs:
-      - kiitos samoin
-
-  - id: e008
-    type: dialogue
-    speaker: Pedro
-    source: "Moi Olga! Mitä kuuluu?"
-    target: "Hi Olga! How are you?"
-    literal: "Hi Olga! What is heard?"
-    chunks:
-      - id: c001
-        source: "Moi Olga!"
-        literal: "Hi Olga!"
-        target:
-          - "Hi Olga!"
-          - "Hello Olga!"
-      - id: c002
-        source: "Mitä kuuluu?"
-        literal: "What is heard?"
-        target:
-          - "How are you?"
-          - "How's it going?"
-        hint: "\"Mitä kuuluu?\" is an idiomatic greeting literally meaning \"What is heard?\""
-    vocabulary_refs:
-      - moi
-      - mitä kuuluu
-    grammar:
-      refs:
-        - idiomatic_greeting
-
-  - id: e009
-    type: dialogue
-    speaker: Olga
-    source: "Terve Pedro! Kiitos, minulle kuuluu hyvää. Entä sinulle?"
-    target: "Hi Pedro! Thanks, I'm doing well. And you?"
-    literal: "Hi Pedro! Thanks, to me is heard good. What about to you?"
-    chunks:
-      - id: c001
-        source: "Terve Pedro!"
-        literal: "Hi Pedro!"
-        target:
-          - "Hi Pedro!"
-          - "Hello Pedro!"
-      - id: c002
-        source: "Kiitos"
-        literal: "Thanks"
-        target:
-          - "Thanks"
-          - "Thank you"
-      - id: c003
-        source: "minulle kuuluu hyvää"
-        literal: "to me is heard good"
-        target:
-          - "I'm doing well"
-          - "Things are going well for me"
-        hint: "\"kuulua\" is used in Finnish when talking about how someone is doing."
-      - id: c004
-        source: "Entä sinulle?"
-        literal: "What about to you?"
-        target:
-          - "And you?"
-          - "How about you?"
-    vocabulary_refs:
-      - terve
-      - kiitos
-      - minä
-      - kuulua
-      - hyvä
-      - entä
-      - sinä
-    grammar:
-      refs:
-        - kuuluu_expression
-        - allative_case
-
-  - id: e010
-    type: dialogue
-    speaker: Pedro
-    source: "Ihan hyvää, kiitos."
-    target: "Pretty good, thanks."
-    literal: "Quite good, thanks."
-    chunks:
-      - id: c001
-        source: "Ihan hyvää"
-        literal: "Quite good"
-        target:
-          - "Pretty good"
-          - "Very well"
-      - id: c002
-        source: "kiitos"
-        literal: "thanks"
-        target:
-          - "thanks"
-          - "thank you"
-    vocabulary_refs:
-      - ihan
-      - hyvä
-      - kiitos
-
-  - id: e011
-    type: dialogue
-    speaker: Olga
-    source: "Alex, tässä on Pedro."
-    target: "Alex, this is Pedro."
-    literal: "Alex, here is Pedro."
-    chunks:
-      - id: c001
-        source: "Alex"
-        literal: "Alex"
-        target: "Alex"
-      - id: c002
-        source: "tässä on"
-        literal: "here is"
-        target:
-          - "this is"
-          - "here is"
-        hint: "\"Tässä on\" is commonly used when introducing someone or something."
-      - id: c003
-        source: "Pedro"
-        literal: "Pedro"
-        target: "Pedro"
-    vocabulary_refs:
-      - tässä
-      - olla
-    grammar:
-      refs:
-        - introducing_people
-
-  - id: e012
-    type: dialogue
-    speaker: Alex
-    source: "Hei Pedro. Minun nimi on Alex. Hauska tutustua!"
-    target: "Hi Pedro. My name is Alex. Nice to meet you!"
-    literal: "Hi Pedro. My name is Alex. Nice to become acquainted!"
-    chunks:
-      - id: c001
-        source: "Hei Pedro."
-        literal: "Hi Pedro."
-        target:
-          - "Hi Pedro."
-          - "Hello Pedro."
-      - id: c002
-        source: "Minun nimi on Alex"
-        literal: "My name is Alex"
-        target:
-          - "My name is Alex"
-        hint: "\"minun\" is the genitive form of \"minä\", meaning \"my\"."
-      - id: c003
-        source: "Hauska tutustua!"
-        literal: "Nice to become acquainted!"
-        target:
-          - "Nice to meet you!"
-    vocabulary_refs:
-      - hei
-      - minä
-      - nimi
-      - olla
-      - hauska tutustua
-    grammar:
-      refs:
-        - genitive_case
-        - introducing_yourself
-
-  - id: e013
-    type: dialogue
-    speaker: Pedro
-    source: "Hauska tutustua!"
-    target: "Nice to meet you!"
-    literal: "Nice to become acquainted!"
-    chunks:
-      - id: c001
-        source: "Hauska tutustua!"
-        literal: "Nice to become acquainted!"
-        target:
-          - "Nice to meet you!"
-    vocabulary_refs:
-      - hauska tutustua
-
-  - id: e014
-    type: dialogue
-    speaker: Päivi
-    source: "Hei ja tervetuloa suomen kurssille!"
-    target: "Hello and welcome to the Finnish course!"
-    literal: "Hello and welcome to Finnish course!"
-    chunks:
-      - id: c001
-        source: "Hei"
-        literal: "Hello"
-        target:
-          - "Hello"
-          - "Hi"
-      - id: c002
-        source: "ja"
-        literal: "and"
-        target: "and"
-      - id: c003
-        source: "tervetuloa suomen kurssille"
-        literal: "welcome to Finnish course"
-        target:
-          - "welcome to the Finnish course"
-        hint: "\"kurssille\" means \"to the course\"."
-    vocabulary_refs:
-      - hei
-      - ja
-      - tervetuloa
-      - suomen kurssi
-    grammar:
-      refs:
-        - allative_case
-
-  - id: e015
-    type: dialogue
-    speaker: Päivi
-    source: "Tämä kurssi on Suomi 1 ja minä olen opettaja."
-    target: "This course is Suomi 1 and I am the teacher."
-    literal: "This course is Suomi 1 and I am teacher."
-    chunks:
-      - id: c001
-        source: "Tämä kurssi on Suomi 1"
-        literal: "This course is Suomi 1"
-        target:
-          - "This course is Suomi 1"
-      - id: c002
-        source: "ja"
-        literal: "and"
-        target: "and"
-      - id: c003
-        source: "minä olen opettaja"
-        literal: "I am teacher"
-        target:
-          - "I am the teacher"
-          - "I am a teacher"
-    vocabulary_refs:
-      - tämä
-      - kurssi
-      - olla
-      - ja
-      - minä
-      - opettaja
-
-  - id: e016
-    type: dialogue
-    speaker: Päivi
-    source: "Minun nimi on Päivi Koskela."
-    target: "My name is Päivi Koskela."
-    literal: "My name is Päivi Koskela."
-    chunks:
-      - id: c001
-        source: "Minun nimi"
-        literal: "my name"
-        target: "my name"
-        hint: "\"minun\" is the genitive form of \"minä\", meaning \"my\"."
-      - id: c002
-        source: "on"
-        literal: "is"
-        target: "is"
-      - id: c003
-        source: "Päivi Koskela"
-        literal: "Päivi Koskela"
-        target: "Päivi Koskela"
-    vocabulary_refs:
-      - minä
-      - nimi
-      - olla
-    grammar:
-      refs:
-        - genitive_case
-        - introducing_yourself
-
-  - id: e017
-    type: dialogue
-    speaker: Pedro
-    source: "Anteeksi, miten se kirjoitetaan?"
-    target: "Excuse me, how is that spelled?"
-    literal: "Excuse me, how is it written?"
-    chunks:
-      - id: c001
-        source: "Anteeksi"
-        literal: "Excuse me"
-        target: "Excuse me"
-      - id: c002
-        source: "miten"
-        literal: "how"
-        target: "how"
-      - id: c003
-        source: "se kirjoitetaan"
-        literal: "it is written"
-        target:
-          - "it is spelled"
-          - "that is spelled"
-          - "it is written"
-        hint: "Finnish uses \"kirjoitetaan\" literally \"is written\" for asking how something is spelled."
-    vocabulary_refs:
-      - anteeksi
-      - miten
-      - se
-      - kirjoittaa
-    grammar:
-      refs:
-        - passive_present
-        - spelling
-
-  - id: e018
-    type: dialogue
-    speaker: Päivi
-    source: "Minun etunimi kirjoitetaan P-Ä-I-V-I ja sukunimi K-O-S-K-E-L-A."
-    target: "My first name is spelled P-Ä-I-V-I and my last name K-O-S-K-E-L-A."
-    literal: "My first name is written P-Ä-I-V-I and surname K-O-S-K-E-L-A."
-    chunks:
-      - id: c001
-        source: "Minun etunimi"
-        literal: "my first name"
-        target: "my first name"
-      - id: c002
-        source: "kirjoitetaan"
-        literal: "is written"
-        target:
-          - "is spelled"
-          - "is written"
-      - id: c003
-        source: "P-Ä-I-V-I"
-        literal: "P-Ä-I-V-I"
-        target: "P-Ä-I-V-I"
-      - id: c004
-        source: "ja sukunimi"
-        literal: "and surname"
-        target:
-          - "and last name"
-          - "and surname"
-      - id: c005
-        source: "K-O-S-K-E-L-A"
-        literal: "K-O-S-K-E-L-A"
-        target: "K-O-S-K-E-L-A"
-    vocabulary_refs:
-      - minä
-      - etunimi
-      - kirjoittaa
-      - ja
-      - sukunimi
-    grammar:
-      refs:
-        - genitive_case
-        - passive_present
-        - spelling
-
-  - id: e019
-    type: dialogue
-    speaker: Pedro
-    source: "Okei, kiitos."
-    target: "Okay, thanks."
-    literal: "Okay, thanks."
-    chunks:
-      - id: c001
-        source: "Okei"
-        literal: "Okay"
-        target:
-          - "Okay"
-          - "OK"
-      - id: c002
-        source: "kiitos"
-        literal: "thanks"
-        target:
-          - "thanks"
-          - "thank you"
-    vocabulary_refs:
-      - okei
-      - kiitos
-
-  - id: e020
-    type: dialogue
-    speaker: Päivi
-    source: "Kurssipäivät ovat maanantai, keskiviikko ja torstai."
-    target: "The course days are Monday, Wednesday, and Thursday."
-    literal: "Course days are Monday, Wednesday, and Thursday."
-    chunks:
-      - id: c001
-        source: "Kurssipäivät"
-        literal: "course days"
-        target:
-          - "the course days"
-          - "course days"
-        hint: "\"kurssipäivät\" is a compound word: \"kurssi\" + \"päivät\"."
-      - id: c002
-        source: "ovat"
-        literal: "are"
-        target: "are"
-      - id: c003
-        source: "maanantai, keskiviikko ja torstai"
-        literal: "Monday, Wednesday and Thursday"
-        target:
-          - "Monday, Wednesday, and Thursday"
-    vocabulary_refs:
-      - kurssipäivä
-      - olla
-      - maanantai
-      - keskiviikko
-      - ja
-      - torstai
-    grammar:
-      refs:
-        - plural_nominative
-        - weekdays
-
-  - id: e021
-    type: dialogue
-    speaker: Päivi
-    source: "Kurssi on kello 18–20."
-    target: "The course is from 6:00 to 8:00 p.m."
-    literal: "Course is clock 18–20."
-    chunks:
-      - id: c001
-        source: "Kurssi on"
-        literal: "Course is"
-        target:
-          - "The course is"
-          - "Course is"
-      - id: c002
-        source: "kello 18–20"
-        literal: "clock 18–20"
-        target:
-          - "from 6:00 to 8:00 p.m."
-          - "from 18:00 to 20:00"
-          - "at 18–20"
-        hint: "Finnish often uses 24-hour time. \"kello\" means \"o'clock\" or \"time\" in clock expressions."
-    vocabulary_refs:
-      - kurssi
-      - olla
-      - kello
-    grammar:
-      refs:
-        - telling_time
-        - twenty_four_hour_time
+- id: e001
+  type: dialogue
+  speaker: Alex
+  source: Anteeksi, onko täällä suomen kurssi?
+  phonetic: AHN-tehk-see, OHN-koh TAAH-la SOO-oh-men KOORS-see?
+  target: Excuse me, is the Finnish course here?
+  literal: Excuse me, is here Finnish course?
+  chunks:
+  - id: c001
+    source: Anteeksi
+    phonetic: AHN-tehk-see
+    literal: Excuse me
+    target: Excuse me
+  - id: c002
+    source: onko
+    phonetic: OHN-koh
+    literal: is?
+    target:
+    - is
+    - is it
+    - is there
+    hint: '"onko" is the yes/no question form of "olla".'
+  - id: c003
+    source: täällä
+    phonetic: TAAH-la
+    literal: here
+    target: here
+  - id: c004
+    source: suomen kurssi
+    phonetic: SOO-oh-men KOORS-see
+    literal: Finnish course
+    target:
+    - Finnish course
+    - the Finnish course
+    - a Finnish course
+  vocabulary_refs:
+  - anteeksi
+  - olla
+  - täällä
+  - suomen kurssi
+  grammar:
+    refs:
+    - yes_no_question
+- id: e002
+  type: dialogue
+  speaker: Olga
+  source: Joo, on. Tämä on Suomi 1.
+  phonetic: YOH, OHN. TA-ma OHN SOO-oh-mee YK-see.
+  target: Yes, it is. This is Suomi 1.
+  literal: Yes, is. This is Suomi 1.
+  chunks:
+  - id: c001
+    source: Joo
+    phonetic: YOH
+    literal: 'Yes'
+    target: 'Yes'
+  - id: c002
+    source: 'on'
+    phonetic: OHN
+    literal: is
+    target:
+    - it is
+    - is
+  - id: c003
+    source: Tämä on
+    phonetic: TA-ma OHN
+    literal: This is
+    target: This is
+  - id: c004
+    source: Suomi 1
+    phonetic: SOO-oh-mee YK-see
+    literal: Suomi 1
+    target: Suomi 1
+  vocabulary_refs:
+  - joo
+  - olla
+  - tämä
+- id: e003
+  type: dialogue
+  speaker: Alex
+  source: Hyvä. Onko tämä paikka vapaa?
+  phonetic: HÜ-vä. OHN-koh TA-ma PAIK-kah VAH-pah?
+  target: Good. Is this seat free?
+  literal: Good. Is this place free?
+  chunks:
+  - id: c001
+    source: Hyvä
+    phonetic: HÜ-vä
+    literal: Good
+    target: Good
+  - id: c002
+    source: Onko
+    phonetic: OHN-koh
+    literal: is?
+    target:
+    - is
+    - is it
+  - id: c003
+    source: tämä paikka
+    phonetic: TA-ma PAIK-kah
+    literal: this place
+    target:
+    - this seat
+    - this place
+    hint: '"paikka" can mean "place" or "seat" depending on context.'
+  - id: c004
+    source: vapaa
+    phonetic: VAH-pah
+    literal: free
+    target:
+    - free
+    - available
+  vocabulary_refs:
+  - hyvä
+  - olla
+  - tämä
+  - paikka
+  - vapaa
+  grammar:
+    refs:
+    - yes_no_question
+- id: e004
+  type: dialogue
+  speaker: Olga
+  source: Joo, on.
+  phonetic: YOH, OHN.
+  target: Yes, it is.
+  literal: Yes, is.
+  chunks:
+  - id: c001
+    source: Joo
+    phonetic: YOH
+    literal: 'Yes'
+    target: 'Yes'
+  - id: c002
+    source: 'on'
+    phonetic: OHN
+    literal: is
+    target:
+    - it is
+    - is
+  vocabulary_refs:
+  - joo
+  - olla
+- id: e005
+  type: dialogue
+  speaker: Alex
+  source: Kiva. Minä olen Alex. Kuka sinä olet?
+  phonetic: KEE-vah. MEE-na OH-lehn AH-leks. KOO-kah SEE-na OH-leht?
+  target: Nice. I am Alex. Who are you?
+  literal: Nice. I am Alex. Who you are?
+  chunks:
+  - id: c001
+    source: Kiva
+    phonetic: KEE-vah
+    literal: Nice
+    target: Nice
+  - id: c002
+    source: Minä olen
+    phonetic: MEE-na OH-lehn
+    literal: I am
+    target:
+    - I am
+    - I'm
+  - id: c003
+    source: Alex
+    phonetic: AH-leks
+    literal: Alex
+    target: Alex
+  - id: c004
+    source: Kuka
+    phonetic: KOO-kah
+    literal: Who
+    target: Who
+  - id: c005
+    source: sinä olet
+    phonetic: SEE-na OH-leht
+    literal: you are
+    target:
+    - are you
+    - you are
+  vocabulary_refs:
+  - kiva
+  - minä
+  - olla
+  - kuka
+  - sinä
+- id: e006
+  type: dialogue
+  speaker: Olga
+  source: Minä olen Olga. Hauska tutustua.
+  phonetic: MEE-na OH-lehn OHL-gah. HOWS-kah TOO-toos-too-ah.
+  target: I am Olga. Nice to meet you.
+  literal: I am Olga. Nice to become acquainted.
+  chunks:
+  - id: c001
+    source: Minä olen
+    phonetic: MEE-na OH-lehn
+    literal: I am
+    target:
+    - I am
+    - I'm
+  - id: c002
+    source: Olga
+    phonetic: OHL-gah
+    literal: Olga
+    target: Olga
+  - id: c003
+    source: Hauska tutustua
+    phonetic: HOWS-kah TOO-toos-too-ah
+    literal: Nice to become acquainted
+    target:
+    - Nice to meet you
+    hint: '"Hauska tutustua" is the standard phrase for "Nice to meet you".'
+  vocabulary_refs:
+  - minä
+  - olla
+  - hauska tutustua
+- id: e007
+  type: dialogue
+  speaker: Alex
+  source: Kiitos samoin.
+  phonetic: KEE-tohs SAH-moyn.
+  target: Thanks, same to you.
+  literal: Thanks, likewise.
+  chunks:
+  - id: c001
+    source: Kiitos samoin
+    phonetic: KEE-tohs SAH-moyn
+    literal: Thanks likewise
+    target:
+    - Thanks, same to you
+    - Thank you, same to you
+    - Thanks, likewise
+    hint: '"Kiitos samoin" is a fixed response meaning "Thanks, same to you".'
+  vocabulary_refs:
+  - kiitos samoin
+- id: e008
+  type: dialogue
+  speaker: Pedro
+  source: Moi Olga! Mitä kuuluu?
+  phonetic: MOY OHL-gah! MEE-ta KOO-loo?
+  target: Hi Olga! How are you?
+  literal: Hi Olga! What is heard?
+  chunks:
+  - id: c001
+    source: Moi Olga!
+    phonetic: MOY OHL-gah!
+    literal: Hi Olga!
+    target:
+    - Hi Olga!
+    - Hello Olga!
+  - id: c002
+    source: Mitä kuuluu?
+    phonetic: MEE-ta KOO-loo?
+    literal: What is heard?
+    target:
+    - How are you?
+    - How's it going?
+    hint: '"Mitä kuuluu?" is an idiomatic greeting literally meaning "What is heard?"'
+  vocabulary_refs:
+  - moi
+  - mitä kuuluu
+  grammar:
+    refs:
+    - idiomatic_greeting
+- id: e009
+  type: dialogue
+  speaker: Olga
+  source: Terve Pedro! Kiitos, minulle kuuluu hyvää. Entä sinulle?
+  phonetic: TEHR-veh PEH-droh! KEE-tohs, MEE-nool-leh KOO-loo HÜ-vaa. EHN-ta SEE-nool-leh?
+  target: Hi Pedro! Thanks, I'm doing well. And you?
+  literal: Hi Pedro! Thanks, to me is heard good. What about to you?
+  chunks:
+  - id: c001
+    source: Terve Pedro!
+    phonetic: TEHR-veh PEH-droh!
+    literal: Hi Pedro!
+    target:
+    - Hi Pedro!
+    - Hello Pedro!
+  - id: c002
+    source: Kiitos
+    phonetic: KEE-tohs
+    literal: Thanks
+    target:
+    - Thanks
+    - Thank you
+  - id: c003
+    source: minulle kuuluu hyvää
+    phonetic: MEE-nool-leh KOO-loo HÜ-vaa
+    literal: to me is heard good
+    target:
+    - I'm doing well
+    - Things are going well for me
+    hint: '"kuulua" is used in Finnish when talking about how someone is doing.'
+  - id: c004
+    source: Entä sinulle?
+    phonetic: EHN-ta SEE-nool-leh?
+    literal: What about to you?
+    target:
+    - And you?
+    - How about you?
+  vocabulary_refs:
+  - terve
+  - kiitos
+  - minä
+  - kuulua
+  - hyvä
+  - entä
+  - sinä
+  grammar:
+    refs:
+    - kuuluu_expression
+    - allative_case
+- id: e010
+  type: dialogue
+  speaker: Pedro
+  source: Ihan hyvää, kiitos.
+  phonetic: EE-hahn HÜ-vaa, KEE-tohs.
+  target: Pretty good, thanks.
+  literal: Quite good, thanks.
+  chunks:
+  - id: c001
+    source: Ihan hyvää
+    phonetic: EE-hahn HÜ-vaa
+    literal: Quite good
+    target:
+    - Pretty good
+    - Very well
+  - id: c002
+    source: kiitos
+    phonetic: KEE-tohs
+    literal: thanks
+    target:
+    - thanks
+    - thank you
+  vocabulary_refs:
+  - ihan
+  - hyvä
+  - kiitos
+- id: e011
+  type: dialogue
+  speaker: Olga
+  source: Alex, tässä on Pedro.
+  phonetic: AH-leks, TAS-sa OHN PEH-droh.
+  target: Alex, this is Pedro.
+  literal: Alex, here is Pedro.
+  chunks:
+  - id: c001
+    source: Alex
+    phonetic: AH-leks
+    literal: Alex
+    target: Alex
+  - id: c002
+    source: tässä on
+    phonetic: TAS-sa OHN
+    literal: here is
+    target:
+    - this is
+    - here is
+    hint: '"Tässä on" is commonly used when introducing someone or something.'
+  - id: c003
+    source: Pedro
+    phonetic: PEH-droh
+    literal: Pedro
+    target: Pedro
+  vocabulary_refs:
+  - tässä
+  - olla
+  grammar:
+    refs:
+    - introducing_people
+- id: e012
+  type: dialogue
+  speaker: Alex
+  source: Hei Pedro. Minun nimi on Alex. Hauska tutustua!
+  phonetic: HAY PEH-droh. MEE-noon NEE-mee OHN AH-leks. HOWS-kah TOO-toos-too-ah!
+  target: Hi Pedro. My name is Alex. Nice to meet you!
+  literal: Hi Pedro. My name is Alex. Nice to become acquainted!
+  chunks:
+  - id: c001
+    source: Hei Pedro.
+    phonetic: HAY PEH-droh.
+    literal: Hi Pedro.
+    target:
+    - Hi Pedro.
+    - Hello Pedro.
+  - id: c002
+    source: Minun nimi on Alex
+    phonetic: MEE-noon NEE-mee OHN AH-leks
+    literal: My name is Alex
+    target:
+    - My name is Alex
+    hint: '"minun" is the genitive form of "minä", meaning "my".'
+  - id: c003
+    source: Hauska tutustua!
+    phonetic: HOWS-kah TOO-toos-too-ah!
+    literal: Nice to become acquainted!
+    target:
+    - Nice to meet you!
+  vocabulary_refs:
+  - hei
+  - minä
+  - nimi
+  - olla
+  - hauska tutustua
+  grammar:
+    refs:
+    - genitive_case
+    - introducing_yourself
+- id: e013
+  type: dialogue
+  speaker: Pedro
+  source: Hauska tutustua!
+  phonetic: HOWS-kah TOO-toos-too-ah!
+  target: Nice to meet you!
+  literal: Nice to become acquainted!
+  chunks:
+  - id: c001
+    source: Hauska tutustua!
+    phonetic: HOWS-kah TOO-toos-too-ah!
+    literal: Nice to become acquainted!
+    target:
+    - Nice to meet you!
+  vocabulary_refs:
+  - hauska tutustua
+- id: e014
+  type: dialogue
+  speaker: Päivi
+  source: Hei ja tervetuloa suomen kurssille!
+  phonetic: HAY YAH TEHR-veh-TOO-loh-ah SOO-oh-men KOORS-seel-leh!
+  target: Hello and welcome to the Finnish course!
+  literal: Hello and welcome to Finnish course!
+  chunks:
+  - id: c001
+    source: Hei
+    phonetic: HAY
+    literal: Hello
+    target:
+    - Hello
+    - Hi
+  - id: c002
+    source: ja
+    phonetic: YAH
+    literal: and
+    target: and
+  - id: c003
+    source: tervetuloa suomen kurssille
+    phonetic: TEHR-veh-TOO-loh-ah SOO-oh-men KOORS-seel-leh
+    literal: welcome to Finnish course
+    target:
+    - welcome to the Finnish course
+    hint: '"kurssille" means "to the course".'
+  vocabulary_refs:
+  - hei
+  - ja
+  - tervetuloa
+  - suomen kurssi
+  grammar:
+    refs:
+    - allative_case
+- id: e015
+  type: dialogue
+  speaker: Päivi
+  source: Tämä kurssi on Suomi 1 ja minä olen opettaja.
+  phonetic: TA-ma KOORS-see OHN SOO-oh-mee YK-see YAH MEE-na OH-lehn OH-peht-tah-yah.
+  target: This course is Suomi 1 and I am the teacher.
+  literal: This course is Suomi 1 and I am teacher.
+  chunks:
+  - id: c001
+    source: Tämä kurssi on Suomi 1
+    phonetic: TA-ma KOORS-see OHN SOO-oh-mee YK-see
+    literal: This course is Suomi 1
+    target:
+    - This course is Suomi 1
+  - id: c002
+    source: ja
+    phonetic: YAH
+    literal: and
+    target: and
+  - id: c003
+    source: minä olen opettaja
+    phonetic: MEE-na OH-lehn OH-peht-tah-yah
+    literal: I am teacher
+    target:
+    - I am the teacher
+    - I am a teacher
+  vocabulary_refs:
+  - tämä
+  - kurssi
+  - olla
+  - ja
+  - minä
+  - opettaja
+- id: e016
+  type: dialogue
+  speaker: Päivi
+  source: Minun nimi on Päivi Koskela.
+  phonetic: MEE-noon NEE-mee OHN PAI-vee KOHS-keh-lah.
+  target: My name is Päivi Koskela.
+  literal: My name is Päivi Koskela.
+  chunks:
+  - id: c001
+    source: Minun nimi
+    phonetic: MEE-noon NEE-mee
+    literal: my name
+    target: my name
+    hint: '"minun" is the genitive form of "minä", meaning "my".'
+  - id: c002
+    source: 'on'
+    phonetic: OHN
+    literal: is
+    target: is
+  - id: c003
+    source: Päivi Koskela
+    phonetic: PAI-vee KOHS-keh-lah
+    literal: Päivi Koskela
+    target: Päivi Koskela
+  vocabulary_refs:
+  - minä
+  - nimi
+  - olla
+  grammar:
+    refs:
+    - genitive_case
+    - introducing_yourself
+- id: e017
+  type: dialogue
+  speaker: Pedro
+  source: Anteeksi, miten se kirjoitetaan?
+  phonetic: AHN-tehk-see, MEE-tehn SEH KEER-yoy-teh-taan?
+  target: Excuse me, how is that spelled?
+  literal: Excuse me, how is it written?
+  chunks:
+  - id: c001
+    source: Anteeksi
+    phonetic: AHN-tehk-see
+    literal: Excuse me
+    target: Excuse me
+  - id: c002
+    source: miten
+    phonetic: MEE-tehn
+    literal: how
+    target: how
+  - id: c003
+    source: se kirjoitetaan
+    phonetic: SEH KEER-yoy-teh-taan
+    literal: it is written
+    target:
+    - it is spelled
+    - that is spelled
+    - it is written
+    hint: Finnish uses "kirjoitetaan" literally "is written" for asking how something is spelled.
+  vocabulary_refs:
+  - anteeksi
+  - miten
+  - se
+  - kirjoittaa
+  grammar:
+    refs:
+    - passive_present
+    - spelling
+- id: e018
+  type: dialogue
+  speaker: Päivi
+  source: Minun etunimi kirjoitetaan P-Ä-I-V-I ja sukunimi K-O-S-K-E-L-A.
+  phonetic: MEE-noon EH-too-NEE-mee KEER-yoy-teh-taan PEH-AA-EE-VEE-EE YAH SOO-koo-NEE-mee KOH-OH-EHS-KOH-EH-EHL-AH.
+  target: My first name is spelled P-Ä-I-V-I and my last name K-O-S-K-E-L-A.
+  literal: My first name is written P-Ä-I-V-I and surname K-O-S-K-E-L-A.
+  chunks:
+  - id: c001
+    source: Minun etunimi
+    phonetic: MEE-noon EH-too-NEE-mee
+    literal: my first name
+    target: my first name
+  - id: c002
+    source: kirjoitetaan
+    phonetic: KEER-yoy-teh-taan
+    literal: is written
+    target:
+    - is spelled
+    - is written
+  - id: c003
+    source: P-Ä-I-V-I
+    phonetic: PEH-AA-EE-VEE-EE
+    literal: P-Ä-I-V-I
+    target: P-Ä-I-V-I
+  - id: c004
+    source: ja sukunimi
+    phonetic: YAH SOO-koo-NEE-mee
+    literal: and surname
+    target:
+    - and last name
+    - and surname
+  - id: c005
+    source: K-O-S-K-E-L-A
+    phonetic: KOH-OH-EHS-KOH-EH-EHL-AH
+    literal: K-O-S-K-E-L-A
+    target: K-O-S-K-E-L-A
+  vocabulary_refs:
+  - minä
+  - etunimi
+  - kirjoittaa
+  - ja
+  - sukunimi
+  grammar:
+    refs:
+    - genitive_case
+    - passive_present
+    - spelling
+- id: e019
+  type: dialogue
+  speaker: Pedro
+  source: Okei, kiitos.
+  phonetic: OH-kay, KEE-tohs.
+  target: Okay, thanks.
+  literal: Okay, thanks.
+  chunks:
+  - id: c001
+    source: Okei
+    phonetic: OH-kay
+    literal: Okay
+    target:
+    - Okay
+    - OK
+  - id: c002
+    source: kiitos
+    phonetic: KEE-tohs
+    literal: thanks
+    target:
+    - thanks
+    - thank you
+  vocabulary_refs:
+  - okei
+  - kiitos
+- id: e020
+  type: dialogue
+  speaker: Päivi
+  source: Kurssipäivät ovat maanantai, keskiviikko ja torstai.
+  phonetic: KOORS-see-pai-vat OH-vaht MAH-nahn-tai, KEHS-kee-VEEK-koh YAH TOHRS-tai.
+  target: The course days are Monday, Wednesday, and Thursday.
+  literal: Course days are Monday, Wednesday, and Thursday.
+  chunks:
+  - id: c001
+    source: Kurssipäivät
+    phonetic: KOORS-see-pai-vat
+    literal: course days
+    target:
+    - the course days
+    - course days
+    hint: '"kurssipäivät" is a compound word: "kurssi" + "päivät".'
+  - id: c002
+    source: ovat
+    phonetic: OH-vaht
+    literal: are
+    target: are
+  - id: c003
+    source: maanantai, keskiviikko ja torstai
+    phonetic: MAH-nahn-tai, KEHS-kee-VEEK-koh YAH TOHRS-tai
+    literal: Monday, Wednesday and Thursday
+    target:
+    - Monday, Wednesday, and Thursday
+  vocabulary_refs:
+  - kurssipäivä
+  - olla
+  - maanantai
+  - keskiviikko
+  - ja
+  - torstai
+  grammar:
+    refs:
+    - plural_nominative
+    - weekdays
+- id: e021
+  type: dialogue
+  speaker: Päivi
+  source: Kurssi on kello 18–20.
+  phonetic: KOORS-see OHN KEHL-loh kah-dehksan-tois-tah – KAK-see-KÜM-men-ta.
+  target: The course is from 6:00 to 8:00 p.m.
+  literal: Course is clock 18–20.
+  chunks:
+  - id: c001
+    source: Kurssi on
+    phonetic: KOORS-see OHN
+    literal: Course is
+    target:
+    - The course is
+    - Course is
+  - id: c002
+    source: kello 18–20
+    phonetic: KEHL-loh kah-dehksan-tois-tah – KAK-see-KÜM-men-ta
+    literal: clock 18–20
+    target:
+    - from 6:00 to 8:00 p.m.
+    - from 18:00 to 20:00
+    - at 18–20
+    hint: Finnish often uses 24-hour time. "kello" means "o'clock" or "time" in clock expressions.
+  vocabulary_refs:
+  - kurssi
+  - olla
+  - kello
+  grammar:
+    refs:
+    - telling_time
+    - twenty_four_hour_time

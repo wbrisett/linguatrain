@@ -2774,6 +2774,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       else
         correct_display = expected_answer_list(w, answer_variant).join(" / ")
         say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}"
+        show_word_notes(w, ui)
         say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       end
       if speech_mode

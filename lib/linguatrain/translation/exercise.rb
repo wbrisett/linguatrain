@@ -5,16 +5,17 @@ require_relative "scorer"
 module Linguatrain
   module Translation
     class Exercise
-      def initialize(entries, scorer:, input: $stdin, output: $stdout)
+      def initialize(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false)
         @entries = entries
         @scorer = scorer
         @input = input
         @output = output
+        @show_phonetic = show_phonetic
         @quit_requested = false
       end
 
-      def self.run(entries, scorer:, input: $stdin, output: $stdout)
-        new(entries, scorer: scorer, input: input, output: output).run
+      def self.run(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false)
+        new(entries, scorer: scorer, input: input, output: output, show_phonetic: show_phonetic).run
       end
 
       def run
@@ -28,6 +29,36 @@ module Linguatrain
       private
 
       attr_reader :entries, :scorer, :input, :output
+
+      def show_phonetic?
+        @show_phonetic
+      end
+
+      def display_chunk_phonetics(entry)
+        chunks = Array(entry["chunks"] || entry[:chunks])
+
+        rows = chunks.filter_map do |chunk|
+          source = chunk["source"] || chunk[:source]
+          phonetic = chunk["phonetic"] || chunk[:phonetic] || chunk["phonetics"] || chunk[:phonetics]
+
+          source = source.to_s.strip
+          phonetic = phonetic.to_s.strip
+
+          next if source.empty? || phonetic.empty?
+
+          [source, phonetic]
+        end
+
+        return if rows.empty?
+
+        output.puts
+        output.puts "Remaining pronunciation:"
+
+        width = rows.map { |source, _phonetic| source.length }.max || 0
+        rows.each do |source, phonetic|
+          output.puts "#{source.ljust(width)}  #{phonetic}"
+        end
+      end
 
       def run_entry(entry)
 
@@ -133,6 +164,14 @@ module Linguatrain
           output.puts entry.fetch("source")
         end
 
+        if show_phonetic?
+          if completed_matches_displayed
+            display_chunk_phonetics(entry)
+          else
+            display_entry_phonetic(entry)
+          end
+        end
+
         output.puts
         output.print "> "
       end
@@ -166,7 +205,8 @@ module Linguatrain
             "id" => match[:id] || match["id"],
             "source" => match.fetch(:source),
             "targets" => match.fetch(:targets),
-            "hint" => hint_for_chunk(entry, match)
+            "hint" => hint_for_chunk(entry, match),
+            "phonetic" => phonetic_for_chunk(entry, match)
           }
 
           chunk.reject { |_key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
@@ -203,10 +243,42 @@ module Linguatrain
           else
             output.puts "#{marker} #{match.fetch(:source)}"
           end
+          # Removed inline pronunciation for missed chunks
+          # display_match_phonetic(result.fetch(:entry, {}), match) unless match.fetch(:matched)
         end
+
+        # Show block pronunciation for missed chunks if enabled
+        display_result_phonetics(result) if show_phonetic?
 
         output.puts
         output.puts "Score: #{result.fetch(:correct)}/#{result.fetch(:total)} (#{percentage(result)}%)"
+      end
+
+      def display_result_phonetics(result)
+        entry = result.fetch(:entry, {})
+        missed = result.fetch(:missed, [])
+
+        rows = missed.filter_map do |match|
+          source = match[:source] || match["source"]
+          phonetic = phonetic_for_chunk(entry, match)
+
+          source = source.to_s.strip
+          phonetic = phonetic.to_s.strip
+
+          next if source.empty? || phonetic.empty?
+
+          [source, phonetic]
+        end
+
+        return if rows.empty?
+
+        output.puts
+        output.puts "Pronunciation:"
+
+        width = rows.map { |source, _phonetic| source.length }.max || 0
+        rows.each do |source, phonetic|
+          output.puts "#{source.ljust(width)}  #{phonetic}"
+        end
       end
 
       def matches_to_display(result)
@@ -342,6 +414,8 @@ module Linguatrain
 
         index = next_hint_index(entry, hints.length)
         output.puts hints[index]
+
+        display_missed_chunk_phonetics(entry, missed) if show_phonetic?
       end
 
       def next_hint_index(entry, hint_count)
@@ -454,6 +528,66 @@ module Linguatrain
 
         output.puts "Answer:"
         output.puts entry.fetch("target", "No full target answer provided.")
+
+        display_entry_phonetic(entry)
+      end
+
+      def display_entry_phonetic(entry)
+        phonetic = entry["phonetic"] || entry[:phonetic] || entry["phonetics"] || entry[:phonetics]
+        phonetic = phonetic.to_s.strip
+        return if phonetic.empty?
+
+        output.puts
+        output.puts "Pronunciation:"
+        output.puts phonetic
+      end
+
+      def display_match_phonetic(entry, match)
+        return unless show_phonetic?
+
+        phonetic = phonetic_for_chunk(entry, match)
+        return if phonetic.empty?
+
+        output.puts "  #{phonetic}"
+      end
+
+      def display_missed_chunk_phonetics(entry, missed_chunks)
+        Array(missed_chunks).each do |chunk|
+          phonetic = phonetic_for_chunk(entry, chunk)
+          next if phonetic.empty?
+
+          source = chunk[:source] || chunk["source"]
+          source = source.to_s.strip
+
+          output.puts
+          if source.empty?
+            output.puts "Pronunciation: #{phonetic}"
+          else
+            output.puts "Pronunciation for #{source}: #{phonetic}"
+          end
+        end
+      end
+
+      def phonetic_for_chunk(entry, chunk)
+        explicit_phonetic = chunk[:phonetic] || chunk["phonetic"] || chunk[:phonetics] || chunk["phonetics"]
+        explicit_phonetic = explicit_phonetic.to_s.strip
+        return explicit_phonetic unless explicit_phonetic.empty?
+
+        chunk_id = chunk[:id] || chunk["id"]
+        chunk_source = chunk[:source] || chunk["source"]
+
+        matching_chunk = Array(entry["chunks"] || entry[:chunks]).find do |candidate|
+          candidate_id = candidate["id"] || candidate[:id]
+          candidate_source = candidate["source"] || candidate[:source]
+
+          (!chunk_id.to_s.strip.empty? && candidate_id.to_s.strip == chunk_id.to_s.strip) ||
+            (!chunk_source.to_s.strip.empty? && candidate_source.to_s.strip == chunk_source.to_s.strip)
+        end
+
+        return "" unless matching_chunk
+
+        phonetic = matching_chunk["phonetic"] || matching_chunk[:phonetic] || matching_chunk["phonetics"] || matching_chunk[:phonetics]
+        phonetic.to_s.strip
       end
 
       def percentage(result)

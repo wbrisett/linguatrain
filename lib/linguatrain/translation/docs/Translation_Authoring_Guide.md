@@ -65,6 +65,7 @@ Each exercise is an `entry`.
   type:           # optional
   speaker:        # optional
   source:
+  phonetic:        # optional
   literal:
   target:
   chunks:
@@ -85,6 +86,7 @@ Each exercise is an `entry`.
 
 -   type
 -   speaker
+-   phonetic
 -   vocabulary_refs
 -   grammar
 
@@ -170,6 +172,7 @@ Each chunk should represent something a learner can recognize and reuse later.
 chunks:
   - id:
     source:
+    phonetic:      # optional
     literal:
     target:
     hint:
@@ -180,6 +183,100 @@ This recursive structure is intentional.
 A learner first understands the chunk.
 
 The sentence is then assembled from understood chunks.
+
+------------------------------------------------------------------------
+
+# Pronunciation / Phonetic Guidance
+
+Translation entries may include an optional `phonetic` field. Chunks may also include their own optional `phonetic` field.
+
+Use the singular field name:
+
+```yaml
+phonetic:
+```
+
+Do **not** use `phonetics` in new authoring examples.
+
+`phonetic` is a beginner-friendly pronunciation guide for the `source` text. It is not a replacement for audio, IPA, or a formal linguistic transcription. Its purpose is to help the learner make a reasonable first attempt at reading the source-language text aloud.
+
+Example:
+
+```yaml
+- id: e001
+  type: dialogue
+  speaker: Alex
+  source: "Anteeksi, onko täällä suomen kurssi?"
+  phonetic: "AHN-tehk-see, OHN-koh TAAH-la SOO-oh-men KOORS-see?"
+  literal: "Excuse me, is here Finnish course?"
+  target: "Excuse me, is the Finnish course here?"
+  chunks:
+    - id: c001
+      source: "Anteeksi"
+      phonetic: "AHN-tehk-see"
+      literal: "Excuse me"
+      target: "Excuse me"
+
+    - id: c002
+      source: "onko"
+      phonetic: "OHN-koh"
+      literal: "is?"
+      target:
+        - "is"
+        - "is it"
+        - "is there"
+```
+
+## When Linguatrain Displays Pronunciation
+
+Pronunciation is intentionally hidden unless the learner requests it.
+
+In translation mode, the learner can enable pronunciation with:
+
+```bash
+--show-phonetic
+```
+
+When enabled, Linguatrain may display pronunciation:
+
+- under the full source sentence at the start of an exercise
+- for missed chunks after an incorrect answer
+- for remaining chunks during retry
+- when the learner asks to show the answer
+
+This follows the general Linguatrain principle of progressive disclosure: show pronunciation when it helps the learner, but do not clutter the default translation exercise.
+
+## Authoring Guidance for AI Agents
+
+When generating translation YAML, include `phonetic` when pronunciation would help the learner. This is especially useful for beginner packs, textbook samples, dialogue, unfamiliar names, difficult compounds, and languages where spelling does not reliably predict pronunciation.
+
+For Finnish beginner material, prefer readable approximations that preserve important learner distinctions:
+
+- mark long vowels with doubled vowel letters where helpful, such as `TAAH-la` for `täällä`
+- keep doubled consonants visible, such as `KOORS-see` for `kurssi`
+- avoid overexplaining inside the `phonetic` field
+- preserve distinctions that materially affect pronunciation in the source language
+- keep the guide short enough to scan while translating
+- use the same style consistently across entries and chunks
+- if pronunciation cannot be represented clearly and reliably, omit `phonetic`
+
+Bad:
+
+```yaml
+phonetic: "This is pronounced with a long ä sound and a long s..."
+```
+
+Good:
+
+```yaml
+phonetic: "TAAH-la"
+```
+
+Entry-level `phonetic` should cover the complete `source` sentence or line.
+
+Chunk-level `phonetic` should cover only that chunk's `source`.
+
+If the AI is not confident in a pronunciation guide, it should omit `phonetic` rather than invent an unreliable one.
 
 ------------------------------------------------------------------------
 
@@ -855,11 +952,15 @@ A request such as the following provides the AI with both the structure and the 
 >
 > Follow the schema and authoring philosophy described in the guide.
 >
-> Produce meaningful semantic chunks, literal translations, natural translations, hints, vocabulary references, and grammar references where appropriate.
+> Produce meaningful semantic chunks, optional `phonetic` pronunciation guidance, literal translations, natural translations, hints, vocabulary references, and grammar references where appropriate.
 >
 > Then collect the unique `vocabulary_refs` values and create studyable vocabulary entries using the normal vocabulary schema. Each vocabulary entry should include `prompt`, `answer`, and, where helpful, `type`, `literal`, `forms`, `phonetic`, and concise `notes`.
 >
 > The resulting YAML files should resemble the canonical examples in both structure and educational quality.
+> 
+> Every note should either be quoted or emitted as a block scalar. 
+> 
+
 
 ---
 
@@ -885,6 +986,8 @@ Look for questions such as:
 - Are the chunk boundaries meaningful?
 - Are literal translations truly literal?
 - Does the natural translation sound natural?
+- If `phonetic` fields are included, are they concise, consistent, and useful for a beginner?
+- Do chunk-level `phonetic` values match only the chunk source, not the full sentence?
 - Do the hints encourage another attempt?
 - Are vocabulary references complete?
 - Does every `vocabulary_refs` item have a matching companion vocabulary entry?

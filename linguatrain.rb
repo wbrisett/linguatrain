@@ -102,7 +102,8 @@ DEFAULT_UI = {
   conjugate_instruction: "Use the correct form:",
   conjugate_positive_instruction: "Use the positive form:",
   conjugate_negative_instruction: "Use the negative form:",
-  show_notes: true
+  show_notes: true,
+  note_prefix: "Note:"
 }.freeze
 
 DEFAULT_TTS_TEMPLATE = "Target language: {text}."
@@ -743,6 +744,10 @@ module TerminalStyle
     wrap("36", text)
   end
 
+  def blue(text)
+    wrap("34", text)
+  end
+
   def yellow(text)
     wrap("33", text)
   end
@@ -765,6 +770,35 @@ end
 
 def render_gloss_line(text)
   TerminalStyle.dim(text.to_s)
+end
+
+def render_note_line(text)
+  TerminalStyle.blue(text.to_s)
+end
+
+def normalize_notes(value)
+  case value
+  when Array
+    value.map { |x| x.to_s.strip }.reject(&:empty?)
+  when NilClass
+    []
+  else
+    text = value.to_s.strip
+    text.empty? ? [] : [text]
+  end
+end
+
+def show_word_notes(word, ui)
+  return unless show_notes?(ui)
+
+  notes = normalize_notes(word[:notes])
+  return if notes.empty?
+
+  say
+  say render_note_line(ui[:note_prefix] || "Note:")
+  notes.each do |note|
+    say render_note_line("  #{note}")
+  end
 end
 
 def prompt_to_speak(ui, duration: nil)
@@ -1260,6 +1294,8 @@ def load_pack(path)
       answer_v = w["answer"] || w[:answer] || w["target"] || w[:target]
       spoken_field_v = w["spoken"] || w[:spoken]
       phonetic_v = w["phonetic"] || w[:phonetic] || w["phon"] || w[:phon]
+      notes_v = w["notes"] || w[:notes] || w["note"] || w[:note]
+      type_v = w["type"] || w[:type]
 
       # If we have new-schema fields, map them into the legacy variables used below.
       if en.nil? && !prompt_v.nil?
@@ -1324,7 +1360,9 @@ def load_pack(path)
         prompt: en_list,
         answer: fi_list,
         spoken: spoken_list,
-        phonetic: phon.to_s.strip
+        phonetic: phon.to_s.strip,
+        notes: normalize_notes(notes_v),
+        type: (type_v.nil? ? "" : type_v.to_s.strip)
       }
     end.then do |words|
       { meta: symbolize_keys_deep(pack_meta), words: words }
@@ -1871,7 +1909,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
       back_label = source_label(ui)
       say "#{back_label}: #{prompt_text}"
-      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
+      show_word_notes(w, ui)
       say
 
       if listen
@@ -1892,7 +1930,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
       back_label = target_label(ui)
       say "#{back_label}: #{answer_text}"
-      say "(#{format_phonetic(ui, phon)})" unless phon.empty?
+      show_word_notes(w, ui)
       say
 
       if listen
@@ -2723,7 +2761,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
       stats[:failed] += 1
       if reverse
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{w[:prompt].join(' / ')}"
-
+        show_word_notes(w, ui)
         target_text =
           if show_variants
             format_variants_for_display(w)

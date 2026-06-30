@@ -416,6 +416,103 @@ Finally, reading reinforces those same words and expressions through repeated ex
 
 ---
 
+## Companion Vocabulary Packs
+
+A complete translation document should normally be accompanied by a vocabulary pack.
+
+The translation document identifies useful words and phrases through `vocabulary_refs`. The companion vocabulary pack defines those references as studyable vocabulary entries. This lets the learner study the vocabulary first and then use the translation exercise to understand how those words combine in real sentences.
+
+Recommended file pairing:
+
+```text
+suomen_mestari_1_kappale_01_translation.yaml
+suomen_mestari_1_kappale_01_vocabulary.yaml
+```
+
+The translation pack remains focused on sentences, chunks, literal translations, natural translations, hints, and grammar references.
+
+The vocabulary pack is where reusable lexical knowledge belongs: meanings, types, forms, pronunciation, literal structure, and short usage notes.
+
+### Vocabulary Pack Shape
+
+Companion vocabulary packs should use the normal Linguatrain vocabulary schema so they can be studied directly before the translation exercise.
+
+```yaml
+metadata:
+  id: suomen_mestari_1_kappale_01_vocabulary
+  title: Suomen Mestari 1 - Kappale 1 Vocabulary
+  type: vocabulary
+  format: canonical
+  version: 1
+  schema_version: 1
+  source_pack: suomen_mestari_1_kappale_01_translation
+
+entries:
+  - id: tervetuloa
+    prompt: tervetuloa
+    answer: welcome
+    type: phrase
+    notes:
+      - 'Often followed by the allative case: “kurssille” = “to the course”.'
+
+  - id: kirjoittaa
+    prompt: kirjoittaa
+    answer:
+      - to write
+      - to spell
+    type: verb
+    notes:
+      - 'In spelling questions, Finnish often uses passive “kirjoitetaan” = “is written/spelled”.'
+```
+
+Use `prompt` for the source-language word or phrase and `answer` for the target-language meaning.
+
+Use the entry `id` as the canonical reference value used by `vocabulary_refs` in the translation document.
+
+For example, this translation entry:
+
+```yaml
+vocabulary_refs:
+  - tervetuloa
+  - suomen kurssi
+```
+
+should point to vocabulary entries whose IDs match those references. If a reference contains spaces or characters that are awkward in IDs, prefer a normalized ID such as `suomen_kurssi`, and use that same normalized ID consistently in `vocabulary_refs`.
+
+### Vocabulary Notes
+
+Vocabulary `notes` should contain short, learner-useful observations that make the word or phrase easier to recognize, remember, or use.
+
+Include notes for information that helps avoid common learner mistakes, such as:
+
+- idiomatic usage
+- common collocations
+- compound word breakdowns
+- important case usage
+- common learner confusions
+- words whose meaning differs from a similar-looking English word
+
+Examples:
+
+```yaml
+notes:
+  - '“Tässä on...” is often used when introducing someone or presenting something.'
+```
+
+```yaml
+notes:
+  - 'Compound: kurssi + päivä. Plural: kurssipäivät.'
+```
+
+```yaml
+notes:
+  - 'Can mean “place” generally or “seat” in a classroom context.'
+```
+
+Keep notes concise. They should add one useful teaching point, not become a grammar lesson. Longer grammatical explanations belong in grammar documentation or in a chunk hint when the learner needs that information to complete the translation.
+
+---
+
 ## Preparing the Learner for Success
 
 The objective is not to test whether a learner can guess unknown vocabulary.
@@ -634,6 +731,7 @@ The AI assistant performs much of the mechanical work, including:
 - producing natural translations
 - generating hints
 - identifying vocabulary references
+- creating a companion vocabulary pack from those references
 
 Neither works as well in isolation.
 
@@ -650,8 +748,9 @@ The human contributes educational judgment, language expertise, and an understan
 The highest quality AI-generated translation documents are produced when the assistant is provided with:
 
 1. The representative translation YAML document included with Linguatrain.
-2. This Translation YAML Design Guide.
-3. The new source material.
+2. The representative vocabulary YAML document included with Linguatrain.
+3. This Translation YAML Design Guide.
+4. The new source material.
 
 The example translation document is intentionally included with Linguatrain as a canonical reference implementation.
 
@@ -696,6 +795,16 @@ chunks
 hints
 vocabulary_refs
 grammar_refs
+
+        +
+
+Companion Vocabulary Pack
+
+prompt
+answer
+type
+notes
+forms
 ```
 
 A minimal document containing only source and target text is still useful.
@@ -720,9 +829,10 @@ Instead, provide the AI with enough context to understand both the format and th
 A successful authoring request should include:
 
 1. The canonical translation YAML example.
-2. This Translation YAML Design Guide.
-3. The new source material.
-4. A clear statement describing the desired outcome.
+2. The canonical vocabulary YAML example.
+3. This Translation YAML Design Guide.
+4. The new source material.
+5. A clear statement describing the desired outcome.
 
 The goal is not simply to obtain a translation.
 
@@ -734,19 +844,22 @@ The goal is to produce a translation document that helps someone learn the langu
 
 A request such as the following provides the AI with both the structure and the educational objective:
 
-> I have attached three documents:
+> I have attached four documents:
 >
 > 1. The canonical Translation YAML example.
-> 2. The Translation YAML Design Guide.
-> 3. New source material.
+> 2. The canonical Vocabulary YAML example.
+> 3. The Translation YAML Design Guide.
+> 4. New source material.
 >
-> Using the canonical example and the design guide as your reference, create a complete Translation YAML document for the supplied source material.
+> Using the canonical examples and the design guide as your reference, create both a complete Translation YAML document and a companion Vocabulary YAML document for the supplied source material.
 >
 > Follow the schema and authoring philosophy described in the guide.
 >
 > Produce meaningful semantic chunks, literal translations, natural translations, hints, vocabulary references, and grammar references where appropriate.
 >
-> The resulting YAML should resemble the canonical example in both structure and educational quality.
+> Then collect the unique `vocabulary_refs` values and create studyable vocabulary entries using the normal vocabulary schema. Each vocabulary entry should include `prompt`, `answer`, and, where helpful, `type`, `literal`, `forms`, `phonetic`, and concise `notes`.
+>
+> The resulting YAML files should resemble the canonical examples in both structure and educational quality.
 
 ---
 
@@ -774,6 +887,9 @@ Look for questions such as:
 - Does the natural translation sound natural?
 - Do the hints encourage another attempt?
 - Are vocabulary references complete?
+- Does every `vocabulary_refs` item have a matching companion vocabulary entry?
+- Are vocabulary notes concise and useful?
+- Does the vocabulary pack use `prompt` and `answer` so it can be studied directly?
 - Would I enjoy learning from this document?
 
 The objective is not to ask the AI for perfection.

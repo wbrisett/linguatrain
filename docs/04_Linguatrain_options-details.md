@@ -11,6 +11,7 @@
 | `--listen-no-english` | Alias for `--listen-no-source` | off |
 | `--transform` | Enable grammar transform drills (prompt + cue → transformed sentence) | off |
 | `--conjugate` | Enable verb conjugation drills (person + lemma) | off |
+| `--translate` | Enable translation exercises using translation learning packs | off |
 | `--negative` | With `--conjugate`, drill negative forms only | off |
 | `--both` | With `--conjugate`, drill both positive and negative forms | off |
 | `--conversation` | Enable conversation practice mode | off |
@@ -263,7 +264,61 @@ Transform packs use a structured YAML format containing:
 
 See `transform-yaml-structure.md` for full documentation.
 
+
 ---
+
+## Translation Mode (`--translate`)
+
+Translation mode uses structured **translation learning packs** that present authentic content as a series of meaningful translation units.
+
+Unlike vocabulary packs, translation packs preserve the context of the original source material. Each unit may include:
+
+- Literal translations
+- Natural translations
+- Retrieval-oriented hints
+- Pronunciation guidance
+- Grammar references
+- Vocabulary references
+- Author notes
+
+Translation mode is designed to help learners move beyond isolated vocabulary and develop the skills needed to read authentic texts.
+
+Example command:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/translations/suomen_mestari_1_kappale_01_translation.yaml --translate
+```
+
+Example flow:
+
+```text
+Translation Exercise — Suomen Mestari 1
+
+--------------------------------------------------
+
+Source:
+Minulla on tavallinen päivä.
+
+Hint:
+tavallinen = ordinary
+
+Translation:
+> I have an ordinary day.
+
+✓ Correct!
+
+Literal:
+On me is an ordinary day.
+
+Notes:
+Finnish expresses possession using "to be" rather than the verb "to have".
+```
+
+Translation packs are designed to work alongside vocabulary and conjugation packs generated from the same source material.
+
+See the **Authoring Handbook** for the translation pack format and authoring guidelines.
+
+------------
 
 ## Conjugation Mode (`--conjugate`)
 

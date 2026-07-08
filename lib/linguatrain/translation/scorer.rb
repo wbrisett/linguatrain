@@ -7,14 +7,16 @@ module Linguatrain
         normalized_answer = normalize(answer)
 
         matches = chunks_for(entry).map do |chunk|
-          targets = chunk.fetch("targets", [])
+          targets = chunk["targets"] || chunk[:targets] || []
 
           matched_target = targets.find do |target|
             phrase_matches?(normalized_answer, normalize(target))
           end
 
+          source = chunk["source"] || chunk[:source]
+
           result = {
-            source: chunk.fetch("source"),
+            source: source,
             targets: targets,
             matched: !matched_target.nil?,
             matched_text: matched_target
@@ -43,21 +45,21 @@ module Linguatrain
       private
 
       def chunks_for(entry)
-        entry.fetch("chunks") do
-          [
-            begin
-              fallback = {
-                "source" => entry.fetch("source"),
-                "targets" => [entry.fetch("target")]
-              }
+        chunks = entry["chunks"] || entry[:chunks]
+        return chunks if chunks && !chunks.empty?
 
-              hint = entry["hint"] || entry[:hint]
-              fallback["hint"] = hint unless hint.to_s.strip.empty?
+        source = entry["source"] || entry[:source]
+        target = entry["target"] || entry[:target]
 
-              fallback
-            end
-          ]
-        end
+        fallback = {
+          "source" => source,
+          "targets" => Array(target)
+        }
+
+        hint = entry["hint"] || entry[:hint]
+        fallback["hint"] = hint unless hint.to_s.strip.empty?
+
+        [fallback]
       end
 
       def normalize(text)

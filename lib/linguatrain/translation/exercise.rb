@@ -5,17 +5,54 @@ require_relative "scorer"
 module Linguatrain
   module Translation
     class Exercise
-      def initialize(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false)
-        @entries = entries
-        @scorer = scorer
-        @input = input
-        @output = output
-        @show_phonetic = show_phonetic
-        @quit_requested = false
+      def initialize(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil)
+      @entries = entries
+      @scorer = scorer
+      @input = input
+      @output = output
+      @show_phonetic = show_phonetic
+      @listen = listen
+      @speaker = speaker
+      @quit_requested = false
+    end
+
+    def self.run(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil)
+      new(
+        entries,
+        scorer: scorer,
+        input: input,
+        output: output,
+        show_phonetic: show_phonetic,
+        listen: listen,
+        speaker: speaker
+      ).run
+    end
+
+      def entry_source(entry)
+        (entry["source"] || entry[:source]).to_s
       end
 
-      def self.run(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false)
-        new(entries, scorer: scorer, input: input, output: output, show_phonetic: show_phonetic).run
+    def show_phonetic?
+      @show_phonetic
+    end
+
+      def listen?
+        @listen
+      end
+
+      def speaker
+        @speaker
+      end
+
+      def speak_source(entry)
+        return unless listen?
+        return unless speaker
+
+        source = entry_source(entry).to_s.strip
+        return if source.empty?
+
+        output.puts "🎧  #{source}"
+        speaker.call(source)
       end
 
       def run
@@ -30,9 +67,7 @@ module Linguatrain
 
       attr_reader :entries, :scorer, :input, :output
 
-      def show_phonetic?
-        @show_phonetic
-      end
+
 
       def display_chunk_phonetics(entry)
         chunks = Array(entry["chunks"] || entry[:chunks])
@@ -66,13 +101,59 @@ module Linguatrain
           display_prompt(entry)
           answer = read_answer
 
-          if answer.empty?
-            output.puts "No answer entered. Moving to the next sentence."
+          if answer.downcase == "q" || answer.downcase == "quit"
+            @quit_requested = true
             return
+          end
+
+          if answer.empty?
+            if retry_mode?(entry)
+              result = scorer.score("", entry)
+              action = prompt_for_action(result)
+
+              case action
+              when :retry
+                next
+              when :show_hint
+                display_hint(entry, result)
+                next
+              when :show_answer
+                display_answer(entry)
+                follow_up_action = prompt_after_answer(result)
+
+                case follow_up_action
+                when :retry
+                  next
+                when :next
+                  return
+                when :quit
+                  @quit_requested = true
+                  return
+                end
+              when :next
+                return
+              when :quit
+                @quit_requested = true
+                return
+              end
+            else
+              output.puts "No answer entered. Moving to the next sentence."
+              return
+            end
+          end
+
+          if retry_mode?(entry) && ["h", "hint", "l", "literal", "literal hint"].include?(answer.downcase)
+            display_hint(entry, scorer.score("", entry))
+            next
           end
 
           result = scorer.score(answer, entry)
           display_result(result)
+
+          if retry_mode?(entry) && !fully_correct?(result) && result.fetch(:correct).positive?
+            entry = retry_entry(entry, result)
+            next
+          end
 
           if fully_correct?(result)
             display_answer(entry)
@@ -150,18 +231,23 @@ module Linguatrain
       end
 
       def display_prompt(entry)
+        retry_prompt = retry_mode?(entry)
+
         output.puts
         output.puts "-" * 50
-        output.puts "Translation Exercise"
+        output.puts(retry_prompt ? "Remaining Translations" : "Translation Exercise")
         output.puts "-" * 50
         output.puts
         completed_matches_displayed = display_completed_matches(entry)
 
-        if completed_matches_displayed
-          output.puts "Remaining translation:"
-          output.puts entry.fetch("source")
+        if retry_prompt || completed_matches_displayed
+          display_remaining_chunks(entry)
         else
-          output.puts entry.fetch("source")
+          if listen? && !(entry["listened"] || entry[:listened])
+            speak_source(entry)
+          else
+            output.puts entry_source(entry)
+          end
         end
 
         if show_phonetic?
@@ -176,13 +262,51 @@ module Linguatrain
         output.print "> "
       end
 
+      def display_remaining_chunks(entry)
+        chunks = Array(entry["chunks"] || entry[:chunks])
+
+        if chunks.empty?
+          remaining = entry_source(entry).to_s.strip
+          return if remaining.empty?
+
+          output.puts "✗ #{remaining}"
+          output.puts
+          output.puts "-" * 50
+          output.puts
+          output.puts remaining
+          return
+        end
+
+        chunks.each do |chunk|
+          source = chunk["source"] || chunk[:source]
+          source = source.to_s.strip
+          next if source.empty?
+
+          output.puts "✗ #{source}"
+        end
+
+        output.puts
+        output.puts "-" * 50
+        output.puts
+
+        first_chunk = chunks.find do |chunk|
+          source = chunk["source"] || chunk[:source]
+          !source.to_s.strip.empty?
+        end
+
+        return unless first_chunk
+
+        source = first_chunk["source"] || first_chunk[:source]
+        output.puts source.to_s.strip
+      end
+
       def display_completed_matches(entry)
-        completed_matches = entry.fetch("completed_matches", [])
+        completed_matches = entry["completed_matches"] || entry[:completed_matches] || []
         return false if completed_matches.empty?
 
         completed_matches.each do |match|
           matched_text = match.fetch(:matched_text, nil)
-          source = match.fetch(:source)
+          source = match[:source] || match["source"]
 
           if matched_text
             output.puts "✓ #{source} : #{matched_text}"
@@ -199,12 +323,12 @@ module Linguatrain
 
         missed = result.fetch(:missed)
 
-        retry_source = missed.map { |match| match.fetch(:source) }.join(" / ")
+        retry_source = missed.map { |match| match[:source] || match["source"] }.compact.join("\n")
         retry_chunks = missed.map do |match|
           chunk = {
             "id" => match[:id] || match["id"],
-            "source" => match.fetch(:source),
-            "targets" => match.fetch(:targets),
+            "source" => match[:source] || match["source"],
+            "targets" => match[:targets] || match["targets"] || [],
             "hint" => hint_for_chunk(entry, match),
             "phonetic" => phonetic_for_chunk(entry, match)
           }
@@ -212,14 +336,16 @@ module Linguatrain
           chunk.reject { |_key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
         end
 
-        completed_matches = entry.fetch("completed_matches", []) +
+        completed_matches = (entry["completed_matches"] || entry[:completed_matches] || []) +
                             result.fetch(:matches).select { |match| match.fetch(:matched) }
 
         entry.merge(
           "source" => retry_source,
           "chunks" => retry_chunks,
-          "target" => entry.fetch("target", nil),
-          "completed_matches" => completed_matches
+          "target" => entry["target"] || entry[:target],
+          "completed_matches" => completed_matches,
+          "listened" => true,
+          "retry" => true
         )
       end
 
@@ -392,6 +518,10 @@ module Linguatrain
         actions.join("  ")
       end
 
+      def retry_mode?(entry)
+        entry["retry"] || entry[:retry]
+      end
+
       def retry_available?(result)
         result.fetch(:correct) < result.fetch(:total)
       end
@@ -420,7 +550,7 @@ module Linguatrain
 
       def next_hint_index(entry, hint_count)
         @hint_indexes ||= Hash.new(0)
-        key = entry.fetch("id", entry.fetch("source"))
+        key = entry["id"] || entry[:id] || entry_source(entry)
         index = @hint_indexes[key] % hint_count
         @hint_indexes[key] += 1
         index
@@ -520,14 +650,19 @@ module Linguatrain
       def display_answer(entry)
         output.puts
 
-        if entry.key?("literal")
+        literal = entry["literal"] || entry[:literal]
+        literal = literal.to_s.strip
+
+        unless literal.empty?
           output.puts "Literal:"
-          output.puts entry.fetch("literal")
+          output.puts literal
           output.puts
         end
 
+        target = entry["target"] || entry[:target] || "No full target answer provided."
+
         output.puts "Answer:"
-        output.puts entry.fetch("target", "No full target answer provided.")
+        output.puts target
 
         display_entry_phonetic(entry)
       end

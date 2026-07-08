@@ -1,0 +1,764 @@
+metadata:
+  id: suomen_mestari_1_meidan_tavallinen_paiva_vocabulary
+  title: Meidän tavallinen päivä — Vocabulary
+  type: vocabulary
+  format: canonical
+  version: 5
+  schema_version: 1
+  source_pack: suomen_mestari_1_meidan_tavallinen_paiva_translation
+  tts_side: prompt
+entries:
+- id: meidän
+  prompt: meidän
+  answer: our
+  type: pronoun
+  phonetic: MAY-dahn
+  notes:
+  - Genitive form used for 'our'.
+- id: tavallinen
+  prompt: tavallinen
+  answer:
+  - ordinary
+  - usual
+  type: adjective
+  phonetic: TAH-vahl-lee-nehn
+- id: päivä
+  prompt: päivä
+  answer: day
+  type: noun
+  phonetic: PAI-vah
+- id: minä
+  prompt: minä
+  answer: I
+  type: pronoun
+  phonetic: MEE-nah
+- id: olla
+  prompt: olla
+  answer: to be
+  type: verb
+  phonetic: OHL-lah
+  forms:
+    minä: olen
+    hän: 'on'
+    he: ovat
+  notes:
+  - Irregular and very common.
+- id: suomalainen
+  prompt: suomalainen
+  answer: Finnish
+  type: adjective
+  phonetic: SOO-oh-mah-lai-nehn
+- id: mies
+  prompt: mies
+  answer: man
+  type: noun
+  phonetic: MEE-ehs
+- id: ja
+  prompt: ja
+  answer: and
+  type: conjunction
+  phonetic: yah
+- id: isä
+  prompt: isä
+  answer: father
+  type: noun
+  phonetic: EE-sah
+- id: vaimo
+  prompt: vaimo
+  answer: wife
+  type: noun
+  phonetic: VAI-moh
+- id: kaksi
+  prompt: kaksi
+  answer:
+  - two
+  - '2'
+  type: number
+  phonetic: KAHK-see
+  notes:
+  - After numbers, nouns often appear in partitive singular.
+- id: lapsi
+  prompt: lapsi
+  answer: child
+  type: noun
+  phonetic: LAHP-see
+  forms:
+    partitive_singular: lasta
+    plural_nominative: lapset
+- id: herätä
+  prompt: herätä
+  answer: to wake up
+  type: verb
+  phonetic: HEH-rah-tah
+  forms:
+    minä: herään
+    he: heräävät
+  notes:
+  - Type 4 verb.
+- id: kello
+  prompt: kello
+  answer:
+  - clock
+  - time
+  type: noun
+  phonetic: KEHL-loh
+  notes:
+  - 'Introduces clock time: kello 6.'
+- id: kuusi
+  prompt: kuusi
+  answer:
+  - six
+  - '6'
+  type: number
+  phonetic: KOO-see
+- id: kun
+  prompt: kun
+  answer: when
+  type: conjunction
+  phonetic: koon
+- id: herätyskello
+  prompt: herätyskello
+  answer: alarm clock
+  type: noun
+  phonetic: HEH-rah-tus-KEHL-loh
+  notes:
+  - 'Compound: herätys + kello.'
+- id: soida
+  prompt: soida
+  answer:
+  - to ring
+  - to sound
+  type: verb
+  phonetic: SOY-dah
+  forms:
+    hän: soi
+  notes:
+  - Used for sounds such as an alarm ringing.
+- id: käydä
+  prompt: käydä
+  answer:
+  - to go
+  - to visit
+  type: verb
+  phonetic: KAI-dah
+  forms:
+    minä: käyn
+  notes:
+  - In käydä suihkussa, it means to take a shower.
+- id: ensin
+  prompt: ensin
+  answer: first
+  type: adverb
+  phonetic: EHN-seen
+- id: suihku
+  prompt: suihku
+  answer: shower
+  type: noun
+  phonetic: SOOYK-hoo
+  forms:
+    inessive: suihkussa
+- id: pukea
+  prompt: pukea
+  answer:
+  - to dress
+  - to put on
+  type: verb
+  phonetic: POO-keh-ah
+  forms:
+    minä: puen
+  notes:
+  - Pukea päälle = to get dressed / put on.
+- id: sitten
+  prompt: sitten
+  answer: then
+  type: adverb
+  phonetic: SEET-tehn
+- id: päälle
+  prompt: päälle
+  answer:
+  - 'on'
+  - onto
+  type: postposition
+  phonetic: PAAL-leh
+  notes:
+  - Part of pukea päälle.
+- id: se
+  prompt: se
+  answer:
+  - it
+  - that
+  type: pronoun
+  phonetic: seh
+  forms:
+    genitive: sen
+- id: jälkeen
+  prompt: jälkeen
+  answer: after
+  type: postposition
+  phonetic: YAL-kehn
+  notes:
+  - 'Usually follows a genitive form: koulun jälkeen.'
+- id: tehdä
+  prompt: tehdä
+  answer:
+  - to do
+  - to make
+  type: verb
+  phonetic: TEH-dah
+  forms:
+    minä: teen
+    me: teemme
+  notes:
+  - Irregular Type 2 verb.
+- id: keittiö
+  prompt: keittiö
+  answer: kitchen
+  type: noun
+  phonetic: KAYT-tee-ur
+  forms:
+    inessive: keittiössä
+- id: aamupala
+  prompt: aamupala
+  answer: breakfast
+  type: noun
+  phonetic: AH-moo-pah-lah
+  forms:
+    partitive: aamupalaa
+  notes:
+  - 'Compound: aamu + pala.'
+- id: lukea
+  prompt: lukea
+  answer: to read
+  type: verb
+  phonetic: LOO-keh-ah
+  forms:
+    minä: luen
+    he: lukevat
+- id: lehti
+  prompt: lehti
+  answer:
+  - newspaper
+  - leaf
+  type: noun
+  phonetic: LEH-tee
+  forms:
+    partitive: lehteä
+  notes:
+  - In this story, lehteä means newspaper.
+- id: syödä
+  prompt: syödä
+  answer: to eat
+  type: verb
+  phonetic: SYUR-dah
+  forms:
+    minä: syön
+    me: syömme
+    he: syövät
+  notes:
+  - Do not confuse with soida.
+- id: yhdessä
+  prompt: yhdessä
+  answer: together
+  type: adverb
+  phonetic: YUH-dehs-sah
+- id: yleensä
+  prompt: yleensä
+  answer: usually
+  type: adverb
+  phonetic: YU-lehn-sah
+- id: muro
+  prompt: muro
+  answer: cereal
+  type: noun
+  phonetic: MOO-roh
+  forms:
+    partitive_plural: muroja
+- id: leipä
+  prompt: leipä
+  answer: bread
+  type: noun
+  phonetic: LAY-pah
+  forms:
+    partitive: leipää
+- id: ei
+  prompt: ei
+  answer:
+  - not
+  - does not
+  - 'no'
+  type: negative_auxiliary
+  phonetic: ay
+  forms:
+    hän: ei
+    he: eivät
+  notes:
+  - Negative auxiliary; the English wording depends on context.
+- id: aamu
+  prompt: aamu
+  answer: morning
+  type: noun
+  phonetic: AH-moo
+  forms:
+    adessive: aamulla
+- id: mikään
+  prompt: mikään
+  answer:
+  - anything
+  - nothing
+  type: pronoun
+  phonetic: MEE-kahn
+  forms:
+    partitive: mitään
+  notes:
+  - Used with negation in this story.
+- id: hän
+  prompt: hän
+  answer:
+  - he
+  - she
+  type: pronoun
+  phonetic: han
+- id: juoda
+  prompt: juoda
+  answer: to drink
+  type: verb
+  phonetic: YOO-oh-dah
+  forms:
+    hän: juo
+- id: vain
+  prompt: vain
+  answer: only
+  type: adverb
+  phonetic: vain
+- id: kahvi
+  prompt: kahvi
+  answer: coffee
+  type: noun
+  phonetic: KAH-vee
+  forms:
+    partitive: kahvia
+- id: lähteä
+  prompt: lähteä
+  answer: to leave
+  type: verb
+  phonetic: LAH-teh-ah
+  forms:
+    minä: lähden
+  notes:
+  - Type 3 verb.
+- id: työ
+  prompt: työ
+  answer: work
+  type: noun
+  phonetic: tyur
+  forms:
+    illative_plural: töihin
+    inessive_plural: töissä
+  notes:
+  - 'Useful forms: töihin = to work; töissä = at work.'
+- id: seitsemän
+  prompt: seitsemän
+  answer:
+  - seven
+  - '7'
+  type: number
+  phonetic: SAYT-seh-mahn
+- id: viisitoista
+  prompt: viisitoista
+  answer:
+  - fifteen
+  - '15'
+  type: number
+  phonetic: VEE-see-toys-tah
+- id: lounasravintola
+  prompt: lounasravintola
+  answer: lunch restaurant
+  type: noun
+  phonetic: LOW-nahs-rah-veen-toh-lah
+  forms:
+    inessive: lounasravintolassa
+  notes:
+  - 'Compound: lounas + ravintola.'
+- id: kokki
+  prompt: kokki
+  answer:
+  - cook
+  - chef
+  type: noun
+  phonetic: KOHK-kee
+- id: ruoka
+  prompt: ruoka
+  answer:
+  - food
+  - meal
+  type: noun
+  phonetic: ROO-oh-kah
+  forms:
+    genitive: ruoan
+    partitive: ruokaa
+- id: kolme
+  prompt: kolme
+  answer:
+  - three
+  - '3'
+  type: number
+  phonetic: KOHL-meh
+  forms:
+    genitive: kolmen
+- id: työkaveri
+  prompt: työkaveri
+  answer: coworker
+  type: noun
+  phonetic: TYUR-kah-veh-ree
+  forms:
+    genitive: työkaverin
+  notes:
+  - 'Compound: työ + kaveri.'
+- id: kanssa
+  prompt: kanssa
+  answer: with
+  type: postposition
+  phonetic: KAHN-sah
+  notes:
+  - 'Follows a genitive form: kaverin kanssa.'
+- id: kävellä
+  prompt: kävellä
+  answer: to walk
+  type: verb
+  phonetic: KAE-veh-lah
+  forms:
+    hän: kävelee
+  notes:
+  - Type 3 verb.
+- id: päiväkoti
+  prompt: päiväkoti
+  answer: daycare
+  type: noun
+  phonetic: PAI-vah-koh-tee
+  forms:
+    illative: päiväkotiin
+  notes:
+  - 'Compound: päivä + koti.'
+- id: ajaa
+  prompt: ajaa
+  answer:
+  - to drive
+  - to ride by vehicle
+  - to go by vehicle
+  type: verb
+  phonetic: AH-yah
+  forms:
+    hän: ajaa
+- id: bussi
+  prompt: bussi
+  answer: bus
+  type: noun
+  phonetic: BOOS-see
+  forms:
+    adessive: bussilla
+- id: apteekki
+  prompt: apteekki
+  answer: pharmacy
+  type: noun
+  phonetic: AHP-teek-kee
+  forms:
+    inessive: apteekissa
+- id: mennä
+  prompt: mennä
+  answer: to go
+  type: verb
+  phonetic: MEHN-nah
+  forms:
+    hän: menee
+    me: menemme
+    he: menevät
+  notes:
+  - Type 3 verb.
+- id: koulu
+  prompt: koulu
+  answer: school
+  type: noun
+  phonetic: KOH-loo
+  forms:
+    illative: kouluun
+    genitive: koulun
+- id: pyörä
+  prompt: pyörä
+  answer:
+  - bike
+  - bicycle
+  - wheel
+  type: noun
+  phonetic: PYUR-rah
+  forms:
+    adessive: pyörällä
+- id: tänään
+  prompt: tänään
+  answer: today
+  type: adverb
+  phonetic: TAH-naan
+- id: loppua
+  prompt: loppua
+  answer: to end
+  type: verb
+  phonetic: LOHP-poo-ah
+  forms:
+    hän: loppuu
+- id: pelata
+  prompt: pelata
+  answer: to play
+  type: verb
+  phonetic: PEH-lah-tah
+  forms:
+    hän: pelaa
+  notes:
+  - Type 4 verb.
+- id: kaveri
+  prompt: kaveri
+  answer:
+  - friend
+  - buddy
+  type: noun
+  phonetic: KAH-veh-ree
+  forms:
+    genitive: kaverin
+- id: jalkapallo
+  prompt: jalkapallo
+  answer:
+  - football
+  - soccer
+  type: noun
+  phonetic: YAHL-kah-pahl-loh
+  forms:
+    partitive: jalkapalloa
+  notes:
+  - 'Compound: jalka + pallo.'
+- id: ilta
+  prompt: ilta
+  answer: evening
+  type: noun
+  phonetic: EEL-tah
+  forms:
+    habitual: iltaisin
+- id: usein
+  prompt: usein
+  answer: often
+  type: adverb
+  phonetic: OO-sehn
+- id: jokin
+  prompt: jokin
+  answer: something
+  type: pronoun
+  phonetic: YOH-keen
+  forms:
+    partitive: jotain
+- id: uimahalli
+  prompt: uimahalli
+  answer:
+  - swimming hall
+  - indoor pool
+  type: noun
+  phonetic: OO-ee-mah-hahl-lee
+  forms:
+    illative: uimahalliin
+  notes:
+  - 'Compound: uima + halli.'
+- id: uida
+  prompt: uida
+  answer: to swim
+  type: verb
+  phonetic: OO-ee-dah
+  forms:
+    minä: uin
+    me: uimme
+- id: tunti
+  prompt: tunti
+  answer: hour
+  type: noun
+  phonetic: TOON-tee
+  forms:
+    partitive: tuntia
+- id: tulla
+  prompt: tulla
+  answer: to come
+  type: verb
+  phonetic: TOOL-lah
+  forms:
+    hän: tulee
+    he: tulevat
+  notes:
+  - Type 3 verb.
+- id: he
+  prompt: he
+  answer: they
+  type: pronoun
+  phonetic: hay
+- id: kenkäkauppa
+  prompt: kenkäkauppa
+  answer: shoe store
+  type: noun
+  phonetic: KEHN-kah-kaup-pah
+  forms:
+    illative: kenkäkauppaan
+  notes:
+  - 'Compound: kenkä + kauppa.'
+- id: koska
+  prompt: koska
+  answer: because
+  type: conjunction
+  phonetic: KOHS-kah
+- id: tarvita
+  prompt: tarvita
+  answer: to need
+  type: verb
+  phonetic: TAHR-vee-tah
+  forms:
+    hän: tarvitsee
+  notes:
+  - Type 5 verb.
+- id: kesäkenkä
+  prompt: kesäkenkä
+  answer: summer shoe
+  type: noun
+  phonetic: KEH-sah-KEHN-kah
+  forms:
+    plural_nominative: kesäkengät
+  notes:
+  - 'Compound: kesä + kenkä.'
+- id: valita
+  prompt: valita
+  answer: to choose
+  type: verb
+  phonetic: VAH-lee-tah
+  forms:
+    hän: valitsee
+  notes:
+  - Type 5 verb.
+- id: pinkki
+  prompt: pinkki
+  answer: pink
+  type: adjective
+  phonetic: PINK-kee
+  forms:
+    plural_nominative: pinkit
+- id: sandaali
+  prompt: sandaali
+  answer: sandal
+  type: noun
+  phonetic: SAHN-dah-lee
+  forms:
+    plural_nominative: sandaalit
+- id: kotona
+  prompt: kotona
+  answer: at home
+  type: adverb
+  phonetic: KOH-toh-nah
+  notes:
+  - Fixed location form.
+- id: haluta
+  prompt: haluta
+  answer: to want
+  type: verb
+  phonetic: HAH-loo-tah
+  forms:
+    he: haluavat
+  notes:
+  - Type 4 verb.
+- id: katsoa
+  prompt: katsoa
+  answer:
+  - to watch
+  - to look
+  type: verb
+  phonetic: KAHT-soh-ah
+- id: televisio
+  prompt: televisio
+  answer: television
+  type: noun
+  phonetic: TEH-leh-vee-see-oh
+  forms:
+    partitive: televisiota
+- id: jo
+  prompt: jo
+  answer: already
+  type: adverb
+  phonetic: yoh
+- id: väsynyt
+  prompt: väsynyt
+  answer: tired
+  type: adjective
+  phonetic: VAH-sy-nyt
+  notes:
+  - Participial adjective meaning tired.
+- id: mutta
+  prompt: mutta
+  answer: but
+  type: conjunction
+  phonetic: MOOT-tah
+- id: Tuula
+  prompt: Tuula
+  answer: Tuula
+  type: proper_noun
+  phonetic: TOO-lah
+- id: Emma
+  prompt: Emma
+  answer: Emma
+  type: proper_noun
+  phonetic: EHM-mah
+  forms:
+    genitive: Emman
+- id: kirja
+  prompt: kirja
+  answer: book
+  type: noun
+  phonetic: KEER-yah
+  forms:
+    partitive: kirjaa
+- id: yhdeksän
+  prompt: yhdeksän
+  answer:
+  - nine
+  - '9'
+  type: number
+  phonetic: YUH-dehk-sahn
+  forms:
+    ablative: yhdeksältä
+- id: pestä
+  prompt: pestä
+  answer: to wash
+  type: verb
+  phonetic: PEHS-tah
+  forms:
+    he: pesevät
+  notes:
+  - Type 3 verb.
+- id: hammas
+  prompt: hammas
+  answer: tooth
+  type: noun
+  phonetic: HAHM-mahs
+  forms:
+    plural_nominative: hampaat
+- id: sanoa
+  prompt: sanoa
+  answer: to say
+  type: verb
+  phonetic: SAH-noh-ah
+  forms:
+    me: sanomme
+- id: hyvää_yötä
+  prompt: hyvää yötä
+  answer: good night
+  type: phrase
+  phonetic: HUU-vah YUR-tah
+  notes:
+  - Fixed phrase.
+- id: nukkua
+  prompt: nukkua
+  answer: to sleep
+  type: verb
+  phonetic: NOOK-koo-ah
+  forms:
+    third_infinitive_illative: nukkumaan
+  notes:
+  - Mennä nukkumaan = to go to bed / go to sleep.

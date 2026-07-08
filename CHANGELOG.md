@@ -7,6 +7,62 @@ version.
 
 ---
 
+## [1.1.5] – 2026-07-08
+
+This release completes the first generation of the Translation authoring
+ecosystem. Translation packs can now be accompanied by canonical Vocabulary and
+Conjugation packs, allowing both human authors and LLMs to generate complete,
+consistent learning content from a single source document.
+
+* Introduce canonical Conjugation YAML format.
+* Expand the Translation Authoring Handbook to support generation of complete companion Translation, Vocabulary, and Conjugation packs.
+* Add canonical Conjugation YAML example.
+* Improve canonical Translation and Vocabulary examples.
+* Clarify semantic chunking guidance.
+* Clarify vocabulary extraction rules.
+* Clarify conjugation generation rules.
+* Improve guidance for grammar and vocabulary references.
+* Add LLM authoring guardrails to improve schema consistency.
+* Add examples of common YAML authoring pitfalls and their correct forms.
+* Clarify handling of symbolic values versus lexical vocabulary.
+* Improve pronunciation (`phonetic`) documentation and examples.
+
+---
+
+## [1.1.4] - 2026-06-31
+
+- Add optional `phonetic` field to translation entries and chunks.
+- Preserve pronunciation data when loading translation packs.
+- Add `--show-phonetic` translation option.
+- Display pronunciation progressively:
+  - full sentence at exercise start
+  - missed chunks after incorrect answers
+  - remaining chunks during retry
+  - full sentence when showing the answer
+- Improve pronunciation UI with aligned block formatting.
+- Update translation authoring guide with pronunciation guidance.
+- Add phonetic examples to the sample translation pack.
+
+---
+
+## [1.1.2] - 2026-06-30
+
+- Vocabulary study now supports contextual learning notes.
+- Vocabulary YAML supports notes/note fields.
+- Study mode displays learner notes.
+- Quiz mode displays notes after incorrect answers.
+- Improved terminal presentation of notes.
+- Updated authoring guide to generate companion vocabulary packs alongside translation packs.
+
+---
+
+## [1.1.1] – 2026-06-29
+
+- Removed references in exercise.rb to classes never developed.
+
+---
+
+
 ## [1.1.0] – 2026-06-29
 
 This release introduces the Translation module and significantly expands the

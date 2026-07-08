@@ -1,0 +1,853 @@
+metadata:
+  id: suomen_mestari_1_meidan_tavallinen_paiva_translation
+  title: Meidän tavallinen päivä
+  type: translation
+  format: narrative
+  version: 5
+  schema_version: 1
+  source_text: Meidan_tavallinen_paiva_OCR.txt
+entries:
+- id: e001
+  type: narrative
+  source: Meidän tavallinen päivä
+  phonetic: MAY-dahn TAH-vahl-lee-nehn PAI-vah
+  literal: Our ordinary day.
+  target: Our ordinary day
+  chunks:
+  - id: c001
+    source: Meidän
+    phonetic: MAY-dahn
+    literal: our
+    target: our
+    hint: 'Meidän is the genitive form used for possession: ''our''.'
+  - id: c002
+    source: tavallinen päivä
+    phonetic: TAH-vahl-lee-nehn PAI-vah
+    literal: ordinary day
+    target: ordinary day
+  vocabulary_refs:
+  - meidän
+  - tavallinen
+  - päivä
+  grammar:
+    refs:
+    - genitive_case
+- id: e002
+  type: narrative
+  source: Minä olen Lauri Mäkelä. Olen suomalainen mies ja isä.
+  phonetic: MEE-nah OH-lehn LAU-ree MAH-keh-lah. OH-lehn SOO-oh-mah-lai-nehn MEE-ehs yah EE-sah
+  literal: I am Lauri Mäkelä. Am Finnish man and father.
+  target: I am Lauri Mäkelä. I am a Finnish man and father.
+  chunks:
+  - id: c001
+    source: Minä olen Lauri Mäkelä
+    phonetic: MEE-nah OH-lehn LAU-ree MAH-keh-lah
+    literal: I am Lauri Mäkelä
+    target: I am Lauri Mäkelä
+    hint: Olen is the first-person present form of olla.
+  - id: c002
+    source: Olen suomalainen mies
+    phonetic: OH-lehn SOO-oh-mah-lai-nehn MEE-ehs
+    literal: am Finnish man
+    target: I am a Finnish man
+    hint: Finnish can omit the subject when the verb form already shows the person.
+  - id: c003
+    source: ja isä
+    phonetic: yah EE-sah
+    literal: and father
+    target: and father
+    accepted:
+    - and a father
+  vocabulary_refs:
+  - minä
+  - olla
+  - suomalainen
+  - mies
+  - ja
+  - isä
+  grammar:
+    refs:
+    - olla_present
+    - subject_pronoun_omission
+- id: e003
+  type: narrative
+  source: Minulla on vaimo ja kaksi lasta.
+  phonetic: MEE-nool-lah OHN VAI-moh yah KAHK-see LAHS-tah
+  literal: On me is wife and two children.
+  target: I have a wife and two children.
+  chunks:
+  - id: c001
+    source: Minulla on
+    phonetic: MEE-nool-lah OHN
+    literal: on me is
+    target: I have
+    hint: Finnish expresses possession as <person> + on (using the adessive case).
+  - id: c002
+    source: vaimo
+    phonetic: VAI-moh
+    literal: wife
+    target: wife
+    accepted:
+    - a wife
+  - id: c003
+    source: ja
+    phonetic: yah
+    literal: and
+    target: and
+  - id: c004
+    source: kaksi lasta
+    phonetic: KAHK-see LAHS-tah
+    literal: two child
+    target: two children
+    hint: After numbers, Finnish uses the partitive singular form.
+  vocabulary_refs:
+  - minä
+  - olla
+  - vaimo
+  - ja
+  - kaksi
+  - lapsi
+  grammar:
+    refs:
+    - possession_minulla_on
+    - numbers_partitive
+- id: e004
+  type: narrative
+  source: Minä herään kello 6, kun herätyskello soi.
+  phonetic: MEE-nah HEH-raan KEHL-loh KOO-see, koon HEH-rah-tus-KEHL-loh soy
+  literal: I wake up clock 6, when alarm clock rings.
+  target: I wake up at 6:00 when the alarm clock rings.
+  chunks:
+  - id: c001
+    source: Minä herään
+    phonetic: MEE-nah HEH-raan
+    literal: I wake up
+    target: I wake up
+    hint: Herään is the first-person present form of the Type 4 verb herätä.
+  - id: c002
+    source: kello 6
+    phonetic: KEHL-loh KOO-see
+    literal: clock 6
+    target: at 6:00
+    accepted:
+    - at 6
+    - at six
+    - at six o'clock
+    hint: Kello introduces clock time.
+  - id: c003
+    source: kun
+    phonetic: koon
+    literal: when
+    target: when
+  - id: c004
+    source: herätyskello soi
+    phonetic: HEH-rah-tus-KEHL-loh soy
+    literal: alarm clock rings
+    target: the alarm clock rings
+    accepted:
+    - alarm clock rings
+    - the alarm clock sounds
+    - alarm clock sounds
+    hint: Soi is the present-tense form used for a sound or ringing.
+  vocabulary_refs:
+  - minä
+  - herätä
+  - kello
+  - kuusi
+  - kun
+  - herätyskello
+  - soida
+  grammar:
+    refs:
+    - telling_time
+    - subordinate_clause
+    - compound_words
+- id: e005
+  type: narrative
+  source: Käyn ensin suihkussa ja puen sitten päälle.
+  phonetic: KAIN EHN-seen SOOYK-hoos-sah yah POO-ehn SEET-tehn PAAL-leh
+  literal: I go first in shower and put then on.
+  target: First I take a shower, and then I get dressed.
+  chunks:
+  - id: c001
+    source: Käyn ensin suihkussa
+    phonetic: KAIN EHN-seen SOOYK-hoos-sah
+    literal: I go first in shower
+    target: First I take a shower
+    hint: Käydä suihkussa is a fixed expression for taking a shower.
+  - id: c002
+    source: ja puen sitten päälle
+    phonetic: yah POO-ehn SEET-tehn PAAL-leh
+    literal: and put then on
+    target: and then I get dressed
+    hint: Pukea päälle is a fixed expression for putting clothes on or getting dressed.
+  vocabulary_refs:
+  - käydä
+  - ensin
+  - suihku
+  - ja
+  - pukea
+  - sitten
+  - päälle
+  grammar:
+    refs:
+    - inessive_case
+    - verb_phrase
+- id: e006
+  type: narrative
+  source: Sen jälkeen teen keittiössä aamupalaa ja luen lehteä.
+  phonetic: SEHN YAL-kehn TEHN KAYT-tee-urss-sah AH-moo-pah-lah yah LOO-ehn LEH-teh-ah
+  literal: Its after I make in kitchen breakfast and I read newspaper.
+  target: After that I make breakfast in the kitchen and read the newspaper.
+  chunks:
+  - id: c001
+    source: Sen jälkeen
+    phonetic: SEHN YAL-kehn
+    literal: its after
+    target: after that
+    hint: Jälkeen is a postposition; the word before it appears in the genitive.
+  - id: c002
+    source: teen keittiössä aamupalaa
+    phonetic: TEHN KAYT-tee-urss-sah AH-moo-pah-lah
+    literal: I make in kitchen breakfast
+    target: I make breakfast in the kitchen
+    hint: Keittiössä uses the -ssä ending for location inside or at a place.
+  - id: c003
+    source: ja luen lehteä
+    phonetic: yah LOO-ehn LEH-teh-ah
+    literal: and I read newspaper
+    target: and read the newspaper
+    hint: Lehteä is the partitive form, used here for reading some newspaper material.
+  vocabulary_refs:
+  - se
+  - jälkeen
+  - tehdä
+  - keittiö
+  - aamupala
+  - ja
+  - lukea
+  - lehti
+  grammar:
+    refs:
+    - postposition_jälkeen
+    - inessive_case
+    - partitive_case
+- id: e007
+  type: narrative
+  source: Kun Tuula ja lapset heräävät, syömme yhdessä aamupalaa.
+  phonetic: KOON TOO-lah yah LAHP-seht HEH-raa-vaht, SYURM-meh YUH-dehs-sah AH-moo-pah-lah
+  literal: When Tuula and children wake up, we eat together breakfast.
+  target: When Tuula and the children wake up, we eat breakfast together.
+  chunks:
+  - id: c001
+    source: Kun Tuula ja lapset heräävät
+    phonetic: KOON TOO-lah yah LAHP-seht HEH-raa-vaht
+    literal: when Tuula and children wake up
+    target: when Tuula and the children wake up
+    hint: Heräävät is the third-person plural present form.
+  - id: c002
+    source: syömme yhdessä aamupalaa
+    phonetic: SYURM-meh YUH-dehs-sah AH-moo-pah-lah
+    literal: we eat together breakfast
+    target: we eat breakfast together
+    hint: -mme marks the first-person plural 'we' ending; aamupalaa is partitive.
+  vocabulary_refs:
+  - kun
+  - ja
+  - lapsi
+  - herätä
+  - syödä
+  - yhdessä
+  - aamupala
+  grammar:
+    refs:
+    - plural_nominative
+    - verb_person_endings
+    - partitive_case
+- id: e008
+  type: narrative
+  source: Lapset syövät yleensä muroja ja minä syön leipää.
+  phonetic: LAHP-seht SYUR-vaht YU-lehn-sah MOO-roh-yah yah MEE-nah SYURN LAY-paah
+  literal: Children eat usually cereal and I eat bread.
+  target: The children usually eat cereal, and I eat bread.
+  chunks:
+  - id: c001
+    source: Lapset syövät yleensä muroja
+    phonetic: LAHP-seht SYUR-vaht YU-lehn-sah MOO-roh-yah
+    literal: children eat usually cereal
+    target: The children usually eat cereal
+    hint: Syövät is the third-person plural form; muroja is partitive plural.
+  - id: c002
+    source: ja minä syön leipää
+    phonetic: yah MEE-nah SYURN LAY-paah
+    literal: and I eat bread
+    target: and I eat bread
+    hint: Leipää is partitive, common with food when referring to an unspecified amount.
+  vocabulary_refs:
+  - lapsi
+  - syödä
+  - yleensä
+  - muro
+  - ja
+  - minä
+  - leipä
+  grammar:
+    refs:
+    - plural_nominative
+    - partitive_case
+- id: e009
+  type: narrative
+  source: Tuula ei syö aamulla mitään. Hän juo vain kahvia.
+  phonetic: TOO-lah ay SYUR AH-mool-lah MEE-taan. han YOO-oh vain KAH-vee-ah
+  literal: Tuula not eat in morning anything. She drinks only coffee.
+  target: Tuula does not eat anything in the morning. She only drinks coffee.
+  chunks:
+  - id: c001
+    source: Tuula ei syö aamulla mitään
+    phonetic: TOO-lah ay SYUR AH-mool-lah MEE-taan
+    literal: Tuula not eat in morning anything
+    target: Tuula does not eat anything in the morning
+    hint: Ei plus the connegative verb form makes the present negative.
+  - id: c002
+    source: Hän juo vain kahvia
+    phonetic: han YOO-oh vain KAH-vee-ah
+    literal: she drinks only coffee
+    target: She only drinks coffee
+    hint: Kahvia is the partitive form used with drinking an unspecified amount.
+  vocabulary_refs:
+  - ei
+  - syödä
+  - aamu
+  - mikään
+  - hän
+  - juoda
+  - vain
+  - kahvi
+  grammar:
+    refs:
+    - negative_present
+    - adessive_time
+    - partitive_case
+- id: e010
+  type: narrative
+  source: Lähden töihin kello 7.15. Olen töissä lounasravintolassa.
+  phonetic: LAH-dehn TOI-heen KEHL-loh SAYT-seh-mahn VEE-see-toys-tah. OH-lehn TOISS-sah LOW-nahs-rah-veen-toh-lahs-sah
+  literal: I leave to work clock 7.15. I am at work in lunch restaurant.
+  target: I leave for work at 7:15. I work in a lunch restaurant.
+  chunks:
+  - id: c001
+    source: Lähden töihin
+    phonetic: LAH-dehn TOI-heen
+    literal: I leave to work
+    target: I leave for work
+    hint: 'Töihin is the directional form: movement to work.'
+  - id: c002
+    source: kello 7.15
+    phonetic: KEHL-loh SAYT-seh-mahn VEE-see-toys-tah
+    literal: clock 7.15
+    target: at 7:15
+    accepted:
+    - at 7:15 AM
+    - at seven fifteen
+    - at seven-fifteen
+    hint: Kello introduces the time.
+  - id: c003
+    source: Olen töissä lounasravintolassa
+    phonetic: OH-lehn TOISS-sah LOW-nahs-rah-veen-toh-lahs-sah
+    literal: I am at work in lunch restaurant
+    target: I work in a lunch restaurant
+    accepted:
+    - I am at work in a lunch restaurant
+    - I work at a lunch restaurant
+    hint: 'Töissä is the location form: being at work; -ssa also marks location in lounasravintolassa.'
+  vocabulary_refs:
+  - lähteä
+  - työ
+  - kello
+  - seitsemän
+  - viisitoista
+  - olla
+  - lounasravintola
+  grammar:
+    refs:
+    - illative_case
+    - inessive_case
+    - telling_time
+- id: e011
+  type: narrative
+  source: Olen kokki. Töissä teen ruokaa kolmen työkaverin kanssa.
+  phonetic: OH-lehn KOHK-kee. TOISS-sah TEHN ROO-oh-kah KOHL-mehn TYUR-kah-veh-reen KAHN-sah
+  literal: Am cook. At work I make food with three work-friend.
+  target: I am a cook. At work I make food with three coworkers.
+  chunks:
+  - id: c001
+    source: Olen kokki
+    phonetic: OH-lehn KOHK-kee
+    literal: am cook
+    target: I am a cook
+    hint: The subject pronoun is omitted because olen already means 'I am'.
+  - id: c002
+    source: Töissä teen ruokaa
+    phonetic: TOISS-sah TEHN ROO-oh-kah
+    literal: at work I make food
+    target: At work I make food
+    hint: Ruokaa is partitive because the amount of food is not specified.
+  - id: c003
+    source: kolmen työkaverin kanssa
+    phonetic: KOHL-mehn TYUR-kah-veh-reen KAHN-sah
+    literal: with three work-friend
+    target: with three coworkers
+    hint: 'Kanssa follows a genitive form: työkaverin kanssa.'
+  vocabulary_refs:
+  - olla
+  - kokki
+  - työ
+  - tehdä
+  - ruoka
+  - kolme
+  - työkaveri
+  - kanssa
+  grammar:
+    refs:
+    - genitive_case
+    - postposition_kanssa
+    - partitive_case
+- id: e012
+  type: narrative
+  source: Aamulla Tuula kävelee Emman kanssa päiväkotiin.
+  phonetic: AH-mool-lah TOO-lah KAE-veh-leh EHM-mahn KAHN-sah PAI-vah-koh-teen
+  literal: In morning Tuula walks with Emma to daycare.
+  target: In the morning Tuula walks with Emma to daycare.
+  chunks:
+  - id: c001
+    source: Aamulla
+    phonetic: AH-mool-lah
+    literal: in morning
+    target: In the morning
+    hint: The -lla ending can mark time expressions such as aamulla.
+  - id: c002
+    source: Tuula kävelee Emman kanssa
+    phonetic: TOO-lah KAE-veh-leh EHM-mahn KAHN-sah
+    literal: Tuula walks with Emma
+    target: Tuula walks with Emma
+    hint: Emman is the genitive form required before kanssa.
+  - id: c003
+    source: päiväkotiin
+    phonetic: PAI-vah-koh-teen
+    literal: to daycare
+    target: to daycare
+    hint: The -iin ending marks movement into or toward a place.
+  vocabulary_refs:
+  - aamu
+  - kävellä
+  - kanssa
+  - päiväkoti
+  grammar:
+    refs:
+    - adessive_time
+    - illative_case
+    - postposition_kanssa
+- id: e013
+  type: narrative
+  source: Sitten hän ajaa bussilla töihin. Hän on töissä apteekissa.
+  phonetic: SEET-tehn han AH-yah BOOS-see-lah TOI-heen. han OHN TOISS-sah AHP-tay-kee-sah
+  literal: Then she goes by bus to work. She is at work in pharmacy.
+  target: Then she goes to work by bus. She works in a pharmacy.
+  chunks:
+  - id: c001
+    source: Sitten hän ajaa bussilla töihin
+    phonetic: SEET-tehn han AH-yah BOOS-see-lah TOI-heen
+    literal: then she goes by bus to work
+    target: Then she goes to work by bus
+    hint: Bussilla uses -lla to show the means of transportation; töihin shows direction.
+  - id: c002
+    source: Hän on töissä apteekissa
+    phonetic: han OHN TOISS-sah AHP-tay-kee-sah
+    literal: she is at work in pharmacy
+    target: She works in a pharmacy
+    hint: Töissä marks being at work; apteekissa uses -ssa for location.
+  vocabulary_refs:
+  - sitten
+  - hän
+  - ajaa
+  - bussi
+  - työ
+  - apteekki
+  grammar:
+    refs:
+    - adessive_case
+    - illative_case
+    - inessive_case
+- id: e014
+  type: narrative
+  source: Kalle menee kouluun pyörällä. Tänään koulu loppuu kahdelta.
+  phonetic: KAHL-leh MEH-neh KOH-loon PYUR-rah-lah. TAN-naan KOH-loo LOHP-poo KAH-hel-tah
+  literal: Kalle goes to school by bicycle. Today school ends from two.
+  target: Kalle goes to school by bicycle. Today school ends at two.
+  chunks:
+  - id: c001
+    source: Kalle menee kouluun pyörällä
+    phonetic: KAHL-leh MEH-neh KOH-loon PYUR-rah-lah
+    literal: Kalle goes to school by bicycle
+    target: Kalle goes to school by bicycle
+    hint: Kouluun marks movement to school; pyörällä uses -llä for means of travel.
+  - id: c002
+    source: Tänään koulu loppuu kahdelta
+    phonetic: TAN-naan KOH-loo LOHP-poo KAH-hel-tah
+    literal: today school ends from two
+    target: Today school ends at two
+    accepted:
+    - Today school ends at 2
+    - Today school ends at 2:00
+    hint: Kahdelta is the time form used for 'at two'.
+  vocabulary_refs:
+  - mennä
+  - koulu
+  - pyörä
+  - tänään
+  - loppua
+  - kaksi
+  grammar:
+    refs:
+    - illative_case
+    - adessive_case
+    - ablative_time
+- id: e015
+  type: narrative
+  source: Koulun jälkeen Kalle pelaa kaverin kanssa jalkapalloa.
+  phonetic: KOH-loon YAL-kehn KAHL-leh PEH-lah KAH-veh-reen KAHN-sah YAHL-kah-pahl-loh-ah
+  literal: School’s after Kalle plays with friend football.
+  target: After school Kalle plays football with a friend.
+  chunks:
+  - id: c001
+    source: Koulun jälkeen
+    phonetic: KOH-loon YAL-kehn
+    literal: school’s after
+    target: After school
+    hint: Jälkeen follows the genitive form koulun.
+  - id: c002
+    source: Kalle pelaa kaverin kanssa
+    phonetic: KAHL-leh PEH-lah KAH-veh-reen KAHN-sah
+    literal: Kalle plays with friend
+    target: Kalle plays with a friend
+    hint: Kaverin is genitive because it comes before kanssa.
+  - id: c003
+    source: jalkapalloa
+    phonetic: YAHL-kah-pahl-loh-ah
+    literal: football
+    target: football
+    accepted:
+    - soccer
+    hint: Jalkapalloa is partitive because it is the activity being played.
+  vocabulary_refs:
+  - koulu
+  - jälkeen
+  - pelata
+  - kaveri
+  - kanssa
+  - jalkapallo
+  grammar:
+    refs:
+    - postposition_jälkeen
+    - postposition_kanssa
+    - partitive_case
+- id: e016
+  type: narrative
+  source: Iltaisin teemme usein jotain yhdessä.
+  phonetic: EEL-tai-seen TAYM-meh OO-sehn YOH-tain YUH-dehs-sah
+  literal: In evenings we do often something together.
+  target: In the evenings we often do something together.
+  chunks:
+  - id: c001
+    source: Iltaisin
+    phonetic: EEL-tai-seen
+    literal: in evenings
+    target: In the evenings
+    hint: The -isin ending expresses repeated or habitual time.
+  - id: c002
+    source: teemme usein jotain yhdessä
+    phonetic: TAYM-meh OO-sehn YOH-tain YUH-dehs-sah
+    literal: we do often something together
+    target: we often do something together
+    hint: Teemme is the first-person plural present form of tehdä.
+  vocabulary_refs:
+  - ilta
+  - tehdä
+  - usein
+  - jokin
+  - yhdessä
+  grammar:
+    refs:
+    - habitual_time
+    - verb_person_endings
+- id: e017
+  type: narrative
+  source: Tänään minä ja Kalle menemme uimahalliin. Uimme kaksi tuntia.
+  phonetic: TAN-naan MEE-nah yah KAHL-leh MEH-nehm-meh OO-ee-mah-hahl-leen. OO-eem-meh KAHK-see TOON-tee-ah
+  literal: Today I and Kalle go to swimming hall. We swim two hours.
+  target: Today Kalle and I go to the swimming hall. We swim for two hours.
+  chunks:
+  - id: c001
+    source: Tänään minä ja Kalle
+    phonetic: TAN-naan MEE-nah yah KAHL-leh
+    literal: today I and Kalle
+    target: Today Kalle and I
+    accepted:
+    - Today I and Kalle
+    hint: Finnish word order can sound less natural if translated word for word into English.
+  - id: c002
+    source: menemme uimahalliin
+    phonetic: MEH-nehm-meh OO-ee-mah-hahl-leen
+    literal: we go to swimming hall
+    target: we go to the swimming hall
+    hint: Menemme is the 'we' form; uimahalliin marks movement into or toward the swimming hall.
+  - id: c003
+    source: Uimme kaksi tuntia
+    phonetic: OO-eem-meh KAHK-see TOON-tee-ah
+    literal: we swim two hour
+    target: We swim for two hours
+    accepted:
+    - We swim two hours
+    hint: Duration uses the partitive form tuntia after kaksi.
+  vocabulary_refs:
+  - tänään
+  - minä
+  - ja
+  - mennä
+  - uimahalli
+  - uida
+  - kaksi
+  - tunti
+  grammar:
+    refs:
+    - illative_case
+    - duration_partitive
+    - verb_person_endings
+- id: e018
+  type: narrative
+  source: Emma ja Tuula eivät tule uimahalliin.
+  phonetic: EHM-mah yah TOO-lah AI-vaht TOO-leh OO-ee-mah-hahl-leen
+  literal: Emma and Tuula not come to swimming hall.
+  target: Emma and Tuula are not coming to the swimming hall.
+  chunks:
+  - id: c001
+    source: Emma ja Tuula
+    phonetic: EHM-mah yah TOO-lah
+    literal: Emma and Tuula
+    target: Emma and Tuula
+  - id: c002
+    source: eivät tule
+    phonetic: AI-vaht TOO-leh
+    literal: not come
+    target: do not come
+    hint: Eivät is the plural negative auxiliary.
+  - id: c003
+    source: uimahalliin
+    phonetic: OO-ee-mah-hahl-leen
+    literal: to swimming hall
+    target: to the swimming hall
+    hint: The -iin ending marks movement into or toward a place.
+  vocabulary_refs:
+  - Emma
+  - Tuula
+  - ei
+  - tulla
+  - uimahalli
+  grammar:
+    refs:
+    - negative_present
+    - illative_case
+- id: e019
+  type: narrative
+  source: He menevät kenkäkauppaan, koska Emma tarvitsee kesäkengät.
+  phonetic: HEH MEH-neh-vaht KEHN-kah-KOWP-paan, KOHS-kah EHM-mah TAHR-vee-tseh KAY-sah-KEHN-gaht
+  literal: They go to shoe store, because Emma needs summer shoes.
+  target: They go to a shoe store because Emma needs summer shoes.
+  chunks:
+  - id: c001
+    source: He menevät kenkäkauppaan
+    phonetic: HEH MEH-neh-vaht KEHN-kah-KOWP-paan
+    literal: they go to shoe store
+    target: They go to a shoe store
+    hint: Menevät is third-person plural; kenkäkauppaan marks movement to the store.
+  - id: c002
+    source: koska Emma tarvitsee kesäkengät
+    phonetic: KOHS-kah EHM-mah TAHR-vee-tseh KAY-sah-KEHN-gaht
+    literal: because Emma needs summer shoes
+    target: because Emma needs summer shoes
+    hint: Koska introduces the reason clause.
+  vocabulary_refs:
+  - he
+  - mennä
+  - kenkäkauppa
+  - koska
+  - tarvita
+  - kesäkenkä
+  grammar:
+    refs:
+    - compound_words
+    - subordinate_clause
+    - illative_case
+- id: e020
+  type: narrative
+  source: Hän valitsee pinkit sandaalit.
+  phonetic: han VAH-lee-tseh PEEN-keet SAHN-daa-leet
+  literal: She chooses pink sandals.
+  target: She chooses pink sandals.
+  chunks:
+  - id: c001
+    source: Hän valitsee
+    phonetic: han VAH-lee-tseh
+    literal: she chooses
+    target: She chooses
+    hint: Valitsee is the third-person singular present form of valita.
+  - id: c002
+    source: pinkit sandaalit
+    phonetic: PEEN-keet SAHN-daa-leet
+    literal: pink sandals
+    target: pink sandals
+    hint: The adjective and noun are both plural.
+  vocabulary_refs:
+  - hän
+  - valita
+  - pinkki
+  - sandaali
+  grammar:
+    refs:
+    - adjective_agreement
+- id: e021
+  type: narrative
+  source: Kotona Tuula tekee ruokaa. Ruoan jälkeen lapset haluavat katsoa televisiota.
+  phonetic: KOH-toh-nah TOO-lah TEH-keh ROO-oh-kah. ROO-ahn YAL-kehn LAHP-seht HAH-loo-ah-vaht KAHT-soh-ah TEH-leh-vee-see-oh-tah
+  literal: At home Tuula makes food. Food’s after children want to watch television.
+  target: At home Tuula makes food. After the meal the children want to watch television.
+  chunks:
+  - id: c001
+    source: Kotona Tuula tekee ruokaa
+    phonetic: KOH-toh-nah TOO-lah TEH-keh ROO-oh-kah
+    literal: at home Tuula makes food
+    target: At home Tuula makes food
+    hint: Kotona is a fixed location form meaning being at home; ruokaa is partitive.
+  - id: c002
+    source: Ruoan jälkeen
+    phonetic: ROO-ahn YAL-kehn
+    literal: food’s after
+    target: After the meal
+    hint: Jälkeen follows the genitive form ruoan.
+  - id: c003
+    source: lapset haluavat katsoa televisiota
+    phonetic: LAHP-seht HAH-loo-ah-vaht KAHT-soh-ah TEH-leh-vee-see-oh-tah
+    literal: children want to watch television
+    target: the children want to watch television
+    hint: Haluta is followed by the basic infinitive form of the next verb.
+  vocabulary_refs:
+  - kotona
+  - tehdä
+  - ruoka
+  - jälkeen
+  - lapsi
+  - haluta
+  - katsoa
+  - televisio
+  grammar:
+    refs:
+    - postposition_jälkeen
+    - infinitive_1
+    - partitive_case
+- id: e022
+  type: narrative
+  source: Minä olen jo väsynyt, mutta lapset eivät ole.
+  phonetic: MEE-nah OH-lehn YOH VAH-sy-nyt, MOOT-tah LAHP-seht AI-vaht OH-leh
+  literal: I am already tired, but children not are.
+  target: I am already tired, but the children are not.
+  chunks:
+  - id: c001
+    source: Minä olen jo väsynyt
+    phonetic: MEE-nah OH-lehn YOH VAH-sy-nyt
+    literal: I am already tired
+    target: I am already tired
+    hint: Väsynyt functions here as an adjective-like participle meaning tired.
+  - id: c002
+    source: mutta lapset eivät ole
+    phonetic: MOOT-tah LAHP-seht AI-vaht OH-leh
+    literal: but children not are
+    target: but the children are not
+    hint: Eivät ole is the plural negative form of olla.
+  vocabulary_refs:
+  - minä
+  - olla
+  - jo
+  - väsynyt
+  - mutta
+  - lapsi
+  - ei
+  grammar:
+    refs:
+    - negative_present
+- id: e023
+  type: narrative
+  source: Tuula ja lapset lukevat kirjaa. Yhdeksältä lapset pesevät hampaat.
+  phonetic: TOO-lah yah LAHP-seht LOO-keh-vaht KEER-yah. UH-dehk-sahl-tah LAHP-seht PEH-seh-vaht HAHM-paht
+  literal: Tuula and children read book. From nine children wash teeth.
+  target: Tuula and the children read a book. At nine the children brush their teeth.
+  chunks:
+  - id: c001
+    source: Tuula ja lapset lukevat kirjaa
+    phonetic: TOO-lah yah LAHP-seht LOO-keh-vaht KEER-yah
+    literal: Tuula and children read book
+    target: Tuula and the children read a book
+    hint: Kirjaa is partitive, used for reading some or part of a book.
+  - id: c002
+    source: Yhdeksältä lapset pesevät hampaat
+    phonetic: UH-dehk-sahl-tah LAHP-seht PEH-seh-vaht HAHM-paht
+    literal: from nine children wash teeth
+    target: At nine the children brush their teeth
+    accepted:
+    - At 9 the children brush their teeth
+    - At 9:00 the children brush their teeth
+    hint: Yhdeksältä is the time form for 'at nine'; Finnish says wash teeth.
+  vocabulary_refs:
+  - Tuula
+  - lapsi
+  - lukea
+  - kirja
+  - yhdeksän
+  - pestä
+  - hammas
+  grammar:
+    refs:
+    - ablative_time
+    - partitive_case
+- id: e024
+  type: narrative
+  source: Sitten sanomme "hyvää yötä" ja lapset menevät nukkumaan.
+  phonetic: SEET-tehn SAH-nohm-meh HUU-vah YUR-tah yah LAHP-seht MEH-neh-vaht NOOK-koo-mahn
+  literal: Then we say "good night" and children go to sleep.
+  target: Then we say "good night" and the children go to bed.
+  chunks:
+  - id: c001
+    source: Sitten sanomme "hyvää yötä"
+    phonetic: SEET-tehn SAH-nohm-meh HUU-vah YUR-tah
+    literal: then we say "good night"
+    target: Then we say "good night"
+    hint: Hyvää yötä is a fixed expression; sanomme is the 'we' form.
+  - id: c002
+    source: ja lapset menevät nukkumaan
+    phonetic: yah LAHP-seht MEH-neh-vaht NOOK-koo-mahn
+    literal: and children go to sleep
+    target: and the children go to bed
+    accepted:
+    - and the children go to sleep
+    hint: Mennä nukkumaan is a fixed expression for going to bed or going to sleep.
+  vocabulary_refs:
+  - sitten
+  - sanoa
+  - hyvää_yötä
+  - ja
+  - lapsi
+  - mennä
+  - nukkua
+  grammar:
+    refs:
+    - fixed_expression
+    - infinitive_3

@@ -49,27 +49,28 @@ Instead of immediately grading a complete sentence, Linguatrain progressively gu
 - Human-friendly authoring
 - Content-first architecture
 
-## What's New in Version 1.1.0
+## What's New in Version 1.2.0
 
-Version **1.1.0** introduces Linguatrain's new **Translation** module.
 
-Rather than asking learners to translate an entire sentence at once, Translation
-Mode breaks language into meaningful chunks, helping learners understand how
-ideas are constructed before assembling the complete translation.
+Version **1.2.0** introduces Linguatrain's new **word-explorer** module.
 
-Version 1.1.0 also introduces a complete content authoring ecosystem for
-Translation, including:
+Word-explorer is the user-friendly way of saying morphology. All languages can benefit from the 
+word-explorer module, but some benefit more than others. Finnish for example takes a base and depending
+on direction (inside, outside, to, or from) changes word endings. A lot of language study tools simply 
+have you study these as individual words, or in some cases just start using them without really explaining
+why `talolta` was used instead of `talo`. Word-explorer takes a very different approach. Instead in conjunction 
+with translated material, a word-explorer YAML pack is generated from the translation text and Linguatrain
+allows you study and explore the base word in different modes. 
 
-- A structured Translation YAML schema
-- A comprehensive Translation Authoring Guide
-- Canonical examples and reusable templates
-- AI-assisted authoring workflows
-- Validation tools for creating consistent, high-quality content
+* `--recognize` : Recognize is designed to show you the word as it's used in the text and match it to its base. 
+* `--apply` : Uses the base and asks you to pick the correct form of the base to fit into a sentence. 
+* `--build` : Uses the base and asks you to change the form to match the question. 
 
-Translation is the first Linguatrain module to include a complete content
-architecture—from schema and templates to documentation and authoring
-guidelines—and establishes the foundation for future learning modules such as
-Morphology.
+Linguatrain itself is the learning engine; the YAML files contain the structured content that drives each module. To make Word Explorer useful in practice, I have spent a great deal of time developing strict LLM authoring guidelines for Linguatrain content packs.
+
+The `05_Linguatrain_LLM_Authoring_Specification.md` file can be given to an LLM to generate high-quality draft material for the translation, vocabulary, conjugation, and word-explorer modules. The goal is not to replace live teachers, but to make it easier to turn existing course materials, textbooks, handouts, and real study needs into structured practice.
+
+I know this workflow is useful because I am using Linguatrain while studying a language myself, and my language teacher has been impressed with the results.
 
 
 ## Educational Philosophy
@@ -85,7 +86,7 @@ Grammar
       ↓
 Translation
       ↓
-Morphology (planned)
+Morphology
       ↓
 Conversation
       ↓

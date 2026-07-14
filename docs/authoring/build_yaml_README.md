@@ -1,154 +1,133 @@
 # build_yaml.rb
 
-Interactive CLI utility to create Linguatrain YAML packs without
-hand-editing templates.
+Interactive CLI utility to create hand-authored Linguatrain YAML packs
+without starting from a blank template.
 
 ------------------------------------------------------------------------
 
 ## Overview
 
-`build_yaml.rb` is a guided pack builder. It walks you through creating
-a **standard Linguatrain pack** and outputs valid YAML compatible with
-`validate_pack.rb`.
+`build_yaml.rb` is a guided pack builder for the two YAML formats that
+are intended to be comfortable for humans to author directly:
 
-It is designed to: - reduce YAML errors - speed up pack creation -
-provide a clean "blank page" workflow
+- Vocabulary packs
+- Conjugation packs
 
-------------------------------------------------------------------------
-
-## Features (current version)
-
--   Interactive CLI wizard
-
--   Standard pack support
-
--   Auto-generated zero-padded entry IDs (`001`, `002`, ...)
-
--   Multiple accepted answers per entry
-
--   Optional fields:
-
-    -   `alternate_prompts`
-    -   `spoken`
-    -   `phonetic`
-    -   `tags`
-    -   `author`
-    -   `description`
-
--   Smart loop behavior:
-
-    -   blank prompt → confirm exit
-    -   blank optional fields → skip
-
--   Output validation hint after creation
-
--   File header with version:
-
-        # created with build_yaml version dev_01
+Translation and Word Explorer YAML are advanced/generated authoring
+formats and are not built by this tool.
 
 ------------------------------------------------------------------------
 
 ## Usage
 
-### Basic (interactive)
+### Vocabulary Pack
 
-``` bash
-ruby build_yaml.rb
+```bash
+ruby tools/build_yaml.rb --vocab packs/fi/my_vocabulary.yaml
 ```
 
-You will be prompted for: - output filename - metadata - entries
+Vocabulary mode is the default, so this also works:
 
-*Note:* When providing the output filename, use the full path. 
-
-------------------------------------------------------------------------
-
-### With output file (recommended)
-
-``` bash
-ruby build_yaml.rb packs/fi/my_pack.yaml
+```bash
+ruby tools/build_yaml.rb packs/fi/my_vocabulary.yaml
 ```
 
-or
+The builder prompts for pack metadata, then each vocabulary entry:
 
-``` bash
-ruby build_yaml.rb --output packs/fi/my_pack.yaml
+- `id`
+- `prompt`
+- `answer`
+- optional `type`
+- optional `alternate_prompts`
+- optional `spoken`
+- optional `phonetic`
+- optional `notes`
+- optional `forms`
+
+### Vocabulary From CSV
+
+```bash
+ruby tools/build_yaml.rb --vocab --csv input.csv packs/fi/my_vocabulary.yaml
 ```
 
-This skips the filename prompt.
+Required CSV columns:
+
+- `prompt`
+- `answer`
+
+Optional CSV columns:
+
+- `id`
+- `type`
+- `alternate_prompts`
+- `spoken`
+- `phonetic`
+- `notes`
+- `form_<label>`
+
+List-like CSV fields may use semicolons, pipes, or new lines.
+
+Example:
+
+```csv
+id,prompt,answer,type,phonetic,form_partitive_singular
+päivä,päivä,day,noun,PAI-vah,päivää
+```
+
+### Conjugation Pack
+
+```bash
+ruby tools/build_yaml.rb --conjugate packs/fi/my_conjugation.yaml
+```
+
+The builder prompts for pack metadata, a `persons` list, then each
+conjugation entry:
+
+- `id`
+- `lemma`
+- optional `gloss`
+- positive forms for each person
+- negative forms for each person
+
+Generated conjugation packs include both:
+
+```yaml
+type: conjugation
+drill_type: conjugate
+```
+
+This makes the pack intent clear to the runtime and to validation tools.
 
 ------------------------------------------------------------------------
 
 ## Output Requirements
 
-The output filename **must**: - end in `.yaml` or `.yml` - include a
-filename (not just a directory)
+The output filename must:
+
+- end in `.yaml` or `.yml`
+- include a filename, not just a directory
 
 Example:
 
-``` bash
-packs/fi/greetings.yaml   # ✅ valid
-packs/fi/                # ❌ invalid
-```
-
-------------------------------------------------------------------------
-
-## Entry Flow
-
-Example session:
-
-    Entry 001
-    Prompt: Hello
-    Answer 1: Hei
-    Answer 2 (optional): Moi
-    Alternate prompt: Hi
-    Phonetic: hay / moy
-
-    Entry 002
-    Prompt: Good morning
-    Answer 1: Hyvää huomenta
-
-    Entry 003
-    Prompt:
-    Finish and write 2 entries? [y/N]
-
-------------------------------------------------------------------------
-
-## YAML Output Example
-
-``` yaml
-# created with build_yaml version dev_01
-metadata:
-  id: greetings
-  version: 1
-  schema_version: 1
-
-entries:
-  - id: "001"
-    prompt: Hello
-    answer:
-      - Hei
-      - Moi
-    phonetic: hay / moy
+```bash
+packs/fi/greetings.yaml
 ```
 
 ------------------------------------------------------------------------
 
 ## Validation
 
-After building a pack:
+After building a vocabulary pack:
 
-``` bash
-ruby bin/validate_pack.rb packs/fi/my_pack.yaml
+```bash
+ruby bin/validate_pack.rb packs/fi/my_vocabulary.yaml
 ```
 
-------------------------------------------------------------------------
+After building a conjugation pack:
 
-## Limitations (current version)
-
--   Standard packs only
--   No conjugate or transform support yet
--   YAML formatting is functional, not optimized
--   No preview step before writing
+```bash
+ruby bin/validate_pack.rb --conjugate packs/fi/my_conjugation.yaml
+```
 
 ------------------------------------------------------------------------
 
@@ -156,14 +135,8 @@ ruby bin/validate_pack.rb packs/fi/my_pack.yaml
 
 Each generated file includes:
 
-    # created with build_yaml version <version>
+```yaml
+# created with build_yaml version: dev_03
+```
 
-This enables: - debugging - migration support - future compatibility
-checks
-
-------------------------------------------------------------------------
-
-## Summary
-
-`build_yaml.rb` provides a simple way to create Linguatrain packs
-quickly.
+This helps future migration and debugging.

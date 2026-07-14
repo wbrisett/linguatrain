@@ -13,6 +13,8 @@ require "fileutils"
 require "json"
 require "pathname"
 require_relative "lib/linguatrain/translation/exercise"
+require_relative "lib/linguatrain/word_explorer/pack"
+require_relative "lib/linguatrain/word_explorer/exercise"
 
 require "open3"
 
@@ -101,6 +103,7 @@ DEFAULT_UI = {
   transform_positive_instruction: "Use the positive form:",
   transform_negative_instruction: "Use the negative form:",
   conjugate_prompt: "Conjugate the verb.",
+  conjugate_meaning_label: "Meaning",
   conjugate_instruction: "Use the correct form:",
   conjugate_positive_instruction: "Use the positive form:",
   conjugate_negative_instruction: "Use the negative form:",
@@ -601,6 +604,97 @@ def pct(part, total)
   (part.to_f / total.to_f) * 100.0
 end
 
+def word_explorer_dimension_label(key)
+  {
+    base_word: "Base word",
+    meaning: "Meaning",
+    build: "Build",
+    apply: "Apply"
+  }.fetch(key.to_sym, key.to_s.tr("_", " ").capitalize)
+end
+
+def say_score_lines(score)
+  total = score[:total].to_i
+  say "  Correct 1st: #{score[:correct_1]} (#{pct(score[:correct_1], total).round(1)}%)"
+  say "  Correct 2nd: #{score[:correct_2]} (#{pct(score[:correct_2], total).round(1)}%)"
+  if score.key?(:correct_hint)
+    say "  After hint:  #{score[:correct_hint]} (#{pct(score[:correct_hint], total).round(1)}%)"
+  end
+  if score.key?(:answer_revealed)
+    say "  Revealed:    #{score[:answer_revealed]} (#{pct(score[:answer_revealed], total).round(1)}%)"
+  end
+  say "  Failed:      #{score[:failed]} (#{pct(score[:failed], total).round(1)}%)"
+end
+
+def say_word_explorer_results(stats)
+  overall = stats[:overall] || stats
+  dimensions = stats[:dimensions] || {}
+
+  say "Words explored: #{stats[:words_explored].to_i}"
+
+  ordered_dimensions = [:base_word, :meaning]
+  ordered_dimensions += dimensions.keys.reject { |key| ordered_dimensions.include?(key) }
+
+  ordered_dimensions.each do |dimension|
+    score = dimensions[dimension]
+    next unless score && score[:total].to_i.positive?
+
+    say
+    say "#{word_explorer_dimension_label(dimension)}:"
+    say_score_lines(score)
+  end
+
+  return unless overall[:total].to_i.positive?
+
+  say
+  say "Overall prompts:"
+  say "  Total:       #{overall[:total]}"
+  say_score_lines(overall)
+end
+
+def word_explorer_completion_message(stats)
+  overall = stats[:overall] || stats
+  dimensions = stats[:dimensions] || {}
+  words = stats[:words_explored].to_i
+  total = overall[:total].to_i
+  failed = overall[:failed].to_i
+  revealed = (overall[:answer_revealed] || 0).to_i
+  first_try = overall[:correct_1].to_i
+  successful = overall[:correct_1].to_i + overall[:correct_2].to_i + (overall[:correct_hint] || 0).to_i
+  exploration_unit =
+    if dimensions[:build]&.fetch(:total, 0).to_i == total || dimensions[:apply]&.fetch(:total, 0).to_i == total
+      total == 1 ? "form" : "forms"
+    else
+      total == 1 ? "prompt" : "prompts"
+    end
+
+  if stats[:aborted]
+    if words == 1
+      "△ Exploration paused.\n  Return to this word when you're ready."
+    else
+      "△ Exploration paused.\n  Return to these words when you're ready."
+    end
+  elsif total.positive? && failed.zero? && revealed.zero? && first_try == total
+    if words == 1
+      "★ Excellent — you mastered this word on the first try."
+    else
+      "★ Excellent — you mastered these words on the first try."
+    end
+  elsif failed.zero? && revealed.zero?
+    if words == 1
+      "✓ Word explored successfully.\n  Keep exploring — retrieval strengthens with practice."
+    else
+      "✓ Words explored successfully.\n  Keep exploring — retrieval strengthens with practice."
+    end
+  elsif successful.positive? && total.positive?
+    "△ Exploration needs review.\n  #{successful} of #{total} #{exploration_unit} explored successfully."
+  elsif words == 1
+    "△ Exploration incomplete.\n  Review this word and try again."
+  else
+    "△ Exploration incomplete.\n  Review these words and try again."
+  end
+end
+
 # -----------------------------
 # Text-to-Speech (Piper)
 # -----------------------------
@@ -800,6 +894,19 @@ def normalize_notes(value)
   end
 end
 
+def say_correct_answers(items, ui)
+  answers = Array(items).map(&:to_s).map(&:strip).reject(&:empty?)
+  return if answers.empty?
+
+  prefix = (ui[:correct_answer_prefix] || ui[:correct_word_prefix] || "❌ Correct answer:").to_s.strip
+  prefix = "#{prefix}:" unless prefix.end_with?(":")
+
+  say prefix
+  answers.each do |answer|
+    say "   - #{answer}"
+  end
+end
+
 def show_word_notes(word, ui)
   return unless show_notes?(ui)
 
@@ -857,10 +964,39 @@ def normalize_lenient_umlauts(s)
   normalize_lenient_diacritics(s)
 end
 
+def say_also_accepted(items, ui)
+  accepted = Array(items).map(&:to_s).map(&:strip).reject(&:empty?)
+  return if accepted.empty?
 
+  say "   #{ui[:also_accepted_prefix] || 'Also accepted:'}"
+  accepted.each { |item| say "      - #{item}" }
+end
+
+
+def conjugation_pack_metadata?(meta)
+  return false unless meta.is_a?(Hash)
+
+  type = (meta[:type] || meta["type"]).to_s.strip.downcase
+  drill_type = (meta[:drill_type] || meta["drill_type"]).to_s.strip.downcase
+
+  type == "conjugation" || drill_type == "conjugate"
+end
+
+def word_explorer_pack_metadata?(meta)
+  return false unless meta.is_a?(Hash)
+
+  type = (meta[:type] || meta["type"]).to_s.strip.downcase
+  drill_type = (meta[:drill_type] || meta["drill_type"]).to_s.strip.downcase
+
+  type == "word_explorer" || drill_type == "word_explorer"
+end
 
 def load_pack(path)
   data = load_yaml_preserving_clock_strings(path)
+  pack_meta = {}
+  grammar_v = []
+  drill_type = ""
+  word_explorer_pack = false
 
   raw_entries =
     if data.is_a?(Array)
@@ -872,10 +1008,10 @@ def load_pack(path)
       #   transform packs:
       #     metadata.drill_type: transform
       #     entries: [ {id:, prompt:, cues:[{cue:, steps:[{transform:, answer:}, ...]}, ...]}, ... ]
-      #   conjugate packs:
-      #     metadata.drill_type: conjugate
+      #   conjugation packs:
+      #     metadata.type: conjugation
+      #     Legacy alias: metadata.drill_type: conjugate
       #     persons: ["minä", "sinä", "hän", "me", "te", "he"]
-      #     entries: [ {id:, lemma:, forms:{"minä"=>{"positive"=>[...], "negative"=>[...]}, ...}}, ... ]
       pack_meta = data["metadata"] || data[:metadata] || {}
 
       # Back-compat: older packs used metadata.source_lang / metadata.target_lang.
@@ -939,7 +1075,11 @@ def load_pack(path)
       entries = data["entries"] || data[:entries]
       turns = data["turns"] || data[:turns]
       persons_v = data["persons"] || data[:persons]
+      grammar_v = data["grammar"] || data[:grammar] || []
       drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
+      conjugation_pack = conjugation_pack_metadata?(pack_meta)
+      word_explorer_pack = word_explorer_pack_metadata?(pack_meta)
+
       if entries.is_a?(Array)
         entries
       elsif turns.is_a?(Array)
@@ -994,7 +1134,19 @@ def load_pack(path)
     end
   pack_meta ||= {}
 
-  if drill_type == "transform"
+  if word_explorer_pack
+    normalized = Linguatrain::WordExplorer::Pack.normalize(
+      entries: raw_entries,
+      grammar: grammar_v
+    )
+
+    {
+      meta: symbolize_keys_deep(pack_meta),
+      word_explorer_grammar: normalized[:grammar],
+      word_explorer_entries: normalized[:entries]
+    }
+
+  elsif drill_type == "transform"
     transform_entries = raw_entries.map do |entry|
       entry_id = entry["id"] || entry[:id]
       prompt_v = entry["prompt"] || entry[:prompt]
@@ -1056,7 +1208,7 @@ def load_pack(path)
 
     { meta: symbolize_keys_deep(pack_meta), transform_entries: transform_entries }
 
-  elsif drill_type == "conjugate"
+  elsif conjugation_pack
     person_defs =
       case persons_v
       when Array
@@ -1086,6 +1238,7 @@ def load_pack(path)
       prompt_v = entry["prompt"] || entry[:prompt]
       notes_v = entry["notes"] || entry[:notes]
       type_v = entry["type"] || entry[:type]
+      stem_v = entry["stem"] || entry[:stem]
       category_v = entry["category"] || entry[:category]
       forms_v = entry["forms"] || entry[:forms] || entry["present"] || entry[:present]
       phonetics_v = entry["phonetics"] || entry[:phonetics] || {}
@@ -1105,6 +1258,34 @@ def load_pack(path)
         raw = forms_v[person] || forms_v[person.to_sym]
         raise "Invalid conjugate entry for '#{lemma_text}': missing form for #{person}" if raw.nil?
 
+        normalize_polarity_value = lambda do |value|
+          meaning = ""
+          answer_source = value
+
+          if value.is_a?(Hash)
+            meaning = (
+              value["meaning"] || value[:meaning] ||
+                value["gloss"] || value[:gloss] ||
+                value["english"] || value[:english]
+            ).to_s.strip
+            answer_source =
+              value["forms"] || value[:forms] ||
+              value["answers"] || value[:answers] ||
+              value["answer"] || value[:answer] ||
+              value["form"] || value[:form]
+          end
+
+          answers =
+            case answer_source
+            when Array
+              answer_source.map { |x| x.to_s.strip }.reject(&:empty?)
+            else
+              [answer_source.to_s.strip].reject(&:empty?)
+            end
+
+          { answers: answers, meaning: meaning }
+        end
+
         normalized =
           if raw.is_a?(Hash)
             pos_raw = raw["positive"] || raw[:positive]
@@ -1113,44 +1294,31 @@ def load_pack(path)
             raise "Invalid conjugate entry for '#{lemma_text}': missing positive form for #{person}" if pos_raw.nil?
             raise "Invalid conjugate entry for '#{lemma_text}': missing negative form for #{person}" if neg_raw.nil?
 
-            positive_answers =
-              case pos_raw
-              when Array
-                pos_raw.map { |x| x.to_s.strip }.reject(&:empty?)
-              else
-                [pos_raw.to_s.strip]
-              end
+            positive = normalize_polarity_value.call(pos_raw)
+            negative = normalize_polarity_value.call(neg_raw)
 
-            negative_answers =
-              case neg_raw
-              when Array
-                neg_raw.map { |x| x.to_s.strip }.reject(&:empty?)
-              else
-                [neg_raw.to_s.strip]
-              end
+            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{person}" if positive[:answers].empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{person}" if negative[:answers].empty?
 
-            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{person}" if positive_answers.empty?
-            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{person}" if negative_answers.empty?
+            meanings = {}
+            meanings[:positive] = positive[:meaning] unless positive[:meaning].empty?
+            meanings[:negative] = negative[:meaning] unless negative[:meaning].empty?
 
             {
-              positive: positive_answers,
-              negative: negative_answers
+              positive: positive[:answers],
+              negative: negative[:answers],
+              meanings: meanings
             }
           else
             # Backward compatibility: flat list means positive-only legacy form.
-            positive_answers =
-              case raw
-              when Array
-                raw.map { |x| x.to_s.strip }.reject(&:empty?)
-              else
-                [raw.to_s.strip]
-              end
+            positive = normalize_polarity_value.call(raw)
 
-            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{person}" if positive_answers.empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{person}" if positive[:answers].empty?
 
             {
-              positive: positive_answers,
-              negative: []
+              positive: positive[:answers],
+              negative: [],
+              meanings: positive[:meaning].empty? ? {} : { positive: positive[:meaning] }
             }
           end
 
@@ -1199,6 +1367,7 @@ def load_pack(path)
         lemma: lemma_text,
         gloss: gloss_text,
         notes: notes_v,
+        stem: (stem_v.nil? ? "" : stem_v.to_s.strip),
         category: category,
         forms: forms,
         phonetics: phonetics,
@@ -1558,6 +1727,48 @@ def conjugate_category_prompt_label(ui)
   value.nil? || value.empty? ? "Verb category:" : value
 end
 
+def conjugate_stem(item)
+  item[:stem].to_s.strip
+end
+
+def conjugate_stem_prompt_label(ui)
+  value = ui[:conjugate_stem_prompt].to_s.strip if ui.is_a?(Hash)
+  value.nil? || value.empty? ? "Stem:" : value
+end
+
+def drill_conjugate_stem(item, ui:, lenient: false, show_verb: true)
+  expected = conjugate_stem(item)
+  return true if expected.empty?
+
+  if show_verb
+    say render_cue_line(
+          "Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}"
+        )
+    say
+  end
+
+  say render_instruction_line(conjugate_stem_prompt_label(ui))
+
+  1.upto(2) do |attempt|
+    input = prompt("> ")
+    _kind, ok, _matched = match_answer(
+      input,
+      [expected],
+      lenient: lenient
+    )
+
+    if ok
+      say(ui[:correct] || "✅ Correct!")
+      return true
+    end
+
+    say(ui[:try_again] || "Try again.") if attempt < 2
+  end
+
+  say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected}"
+  false
+end
+
 # Helper: prompt for the source-language meaning after a correct listening answer
 def prompt_source_meaning(word, ui:, lenient: false)
   source_answers = Array(word[:prompt]).map { |x| x.to_s.strip }.reject(&:empty?)
@@ -1576,7 +1787,7 @@ def prompt_source_meaning(word, ui:, lenient: false)
     if ok
       say(ui[:correct] || "✅ Correct!")
       others = source_answers - [matched]
-      say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+      say_also_accepted(others, ui)
       return true
     end
 
@@ -1649,6 +1860,8 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
         lemma: entry[:lemma].to_s,
         gloss: entry[:gloss].to_s,
         notes: entry[:notes],
+        stem: entry[:stem].to_s,
+        meanings: person_forms[:meanings] || person_forms["meanings"] || {},
         phonetics: (entry[:phonetics] || {})[person_key] || {},
         lemma_phonetic: entry[:lemma_phonetic].to_s,
         forms: {
@@ -1669,6 +1882,32 @@ def choose_conjugate_entries(entries, count)
 
   n = Integer(count)
   entries.take([n, entries.length].min)
+end
+
+def filter_conjugate_entries_by_category(entries, category_key)
+  requested = category_key.to_s.strip
+  return entries if requested.empty?
+
+  available = Array(entries)
+                .map { |entry| entry.dig(:category, :key).to_s.strip }
+                .reject(&:empty?)
+                .uniq
+                .sort
+
+  filtered = Array(entries).select do |entry|
+    entry.dig(:category, :key).to_s.strip == requested
+  end
+
+  return filtered unless filtered.empty?
+
+  message = "No conjugation entries found for category key: #{requested}"
+
+  unless available.empty?
+    message += "\n\nAvailable category keys:\n"
+    message += "  #{available.join("\n  ")}"
+  end
+
+  raise message
 end
 
 # -----------------------------
@@ -2108,6 +2347,21 @@ def conjugate_verb_display(item, show_gloss: true)
   gloss.empty? ? lemma : "#{lemma} — #{gloss}"
 end
 
+def conjugate_meaning_label(ui)
+  value = ui[:conjugate_meaning_label].to_s.strip if ui.is_a?(Hash)
+  value.nil? || value.empty? ? "Meaning" : value
+end
+
+def conjugate_meaning_display(item, polarity = nil)
+  if polarity
+    meanings = item[:meanings] || {}
+    meaning = (meanings[polarity.to_sym] || meanings[polarity.to_s]).to_s.strip
+    return meaning unless meaning.empty?
+  end
+
+  item[:gloss].to_s.strip
+end
+
 def conjugate_phonetic_for(item, polarity)
   phonetics = item[:phonetics]
 
@@ -2118,12 +2372,40 @@ def conjugate_phonetic_for(item, polarity)
   phonetics.to_s.strip
 end
 
-def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, piper_bin: nil, piper_model: nil, tts_template: DEFAULT_TTS_TEMPLATE, printed_voice: false, drill_category: false)
+def run_conjugate_study(
+  selected,
+  ui:,
+  polarity: "positive",
+  listen: false,
+  drill_category: false,
+  category_key: nil,
+  piper_bin: nil,
+  piper_model: nil,
+  tts_template: nil,
+  printed_voice: false
+)
   say
 
   total_steps = selected.sum { |item| conjugate_polarities_for_item(item, polarity).length }
 
   verbs_count = selected.map { |i| i[:lemma] }.uniq.length
+  category_label =
+    if category_key.to_s.strip.empty?
+      nil
+    else
+      selected
+        .map { |item| conjugate_category_label(item) }
+        .reject(&:empty?)
+        .uniq
+        .first || category_key.to_s
+    end
+
+  verbs_label =
+    if category_label
+      "#{category_label} verb(s)"
+    else
+      "verb(s)"
+    end
 
   mode = ["study", "conjugate", polarity]
   mode << "listen" if listen
@@ -2135,7 +2417,7 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       "#{total_steps} items"
     end
 
-  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{count_label}) (mode: #{mode.join(', ')})"
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) #{verbs_label} (#{count_label}) (mode: #{mode.join(', ')})"
   say "-" * 70
 
   step_index = 0
@@ -2164,10 +2446,24 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say
       say "[#{start_step} & #{end_step}/#{total_steps}]"
       say
-      say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+      say render_prompt_line(
+            (ui[:conjugate_prompt] || "Conjugate the verb.").to_s
+          )
       say
-      say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
-      say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
+
+      say render_cue_line(
+            "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+          )
+
+      say render_cue_line(
+            "Verb: #{conjugate_verb_display(item, show_gloss: false)}"
+          )
+
+      stem = item[:stem].to_s.strip
+
+      unless stem.empty?
+        say render_cue_line("Stem: #{stem}")
+      end
       say
       drill_conjugate_category(item, ui: ui, lenient: false, study: true) if drill_category
       lemma_phonetic = item[:lemma_phonetic].to_s.strip
@@ -2176,6 +2472,8 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
         say
       end
       say render_instruction_line(conjugate_instruction_label(ui, "positive"))
+      positive_meaning = conjugate_meaning_display(item, "positive")
+      say render_cue_line("#{conjugate_meaning_label(ui)}: #{positive_meaning}") unless positive_meaning.empty?
       positive_display = conjugate_answer_display(item, positive_answers, show_conjugated_form?(ui))
       say "#{target_label(ui)}: #{positive_display}"
       phonetic = conjugate_phonetic_for(item, "positive")
@@ -2183,6 +2481,8 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
       say
       say render_instruction_line(conjugate_instruction_label(ui, "negative"))
 
+      negative_meaning = conjugate_meaning_display(item, "negative")
+      say render_cue_line("#{conjugate_meaning_label(ui)}: #{negative_meaning}") unless negative_meaning.empty?
       negative_display = conjugate_answer_display(item, negative_answers, show_conjugated_form?(ui))
       say "#{target_label(ui)}: #{negative_display}"
       phonetic = conjugate_phonetic_for(item, "negative")
@@ -2223,10 +2523,21 @@ def run_conjugate_study(selected, ui:, polarity: "positive", listen: false, pipe
         say
         say "[#{step_index}/#{total_steps}]"
         say
-        say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
+        say render_cue_line(
+              "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+            )
+
+        say render_cue_line(
+              "Verb: #{conjugate_verb_display(item, show_gloss: false)}"
+            )
+
+        meaning = conjugate_meaning_display(item, current_polarity)
+        say render_cue_line("#{conjugate_meaning_label(ui)}: #{meaning}") unless meaning.empty?
+
+        stem = item[:stem].to_s.strip
+        say render_cue_line("Stem: #{stem}") unless stem.empty?
+
         say
-        say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
-        say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
         say
         drill_conjugate_category(item, ui: ui, lenient: false, study: true) if drill_category
         lemma_phonetic = item[:lemma_phonetic].to_s.strip
@@ -2318,7 +2629,7 @@ def run_transform(selected, ui:, lenient:)
           stats[attempt == 1 ? :correct_1 : :correct_2] += 1
           say(ui[:correct] || "✅ Correct!")
           others = step[:answer] - [matched]
-          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          say_also_accepted(others, ui)
           answer_ok = true
           break
         else
@@ -2402,7 +2713,14 @@ def conjugate_polarities_for_item(item, requested)
   end
 end
 
-def run_conjugate(selected, ui:, lenient:, polarity: "positive", drill_category: false)
+def run_conjugate(
+  selected,
+  ui:,
+  lenient:,
+  polarity: "positive",
+  drill_category: false,
+  category_key: nil
+)
   stats = { correct_1: 0, correct_2: 0, failed: 0 }
   missed = []
 
@@ -2412,44 +2730,122 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive", drill_category:
     polarities.empty?
   end
 
-  total_steps = selected_with_polarities.sum { |_item, polarities| polarities.length }
+  form_steps = selected_with_polarities.sum { |_item, polarities| polarities.length }
+
+  category_steps =
+    if drill_category
+      selected_with_polarities
+        .map { |item, _polarities| item[:lemma].to_s }
+        .uniq
+        .length
+    else
+      0
+    end
+
+  total_steps = form_steps + category_steps
 
   if total_steps.zero?
     raise "No #{polarity} conjugation forms found. If this is a conjugate pack, make sure each person uses nested positive/negative forms instead of positive-only shorthand."
   end
 
   verbs_count = selected_with_polarities.map { |item, _polarities| item[:lemma] }.uniq.length
+  category_label =
+    if category_key.to_s.strip.empty?
+      nil
+    else
+      selected_with_polarities
+        .map { |item, _polarities| conjugate_category_label(item) }
+        .reject(&:empty?)
+        .uniq
+        .first || category_key.to_s
+    end
 
+  verbs_label =
+    if category_label
+      "#{category_label} verb(s)"
+    else
+      "verb(s)"
+    end
   say
 
   count_label =
     if polarity.to_s == "both"
       "#{selected_with_polarities.length} prompts, positive + negative"
     else
-      "#{total_steps} items"
+      "#{form_steps} items"
     end
 
-  say "#{ui[:target_language_name] || ui[:language_name] || 'Language'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} verb(s) (#{count_label}) (mode: conjugate, #{polarity})"
-
+  say "#{ui[:target_language_name] || ui[:language_name] || 'Target'} Conjugation #{ui[:quiz_label] || 'Quiz'} — #{verbs_count} #{verbs_label} (#{count_label}) (mode: conjugate, #{polarity})"
   say "-" * 70
 
+  drilled_categories = {}
+  drilled_stems = {}
   selected_with_polarities.each_with_index do |(item, polarities), idx|
     say
     say "[#{idx + 1}/#{selected.length}]"
     say
-    say render_prompt_line((ui[:conjugate_prompt] || "Conjugate the verb.").to_s)
-    say
-    say render_cue_line("Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}")
-    say render_cue_line("Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}")
-    say
-    category_ok = drill_category ? drill_conjugate_category(item, ui: ui, lenient: lenient, study: false) : true
-    stats[:failed] += 1 unless category_ok
-    say if drill_category
-    lemma_phonetic = item[:lemma_phonetic].to_s.strip
-    if show_phonetic?(ui) && !lemma_phonetic.empty?
-      say render_gloss_line(format_phonetic(ui, lemma_phonetic))
+
+    verb_key = item[:lemma].to_s
+    verb_setup_was_drilled = false
+
+    if drill_category && !drilled_categories.key?(verb_key)
+
+      say render_cue_line(
+
+            "Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}"
+
+          )
+
       say
+
     end
+
+    unless drilled_categories.key?(verb_key)
+
+      if drill_category
+
+        drill_conjugate_category(
+
+          item,
+
+          ui: ui,
+
+          lenient: lenient
+
+        )
+
+        verb_setup_was_drilled = true
+
+      end
+
+      drilled_categories[verb_key] = true
+
+    end
+    unless drilled_stems.key?(verb_key)
+
+      stem_ok = drill_conjugate_stem(
+        item,
+        ui: ui,
+        lenient: lenient,
+        show_verb: !drill_category
+      )
+
+      stats[:failed] += 1 unless stem_ok
+      drilled_stems[verb_key] = true
+      verb_setup_was_drilled = true
+    end
+    say if verb_setup_was_drilled
+
+    say render_prompt_line(
+          (ui[:conjugate_prompt] || "Conjugate the verb.").to_s
+        )
+    say
+    say render_cue_line(
+          "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+        )
+    say render_cue_line(
+          "Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}"
+        )
     say
 
     polarities.each do |current_polarity|
@@ -2468,7 +2864,7 @@ def run_conjugate(selected, ui:, lenient:, polarity: "positive", drill_category:
           stats[attempt == 1 ? :correct_1 : :correct_2] += 1
           say(ui[:correct] || "✅ Correct!")
           others = expected - [matched]
-          say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+          say_also_accepted(others, ui)
           phonetic = conjugate_phonetic_for(item, current_polarity)
           say "   (#{format_phonetic(ui, phonetic)})" if show_phonetic?(ui) && !phonetic.empty?
           answer_ok = true
@@ -2691,7 +3087,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             stats[:"correct_#{attempt}"] += 1
             say(ui[:correct] || "✅ Correct!")
             others = correct_list - [matched]
-            say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+            say_also_accepted(others, ui)
             # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
             if listen
               say_reverse_listen_reveal(w, ui)
@@ -2738,7 +3134,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               end
 
               others = correct_list - [matched]
-              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+              say_also_accepted(others, ui)
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
               say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
               update_srs!(srs, wid, attempt == 1 ? 5 : 4) if srs_enabled
@@ -2838,7 +3234,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           unless speech_mode
             if reverse
               others = expected - [matched]
-              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+              say_also_accepted(others, ui)
 
               # In reverse listen modes, reveal the written answer (and phonetic) after a correct response.
               say_reverse_listen_reveal(w, ui) if listen
@@ -2848,7 +3244,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
             else
               # Use the same answer set we validated against (written/spoken/either).
               others = expected - [matched]
-              say "   #{ui[:also_accepted_prefix] || 'Also accepted:'} #{others.join(' / ')}" unless others.empty?
+              say_also_accepted(others, ui)
               say "   (#{source_label(ui)}: #{w[:prompt].join(' / ')})"
               say "   (#{format_phonetic(ui, w[:phonetic])})" unless w[:phonetic].empty?
             end
@@ -2879,8 +3275,8 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
         say "#{reveal_label}: #{target_text}"
         say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       else
-        correct_display = expected_answer_list(w, answer_variant).join(" / ")
-        say "#{ui[:correct_word_prefix] || '❌ Correct word:'} #{correct_display}"
+        correct_answers = expected_answer_list(w, answer_variant)
+        say_correct_answers(correct_answers, ui)
         show_word_notes(w, ui)
         say "#{format_phonetic(ui, w[:phonetic])}" unless w[:phonetic].empty?
       end
@@ -3054,6 +3450,9 @@ def write_missed_file(input_path, pack_meta, stats, missed, lenient:, match_game
   output_path
 end
 
+
+
+
 # -----------------------------
 # Main
 # -----------------------------
@@ -3071,10 +3470,12 @@ options = {
   translation: false,
   show_phonetic: false,
   transform: false,
+  word_explorer: false,
   timing: false,
   conjugate: false,
   conjugate_polarity: "positive",
   drill_category: false,
+  category_key: nil,
   match_options: "auto",
   piper_bin: ENV["PIPER_BIN"],
   piper_model: ENV["PIPER_MODEL"],
@@ -3102,6 +3503,8 @@ options = {
   # Quiz options
   lenient: false,
   match_game: false,
+  word_explorer_mode: nil,
+  word_explorer_mode_flags: [],
 }
 
 parser = OptionParser.new do |opts|
@@ -3168,6 +3571,29 @@ parser = OptionParser.new do |opts|
     options[:transform] = true
   end
 
+  opts.on("--word-explorer", "Word Explorer mode: explore word forms and word families") do
+    options[:word_explorer] = true
+  end
+
+  opts.on("--recognize", "With --word-explorer, recognize word relationships") do
+    options[:word_explorer] = true
+    options[:word_explorer_mode] = :recognize
+    options[:word_explorer_mode_flags] << "--recognize"
+    options[:match_game] = true
+  end
+
+  opts.on("--build", "With --word-explorer, build forms from base words") do
+    options[:word_explorer] = true
+    options[:word_explorer_mode] = :build
+    options[:word_explorer_mode_flags] << "--build"
+  end
+
+  opts.on("--apply", "With --word-explorer, apply forms in context") do
+    options[:word_explorer] = true
+    options[:word_explorer_mode] = :apply
+    options[:word_explorer_mode_flags] << "--apply"
+  end
+
   opts.on("--conjugate", "Conjugation mode: person + verb grammar drills") do
     options[:conjugate] = true
   end
@@ -3208,10 +3634,16 @@ parser = OptionParser.new do |opts|
     options[:speech_duration] = v
   end
 
-  opts.on("--drill-category", "With --conjugate, ask for the declared verb category before the conjugation") do
+  opts.on("--drill-category", "--ask-category", "With --conjugate, ask for the declared verb category before the conjugation") do
     options[:drill_category] = true
   end
 
+  opts.on(
+    "--category KEY",
+    "With --conjugate, use only entries whose category key matches KEY"
+  ) do |key|
+    options[:category_key] = key.to_s.strip
+  end
 
   opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
     options[:match_options] = v.to_s.strip.downcase
@@ -3242,12 +3674,25 @@ parser.parse!
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
 
+word_explorer_mode_flags = options[:word_explorer_mode_flags].uniq
+if word_explorer_mode_flags.length > 1
+  abort("Choose only one Word Explorer mode: --recognize, --build, or --apply")
+end
+
+if options[:word_explorer]
+  options[:word_explorer_mode] ||= :recognize
+  if options[:match_game] && options[:word_explorer_mode] != :recognize
+    abort("--match-game can only be used with Word Explorer recognize mode")
+  end
+end
+
 if options[:study]
   abort("--study cannot be combined with --match-game") if options[:match_game]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
   abort("--study cannot be combined with --speak") if options[:speak]
   abort("--study cannot be combined with --conversation") if options[:conversation]
   abort("--study cannot be combined with --translation") if options[:translation]
+  abort("--study cannot be combined with --word-explorer") if options[:word_explorer]
   abort("--study cannot be combined with --reverse when used with --conjugate") if options[:conjugate] && options[:reverse]
 
   if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
@@ -3272,6 +3717,21 @@ abort("--translation cannot be combined with --match-game") if options[:translat
 # abort("--translation cannot be combined with --listen") if options[:translation] && options[:listen]
 abort("--translation cannot be combined with --conversation") if options[:translation] && options[:conversation]
 abort("--translation cannot be combined with --reverse") if options[:translation] && options[:reverse]
+
+if options[:word_explorer]
+  abort("--word-explorer cannot be combined with --speak") if options[:speak]
+  abort("--word-explorer cannot be combined with --shadow") if options[:shadow]
+  abort("--word-explorer cannot be combined with --reverse") if options[:reverse]
+  abort("--word-explorer cannot be combined with --conversation") if options[:conversation]
+  abort("--word-explorer cannot be combined with --transform") if options[:transform]
+  abort("--word-explorer cannot be combined with --conjugate") if options[:conjugate]
+  abort("--word-explorer cannot be combined with --translation") if options[:translation]
+  abort("--word-explorer cannot be combined with --listen yet") if options[:listen]
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--word-explorer does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+end
 
 if options[:transform]
   abort("--transform cannot be combined with --match-game") if options[:match_game]
@@ -3314,6 +3774,8 @@ translation_entries = pack[:translation_entries] || []
 conjugate_entries = pack[:conjugate_entries] || []
 conjugate_persons = pack[:conjugate_persons] || []
 conjugate_person_defs = pack[:conjugate_person_defs] || conjugate_persons
+word_explorer_entries = pack[:word_explorer_entries] || []
+word_explorer_grammar = pack[:word_explorer_grammar] || []
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
@@ -3368,12 +3830,15 @@ if options[:transform]
   abort("This pack does not contain transform entries.") if transform_entries.empty?
 elsif options[:conjugate]
   abort("This pack does not contain conjugate entries.") if conjugate_entries.empty?
+elsif options[:word_explorer]
+  abort("This pack does not contain word explorer entries.") if word_explorer_entries.empty?
 elsif options[:translation]
   abort("This pack does not contain translation entries.") if translation_entries.empty?
 else
   drill_type = pack_meta[:drill_type].to_s.strip.downcase
   abort("This pack is a transform pack. Use --transform.") if drill_type == "transform"
-  abort("This pack is a conjugate pack. Use --conjugate.") if drill_type == "conjugate"
+  abort("This pack is a conjugation pack. Use --conjugate.") if conjugation_pack_metadata?(pack_meta)
+  abort("This pack is a Word Explorer pack. Use --word-explorer.") if word_explorer_pack_metadata?(pack_meta)
 end
 
 if options[:transform]
@@ -3382,8 +3847,31 @@ if options[:transform]
   selected = choose_transform_items(transform_items, options[:count])
 elsif options[:conjugate]
   shuffle_persons = !!pack_meta[:shuffle_persons]
-  selected_entries = choose_conjugate_entries(conjugate_entries, options[:count])
-  selected = flatten_conjugate_items(selected_entries, conjugate_person_defs, shuffle_persons: shuffle_persons)
+
+  filtered_entries = filter_conjugate_entries_by_category(
+    pack[:conjugate_entries],
+    options[:category_key]
+  )
+
+  selected_entries = choose_conjugate_entries(
+    filtered_entries,
+    options[:count]
+  )
+
+  selected = flatten_conjugate_items(
+    selected_entries,
+    conjugate_person_defs,
+    shuffle_persons: shuffle_persons
+  )
+
+elsif options[:word_explorer]
+  selected =
+    if options[:count].nil? || options[:count] == "all"
+      word_explorer_entries
+    else
+      word_explorer_entries.take([Integer(options[:count]), word_explorer_entries.length].min)
+    end
+
 elsif options[:translation]
   selected = translation_entries
 elsif srs_enabled
@@ -3547,6 +4035,7 @@ begin
         polarity: options[:conjugate_polarity],
         listen: options[:listen],
         drill_category: options[:drill_category],
+        category_key: options[:category_key],
         piper_bin: options[:piper_bin],
         piper_model: options[:piper_model],
         tts_template: options[:tts_template],
@@ -3589,7 +4078,8 @@ begin
       ui: options[:ui] || DEFAULT_UI,
       lenient: options[:lenient],
       polarity: options[:conjugate_polarity],
-      drill_category: options[:drill_category]
+      drill_category: options[:drill_category],
+      category_key: options[:category_key]
     )
 
     say
@@ -3614,6 +4104,48 @@ begin
       say
       puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
     end
+
+    exit(0)
+  end
+
+  if options[:word_explorer]
+    stats, missed = Linguatrain::WordExplorer::Exercise.run(
+      selected,
+      pool: word_explorer_entries,
+      grammar: word_explorer_grammar,
+      mode: options[:word_explorer_mode],
+      match_game: options[:match_game],
+      lenient: options[:lenient]
+    )
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say_word_explorer_results(stats)
+
+    if missed.any?
+      say
+      say "Missed items (quick review):"
+      missed.each_with_index do |item, missed_idx|
+        case item[:mode].to_s
+        when "build"
+          say "#{missed_idx + 1}. Build #{item[:base_word]} to mean:"
+          say "   #{item[:target]}"
+          say "   Expected: #{item[:word]}"
+        when "apply"
+          say "#{missed_idx + 1}. Choose the form of #{item[:base_word]} that means:"
+          say "   #{item[:target]}"
+          say "   Expected: #{item[:word]}"
+        else
+          say "#{missed_idx + 1}. #{item[:word]} -> base word: #{item[:base_word]}"
+        end
+      end
+    end
+
+    say
+    say word_explorer_completion_message(stats)
 
     exit(0)
   end

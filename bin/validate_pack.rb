@@ -8,7 +8,7 @@ require "pathname"
 
 class PackValidator
   ISO_639_1 = /\A[a-z]{2}\z/
-  KNOWN_DRILL_TYPES = %w[transform conjugate].freeze
+  KNOWN_DRILL_TYPES = %w[transform conjugate word_explorer].freeze
 
   def initialize(path:, strict: false, warn_integer_ids: true, forced_mode: nil, update: false)
     @path = path
@@ -59,12 +59,18 @@ class PackValidator
     metadata = data["metadata"]
     drill_type = validate_metadata(metadata)
     mode = effective_mode(drill_type)
+    if mode.nil? && metadata.is_a?(Hash)
+      type = metadata["type"].to_s.strip.downcase
+      mode = "word_explorer" if type == "word_explorer"
+    end
 
     case mode
     when "transform"
       validate_transform_pack(data)
     when "conjugate"
       validate_conjugate_pack(data)
+    when "word_explorer"
+      validate_word_explorer_pack(data)
     else
       validate_word_pack(data)
     end
@@ -344,7 +350,7 @@ class PackValidator
       error("Missing required top-level key: #{key}. Expected `metadata:` and `entries:` at the top of the file.") unless data.key?(key)
     end
 
-    allowed = %w[metadata entries persons]
+    allowed = %w[metadata entries persons grammar]
     unknown = data.keys - allowed
     unknown.each { |k| warn("Unknown top-level key: #{k}") } unless unknown.empty?
   end
@@ -635,6 +641,61 @@ class PackValidator
     validate_conjugate_entries(data["entries"], persons)
   end
 
+  def validate_word_explorer_pack(data)
+    if data.key?("persons")
+      warn("Top-level `persons` is ignored for Word Explorer packs")
+    end
+
+    grammar_keys = validate_word_explorer_grammar(data["grammar"])
+    validate_word_explorer_entries(data["entries"], grammar_keys)
+  end
+
+  def validate_word_explorer_grammar(grammar)
+    unless grammar.is_a?(Array)
+      error("Word Explorer packs require a top-level `grammar` list (Array). Got: #{grammar.class}")
+      return []
+    end
+
+    keys = {}
+
+    grammar.each_with_index do |item, idx|
+      label = "grammar[#{idx}]"
+      unless item.is_a?(Hash)
+        error("#{label} must be a mapping (Hash). Got: #{item.class}")
+        next
+      end
+
+      %w[key name plain_english description].each do |key|
+        error("#{label} missing required field: #{key}") unless item.key?(key)
+        validate_required_string(item, label, key) if item.key?(key)
+      end
+
+      key_value = item["key"].to_s.strip
+      next if key_value.empty?
+
+      if keys.key?(key_value)
+        error("Duplicate grammar key #{key_value.inspect} at #{label} (already used at grammar[#{keys[key_value]}])")
+      else
+        keys[key_value] = idx
+      end
+
+      allowed = %w[key name plain_english description]
+      unknown = item.keys - allowed
+      unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+    end
+
+    keys.keys
+  end
+
+  def validate_word_explorer_entries(entries, grammar_keys)
+    return unless validate_entries_array(entries)
+
+    ids = {}
+    entries.each_with_index do |entry, idx|
+      validate_word_explorer_entry(entry, idx, ids, grammar_keys)
+    end
+  end
+
   def validate_persons(persons)
     unless persons.is_a?(Array)
       error("Conjugation packs require a top-level `persons` list (Array). Got: #{persons.class}")
@@ -753,6 +814,8 @@ class PackValidator
     validate_optional_string_list(entry, idx, "spoken")
     validate_optional_string(entry, idx, "phonetic")
     validate_optional_string(entry, idx, "speaker")
+    validate_optional_string(entry, idx, "type")
+    validate_vocab_forms(entry["forms"], idx) if entry.key?("forms")
 
     # Canonical keys plus compatibility aliases accepted by the runtime loader.
     allowed = %w[
@@ -763,6 +826,8 @@ class PackValidator
       spoken
       phonetic
       speaker
+      type
+      forms
       source
       target
       also_accepted
@@ -783,6 +848,31 @@ class PackValidator
         next unless v.is_a?(String) && v.strip.empty?
 
         error("entries[#{idx + 1}].#{k} is present but empty (strict mode)")
+      end
+    end
+  end
+
+  def validate_vocab_forms(forms, idx)
+    label = "entries[#{idx + 1}].forms"
+
+    unless forms.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{forms.class}")
+      return
+    end
+
+    forms.each do |key, value|
+      key_label = "#{label}[#{key.inspect}]"
+      if key.to_s.strip.empty?
+        error("#{label} contains an empty form label")
+      end
+
+      case value
+      when String
+        warn("#{key_label} is empty") if value.strip.empty?
+      when Array
+        validate_string_array(value, key_label, min: 1)
+      else
+        error("#{key_label} must be a String or list (Array) of Strings. Got: #{value.class}")
       end
     end
   end
@@ -909,6 +999,290 @@ class PackValidator
     allowed = %w[id lemma verb gloss forms]
     unknown = entry.keys - allowed
     unknown.each { |k| warn("entries[#{idx + 1}] unknown key: #{k}") } unless unknown.empty?
+  end
+
+  def validate_word_explorer_entry(entry, idx, ids, grammar_keys)
+    unless entry.is_a?(Hash)
+      error("entries[#{idx + 1}] must be a mapping (Hash). Got: #{entry.class}")
+      return
+    end
+
+    validate_optional_id(entry, idx, ids)
+
+    %w[word base_word type target morphology formation explanation].each do |key|
+      error("entries[#{idx + 1}] missing required field: #{key}") unless entry.key?(key)
+    end
+
+    %w[word base_word type target hint formation explanation role vocabulary_ref].each do |key|
+      validate_optional_string(entry, idx, key)
+    end
+
+    validate_word_explorer_source(entry["source"], "entries[#{idx + 1}].source") if entry.key?("source")
+    validate_word_explorer_morphology(entry["morphology"], "entries[#{idx + 1}].morphology", grammar_keys)
+    validate_word_explorer_explorations(entry["explorations"], "entries[#{idx + 1}].explorations", grammar_keys) if entry.key?("explorations")
+    validate_word_explorer_applications(entry["applications"], "entries[#{idx + 1}].applications", grammar_keys) if entry.key?("applications")
+    validate_optional_string_list(entry, idx, "grammar_refs")
+
+    allowed = %w[
+      id source word base_word type target morphology hint formation explanation role
+      explorations applications vocabulary_ref grammar_refs
+    ]
+    unknown = entry.keys - allowed
+    unknown.each { |k| warn("entries[#{idx + 1}] unknown key: #{k}") } unless unknown.empty?
+  end
+
+  def validate_word_explorer_source(source, label)
+    unless source.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{source.class}")
+      return
+    end
+
+    %w[entry_id chunk_id text literal target].each do |key|
+      validate_word_explorer_optional_label_string(source, label, key)
+    end
+
+    allowed = %w[entry_id chunk_id text literal target]
+    unknown = source.keys - allowed
+    unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+  end
+
+  def validate_word_explorer_morphology(morphology, label, grammar_keys)
+    unless morphology.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{morphology.class}")
+      return
+    end
+
+    warn("#{label}.kind is missing") unless morphology.key?("kind")
+    validate_word_explorer_optional_label_string(morphology, label, "kind")
+
+    if morphology.key?("case")
+      validate_word_explorer_optional_label_string(morphology, label, "case")
+      case_key = morphology["case"].to_s.strip
+      if !case_key.empty? && grammar_keys.is_a?(Array) && !grammar_keys.empty? && !grammar_keys.include?(case_key)
+        warn("#{label}.case references #{case_key.inspect}, but top-level grammar does not define it")
+      end
+    end
+  end
+
+  def validate_word_explorer_explorations(explorations, label, grammar_keys)
+    unless explorations.is_a?(Array)
+      error("#{label} must be a list (Array). Got: #{explorations.class}")
+      return
+    end
+
+    explorations.each_with_index do |item, idx|
+      item_label = "#{label}[#{idx}]"
+      unless item.is_a?(Hash)
+        error("#{item_label} must be a mapping (Hash). Got: #{item.class}")
+        next
+      end
+
+      %w[word target morphology formation explanation origin status].each do |key|
+        error("#{item_label} missing required field: #{key}") unless item.key?(key)
+      end
+
+      %w[word target formation explanation origin status usage_note priority].each do |key|
+        validate_word_explorer_optional_label_string(item, item_label, key)
+      end
+
+      origin = item["origin"].to_s.strip
+      error("#{item_label}.origin must be one of: source, generated") if !origin.empty? && !%w[source generated].include?(origin)
+
+      status = item["status"].to_s.strip
+      error("#{item_label}.status must be one of: valid, limited, unsuitable") if !status.empty? && !%w[valid limited unsuitable].include?(status)
+
+      validate_word_explorer_morphology(item["morphology"], "#{item_label}.morphology", grammar_keys)
+
+      allowed = %w[word target morphology formation explanation origin status usage_note priority]
+      unknown = item.keys - allowed
+      unknown.each { |k| warn("#{item_label} unknown key: #{k}") } unless unknown.empty?
+    end
+  end
+
+  def validate_word_explorer_applications(applications, label, grammar_keys)
+    unless applications.is_a?(Array)
+      error("#{label} must be a list (Array). Got: #{applications.class}")
+      return
+    end
+
+    applications.each_with_index do |item, idx|
+      item_label = "#{label}[#{idx}]"
+      unless item.is_a?(Hash)
+        error("#{item_label} must be a mapping (Hash). Got: #{item.class}")
+        next
+      end
+
+      %w[id source prompt base_word answer choices grammar_refs explanation].each do |key|
+        error("#{item_label} missing required field: #{key}") unless item.key?(key)
+      end
+
+      validate_word_explorer_optional_label_string(item, item_label, "id")
+      validate_word_explorer_optional_label_string(item, item_label, "type") if item.key?("type")
+      validate_word_explorer_application_reasoning(item["reasoning"], "#{item_label}.reasoning") if item.key?("reasoning")
+      validate_word_explorer_optional_label_string(item, item_label, "base_word")
+      validate_word_explorer_application_explanation(item["explanation"], "#{item_label}.explanation")
+      validate_word_explorer_source(item["source"], "#{item_label}.source")
+      validate_word_explorer_application_prompt(item["prompt"], "#{item_label}.prompt")
+      validate_word_explorer_application_answer(item["answer"], "#{item_label}.answer")
+      validate_string_array(item["choices"], "#{item_label}.choices", min: 0)
+      validate_string_array(item["grammar_refs"], "#{item_label}.grammar_refs", min: 0)
+      validate_word_explorer_application_distractors(item["distractors"], "#{item_label}.distractors", grammar_keys) if item.key?("distractors")
+
+      Array(item["grammar_refs"]).each do |key|
+        grammar_key = key.to_s.strip
+        next if grammar_key.empty? || grammar_keys.include?(grammar_key)
+
+        warn("#{item_label}.grammar_refs references #{grammar_key.inspect}, but top-level grammar does not define it")
+      end
+
+      allowed = %w[id type reasoning source prompt base_word answer choices grammar_refs explanation distractors]
+      unknown = item.keys - allowed
+      unknown.each { |k| warn("#{item_label} unknown key: #{k}") } unless unknown.empty?
+    end
+  end
+
+  def validate_word_explorer_application_reasoning(reasoning, label)
+    unless reasoning.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{reasoning.class}")
+      return
+    end
+
+    reasoning.each do |key, value|
+      if key.to_s.strip.empty?
+        error("#{label} contains an empty key")
+        next
+      end
+
+      validate_word_explorer_reasoning_value(value, "#{label}.#{key}")
+    end
+  end
+
+  def validate_word_explorer_reasoning_value(value, label)
+    case value
+    when String, Numeric, TrueClass, FalseClass, NilClass
+      # Scalar values are fine; this is intentionally a flexible metadata bag.
+    when Array
+      value.each_with_index { |item, idx| validate_word_explorer_reasoning_value(item, "#{label}[#{idx}]") }
+    when Hash
+      value.each do |key, nested|
+        if key.to_s.strip.empty?
+          error("#{label} contains an empty key")
+          next
+        end
+
+        validate_word_explorer_reasoning_value(nested, "#{label}.#{key}")
+      end
+    else
+      error("#{label} must be a scalar, list, or mapping. Got: #{value.class}")
+    end
+  end
+
+  def validate_word_explorer_application_explanation(explanation, label)
+    case explanation
+    when String
+      warn("#{label} is empty") if explanation.strip.empty?
+    when Hash
+      error("#{label} missing required field: why_it_fits") unless explanation.key?("why_it_fits")
+      validate_word_explorer_optional_label_string(explanation, label, "why_it_fits")
+
+      allowed = %w[why_it_fits]
+      unknown = explanation.keys - allowed
+      unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+    else
+      error("#{label} must be a String or mapping (Hash). Got: #{explanation.class}")
+    end
+  end
+
+  def validate_word_explorer_application_distractors(distractors, label, grammar_keys)
+    unless distractors.is_a?(Array)
+      error("#{label} must be a list (Array). Got: #{distractors.class}")
+      return
+    end
+
+    distractors.each_with_index do |item, idx|
+      item_label = "#{label}[#{idx}]"
+      unless item.is_a?(Hash)
+        error("#{item_label} must be a mapping (Hash). Got: #{item.class}")
+        next
+      end
+
+      %w[word grammar meaning why_not].each do |key|
+        error("#{item_label} missing required field: #{key}") unless item.key?(key)
+      end
+
+      validate_word_explorer_optional_label_string(item, item_label, "word")
+      validate_word_explorer_optional_label_string(item, item_label, "meaning")
+      validate_word_explorer_optional_label_string(item, item_label, "why_not")
+      validate_word_explorer_application_distractor_grammar(item["grammar"], "#{item_label}.grammar", grammar_keys)
+
+      allowed = %w[word grammar meaning why_not]
+      unknown = item.keys - allowed
+      unknown.each { |k| warn("#{item_label} unknown key: #{k}") } unless unknown.empty?
+    end
+  end
+
+  def validate_word_explorer_application_distractor_grammar(grammar, label, grammar_keys)
+    unless grammar.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{grammar.class}")
+      return
+    end
+
+    grammar.each do |key, value|
+      if key.to_s.strip.empty?
+        error("#{label} contains an empty key")
+        next
+      end
+
+      validate_word_explorer_reasoning_value(value, "#{label}.#{key}")
+    end
+
+    case_key = grammar["case"].to_s.strip
+    if !case_key.empty? && grammar_keys.is_a?(Array) && !grammar_keys.empty? && !grammar_keys.include?(case_key)
+      warn("#{label}.case references #{case_key.inspect}, but top-level grammar does not define it")
+    end
+  end
+
+  def validate_word_explorer_application_prompt(prompt, label)
+    unless prompt.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{prompt.class}")
+      return
+    end
+
+    %w[text meaning].each do |key|
+      error("#{label} missing required field: #{key}") unless prompt.key?(key)
+      validate_word_explorer_optional_label_string(prompt, label, key)
+    end
+
+    allowed = %w[text meaning]
+    unknown = prompt.keys - allowed
+    unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+  end
+
+  def validate_word_explorer_application_answer(answer, label)
+    unless answer.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{answer.class}")
+      return
+    end
+
+    error("#{label} missing required field: word") unless answer.key?("word")
+    validate_word_explorer_optional_label_string(answer, label, "word")
+
+    allowed = %w[word]
+    unknown = answer.keys - allowed
+    unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+  end
+
+  def validate_word_explorer_optional_label_string(hash, label, key)
+    return unless hash.key?(key)
+
+    value = hash[key]
+    if value.nil?
+      warn("#{label}.#{key} is nil (remove it or set a string)")
+    elsif value.is_a?(String)
+      warn("#{label}.#{key} is empty") if value.strip.empty?
+    else
+      error("#{label}.#{key} must be a String if present. Got: #{value.class}")
+    end
   end
 
   def validate_conjugate_form(raw, entry_idx, person)
@@ -1092,16 +1466,23 @@ parser = OptionParser.new do |opts|
 
   opts.on("--transform", "Validate the pack as a transform pack") do
     if options[:forced_mode] && options[:forced_mode] != "transform"
-      raise OptionParser::InvalidOption, "--transform cannot be combined with --conjugate"
+      raise OptionParser::InvalidOption, "--transform cannot be combined with another forced mode"
     end
     options[:forced_mode] = "transform"
   end
 
   opts.on("--conjugate", "Validate the pack as a conjugate pack") do
     if options[:forced_mode] && options[:forced_mode] != "conjugate"
-      raise OptionParser::InvalidOption, "--conjugate cannot be combined with --transform"
+      raise OptionParser::InvalidOption, "--conjugate cannot be combined with another forced mode"
     end
     options[:forced_mode] = "conjugate"
+  end
+
+  opts.on("--word-explorer", "Validate the pack as a Word Explorer pack") do
+    if options[:forced_mode] && options[:forced_mode] != "word_explorer"
+      raise OptionParser::InvalidOption, "--word-explorer cannot be combined with another forced mode"
+    end
+    options[:forced_mode] = "word_explorer"
   end
 
   opts.on("-aDIR", "--all=DIR", "Validate all .yaml/.yml files under DIR (recursively)") do |dir|

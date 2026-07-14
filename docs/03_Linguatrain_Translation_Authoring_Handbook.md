@@ -6,6 +6,8 @@ This handbook explains how to design high-quality Linguatrain translation packs.
 
 The goal is **not** to model a textbook. The goal is to model the learning process a student goes through while decoding another language.
 
+This handbook is written for human authors. Some sections include copy-ready LLM prompts because a human author may choose to use an LLM to draft Linguatrain material. Those prompts are authoring tools, not the source of authority. The human author remains responsible for selecting source material, reviewing translations, correcting linguistic errors, and deciding whether the final pack teaches well.
+
 Throughout this handbook, the document **Meidän tavallinen päivä** is used as the canonical translation pack. For this reason, Finnish is frequently used in examples, although the authoring principles are language independent and apply to all languages supported by Linguatrain.
 
 ---
@@ -37,14 +39,13 @@ Use the guide that best matches what you're trying to accomplish.
   - [Authoring Workflow](#authoring-workflow)
   - [Human Source Material](#human-source-material)
   - [Multilingual Source Material](#multilingual-source-material)
-  - [AI-Assisted Authoring](#ai-assisted-authoring)
+  - [Using an LLM to Draft Learning Packs](#using-an-llm-to-draft-learning-packs)
   - [A Collaborative Process](#a-collaborative-process)
-  - [Recommended Inputs](#recommended-inputs)
+  - [What to Give the LLM](#what-to-give-the-llm)
   - [Progressive Enrichment](#progressive-enrichment)
-  - [Example Request](#example-request)
-  - [Give the AI a Role](#give-the-ai-a-role)
+  - [Copy-Ready Full-Pack Prompt](#copy-ready-full-pack-prompt)
   - [Review the Results](#review-the-results)
-  - [AI Is an Assistant, Not an Authority](#ai-is-an-assistant-not-an-authority)
+  - [The LLM Is an Assistant, Not an Authority](#the-llm-is-an-assistant-not-an-authority)
 
 - [Translation](#translation)
   - [Translation Is Canonical](#translation-is-canonical)
@@ -92,6 +93,21 @@ Use the guide that best matches what you're trying to accomplish.
   - [Multi-word Expressions](#multi-word-expressions)
   - [Conjugation Pack Shape](#conjugation-pack-shape)
 
+- [Word Explorer](#word-explorer)
+  - [Word Explorer Packs](#word-explorer-packs)
+  - [Word Explorer Entry Schema](#word-explorer-entry-schema)
+  - [Field Definitions](#field-definitions-2)
+  - [Word Explorer Pack Generation](#word-explorer-pack-generation)
+  - [Creating a Word Explorer Pack (and Guide) with an LLM](#creating-a-word-explorer-pack-and-guide-with-an-llm)
+  - [Guiding Principle](#guiding-principle-2)
+  - [Educational Priority](#educational-priority-2)
+  - [Candidate Selection](#candidate-selection-2)
+  - [Explorations Are Not Complete Paradigms](#explorations-are-not-complete-paradigms)
+  - [Irregular Stems](#irregular-stems)
+  - [Deriving a Word Explorer Pack](#deriving-a-word-explorer-pack)
+  - [The Word Explorer Guide](#the-word-explorer-guide-word-explorermd)
+  - [Word Explorer Pack Shape](#word-explorer-pack-shape)
+
 - [Common Authoring Mistakes](#common-authoring-mistakes)
   - [Overusing Accepted Answers](#overusing-accepted-answers)
   - [Breaking the Lemma Invariant](#breaking-the-lemma-invariant)
@@ -101,6 +117,9 @@ Use the guide that best matches what you're trying to accomplish.
   - [Reordering the Source](#reordering-the-source)
   - [Duplicating Information](#duplicating-information)
   - [Creating Exhaustive Morphology](#creating-exhaustive-morphology)
+  - [Distractors Without Reasons](#distractors-without-reasons)
+  - [Inventing Chapter Continuity](#inventing-chapter-continuity)
+  - [Authoring the Word Explorer Guide by Hand](#authoring-the-word-explorer-guide-by-hand)
   - [Inconsistent Phonetics](#inconsistent-phonetics)
   - [Weak Vocabulary References](#weak-vocabulary-references)
   - [Vocabulary Notation Entries](#vocabulary-notation-entries)
@@ -112,6 +131,7 @@ Use the guide that best matches what you're trying to accomplish.
   - [Structural Quality](#structural-quality)
   - [Linguistic Quality](#linguistic-quality)
   - [Companion Pack Quality](#companion-pack-quality)
+  - [Word Explorer Quality](#word-explorer-quality)
   - [Final Question](#final-question)
 
 - [Final Thoughts](#final-thoughts)
@@ -154,18 +174,16 @@ Vocabulary
       ↓
 Translation
       ↓
-Morphology
+Word Explorer (morphology)
       ↓
 Conversation
 ```
 
 - **Vocabulary** builds recognition of reusable words and phrases.
 - **Translation** teaches how ideas are expressed in complete sentences.
-- **Morphology** teaches how words are constructed to express meaning.
+- **Word Explorer (morphology)** teaches why one encountered form was used in one specific sentence, while Conjugation teaches complete verb paradigms.
 - **Conversation** teaches communication using the patterns learned.
-
-**Note:** Morphology is a module currently under development.
-
+ 
 Each module complements the others while remaining focused on one learning objective.
 
 > A good translation document should feel less like a static database and more like a scaffolded classroom discussion between a student and a teacher.
@@ -352,15 +370,17 @@ A simple source/target translation document is still valuable and can be enriche
 
 ---
 
-## AI-Assisted Authoring
+## Using an LLM to Draft Learning Packs
 
-Modern AI systems have become remarkably capable language assistants.
+Modern LLMs have become remarkably capable language assistants.
 
 While they should not be considered infallible, they are extremely effective at accelerating the creation of translation documents when used within a well-defined workflow.
 
 The objective is not to replace the human author.
 
 The objective is to allow the human author to spend their time improving educational quality instead of manually writing repetitive YAML.
+
+In this workflow, the human author prepares the source material, gives the LLM the relevant Linguatrain examples and specification, reviews the draft, and decides what is good enough to publish or study.
 
 ```text
 Source Material
@@ -369,7 +389,7 @@ Canonical Example YAML
         +
 Translation Design Guide
         ↓
-AI Assistant
+LLM Draft
         ↓
 Translation YAML Draft
         ↓
@@ -386,7 +406,7 @@ The translation schema is intentionally designed for collaborative authoring.
 
 The human author provides educational intent, reviews the resulting document, and ensures that it teaches effectively.
 
-The AI assistant performs much of the mechanical work, including:
+The LLM can perform much of the mechanical drafting work, including:
 
 - generating the initial YAML structure
 - suggesting chunk boundaries
@@ -398,30 +418,33 @@ The AI assistant performs much of the mechanical work, including:
 
 Neither works as well in isolation.
 
-The highest quality translation documents are produced through collaboration between a knowledgeable human author and an AI assistant.
+The highest quality translation documents are produced when a knowledgeable human author uses the LLM draft as a starting point, then reviews and improves it.
 
-The AI contributes speed, consistency, and scale.
+The LLM contributes speed, consistency, and scale.
 
 The human contributes educational judgment, language expertise, and an understanding of how people learn.
 
 ---
 
-## Recommended Inputs
+## What to Give the LLM
 
-The highest quality AI-generated translation documents are produced when the assistant is provided with:
+The highest quality LLM drafts are produced when the human author provides:
 
 1. The representative translation YAML document included with Linguatrain.
 2. The representative vocabulary YAML document included with Linguatrain.
-3. This Translation YAML Design Guide.
-4. The new source material.
+3. The representative conjugation YAML document included with Linguatrain. 
+4. The representative word-explorer YAML document included with Linguatrain.
+5. The representative word-explorer markdown document included with Linguatrain. 
+6. The 05_Linguatrain_LLM_Authoring_Specification markdown document included with Linguatrain.  
+7. The new source material.
 
 The example translation document is intentionally included with Linguatrain as a canonical reference implementation.
 
 It demonstrates the expected structure, chunking style, literal translations, natural translations, hints, vocabulary references, and overall educational philosophy.
 
-Rather than starting from an empty prompt, AI assistants should use this document as the baseline for all future translation documents.
+Rather than starting from an empty prompt, give the LLM these references so it has a concrete baseline for structure, style, and educational intent.
 
-The Translation YAML Design Guide explains *why* the example document was authored the way it was.
+The 05_Linguatrain_LLM_Authoring_Specification is written specifically for LLMs, not human readers. Attach it when prompting an LLM so the generated draft follows Linguatrain's schema and quality rules as closely as possible.
 
 Together, the example document and the design guide communicate both the syntax and the educational intent of the translation schema.
 
@@ -467,6 +490,30 @@ answer
 type
 notes
 forms
+
+        +
+
+Companion Conjugation Pack
+
+lemma
+forms
+
+        +
+
+Companion Word Explorer Pack
+
+source
+word
+base_word
+morphology
+explorations
+applications
+
+        ↓
+
+Word Explorer Guide
+
+generated from the Word Explorer pack — never authored independently
 ```
 
 A minimal document containing only source and target text is still useful.
@@ -477,41 +524,81 @@ This allows translation documents to grow in educational value over time while r
 
 ---
 
-## Example Request
+## Copy-Ready Full-Pack Prompt
 
-A request such as the following provides the AI with both the structure and the educational objective:
+Use this request when you're starting from new source material and want the full pipeline — Translation, Vocabulary, Conjugation, Word Explorer, and the Word Explorer Guide — in one pass. The narrower requests for generating just one pack type live in their own sections ([Vocabulary](#creating-a-vocabulary-pack-without-translation-using-an-llm), [Conjugation](#creating-a-conjugation-pack-without-translation-using-an-llm), [Word Explorer](#creating-a-word-explorer-pack-and-guide-with-an-llm)).
 
-> I have attached five documents:
->
-> 1. The canonical Translation YAML example.
-> 2. The canonical Vocabulary YAML example.
-> 3. The canonical Conjugation YAML example.
-> 4. The Linguatrain Translation Authoring Handbook.
-> 5. New source material.
->
-> Using the canonical examples and the design guide as your reference, create three documents: a complete Translation YAML document, a complete Conjugation YAML document from the translation, and a companion Vocabulary YAML document for the supplied source material.
->
-> Follow the schema and authoring philosophy described in the guide.
->
-> Produce meaningful semantic chunks, optional `phonetic` pronunciation guidance, literal translations, natural translations, hints, vocabulary references, and grammar references where appropriate.
->
-> Then collect the unique `vocabulary_refs` values and create studyable vocabulary entries using the normal vocabulary schema. Each vocabulary entry should include `prompt`, `answer`, and, where helpful, `type`, `literal`, `forms`, `phonetic`, and concise `notes`.
->
-> The resulting YAML files should resemble the canonical examples in both structure and educational quality.
->
-> Every note should either be quoted or emitted as a block scalar.
+Copy the following prompt into the LLM after attaching the listed files. Edit the lesson identifiers, title, and source material description before sending it.
 
----
+```Text
+Attached:
+1. The canonical Translation YAML example.
+2. The canonical Vocabulary YAML example.
+3. The canonical Conjugation YAML example.
+4. The canonical Word Explorer YAML example.
+5. The canonical Word Explorer Guide (Markdown) example.
+6. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec.
+7. New source material — a text file, or an image of the source text block.
 
-## Give the AI a Role
+Task: Using the attached specification and canonical examples as your
+reference, generate a complete set of five Linguatrain learning packs for
+the attached source material: a Translation pack, a Vocabulary pack, a
+Conjugation pack, a Word Explorer pack, and a Word Explorer Guide. Use the
+canonical examples only as a structural/style reference — do not copy or
+reuse any of their lexical content.
 
-One technique that consistently improves results is to clearly define the role the AI should perform.
+If the source material is an image rather than plain text, first
+transcribe it exactly as it appears, preserving original spelling,
+diacritics, and line breaks. Flag any character you're not fully
+confident about — easily confused diacritics, an unclear scan, ambiguous
+punctuation — as a short list before doing anything else, so I can confirm
+or correct the transcription. Do not proceed past this step on a guessed
+transcription; every downstream pack inherits whatever the source text
+says.
 
-For example:
+Follow this order of operations:
 
-> Act as an experienced Linguatrain content author. Your objective is not simply to translate the text, but to create educational material that helps a learner understand the language. Follow the Translation YAML Design Guide and use the canonical example as the reference for style and structure.
+1. Author the Translation pack first: meaningful semantic chunks, optional
+   `phonetic` pronunciation guidance, literal translations, natural
+   translations, hints, `vocabulary_refs`, and `grammar_refs`.
+2. Collect every unique `vocabulary_refs` value and author the Vocabulary
+   pack from that exact list — no more, no fewer. Each entry should
+   include `prompt`, `answer`, and, where helpful, `type`, `literal`,
+   `forms`, `phonetic`, and concise `notes`.
+3. Collect every verb lemma in the Vocabulary pack and author the
+   Conjugation pack from that exact list — no more, no fewer.
+4. Author the Word Explorer pack from the Translation pack's entries and
+   chunks, cross-referencing the Vocabulary pack's ids via
+   `vocabulary_ref` wherever one exists. Not every word needs an entry —
+   select the words that best illustrate cases, compounds, derivations,
+   passive forms, and irregular stems. Report the list of words you
+   selected, with a brief reason for each, before generating full entries,
+   so I can confirm the selection.
+5. Generate the Word Explorer Guide from that finished YAML, grouped by
+   category. The Guide is scoped to this one pack only: no invented
+   chapter or lesson numbering, and no reference to any other pack's
+   content, unless the source material itself states that relationship as
+   fact.
 
-Providing this context encourages the AI to make educational decisions rather than simply producing a direct translation.
+Lesson identifiers for this set of packs:
+- id: '[e.g. suomen_mestari_1_kappale_5]' — used as the base for each
+  pack's own id (`..._translation`, `..._vocabulary`, `..._conjugation`,
+  `..._word_explorer`)
+- title: '[e.g. Kappale 5]'
+- version: 1
+- schema_version: 1
+
+Do not invent a `chapter` or `category` value anywhere in this set unless
+the source material itself states one as fact — omit rather than infer.
+
+Every note, hint, and explanation should either be quoted or emitted as a
+block scalar.
+
+Before presenting the final output, run the conformance checklist from the
+attached spec — including the Word Explorer pack quality and Word Explorer
+Guide quality subsections — and confirm it passes. Then present all five
+files, each in its own labeled code block.
+```
 
 ---
 
@@ -533,25 +620,25 @@ Look for questions such as:
 - Does the vocabulary pack use `prompt` and `answer` so it can be studied directly?
 - Would I enjoy learning from this document?
 
-The objective is not to ask the AI for perfection.
+The objective is not to ask the LLM for perfection.
 
 The objective is to produce a high-quality first draft that a human author can refine into an excellent learning resource.
 
 ---
 
-## AI Is an Assistant, Not an Authority
+## The LLM Is an Assistant, Not an Authority
 
 This guide is intentionally opinionated. It reflects the workflow that proved successful while developing Linguatrain and while learning Finnish myself.
 
-Finally, I can't stress enough that AI is a **helper**, not a magical wizard. It will make mistakes. It can present an answer with complete confidence that is simply wrong because it has missed a nuance, misunderstood the context, or chosen an incorrect interpretation. This is why collaboration and independent verification remain important.
+Finally, I can't stress enough that an LLM is a **helper**, not an authority. It will make mistakes. It can present an answer with complete confidence that is simply wrong because it has missed a nuance, misunderstood the context, or chosen an incorrect interpretation. This is why collaboration and independent verification remain important.
 
 Many years ago, when I worked for a technology company, our documentation was translated by one translation company and then independently reviewed by another. The goal wasn't to prove the first company was wrong; it was to improve quality through verification.
 
 I recommend the same workflow here.
 
-Let AI produce the first draft. Review it critically. If something doesn't feel right, verify it. Ask a native speaker. Consult a teacher. Compare another translation. Use language forums to verify individual sentences. Most people are happy to explain a few phrases, even if they aren't going to translate an entire book.
+Let the LLM produce the first draft. Review it critically. If something doesn't feel right, verify it. Ask a native speaker. Consult a teacher. Compare another translation. Use language forums to verify individual sentences. Most people are happy to explain a few phrases, even if they aren't going to translate an entire book.
 
-The purpose of AI is not to replace human expertise.
+The purpose of the LLM is not to replace human expertise.
 
 Its purpose is to accelerate the mechanical work so that the human author can focus on what matters most:
 
@@ -596,7 +683,7 @@ Translation Pack
         │
         ├── Conjugation Pack
         │
-        ├── Morphology Pack (future)
+        ├── Word Explorer Pack (morphology)
 ```
 
 If a discrepancy exists between a translation pack and one of its companion packs, the translation pack is considered canonical.
@@ -1389,10 +1476,9 @@ This follows the general Linguatrain principle of progressive
 disclosure: show pronunciation when it helps the learner, but do not
 clutter the default translation exercise.
 
-## Authoring Guidance for AI Agents
+## Pronunciation Guidance to Include in LLM Prompts
 
-When generating translation YAML, include `phonetic` when pronunciation
-would help the learner. This is especially useful for beginner packs,
+When asking an LLM to generate translation YAML, tell it to include `phonetic` when pronunciation would help the learner. This is especially useful for beginner packs,
 textbook samples, dialogue, unfamiliar names, difficult compounds, and
 languages where spelling does not reliably predict pronunciation.
 
@@ -1427,12 +1513,12 @@ line.
 
 Chunk-level `phonetic` should cover only that chunk's `source`.
 
-If the AI is not confident in a pronunciation guide, it should omit
+If the LLM is not confident in a pronunciation guide, it should omit
 `phonetic` rather than invent an unreliable one.
 
 ---
 
-##Symbolic Values and Spoken Forms
+## Symbolic Values and Spoken Forms
 
 Source Text is Authoritative
 
@@ -1497,7 +1583,7 @@ vocabulary_refs:
 
 ## Translation Hints
 
-When the spoken form differs from the written form because of symbolic notation, explain the explain the relationship between the written symbolic form and its natural spoken form in the translation hint.
+When the spoken form differs from the written form because of symbolic notation, explain the relationship between the written symbolic form and its natural spoken form in the translation hint.
 
 **Example:**
 
@@ -1694,18 +1780,17 @@ Vocabulary entries should:
 
 ---
 
-### Creating a Vocabulary pack without Translation Using an LLM
+### Creating a Vocabulary Pack without Translation Using an LLM
 
-There may be times when you want to create your own vocabulary list. This can be done manually or using assistance from an LLM agent.
-When using an LLM agent you need to provide a proper prompt and provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your 
-vocabulary list.  
+There may be times when you want to create your own vocabulary list without first creating a Translation pack. This can be done manually or with help from an LLM.
+
+When using an LLM, provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your vocabulary list.
 
 ---
 
-#### LLM prompt
+#### Copy-Ready Vocabulary Prompt
 
-When trying to get only a vocabulary pack out of an LLM you need to be very explicit with it. The following prompt has been
-tested and will give you the best results. 
+Copy the following prompt into the LLM after attaching the listed files. Edit the metadata values before sending it.
 
 ```Text
 Attached:
@@ -2526,18 +2611,17 @@ Conjugation packs are derived from the vocabulary pack—not directly from the t
 
 ---
 
-### Creating a Conjugation pack without Translation Using an LLM
+### Creating a Conjugation Pack without Translation Using an LLM
 
-There may be times when you want to create your own conjugation list. This can be done manually or using assistance from an LLM agent.
-When using an LLM agent you need to provide a proper prompt and provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your 
-verb text list. Use a single verb per line in the text file. 
+There may be times when you want to create your own conjugation list without first creating Translation and Vocabulary packs. This can be done manually or with help from an LLM.
+
+When using an LLM, provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your verb text list. Use a single verb per line in the text file.
 
 ---
 
-#### LLM prompt
+#### Copy-Ready Conjugation Prompt
 
-When trying to get only a conjugation pack out of an LLM you need to be very explicit with the prompt to the LLM. The following prompt has been
-tested and will give you the best results. 
+Copy the following prompt into the LLM after attaching the listed files. Edit the metadata values before sending it.
 
 ```Text
 
@@ -2872,73 +2956,523 @@ The conjugation schema defines **how verbs inflect**. It does not redefine meani
 
 ---
 
-# Morpholgy -- aka Word Explorer -- work in progress 
+# Word Explorer
 
-Word Explorer is not a grammar reference. It is a guide for understanding how individual words are formed and used in context. Each entry begins with a word encountered in authentic text and helps the learner discover its base word, meaning, formation, and purpose in the sentence.
+Word Explorer is not a grammar reference. It is a guide for understanding how individual words are formed and used in context.
 
-## YAML design
+Where Vocabulary teaches what a word means, and Conjugation teaches how a verb inflects across its whole paradigm, Word Explorer answers a narrower, more specific question:
 
-v0.9 of the design
+> *Why does this word look like this — right here, in this sentence?*
+
+Each entry begins with a single word the learner actually encountered in the source text. From that one word, Word Explorer helps the learner discover its base word, how it was formed, why that particular form was chosen for this sentence, and a small set of related forms worth comparing it to.
+
+This is the module behind Linguatrain's **Apply mode**, where a learner sees a sentence with a blank and must choose the correct form of a word from several real, plausible alternatives:
+
+```text
+Sentence:
+Onko täällä _____ kurssi?
+
+Meaning:
+Is the Finnish course here?
+
+Choose the correct form of suomi:
+
+- suomea
+- suomi
+- suomen
+- suomessa
+```
+
+Choosing wrong doesn't just mark the answer incorrect — it explains *why* the chosen form doesn't fit here. Choosing right explains why it does. That explanation, in both directions, is the heart of Word Explorer.
+
+---
+
+## Word Explorer Packs
+
+Word Explorer packs are derived from the sentences and chunks already present in the companion Translation pack.
+
+Word Explorer entries should:
+
+- begin with a word the learner actually encountered in a specific sentence,
+- trace back to that sentence and chunk, word for word,
+- connect the encountered form to its base word (dictionary form),
+- explain how the form was built and why it was used,
+- and, where useful, generate a small set of related forms for comparison.
+
+Unlike Vocabulary and Conjugation, Word Explorer has **no standalone raw-list mode**. An entry is only meaningful in the context of a real sentence, so it always requires a companion Translation pack to derive from. If no Translation pack exists yet, one must be authored first.
+
+Word Explorer packs may also reference the companion Vocabulary pack (`vocabulary_ref`), but they don't require it. A Translation pack alone is enough to begin.
+
+---
+
+## Word Explorer Entry Schema
+
+Every Word Explorer entry represents one encountered word, examined once, in its actual sentence.
 
 ```yaml
 metadata:
-  id: ''
+  id: ''                 # always single quote IDs
   title: ''
   type: word_explorer
   format: canonical
   version: 1
   schema_version: 1
+  category: ''            # optional
+  chapter: ''             # optional
+  source_pack: ''         # the Translation pack this pack derives from
 
-  category: ''
-  chapter: ''
-
-  source_pack: ''        # Optional: originating Translation pack
-
-dimensions:
-  features:
-    - base_word
-    - meaning
-    - formation
-    - explanation
+grammar:
+  - key: ''
+    name: ''
+    plain_english: ''
+    description: ''
 
 entries:
+  - id: ''                # always single quote IDs
 
-  - id: ''
-
-    # Context (optional for standalone exploration)
     source:
+      entry_id: ''
+      chunk_id: ''
       text: ''
       literal: ''
       target: ''
 
-    # The word being explored
     word: ''
     base_word: ''
     type: ''
 
-    # Meaning of this word in this context
     target: ''
 
-    # Language-specific analysis
     morphology: {}
 
-    # Learning support
     hint: ''
-
-    # How the word was formed
     formation: ''
-
-    # Why this form is used
     explanation: ''
-
-    # Optional semantic role
     role: ''
 
-    # Cross references
+    explorations: []
+    applications: []
+
     vocabulary_ref: ''
     grammar_refs: []
-
 ```
+
+### Required Metadata
+
+- `id`
+- `title`
+- `type`
+- `format`
+- `version`
+- `schema_version`
+- `source_pack`
+
+### Required Entry Fields
+
+- `id`
+- `source`
+- `word`
+- `base_word`
+- `target`
+- `morphology`
+
+### Optional Entry Fields
+
+- `type`
+- `hint`
+- `formation`
+- `explanation`
+- `role`
+- `explorations`
+- `applications`
+- `vocabulary_ref`
+- `grammar_refs`
+
+> **A note on schema history:** an earlier draft of this schema explored a top-level `dimensions.features` block. That idea didn't survive contact with a real pack — it added a layer of indirection without giving an author or a learner anything they actually needed. The `grammar` catalog above, along with `explorations` and `applications`, replaced it once the schema was actually built and tested end to end. If you find an older document describing `dimensions`, treat this one as current.
+
+---
+
+## Field Definitions
+
+### `source`
+
+The sentence context this word was encountered in.
+
+`entry_id` and `chunk_id` point back to the exact Translation pack entry and chunk the word came from. `text`, `literal`, and `target` are copied — not re-derived or reworded — from that Translation entry, so the learner sees the same sentence they'd see in the Translation exercise.
+
+---
+
+### `word`
+
+The exact surface form encountered in the source sentence.
+
+---
+
+### `base_word`
+
+The dictionary form of `word` — the form a learner would look up. This is normally the same value used as the companion Vocabulary entry's `id`, when one exists.
+
+---
+
+### `type`
+
+An optional part-of-speech classification, using the same values as the companion Vocabulary pack (noun, verb, adjective, and so on).
+
+---
+
+### `target`
+
+The contextual meaning of `word` in this specific sentence. This can be more specific than a Vocabulary entry's general-purpose meaning, the same way a Translation chunk's meaning can narrow to fit its sentence.
+
+---
+
+### `morphology`
+
+The language-specific analysis of how `word` was formed from `base_word`.
+
+Every `morphology` block has a `kind`, describing what *sort* of formation this is:
+
+| `kind` | Used for |
+|---|---|
+| `case` | A case-marked form of a noun, pronoun, or adjective |
+| `compound` | Two or more whole words fused into one |
+| `derivation` | A suffix builds a new word or meaning from a base word |
+| `verb_form` | A conjugated or non-finite verb form outside a plain personal paradigm — passive, participle, infinitive, and so on |
+| `base_word` | The unmarked citation form itself — used only inside `explorations`, to represent the starting point of a word family |
+
+The remaining fields inside `morphology` (`case`, `ending`, `stem`, `parts`, `suffix`, and so on) depend on the `kind` and the language. Populate only the ones that genuinely apply — an empty field is worse than an absent one.
+
+---
+
+### `hint`
+
+Optional learning support shown before the answer is revealed.
+
+A good hint points at the grammatical relationship without giving away the answer. "This is a form of the word for 'I'" is a hint. "This means 'on me'" is the answer.
+
+---
+
+### `formation`
+
+A short, learner-facing line showing how `word` was built from `base_word`:
+
+```text
+base_word (+ stem/ending/suffix) → word
+```
+
+For example: `suomi → suome- + -n → suomen`.
+
+---
+
+### `explanation`
+
+States what the form means *and* why that specific form is used here. Both halves matter — this is the field that turns a bare grammatical label into something the learner can actually reason with.
+
+---
+
+### `role`
+
+An optional short label for the word's semantic or grammatical role in the sentence — `possessor`, `destination`, `compound_noun`, and so on. Free text, but it should stay consistent for the same relationship across a pack.
+
+---
+
+### `explorations`
+
+A small word family built outward from `base_word`, for recognition and comparison.
+
+Explorations are not a complete paradigm. They're a handful of forms — typically three to five — chosen because they're close to the encountered word and worth comparing to it. One exploration (`word` itself) is marked `origin: source`, meaning it's literally the form the learner encountered. The rest are `origin: generated`: genuinely correct forms constructed to round out the comparison, the same way a Conjugation pack builds a full paradigm outward from one encountered verb form.
+
+```yaml
+explorations:
+  - word: 'minä'
+    target: 'I'
+    origin: generated
+    status: valid
+
+  - word: 'minulla'
+    target: 'on me / I have'
+    origin: source
+    status: valid
+```
+
+A generated form that isn't a great fit for this particular sentence can still be worth including — that's often exactly the point, since it becomes a distractor in `applications` — but it needs a `status` other than `valid` and a `usage_note` explaining why it doesn't fit.
+
+---
+
+### `applications`
+
+One or more contextual-choice exercises: the mechanism behind Apply mode.
+
+Each application presents the learner with a sentence, a blank, and several choices. One choice is correct; the rest are real, plausible, wrong-for-this-context forms, each with its own explanation of why it doesn't fit.
+
+```yaml
+applications:
+  - id: ''
+    prompt:
+      text: 'Minulla on vaimo ja kaksi _____.'
+      meaning: 'I have a wife and two children.'
+    answer:
+      word: 'lasta'
+    choices: ['lapsi', 'lasta', 'lapset', 'lapsia']
+    explanation:
+      why_it_fits: '...'
+    distractors:
+      - word: 'lapsi'
+        meaning: 'child'
+        why_not: '...'
+```
+
+The quality of an application lives almost entirely in its `why_not` explanations. A distractor that's just marked wrong teaches nothing. A distractor whose `why_not` explains what it actually means, and why that meaning doesn't belong in this sentence, teaches the learner something they'll remember the next time they see it.
+
+---
+
+### `vocabulary_ref` and `grammar_refs`
+
+Cross-references into the companion Vocabulary pack and this pack's own `grammar` catalog, respectively.
+
+`vocabulary_ref` should resolve to a real Vocabulary entry when one exists, and should simply be omitted when it doesn't — never a forward reference to a pack that hasn't been written yet.
+
+`grammar_refs` points at keys defined in this pack's own top-level `grammar` list, not at a Translation pack's grammar catalog. The two are related in spirit but scoped independently — a Word Explorer pack's `grammar` list only needs to cover the concepts this pack's entries actually use.
+
+---
+
+## Word Explorer Pack Generation
+
+Before generating a Word Explorer pack, authors SHALL identify the Translation pack it will derive from.
+
+Word Explorer packs are derived from the sentences and chunks in the Translation pack — not from a raw word list, and not from the Vocabulary pack directly, though they may reference it.
+
+---
+
+### Creating a Word Explorer Pack (and Guide) with an LLM
+
+Word Explorer is a two-part deliverable: the YAML pack itself, and the human-readable **Word Explorer Guide** — a Markdown document generated *from* that YAML, never authored independently (see [The Word Explorer Guide](#the-word-explorer-guide-word-explorermd) below). A single LLM request can reasonably produce both.
+
+Word Explorer packs can be drafted from an existing Translation pack, or directly from new source material: a plain text file, or an image of a text block — a textbook page, a sign, a worksheet. If you're starting from an image, the LLM needs to transcribe it accurately before anything else can be built on top of it. The prompt below asks for that explicitly, because a single misread diacritic (an *a* for an *ä*, or a dropped double letter) will quietly propagate through every downstream pack.
+
+---
+
+#### Copy-Ready Word Explorer Prompt
+
+Copy the following prompt into the LLM after attaching the listed files. Edit the metadata values before sending it.
+
+```Text
+Attached:
+1. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec
+2. [canonical_example]_word_explorer.yaml — a canonical Word Explorer pack, for style/structure reference
+3. [canonical_example]_word_explorer.md — a canonical Word Explorer Guide, for style/structure reference
+4. Either:
+   a. [translation_pack].yaml (and [vocabulary_pack].yaml, if it exists) — the
+      pack(s) to derive the Word Explorer pack from, OR
+   b. [source_material].txt, or an image of the source text block — if no
+      Translation pack exists yet
+
+Task: Using §7 of the attached specification, generate a canonical Word
+Explorer pack YAML file and its companion Word Explorer Guide (Markdown)
+for the attached material. Use the attached canonical examples only as a
+structural/style reference — do not copy or reuse any of their lexical
+content.
+
+If I attached an image instead of a Translation pack, first transcribe the
+text exactly as it appears — preserve original spelling, diacritics, and
+line breaks. Flag any character you're not fully confident about (easily
+confused diacritics, unclear scans, ambiguous punctuation) as a short list
+before doing anything else, so I can confirm or correct the transcription.
+Do not proceed past this step on a guessed transcription.
+
+If no Translation pack exists yet, produce one first, following the
+Translation pack conventions already established in this handbook and the
+attached spec, and present it for review before continuing to Word
+Explorer.
+
+Lesson metadata for this pack:
+- id: '[e.g. suomen_mestari_1_kappale_5_word_explorer]'
+- title: '[e.g. Kappale 5 — Word Explorer]'
+- source_pack: '[the Translation pack id this derives from]'
+- version: 1
+- schema_version: 1
+
+Do not invent a `chapter` or `category` value unless the source material
+itself states one as fact (§7.2). Omit rather than infer.
+
+Select entries the way §7's Guiding Principle and Candidate Selection
+sections describe: not every word in the source text needs an entry.
+Choose the words that best illustrate cases, compounds, derivations,
+passive forms, and irregular stems — the same five categories the Guide is
+organized around — and are worth a learner's attention. Report the list of
+words you selected, and briefly why, before generating full entries, so I
+can confirm the selection.
+
+For each entry, generate `explorations` (§7.6) and at least one
+`applications` contextual-choice exercise with a minimum of four choices
+where plausible distractors exist (§7.7). Every distractor needs a
+`why_not` that explains what it actually means, not just that it's wrong.
+
+Then generate the Word Explorer Guide (§7.11) from that YAML, grouped by
+category, with entries sharing a case/suffix/voice stacked under one
+subheading. Remember the Guide is scoped to this one pack only: no chapter
+or lesson numbering, and no reference to any other pack's content
+(§7.11.1, §7.11.4).
+
+Finally, run the §9 conformance checklist (the Word Explorer pack quality
+and Word Explorer Guide quality subsections) and confirm it passes before
+presenting the final YAML and Markdown, each in its own code block.
+```
+
+---
+
+## Guiding Principle
+
+The companion Word Explorer pack teaches **why a word takes the form it does** — not what the word means, and not its full paradigm.
+
+Vocabulary teaches meaning.
+
+Translation teaches usage.
+
+Conjugation teaches complete verb paradigms.
+
+Word Explorer teaches the *reasoning*: the connection between a base word and the specific form a sentence required.
+
+The goal is not to analyze every word in the source text. The goal is to pick the words whose formation genuinely teaches something, and explain that formation clearly enough that the learner starts recognizing the same pattern elsewhere.
+
+---
+
+## Educational Priority
+
+Word Explorer packs should reinforce the words the lesson already introduced, while teaching the learner to reason about form rather than simply recognize it.
+
+The learner already knows, or is learning, what the word means — from Vocabulary.
+
+The learner already knows how it's used in a sentence — from Translation.
+
+Word Explorer teaches the *why*: why this ending, why this compound, why this stem changed shape.
+
+---
+
+## Candidate Selection
+
+Word Explorer entries should be generated only from words that illustrate one of the five categories used throughout this handbook and the companion Guide:
+
+- **Cases** — a case-marked noun, pronoun, or adjective worth understanding
+- **Compounds** — two or more words fused into one
+- **Derivations** — a suffix that builds a new word or meaning from a base word
+- **Passive forms** — the impersonal "is done" construction, where the language has one
+- **Irregular stems** — a base word whose case stem can't be derived by a general rule
+
+Not every word needs an entry, and not every sentence needs to be mined for morphology. A Word Explorer pack that tries to analyze every word in a text stops being a guide and becomes an exhaustive grammar reference — precisely what this module is not (see [Creating Exhaustive Morphology](#creating-exhaustive-morphology)).
+
+Choose the words that teach something a learner will actually use again.
+
+---
+
+## Explorations Are Not Complete Paradigms
+
+Unlike the Conjugation pack, Word Explorer's `explorations` are intentionally incomplete.
+
+A Conjugation entry for *olla* teaches all six persons, positive and negative. A Word Explorer entry for *minulla* teaches three or four nearby forms of *minä* — enough to show the pattern, not enough to replace the Conjugation or Vocabulary pack's job.
+
+If you find yourself listing every case a noun can take, or every person a verb can be conjugated in, inside an `explorations` block, that content belongs in the Conjugation pack instead.
+
+---
+
+## Irregular Stems
+
+Some base words don't just add an ending to their dictionary form — they shift shape first. Finnish pronouns are a familiar example: *minä* becomes *minu-* before any case ending; *tämä* becomes *tä-*.
+
+Word Explorer, and its companion Guide, flag these separately, because they're the forms a learner has to memorize directly rather than derive from a rule they already know.
+
+The test is strict, and worth stating plainly: a stem is irregular only when it **cannot be derived by a general rule** from the citation form. Ordinary consonant gradation (*ruoka → ruoan*) is not irregular — it's a well-documented, productive pattern that applies across many words, even though it can look dramatic to a beginner. A pronoun stem that simply doesn't match its nominative, or a handful of small numbers whose case stems each have to be learned individually, are the real irregular cases.
+
+Don't flag a word as irregular just because a learner might find it hard. Flag it because the rule genuinely doesn't exist.
+
+---
+
+## Deriving a Word Explorer Pack
+
+Translation packs naturally identify candidate words for Word Explorer, the same way they identify candidate verbs for Conjugation.
+
+For example, a Translation pack might contain the following candidates:
+
+```text
+suomalainen   (suomi + -lainen)      — a derivation worth explaining
+herätyskello  (herätys + kello)      — a compound worth explaining
+minulla       (minä → minu- + -lla)  — a case form built on an irregular stem
+kahdelta      (kaksi → kahde- + -lta) — a clock-time ablative
+```
+
+Each of these earns a Word Explorer entry because it teaches something a learner will see again — a productive suffix, a compound pattern, an irregular pronoun stem, a fixed clock-time construction — not simply because the word appears in the text.
+
+### Every Entry Traces to a Real Sentence
+
+A Word Explorer entry's `source` must point to an entry and chunk that genuinely exist in the Translation pack, with `text`, `literal`, and `target` copied exactly — never invented sentence context to satisfy the schema.
+
+If a word you want to explore doesn't actually appear in the Translation pack's source text, it doesn't belong in this pack. Word Explorer has no standalone mode for a reason: every entry's authority comes from the sentence it was found in.
+
+---
+
+## The Word Explorer Guide (`word-explorer.md`)
+
+The Word Explorer pack is built for the application: entries, explorations, applications, and cross-references, all structured for a study session inside Linguatrain.
+
+The **Guide** is built for the human: a plain Markdown document, organized by grammatical category instead of source order, so every genitive, every compound, every irregular stem in the lesson stacks up together for comparison — closer to a set of study notes than an interactive exercise.
+
+The Guide is always **generated from the completed Word Explorer pack**, never authored by hand and never drawn directly from the source text. If the YAML changes, regenerate the Guide from it rather than patching the Markdown independently — the two should never be allowed to drift apart.
+
+### Category Tables
+
+The Guide organizes entries into the same five categories used for candidate selection:
+
+```markdown
+### Cases
+
+**Partitive (-a/-ä)**
+| Finnish form | Base word | Formation | Meaning | Where it appears |
+|---|---|---|---|---|
+| **lasta** | lapsi | lapsi → **las-** + **-a** | child (some, after a number) | *kaksi lasta.* |
+
+### Compounds
+| Compound | Parts | Literal sense | Where it appears |
+|---|---|---|---|
+| **herätyskello** | herätys + kello | alarm clock | *herätyskello soi.* |
+```
+
+A category with no entries in a given pack is simply omitted — an empty table teaches nothing.
+
+One category is a cross-cutting exception: **Irregular stems**. A word can appear once in its normal category table (Cases, most often) *and* once in the Irregular stems table — never duplicated within a single table, but legitimately present in both.
+
+### Scope: One Pack, One Guide
+
+A Translation pack, and therefore its Word Explorer pack and Guide, carries no guaranteed information about a course sequence, a chapter number, or its relationship to any other lesson. Treat every pack as standalone.
+
+Concretely, this means the Guide:
+
+- is never numbered by chapter or lesson unless the Translation pack's own metadata states that number as fact, not an inference,
+- never references another pack's content ("the same pattern as the previous lesson"),
+- and is never framed as one entry in an ongoing, cumulative document the LLM assembles automatically.
+
+If you later want to combine several standalone Guides into one reference document, that's a deliberate editorial decision made by hand, not something this pipeline should presuppose.
+
+### Notes
+
+Each Guide ends with a short **Notes** section: freeform observations that don't fit neatly into a table row. These should trace directly back to a `hint` or `explanation` already present in the YAML. The Guide reformats the pack's own content; it doesn't add new grammatical claims of its own.
+
+---
+
+## Word Explorer Pack Shape
+
+The Word Explorer pack defines how Linguatrain represents individual word formations for a particular lesson.
+
+Every Word Explorer pack should:
+
+- derive its entries from real sentences in a companion Translation pack,
+- connect each encountered word to its base word and explain how one became the other,
+- select entries for what they teach, not for exhaustive coverage,
+- generate a small set of comparison forms rather than a complete paradigm,
+- provide contextual-choice exercises whose wrong answers teach as much as the right one,
+- and produce a companion Guide that reformats — never re-authors — the same content for human review.
+
+The Word Explorer schema defines **why a word looks the way it does**. It does not redefine meaning, introduce new vocabulary, or duplicate the complete paradigms that belong in the Conjugation pack.
+
 ---
 
 # Common Authoring Mistakes
@@ -3211,7 +3745,7 @@ Each field has a single educational purpose.
 
 ## Creating Exhaustive Morphology
 
-The `forms` section is intended to capture useful forms—not complete paradigms.
+The Vocabulary pack's `forms` field, and the Word Explorer pack's `explorations` field, are both intended to capture useful forms—not complete paradigms.
 
 Store only forms that:
 
@@ -3220,6 +3754,32 @@ Store only forms that:
 - or provide clear educational value.
 
 Complete paradigms belong in the companion Conjugation pack.
+
+---
+
+## Distractors Without Reasons
+
+An `applications` distractor that is only marked as wrong teaches nothing.
+
+A `why_not` field should explain what the distractor form actually means and why that meaning doesn't fit this particular sentence—not simply assert that the answer is incorrect.
+
+The wrong answer is often as educational as the right one, but only if the explanation does the work.
+
+---
+
+## Inventing Chapter Continuity
+
+A Translation pack carries no guaranteed information about a course sequence, a chapter number, or its relationship to any other pack.
+
+Do not infer a `chapter` or `category` value that the source material doesn't state as fact, and do not let a Word Explorer Guide reference another lesson's content ("the same pattern as the previous lesson"). Treat every pack as standalone unless told otherwise.
+
+---
+
+## Authoring the Word Explorer Guide by Hand
+
+The Word Explorer Guide is generated from the completed Word Explorer pack—never authored independently, and never drawn directly from the source text.
+
+If the YAML changes, regenerate the Guide from it. A hand-edited Guide that has drifted from its YAML is worse than no Guide at all, because it looks authoritative while being wrong.
 
 ---
 
@@ -3410,12 +3970,23 @@ The language content should be internally consistent and pedagogically useful.
 
 ## Companion Pack Quality
 
-Translation, vocabulary, and conjugation packs should function as a coherent learning system.
+Translation, vocabulary, conjugation, and Word Explorer packs should function as a coherent learning system.
 
 - ☐ Vocabulary entries support the translation pack.
 - ☐ Conjugation entries correspond to vocabulary lemmas.
 - ☐ Morphological forms complement—not replace—the Conjugation pack.
+- ☐ Word Explorer entries trace to a real Translation entry and chunk.
+- ☐ Word Explorer `explorations` stay a small comparison set, not a full paradigm.
 - ☐ Cross-references are complete and consistent.
+
+---
+
+## Word Explorer Quality
+
+- ☐ Every entry was chosen because it teaches something—a case, a compound, a derivation, a passive form, or a genuine irregular stem—not because the word simply appeared in the text.
+- ☐ Every `applications` distractor has a `why_not` that explains its actual meaning, not just that it's wrong.
+- ☐ No `chapter` or `category` value was invented; either the source material states it as fact, or it's omitted.
+- ☐ The Word Explorer Guide was generated from the finished YAML, grouped by category, and scoped to this one pack—no invented chapter numbering, no reference to another pack's content.
 
 ---
 
@@ -3432,10 +4003,9 @@ If the answer is **yes**, the pack is ready for publication.
 
 # Final Thoughts
 
-This document and workflow wasn't designed to teach an AI how to write YAML.
+This document and workflow were not designed to teach an LLM how to write YAML.
 
-It was designed to teach both human authors and AI assistants how to
-think like a Linguatrain content author.
+It was designed to teach human authors how to think like Linguatrain content authors, whether they write packs by hand or use an LLM to draft them.
 
 I have spent the better part of four decades working with technical
 content. Linguatrain exists because I couldn't find a language-learning
@@ -3450,8 +4020,8 @@ The Translation module began with a very simple question:
 > understand it by translating it?*
 
 As I worked on the idea, it became obvious that translation involved
-much more than asking an AI to translate a sentence or comparing my own
-handwritten translations against an AI-generated answer. Both approaches
+much more than asking an LLM to translate a sentence or comparing my own
+handwritten translations against an LLM-generated answer. Both approaches
 produce answers, but neither necessarily produces understanding.
 
 A student and teacher don't work that way in a classroom.
@@ -3485,11 +4055,9 @@ The workflow is intentionally simple:
 Together, these three artifacts provide everything needed to produce
 consistent, high-quality translation documents.
 
-Whether the first draft is written by a human, an AI assistant,
-or---most effectively---a collaboration between the two, the objective
+Whether the first draft is written by a human, drafted with an LLM,
+or refined through collaboration between the two, the objective
 remains the same:
 
 > Help the learner understand the language, one meaningful idea at a
 > time.
-
-

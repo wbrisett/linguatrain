@@ -1,0 +1,2424 @@
+metadata:
+  id: 'meidan_tavallinen_paiva_word_explorer'
+  title: 'Meidän tavallinen päivä — Word Explorer'
+  type: word_explorer
+  format: canonical
+  version: 1
+  schema_version: 1
+
+  category: daily_life
+  chapter: 2
+
+  source_pack: 'suomen_mestari_1_meidan_tavallinen_paiva_translation'
+
+grammar:
+  - key: nominative
+    name: Nominative
+    plain_english: 'base form'
+    description: >
+      The Nominative is the basic form of the word.
+
+  - key: genitive
+    name: Genitive
+    plain_english: 'of / belonging to'
+    description: >
+      The Genitive commonly marks possession or shows that one word modifies
+      another word.
+
+  - key: partitive
+    name: Partitive
+    plain_english: 'some / part of / unbounded'
+    description: >
+      The Partitive can mark an incomplete amount, an unbounded quality, the
+      object of an ongoing action, or the noun that follows a quantity word
+      such as kaksi.
+
+  - key: inessive
+    name: Inessive
+    plain_english: 'in / inside'
+    description: >
+      The Inessive expresses location inside something. It also appears in
+      fixed expressions such as käydä suihkussa, "to take a shower."
+
+  - key: illative
+    name: Illative
+    plain_english: 'into / to (movement in)'
+    description: >
+      The Illative expresses movement into or toward something. It also
+      marks the goal of a purposive construction with the third infinitive,
+      as in menee nukkumaan, "goes to sleep."
+
+  - key: adessive
+    name: Adessive
+    plain_english: 'on / at / by means of'
+    description: >
+      The Adessive commonly expresses location on or at something, or the
+      means used to do something. Combined with olla, it also expresses
+      possession, as in minulla on, "I have."
+
+  - key: ablative
+    name: Ablative
+    plain_english: 'from / at (a time)'
+    description: >
+      The Ablative expresses movement away from something. Finnish also uses
+      it for a clock-time answer to "at what time," as in kahdelta, "at two
+      o'clock."
+
+  - key: allative
+    name: Allative
+    plain_english: 'to / onto / for'
+    description: >
+      The Allative expresses movement toward something or someone. It can
+      also mark the person who experiences something.
+
+  - key: elative
+    name: Elative
+    plain_english: 'out of / from inside'
+    description: >
+      The Elative expresses movement out of or away from inside something,
+      the reverse of the Inessive.
+
+entries:
+  - id: 'm001'
+
+    source:
+      entry_id: '002'
+      chunk_id: c2
+      text: 'Olen suomalainen mies ja isä.'
+      literal: 'I-am Finnish man and father.'
+      target: "I'm a Finnish man and a father."
+
+    word: 'suomalainen'
+    base_word: 'suomi'
+    type: 'adjective'
+
+    target: 'Finnish (person)'
+
+    morphology:
+      kind: 'derivation'
+      suffix: '-lainen'
+      source_type: 'noun'
+      result_type: 'demonym'
+
+    hint: >
+      This word is built from the name of a country.
+
+    formation: 'suomi → suoma- + -lainen → suomalainen'
+
+    explanation: >
+      Suomalainen is built from Suomi with the demonym suffix -lainen, which
+      names a person or thing belonging to a place. The final -i shifts to
+      -a before the suffix, a change also seen in Ruotsi → ruotsalainen
+      ("Swedish").
+
+    role: 'demonym_adjective'
+
+    explorations:
+      - word: 'suomi'
+        target: 'Finland'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'suomi-'
+        formation: 'suomi'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'suomalainen'
+        target: 'Finnish (person)'
+        morphology:
+          kind: 'derivation'
+          suffix: '-lainen'
+          source_type: 'noun'
+          result_type: 'demonym'
+        formation: 'suomi → suoma- + -lainen → suomalainen'
+        explanation: 'The demonym suffix -lainen names someone from Suomi.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'ruotsalainen'
+        target: 'Swedish (person)'
+        morphology:
+          kind: 'derivation'
+          suffix: '-lainen'
+          source_type: 'noun'
+          result_type: 'demonym'
+        formation: 'ruotsi → ruotsa- + -lainen → ruotsalainen'
+        explanation: 'The same pattern applied to Ruotsi ("Sweden").'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'amerikkalainen'
+        target: 'American (person)'
+        morphology:
+          kind: 'derivation'
+          suffix: '-lainen'
+          source_type: 'noun'
+          result_type: 'demonym'
+        formation: 'Amerikka + -lainen → amerikkalainen'
+        explanation: >
+          This base word does not end in -i, so no vowel change is needed
+          before the suffix.
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'suomalainen_identity'
+        type: contextual_choice
+        reasoning:
+          kind: derivation
+          relationship: nationality_identity
+        source:
+          text: 'Olen suomalainen mies ja isä.'
+          literal: 'I-am Finnish man and father.'
+          target: "I'm a Finnish man and a father."
+
+        prompt:
+          text: 'Olen _____ mies ja isä.'
+          meaning: "I'm a Finnish man and a father."
+
+        base_word: 'suomi'
+
+        answer:
+          word: 'suomalainen'
+
+        choices:
+          - 'suomi'
+          - 'suomalainen'
+          - 'suomea'
+          - 'ruotsalainen'
+
+        grammar_refs: []
+
+        explanation:
+          why_it_fits: >
+            The sentence describes Lauri's nationality. Suomalainen, built
+            from Suomi with -lainen, means "Finnish (person)."
+
+        distractors:
+          - word: 'suomi'
+            grammar: {}
+            meaning: 'Finland / Finnish (the country or language)'
+            why_not: >
+              Suomi names the country or language itself. The sentence
+              needs the adjective describing the man's nationality.
+
+          - word: 'suomea'
+            grammar:
+              case: 'partitive'
+            meaning: 'Finnish (language, some)'
+            why_not: >
+              Suomea is used when talking about the Finnish language, such
+              as speaking or studying it, not to describe a person's
+              nationality.
+
+          - word: 'ruotsalainen'
+            grammar: {}
+            meaning: 'Swedish (person)'
+            why_not: >
+              Ruotsalainen is built the same way from Ruotsi ("Sweden"),
+              but Lauri is Finnish, not Swedish.
+
+    vocabulary_ref: 'suomalainen'
+
+    grammar_refs: []
+
+  - id: 'm002'
+
+    source:
+      entry_id: '003'
+      chunk_id: c1
+      text: 'Minulla on vaimo ja kaksi lasta.'
+      literal: 'On-me is wife and two of-child.'
+      target: 'I have a wife and two children.'
+
+    word: 'minulla'
+    base_word: 'minä'
+    type: 'pronoun'
+
+    target: 'on me / I have'
+
+    morphology:
+      kind: 'case'
+      case: 'adessive'
+      ending: '-lla'
+      stem: 'minu-'
+
+    hint: >
+      This is a form of the word for "I."
+
+    formation: 'minä → minu- + -lla → minulla'
+
+    explanation: >
+      Minulla is the Adessive form of minä. Finnish has no verb "to have,"
+      so possession is expressed with minulla on — literally "on me is,"
+      meaning "I have."
+
+    role: 'possessor'
+
+    explorations:
+      - word: 'minä'
+        target: 'I'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'minä-'
+        formation: 'minä'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'minulla'
+        target: 'on me / I have'
+        morphology:
+          kind: 'case'
+          case: 'adessive'
+          ending: '-lla'
+          stem: 'minu-'
+        formation: 'minä → minu- + -lla → minulla'
+        explanation: 'Combined with on, this expresses possession.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'minun'
+        target: 'my'
+        morphology:
+          kind: 'case'
+          case: 'genitive'
+          ending: '-n'
+          stem: 'minu-'
+        formation: 'minä → minu- + -n → minun'
+        explanation: 'The Genitive form marks possession of a following noun.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'minulle'
+        target: 'to me'
+        morphology:
+          kind: 'case'
+          case: 'allative'
+          ending: '-lle'
+          stem: 'minu-'
+        formation: 'minä → minu- + -lle → minulle'
+        explanation: 'The Allative form marks the person experiencing something.'
+        origin: generated
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'minulla_possession'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: possessive_adessive_construction
+        source:
+          text: 'Minulla on vaimo ja kaksi lasta.'
+          literal: 'On-me is wife and two of-child.'
+          target: 'I have a wife and two children.'
+
+        prompt:
+          text: '_____ on vaimo ja kaksi lasta.'
+          meaning: 'I have a wife and two children.'
+
+        base_word: 'minä'
+
+        answer:
+          word: 'minulla'
+
+        choices:
+          - 'minä'
+          - 'minun'
+          - 'minulla'
+          - 'minulle'
+
+        grammar_refs:
+          - 'adessive'
+
+        explanation:
+          why_it_fits: >
+            Finnish expresses possession with the Adessive form of the
+            possessor plus on: minulla on, "I have."
+
+        distractors:
+          - word: 'minä'
+            grammar:
+              case: 'nominative'
+            meaning: 'I'
+            why_not: >
+              Minä is the plain subject form. The possessive construction
+              needs the Adessive form minulla before on.
+
+          - word: 'minun'
+            grammar:
+              case: 'genitive'
+            meaning: 'my'
+            why_not: >
+              Minun marks possession of a following noun, as in minun
+              nimi ("my name"), not the "have" construction with on.
+
+          - word: 'minulle'
+            grammar:
+              case: 'allative'
+            meaning: 'to me'
+            why_not: >
+              Minulle marks the person something is given or happens to,
+              not the possessor in a minulla on construction.
+
+    vocabulary_ref: 'minä'
+
+    grammar_refs:
+      - 'adessive'
+
+  - id: 'm003'
+
+    source:
+      entry_id: '003'
+      chunk_id: c4
+      text: 'Minulla on vaimo ja kaksi lasta.'
+      literal: 'On-me is wife and two of-child.'
+      target: 'I have a wife and two children.'
+
+    word: 'lasta'
+    base_word: 'lapsi'
+    type: 'noun'
+
+    target: 'child (some, after a number)'
+
+    morphology:
+      kind: 'case'
+      case: 'partitive'
+      ending: '-a'
+      stem: 'las-'
+
+    hint: >
+      This is the word for "child," used after a number.
+
+    formation: 'lapsi → las- + -a → lasta'
+
+    explanation: >
+      Lasta is the Partitive singular form of lapsi. A quantity word like
+      kaksi ("two") is followed by the partitive singular of the noun, not
+      the plural.
+
+    role: 'quantified_noun'
+
+    explorations:
+      - word: 'lapsi'
+        target: 'child'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'lapsi-'
+        formation: 'lapsi'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'lasta'
+        target: 'child (some, after a number)'
+        morphology:
+          kind: 'case'
+          case: 'partitive'
+          ending: '-a'
+          stem: 'las-'
+        formation: 'lapsi → las- + -a → lasta'
+        explanation: 'Follows the quantity word kaksi.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'lapset'
+        target: 'children / the kids'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          number: 'plural'
+          stem: 'laps-'
+        formation: 'lapsi → laps- + -et → lapset'
+        explanation: >
+          The plural nominative is used without a number, as in Tuula ja
+          lapset, "Tuula and the kids."
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'lapsia'
+        target: 'children (some, no exact count)'
+        morphology:
+          kind: 'case'
+          case: 'partitive'
+          number: 'plural'
+          ending: '-a'
+          stem: 'laps-'
+        formation: 'lapsi → laps- + -ia → lapsia'
+        explanation: 'Partitive plural, used without an exact number.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'lasta_partitive_after_number'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: partitive_after_numbers
+        source:
+          text: 'Minulla on vaimo ja kaksi lasta.'
+          literal: 'On-me is wife and two of-child.'
+          target: 'I have a wife and two children.'
+
+        prompt:
+          text: 'Minulla on vaimo ja kaksi _____.'
+          meaning: 'I have a wife and two children.'
+
+        base_word: 'lapsi'
+
+        answer:
+          word: 'lasta'
+
+        choices:
+          - 'lapsi'
+          - 'lasta'
+          - 'lapset'
+          - 'lapsia'
+
+        grammar_refs:
+          - 'partitive'
+
+        explanation:
+          why_it_fits: >
+            Kaksi is a quantity word, and Finnish quantity words take the
+            partitive singular of the following noun: kaksi lasta.
+
+        distractors:
+          - word: 'lapsi'
+            grammar:
+              case: 'nominative'
+              number: 'singular'
+            meaning: 'child'
+            why_not: >
+              Lapsi is the plain dictionary form. After the number kaksi,
+              Finnish requires the partitive singular, not the nominative.
+
+          - word: 'lapset'
+            grammar:
+              case: 'nominative'
+              number: 'plural'
+            meaning: 'children / the kids'
+            why_not: >
+              Lapset is the plural form used without a number, as in Tuula
+              ja lapset. A number word like kaksi takes the partitive
+              singular instead.
+
+          - word: 'lapsia'
+            grammar:
+              case: 'partitive'
+              number: 'plural'
+            meaning: 'children (some, no exact count)'
+            why_not: >
+              Lapsia means "some children" without a specific count. After
+              the exact number kaksi, Finnish uses the partitive singular
+              lasta, not the partitive plural.
+
+    vocabulary_ref: 'lapsi'
+
+    grammar_refs:
+      - 'partitive'
+
+  - id: 'm004'
+
+    source:
+      entry_id: '004'
+      chunk_id: c4
+      text: 'Minä herään kello 6, kun herätyskello soi.'
+      literal: 'I wake-up clock 6, when alarm-clock rings.'
+      target: "I wake up at 6 o'clock, when the alarm clock rings."
+
+    word: 'herätyskello'
+    base_word: 'herätyskello'
+    type: 'noun'
+
+    target: 'alarm clock'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'herätys'
+        - 'kello'
+
+    hint: >
+      This word is built from two smaller words: one about waking up, and
+      the word for "clock."
+
+    formation: 'herätys + kello → herätyskello'
+
+    explanation: >
+      Herätyskello is a compound of herätys ("waking, alarm") and kello
+      ("clock"). Herätys itself comes from the verb herätä ("to wake up")
+      with the noun-forming suffix -ys. Finnish compounds are written as one
+      word, with the first part unchanged and the second part carrying any
+      endings the sentence needs.
+
+    role: 'compound_noun'
+
+    explorations:
+      - word: 'herätys'
+        target: 'waking / alarm'
+        morphology:
+          kind: 'base_word'
+        formation: 'herätys'
+        explanation: 'The first part of the compound, from herätä.'
+        origin: generated
+        status: valid
+
+      - word: 'kello'
+        target: 'clock / time'
+        morphology:
+          kind: 'base_word'
+        formation: 'kello'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'herätyskello'
+        target: 'alarm clock'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'herätys'
+            - 'kello'
+        formation: 'herätys + kello → herätyskello'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'herätyskellot'
+        target: 'alarm clocks'
+        morphology:
+          kind: 'compound'
+          number: 'plural'
+          parts:
+            - 'herätys'
+            - 'kello'
+        formation: 'herätys + kello → herätyskello → herätyskellot'
+        explanation: 'The compound in its plural form.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'herätyskello_ringing'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_identification
+        source:
+          text: 'Minä herään kello 6, kun herätyskello soi.'
+          literal: 'I wake-up clock 6, when alarm-clock rings.'
+          target: "I wake up at 6 o'clock, when the alarm clock rings."
+
+        prompt:
+          text: 'Minä herään kello 6, kun _____ soi.'
+          meaning: "I wake up at 6 o'clock, when the alarm clock rings."
+
+        base_word: 'herätyskello'
+
+        answer:
+          word: 'herätyskello'
+
+        choices:
+          - 'kello'
+          - 'herätys'
+          - 'herätyskello'
+          - 'herätyskellot'
+
+        grammar_refs: []
+
+        explanation:
+          why_it_fits: >
+            The sentence needs the single compound word for "alarm clock":
+            herätyskello.
+
+        distractors:
+          - word: 'kello'
+            grammar: {}
+            meaning: 'clock / time'
+            why_not: >
+              Kello alone just means "clock" or "time." The sentence needs
+              the specific compound for "alarm clock."
+
+          - word: 'herätys'
+            grammar: {}
+            meaning: 'waking / alarm'
+            why_not: >
+              Herätys names the act of waking up, not the object that
+              rings. The sentence needs the full compound herätyskello.
+
+          - word: 'herätyskellot'
+            grammar: {}
+            meaning: 'alarm clocks'
+            why_not: >
+              Herätyskellot is plural. The sentence describes one alarm
+              clock ringing, so the singular herätyskello fits.
+
+    vocabulary_ref: 'herätyskello'
+
+    grammar_refs: []
+
+  - id: 'm005'
+
+    source:
+      entry_id: '005'
+      chunk_id: c1
+      text: 'Käyn ensin suihkussa ja puen sitten päälle.'
+      literal: 'I-go first in-shower and I-put-on then onto.'
+      target: 'First I take a shower, and then I get dressed.'
+
+    word: 'suihkussa'
+    base_word: 'suihku'
+    type: 'noun'
+
+    target: 'in the shower'
+
+    morphology:
+      kind: 'case'
+      case: 'inessive'
+      ending: '-ssa'
+      stem: 'suihku-'
+
+    hint: >
+      This is the word for "shower," describing where the action happens.
+
+    formation: 'suihku → suihku- + -ssa → suihkussa'
+
+    explanation: >
+      Suihkussa is the Inessive form of suihku. Together with käydä, käydä
+      suihkussa is a fixed way of saying "to take a shower" — literally "to
+      go in the shower."
+
+    role: 'location'
+
+    explorations:
+      - word: 'suihku'
+        target: 'shower'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'suihku-'
+        formation: 'suihku'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'suihkussa'
+        target: 'in the shower'
+        morphology:
+          kind: 'case'
+          case: 'inessive'
+          ending: '-ssa'
+          stem: 'suihku-'
+        formation: 'suihku → suihku- + -ssa → suihkussa'
+        explanation: 'Part of the fixed expression käydä suihkussa.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'suihkuun'
+        target: 'into the shower'
+        morphology:
+          kind: 'case'
+          case: 'illative'
+          ending: '-un'
+          stem: 'suihku-'
+        formation: 'suihku → suihku- + -un → suihkuun'
+        explanation: 'Movement into the shower, rather than being inside it.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'suihkusta'
+        target: 'out of the shower'
+        morphology:
+          kind: 'case'
+          case: 'elative'
+          ending: '-sta'
+          stem: 'suihku-'
+        formation: 'suihku → suihku- + -sta → suihkusta'
+        explanation: 'Movement out of the shower.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'suihkussa_routine'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: fixed_expression_location
+        source:
+          text: 'Käyn ensin suihkussa ja puen sitten päälle.'
+          literal: 'I-go first in-shower and I-put-on then onto.'
+          target: 'First I take a shower, and then I get dressed.'
+
+        prompt:
+          text: 'Käyn ensin _____ ja puen sitten päälle.'
+          meaning: 'First I take a shower, and then I get dressed.'
+
+        base_word: 'suihku'
+
+        answer:
+          word: 'suihkussa'
+
+        choices:
+          - 'suihku'
+          - 'suihkussa'
+          - 'suihkuun'
+          - 'suihkusta'
+
+        grammar_refs:
+          - 'inessive'
+
+        explanation:
+          why_it_fits: >
+            Käydä suihkussa is a fixed expression meaning "to take a
+            shower," built with the Inessive form of suihku.
+
+        distractors:
+          - word: 'suihku'
+            grammar:
+              case: 'nominative'
+            meaning: 'shower'
+            why_not: >
+              Suihku is the plain dictionary form. The expression käydä
+              suihkussa needs the Inessive form.
+
+          - word: 'suihkuun'
+            grammar:
+              case: 'illative'
+            meaning: 'into the shower'
+            why_not: >
+              Suihkuun describes movement toward the shower. Käydä
+              suihkussa instead describes being in the shower during the
+              action, using the Inessive.
+
+          - word: 'suihkusta'
+            grammar:
+              case: 'elative'
+            meaning: 'out of the shower'
+            why_not: >
+              Suihkusta means "out of the shower." The sentence describes
+              taking a shower, not leaving one.
+
+    vocabulary_ref: 'suihku'
+
+    grammar_refs:
+      - 'inessive'
+
+  - id: 'm006'
+
+    source:
+      entry_id: '006'
+      chunk_id: c2
+      text: 'Sen jälkeen teen keittiössä aamupalaa ja luen lehteä.'
+      literal: 'That after I-make in-kitchen breakfast and I-read newspaper.'
+      target: 'After that, I make breakfast in the kitchen and read the newspaper.'
+
+    word: 'aamupalaa'
+    base_word: 'aamupala'
+    type: 'noun'
+
+    target: 'breakfast (as the thing made)'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'aamu'
+        - 'pala'
+      case: 'partitive'
+      ending: '-a'
+      stem: 'aamupala-'
+
+    hint: >
+      This word is built from "morning" and "piece," and here it takes an
+      object ending.
+
+    formation: 'aamu + pala → aamupala; aamupala + -a → aamupalaa'
+
+    explanation: >
+      Aamupala is a compound of aamu ("morning") and pala ("piece, bite").
+      Here it appears as aamupalaa, the Partitive object of teen, since
+      making breakfast is treated as an ongoing, unbounded activity.
+
+    role: 'compound_noun_partitive_object'
+
+    explorations:
+      - word: 'aamu'
+        target: 'morning'
+        morphology:
+          kind: 'base_word'
+        formation: 'aamu'
+        explanation: 'The first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'pala'
+        target: 'piece / bite'
+        morphology:
+          kind: 'base_word'
+        formation: 'pala'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'aamupala'
+        target: 'breakfast'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'aamu'
+            - 'pala'
+        formation: 'aamu + pala → aamupala'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'aamupalaa'
+        target: 'breakfast (as the thing made)'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'aamu'
+            - 'pala'
+          case: 'partitive'
+          ending: '-a'
+        formation: 'aamupala → aamupala- + -a → aamupalaa'
+        explanation: 'The Partitive object form, used with teen.'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'aamupalaa_object'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: partitive_object
+        source:
+          text: 'Sen jälkeen teen keittiössä aamupalaa ja luen lehteä.'
+          literal: 'That after I-make in-kitchen breakfast and I-read newspaper.'
+          target: 'After that, I make breakfast in the kitchen and read the newspaper.'
+
+        prompt:
+          text: 'Sen jälkeen teen keittiössä _____ ja luen lehteä.'
+          meaning: 'After that, I make breakfast in the kitchen and read the newspaper.'
+
+        base_word: 'aamupala'
+
+        answer:
+          word: 'aamupalaa'
+
+        choices:
+          - 'aamupala'
+          - 'aamupalaa'
+          - 'aamu'
+          - 'pala'
+
+        grammar_refs:
+          - 'partitive'
+
+        explanation:
+          why_it_fits: >
+            Teen aamupalaa uses the Partitive object because making
+            breakfast is an ongoing, unbounded activity, not a single
+            completed thing.
+
+        distractors:
+          - word: 'aamupala'
+            grammar:
+              case: 'nominative'
+            meaning: 'breakfast'
+            why_not: >
+              Aamupala is the plain dictionary form. Teen ("I make") needs
+              a Partitive object here, not the Nominative.
+
+          - word: 'aamu'
+            grammar: {}
+            meaning: 'morning'
+            why_not: >
+              Aamu alone only means "morning." The sentence is about
+              making breakfast, the full compound aamupala.
+
+          - word: 'pala'
+            grammar: {}
+            meaning: 'piece / bite'
+            why_not: >
+              Pala alone just means "piece" or "bite." The sentence needs
+              the compound aamupala, "breakfast."
+
+    vocabulary_ref: 'aamupala'
+
+    grammar_refs:
+      - 'partitive'
+
+  - id: 'm007'
+
+    source:
+      entry_id: '012'
+      chunk_id: c2
+      text: 'Olen töissä lounasravintolassa.'
+      literal: 'I-am at-work in-lunch-restaurant.'
+      target: 'I work at a lunch restaurant.'
+
+    word: 'lounasravintolassa'
+    base_word: 'lounasravintola'
+    type: 'noun'
+
+    target: 'at a lunch restaurant'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'lounas'
+        - 'ravintola'
+      case: 'inessive'
+      ending: '-ssa'
+      stem: 'lounasravintola-'
+
+    hint: >
+      This word is built from "lunch" and "restaurant," with a location
+      ending.
+
+    formation: 'lounas + ravintola → lounasravintola; lounasravintola + -ssa → lounasravintolassa'
+
+    explanation: >
+      Lounasravintola is a compound of lounas ("lunch") and ravintola
+      ("restaurant"). Lounasravintolassa is its Inessive form, meaning "at a
+      lunch restaurant."
+
+    role: 'compound_noun_location'
+
+    explorations:
+      - word: 'lounas'
+        target: 'lunch'
+        morphology:
+          kind: 'base_word'
+        formation: 'lounas'
+        explanation: 'The first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'ravintola'
+        target: 'restaurant'
+        morphology:
+          kind: 'base_word'
+        formation: 'ravintola'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'lounasravintola'
+        target: 'lunch restaurant'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'lounas'
+            - 'ravintola'
+        formation: 'lounas + ravintola → lounasravintola'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'lounasravintolassa'
+        target: 'at a lunch restaurant'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'lounas'
+            - 'ravintola'
+          case: 'inessive'
+          ending: '-ssa'
+        formation: 'lounasravintola → lounasravintola- + -ssa → lounasravintolassa'
+        explanation: 'The Inessive form, naming a work location.'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'lounasravintolassa_workplace'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_plus_case
+        source:
+          text: 'Olen töissä lounasravintolassa.'
+          literal: 'I-am at-work in-lunch-restaurant.'
+          target: 'I work at a lunch restaurant.'
+
+        prompt:
+          text: 'Olen töissä _____.'
+          meaning: 'I work at a lunch restaurant.'
+
+        base_word: 'lounasravintola'
+
+        answer:
+          word: 'lounasravintolassa'
+
+        choices:
+          - 'ravintola'
+          - 'lounasravintola'
+          - 'lounasravintolassa'
+          - 'ravintolassa'
+
+        grammar_refs:
+          - 'inessive'
+
+        explanation:
+          why_it_fits: >
+            Olen töissä names a work location, so the compound needs its
+            Inessive form: lounasravintolassa.
+
+        distractors:
+          - word: 'ravintola'
+            grammar: {}
+            meaning: 'restaurant'
+            why_not: >
+              Ravintola alone just means "restaurant" in general. The
+              sentence specifies the lunch-restaurant compound.
+
+          - word: 'lounasravintola'
+            grammar:
+              case: 'nominative'
+            meaning: 'lunch restaurant'
+            why_not: >
+              Lounasravintola is the plain dictionary form. Olen töissä
+              needs a location, so the Inessive form is required.
+
+          - word: 'ravintolassa'
+            grammar:
+              case: 'inessive'
+            meaning: 'in a restaurant'
+            why_not: >
+              Ravintolassa is the Inessive of the plain word "restaurant,"
+              dropping the lounas- part that specifies it's a lunch
+              restaurant.
+
+    vocabulary_ref: 'lounasravintola'
+
+    grammar_refs:
+      - 'inessive'
+
+  - id: 'm008'
+
+    source:
+      entry_id: '012'
+      chunk_id: c1
+      text: 'Olen töissä lounasravintolassa.'
+      literal: 'I-am at-work in-lunch-restaurant.'
+      target: 'I work at a lunch restaurant.'
+
+    word: 'töissä'
+    base_word: 'työ'
+    type: 'noun'
+
+    target: 'at work'
+
+    morphology:
+      kind: 'case'
+      case: 'inessive'
+      ending: '-ssä'
+      stem: 'töi-'
+
+    hint: >
+      This is the word for "work," but its stem changes shape before this
+      ending.
+
+    formation: 'työ → töi- (irregular stem) + -ssä → töissä'
+
+    explanation: >
+      Töissä is the Inessive plural form of työ, used idiomatically to mean
+      "at work." The stem shifts from työ- to töi- before endings — the
+      Vocabulary pack lists töissä and töihin as forms to learn directly,
+      rather than derive from a general rule.
+
+    role: 'idiomatic_location'
+
+    explorations:
+      - word: 'työ'
+        target: 'work'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'työ-'
+        formation: 'työ'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'töissä'
+        target: 'at work'
+        morphology:
+          kind: 'case'
+          case: 'inessive'
+          ending: '-ssä'
+          stem: 'töi-'
+        formation: 'työ → töi- + -ssä → töissä'
+        explanation: 'The fixed idiomatic way to say "at work."'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'töihin'
+        target: 'to work'
+        morphology:
+          kind: 'case'
+          case: 'illative'
+          ending: '-hin'
+          stem: 'töi-'
+        formation: 'työ → töi- + -hin → töihin'
+        explanation: 'The fixed idiomatic way to say "to work," as in lähden töihin.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'työtä'
+        target: 'work (as an object)'
+        morphology:
+          kind: 'case'
+          case: 'partitive'
+          ending: '-tä'
+          stem: 'työ-'
+        formation: 'työ → työ- + -tä → työtä'
+        explanation: 'Used when work is the direct object of a verb, as in teen työtä.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'toissa_idiom'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: idiomatic_location
+        source:
+          text: 'Olen töissä lounasravintolassa.'
+          literal: 'I-am at-work in-lunch-restaurant.'
+          target: 'I work at a lunch restaurant.'
+
+        prompt:
+          text: 'Olen _____ lounasravintolassa.'
+          meaning: 'I work at a lunch restaurant.'
+
+        base_word: 'työ'
+
+        answer:
+          word: 'töissä'
+
+        choices:
+          - 'työ'
+          - 'töissä'
+          - 'töihin'
+          - 'työtä'
+
+        grammar_refs:
+          - 'inessive'
+
+        explanation:
+          why_it_fits: >
+            Olen töissä is the fixed idiomatic way to say "I work" or "I'm
+            at work," using the Inessive plural of työ.
+
+        distractors:
+          - word: 'työ'
+            grammar:
+              case: 'nominative'
+            meaning: 'work'
+            why_not: >
+              Työ alone is the plain dictionary form. Olen töissä is a
+              fixed idiom that needs the Inessive plural töissä.
+
+          - word: 'töihin'
+            grammar:
+              case: 'illative'
+            meaning: 'to work'
+            why_not: >
+              Töihin means "to work," describing movement toward the
+              workplace, as in lähden töihin ("I leave for work"). Olen
+              needs the location form töissä instead.
+
+          - word: 'työtä'
+            grammar:
+              case: 'partitive'
+            meaning: 'work (as an object)'
+            why_not: >
+              Työtä would describe work as a direct object, as in teen
+              työtä ("I do work"). It doesn't fit the fixed idiom olen
+              töissä.
+
+    vocabulary_ref: 'työ'
+
+    grammar_refs:
+      - 'inessive'
+
+  - id: 'm009'
+
+    source:
+      entry_id: '014'
+      chunk_id: c3
+      text: 'Töissä teen ruokaa kolmen työkaverin kanssa.'
+      literal: 'At-work I-make food three-of coworker-of with.'
+      target: 'At work, I make food with three coworkers.'
+
+    word: 'työkaverin'
+    base_word: 'työkaveri'
+    type: 'noun'
+
+    target: 'of the coworker'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'työ'
+        - 'kaveri'
+      case: 'genitive'
+      ending: '-n'
+      stem: 'työkaveri-'
+
+    hint: >
+      This word is built from "work" and "friend, buddy," and it takes an
+      "of" ending here.
+
+    formation: 'työ + kaveri → työkaveri; työkaveri + -n → työkaverin'
+
+    explanation: >
+      Työkaveri is a compound of työ ("work") and kaveri ("friend, buddy").
+      Työkaverin is its Genitive form. Kanssa ("with") follows a
+      genitive-marked noun phrase, so kolmen työkaverin kanssa means "with
+      three coworkers."
+
+    role: 'compound_noun_kanssa_object'
+
+    explorations:
+      - word: 'työ'
+        target: 'work'
+        morphology:
+          kind: 'base_word'
+        formation: 'työ'
+        explanation: 'The first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'kaveri'
+        target: 'friend / buddy'
+        morphology:
+          kind: 'base_word'
+        formation: 'kaveri'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'työkaveri'
+        target: 'coworker'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'työ'
+            - 'kaveri'
+        formation: 'työ + kaveri → työkaveri'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'työkaverin'
+        target: 'of the coworker'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'työ'
+            - 'kaveri'
+          case: 'genitive'
+          ending: '-n'
+        formation: 'työkaveri → työkaveri- + -n → työkaverin'
+        explanation: 'The Genitive form required before kanssa.'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'tyokaverin_kanssa'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_plus_case
+        source:
+          text: 'Töissä teen ruokaa kolmen työkaverin kanssa.'
+          literal: 'At-work I-make food three-of coworker-of with.'
+          target: 'At work, I make food with three coworkers.'
+
+        prompt:
+          text: 'Töissä teen ruokaa kolmen _____ kanssa.'
+          meaning: 'At work, I make food with three coworkers.'
+
+        base_word: 'työkaveri'
+
+        answer:
+          word: 'työkaverin'
+
+        choices:
+          - 'työkaveri'
+          - 'työkaverin'
+          - 'kaverin'
+          - 'työn'
+
+        grammar_refs:
+          - 'genitive'
+
+        explanation:
+          why_it_fits: >
+            Kanssa follows a Genitive-marked noun phrase, so the compound
+            työkaveri needs its Genitive form: työkaverin.
+
+        distractors:
+          - word: 'työkaveri'
+            grammar:
+              case: 'nominative'
+            meaning: 'coworker'
+            why_not: >
+              Työkaveri is the plain dictionary form. Kanssa requires a
+              Genitive-marked noun before it: työkaverin kanssa.
+
+          - word: 'kaverin'
+            grammar:
+              case: 'genitive'
+            meaning: 'of the friend'
+            why_not: >
+              Kaverin drops the työ- part, so it just means "friend," not
+              specifically "coworker."
+
+          - word: 'työn'
+            grammar:
+              case: 'genitive'
+            meaning: 'of the work'
+            why_not: >
+              Työn is the Genitive of työ alone ("work"), not of the
+              compound työkaveri ("coworker").
+
+    vocabulary_ref: 'työkaveri'
+
+    grammar_refs:
+      - 'genitive'
+
+  - id: 'm010'
+
+    source:
+      entry_id: '015'
+      chunk_id: c4
+      text: 'Aamulla Tuula kävelee Emman kanssa päiväkotiin.'
+      literal: 'In-morning Tuula walks Emma-of with to-daycare.'
+      target: 'In the morning, Tuula walks to daycare with Emma.'
+
+    word: 'päiväkotiin'
+    base_word: 'päiväkoti'
+    type: 'noun'
+
+    target: 'to daycare'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'päivä'
+        - 'koti'
+      case: 'illative'
+      ending: '-iin'
+      stem: 'päiväkoti-'
+
+    hint: >
+      This word is built from "day" and "home," with a "movement into"
+      ending.
+
+    formation: 'päivä + koti → päiväkoti; päiväkoti + -iin → päiväkotiin'
+
+    explanation: >
+      Päiväkoti is a compound of päivä ("day") and koti ("home").
+      Päiväkotiin is its Illative form, showing movement into daycare.
+
+    role: 'compound_noun_destination'
+
+    explorations:
+      - word: 'päivä'
+        target: 'day'
+        morphology:
+          kind: 'base_word'
+        formation: 'päivä'
+        explanation: 'The first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'koti'
+        target: 'home'
+        morphology:
+          kind: 'base_word'
+        formation: 'koti'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'päiväkoti'
+        target: 'daycare'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'päivä'
+            - 'koti'
+        formation: 'päivä + koti → päiväkoti'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'päiväkotiin'
+        target: 'to daycare'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'päivä'
+            - 'koti'
+          case: 'illative'
+          ending: '-iin'
+        formation: 'päiväkoti → päiväkoti- + -iin → päiväkotiin'
+        explanation: 'The Illative form, showing movement into daycare.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'päiväkodissa'
+        target: 'at daycare'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'päivä'
+            - 'koti'
+          case: 'inessive'
+          ending: '-ssa'
+        formation: 'päiväkoti → päiväkodi- (t → d) + -ssa → päiväkodissa'
+        explanation: >
+          The Inessive form, with the same t → d consonant gradation seen
+          in koti → kodissa.
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'paivakotiin_destination'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_plus_case
+        source:
+          text: 'Aamulla Tuula kävelee Emman kanssa päiväkotiin.'
+          literal: 'In-morning Tuula walks Emma-of with to-daycare.'
+          target: 'In the morning, Tuula walks to daycare with Emma.'
+
+        prompt:
+          text: 'Aamulla Tuula kävelee Emman kanssa _____.'
+          meaning: 'In the morning, Tuula walks to daycare with Emma.'
+
+        base_word: 'päiväkoti'
+
+        answer:
+          word: 'päiväkotiin'
+
+        choices:
+          - 'päiväkoti'
+          - 'päiväkotiin'
+          - 'päiväkodissa'
+          - 'koti'
+
+        grammar_refs:
+          - 'illative'
+
+        explanation:
+          why_it_fits: >
+            Kävelee ... päiväkotiin describes movement into daycare, so the
+            compound takes its Illative form.
+
+        distractors:
+          - word: 'päiväkoti'
+            grammar:
+              case: 'nominative'
+            meaning: 'daycare'
+            why_not: >
+              Päiväkoti is the plain dictionary form. Kävelee needs a
+              destination, so the Illative form is required.
+
+          - word: 'päiväkodissa'
+            grammar:
+              case: 'inessive'
+            meaning: 'at daycare'
+            why_not: >
+              Päiväkodissa means "at daycare," a location, not a
+              destination. The sentence describes walking there, so it
+              needs the Illative päiväkotiin.
+
+          - word: 'koti'
+            grammar: {}
+            meaning: 'home'
+            why_not: >
+              Koti alone means "home," not specifically daycare. The
+              sentence needs the full compound päiväkoti.
+
+    vocabulary_ref: 'päiväkoti'
+
+    grammar_refs:
+      - 'illative'
+
+  - id: 'm011'
+
+    source:
+      entry_id: '018'
+      chunk_id: c1
+      text: 'Kalle menee kouluun pyörällä.'
+      literal: 'Kalle goes to-school by-bike.'
+      target: 'Kalle goes to school by bike.'
+
+    word: 'kouluun'
+    base_word: 'koulu'
+    type: 'noun'
+
+    target: 'to school'
+
+    morphology:
+      kind: 'case'
+      case: 'illative'
+      ending: '-un'
+      stem: 'koulu-'
+
+    hint: >
+      This is the word for "school," showing movement into it.
+
+    formation: 'koulu → koulu- + -un → kouluun'
+
+    explanation: >
+      Kouluun is the Illative form of koulu, showing movement into the
+      school.
+
+    role: 'destination'
+
+    explorations:
+      - word: 'koulu'
+        target: 'school'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'koulu-'
+        formation: 'koulu'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'koulun'
+        target: 'of the school'
+        morphology:
+          kind: 'case'
+          case: 'genitive'
+          ending: '-n'
+          stem: 'koulu-'
+        formation: 'koulu → koulu- + -n → koulun'
+        explanation: 'Used to modify another word, as in koulun jälkeen, "after school."'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'kouluun'
+        target: 'to school'
+        morphology:
+          kind: 'case'
+          case: 'illative'
+          ending: '-un'
+          stem: 'koulu-'
+        formation: 'koulu → koulu- + -un → kouluun'
+        explanation: 'The destination of menee.'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'koulussa'
+        target: 'at school'
+        morphology:
+          kind: 'case'
+          case: 'inessive'
+          ending: '-ssa'
+          stem: 'koulu-'
+        formation: 'koulu → koulu- + -ssa → koulussa'
+        explanation: 'A location, rather than a destination.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'kouluun_destination'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: destination
+        source:
+          text: 'Kalle menee kouluun pyörällä.'
+          literal: 'Kalle goes to-school by-bike.'
+          target: 'Kalle goes to school by bike.'
+
+        prompt:
+          text: 'Kalle menee _____ pyörällä.'
+          meaning: 'Kalle goes to school by bike.'
+
+        base_word: 'koulu'
+
+        answer:
+          word: 'kouluun'
+
+        choices:
+          - 'koulu'
+          - 'koulun'
+          - 'kouluun'
+          - 'koulussa'
+
+        grammar_refs:
+          - 'illative'
+
+        explanation:
+          why_it_fits: >
+            Menee kouluun describes movement into the school, so koulu
+            takes its Illative form.
+
+        distractors:
+          - word: 'koulu'
+            grammar:
+              case: 'nominative'
+            meaning: 'school'
+            why_not: >
+              Koulu is the plain dictionary form. Menee needs a
+              destination, so the Illative form is required.
+
+          - word: 'koulun'
+            grammar:
+              case: 'genitive'
+            meaning: 'of the school'
+            why_not: >
+              Koulun means "of the school," used to modify another word,
+              as in koulun jälkeen ("after school"). It isn't a
+              destination by itself.
+
+          - word: 'koulussa'
+            grammar:
+              case: 'inessive'
+            meaning: 'at school'
+            why_not: >
+              Koulussa means "at school," a location. The sentence
+              describes movement there, so it needs the Illative kouluun.
+
+    vocabulary_ref: 'koulu'
+
+    grammar_refs:
+      - 'illative'
+
+  - id: 'm012'
+
+    source:
+      entry_id: '019'
+      chunk_id: c3
+      text: 'Tänään koulu loppuu kahdelta.'
+      literal: 'Today school ends at-two.'
+      target: "Today school ends at two o'clock."
+
+    word: 'kahdelta'
+    base_word: 'kaksi'
+    type: 'number'
+
+    target: "at two o'clock"
+
+    morphology:
+      kind: 'case'
+      case: 'ablative'
+      ending: '-lta'
+      stem: 'kahde-'
+
+    hint: >
+      This is the number "two," used to answer "at what time."
+
+    formation: 'kaksi → kahde- (irregular stem) + -lta → kahdelta'
+
+    explanation: >
+      Kahdelta is the Ablative form of kaksi. Finnish uses the Ablative
+      case for a clock-time answer to "at what time," so kahdelta means "at
+      two o'clock." Unlike most nouns, kaksi's case stem (kahde-) has to be
+      learned rather than derived from a general rule.
+
+    role: 'clock_time'
+
+    explorations:
+      - word: 'kaksi'
+        target: 'two'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'kaksi-'
+        formation: 'kaksi'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'kahden'
+        target: 'of two'
+        morphology:
+          kind: 'case'
+          case: 'genitive'
+          ending: '-n'
+          stem: 'kahde-'
+        formation: 'kaksi → kahde- + -n → kahden'
+        explanation: 'Used to modify a following noun, as in kahden viikon, "of two weeks."'
+        origin: generated
+        status: valid
+
+      - word: 'kahdelta'
+        target: "at two o'clock"
+        morphology:
+          kind: 'case'
+          case: 'ablative'
+          ending: '-lta'
+          stem: 'kahde-'
+        formation: 'kaksi → kahde- + -lta → kahdelta'
+        explanation: 'The clock-time answer to "at what time."'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'kahdelta_clock_time'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: clock_time_expression
+        source:
+          text: 'Tänään koulu loppuu kahdelta.'
+          literal: 'Today school ends at-two.'
+          target: "Today school ends at two o'clock."
+
+        prompt:
+          text: 'Tänään koulu loppuu _____.'
+          meaning: "Today school ends at two o'clock."
+
+        base_word: 'kaksi'
+
+        answer:
+          word: 'kahdelta'
+
+        choices:
+          - 'kaksi'
+          - 'kahden'
+          - 'kahdelta'
+          - 'kahdeksalta'
+
+        grammar_refs:
+          - 'ablative'
+
+        explanation:
+          why_it_fits: >
+            A clock-time answer to "at what time" uses the Ablative case,
+            so kaksi becomes kahdelta.
+
+        distractors:
+          - word: 'kaksi'
+            grammar:
+              case: 'nominative'
+            meaning: 'two'
+            why_not: >
+              Kaksi is the plain number. A clock-time answer to "at what
+              time" needs the Ablative ending: kahdelta.
+
+          - word: 'kahden'
+            grammar:
+              case: 'genitive'
+            meaning: 'of two'
+            why_not: >
+              Kahden means "of two," used to modify another word, not to
+              answer "at what time."
+
+          - word: 'kahdeksalta'
+            grammar:
+              case: 'ablative'
+            meaning: "at eight o'clock"
+            why_not: >
+              Kahdeksalta has the right case but the wrong number — it
+              means "at eight," not "at two."
+
+    vocabulary_ref: 'kaksi'
+
+    grammar_refs:
+      - 'ablative'
+
+  - id: 'm013'
+
+    source:
+      entry_id: '022'
+      chunk_id: c3
+      text: 'Tänään minä ja Kalle menemme uimahalliin.'
+      literal: 'Today I and Kalle go to-swimming-hall.'
+      target: 'Today, Kalle and I are going to the swimming pool.'
+
+    word: 'uimahalliin'
+    base_word: 'uimahalli'
+    type: 'noun'
+
+    target: 'to the swimming pool'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'uima'
+        - 'halli'
+      case: 'illative'
+      ending: '-in'
+      stem: 'uimahalli-'
+
+    hint: >
+      This word is built from "swimming" and "hall," with a "movement into"
+      ending.
+
+    formation: 'uima + halli → uimahalli; uimahalli + -in → uimahalliin'
+
+    explanation: >
+      Uimahalli is a compound of uima ("swimming," from uida) and halli
+      ("hall"). Uimahalliin is its Illative form, showing movement into the
+      swimming hall.
+
+    role: 'compound_noun_destination'
+
+    explorations:
+      - word: 'uida'
+        target: 'to swim'
+        morphology:
+          kind: 'base_word'
+        formation: 'uida'
+        explanation: 'The verb behind the first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'halli'
+        target: 'hall'
+        morphology:
+          kind: 'base_word'
+        formation: 'halli'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'uimahalli'
+        target: 'swimming hall / indoor pool'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'uima'
+            - 'halli'
+        formation: 'uima + halli → uimahalli'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'uimahalliin'
+        target: 'to the swimming pool'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'uima'
+            - 'halli'
+          case: 'illative'
+          ending: '-in'
+        formation: 'uimahalli → uimahalli- + -in → uimahalliin'
+        explanation: 'The Illative form, showing movement into the pool.'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'uimahalliin_destination'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_plus_case
+        source:
+          text: 'Tänään minä ja Kalle menemme uimahalliin.'
+          literal: 'Today I and Kalle go to-swimming-hall.'
+          target: 'Today, Kalle and I are going to the swimming pool.'
+
+        prompt:
+          text: 'Tänään minä ja Kalle menemme _____.'
+          meaning: 'Today, Kalle and I are going to the swimming pool.'
+
+        base_word: 'uimahalli'
+
+        answer:
+          word: 'uimahalliin'
+
+        choices:
+          - 'uimahalli'
+          - 'uimahalliin'
+          - 'uimahallissa'
+          - 'halliin'
+
+        grammar_refs:
+          - 'illative'
+
+        explanation:
+          why_it_fits: >
+            Menemme uimahalliin describes movement into the swimming hall,
+            so the compound takes its Illative form.
+
+        distractors:
+          - word: 'uimahalli'
+            grammar:
+              case: 'nominative'
+            meaning: 'swimming hall / indoor pool'
+            why_not: >
+              Uimahalli is the plain dictionary form. Menemme needs a
+              destination, so the Illative form is required.
+
+          - word: 'uimahallissa'
+            grammar:
+              case: 'inessive'
+            meaning: 'at the swimming hall'
+            why_not: >
+              Uimahallissa means "at the swimming hall," a location. The
+              sentence describes movement there, so it needs the Illative
+              uimahalliin.
+
+          - word: 'halliin'
+            grammar:
+              case: 'illative'
+            meaning: 'into a hall'
+            why_not: >
+              Halliin drops the uima- part, so it just means "into a
+              hall," not specifically the swimming hall.
+
+    vocabulary_ref: 'uimahalli'
+
+    grammar_refs:
+      - 'illative'
+
+  - id: 'm014'
+
+    source:
+      entry_id: '025'
+      chunk_id: c1
+      text: 'He menevät kenkäkauppaan, koska Emma tarvitsee kesäkengät.'
+      literal: 'They go to-shoe-store, because Emma needs summer-shoes.'
+      target: 'They go to the shoe store because Emma needs summer shoes.'
+
+    word: 'kenkäkauppaan'
+    base_word: 'kenkäkauppa'
+    type: 'noun'
+
+    target: 'to the shoe store'
+
+    morphology:
+      kind: 'compound'
+      parts:
+        - 'kenkä'
+        - 'kauppa'
+      case: 'illative'
+      ending: '-an'
+      stem: 'kenkäkauppa-'
+
+    hint: >
+      This word is built from "shoe" and "store," with a "movement into"
+      ending.
+
+    formation: 'kenkä + kauppa → kenkäkauppa; kenkäkauppa + -an → kenkäkauppaan'
+
+    explanation: >
+      Kenkäkauppa is a compound of kenkä ("shoe") and kauppa ("store,
+      shop"). Kenkäkauppaan is its Illative form, showing movement into the
+      shoe store.
+
+    role: 'compound_noun_destination'
+
+    explorations:
+      - word: 'kenkä'
+        target: 'shoe'
+        morphology:
+          kind: 'base_word'
+        formation: 'kenkä'
+        explanation: 'The first part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'kauppa'
+        target: 'store / shop'
+        morphology:
+          kind: 'base_word'
+        formation: 'kauppa'
+        explanation: 'The second part of the compound.'
+        origin: generated
+        status: valid
+
+      - word: 'kenkäkauppa'
+        target: 'shoe store'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'kenkä'
+            - 'kauppa'
+        formation: 'kenkä + kauppa → kenkäkauppa'
+        explanation: 'The compound, in its plain nominative form.'
+        origin: generated
+        status: valid
+        priority: high
+
+      - word: 'kenkäkauppaan'
+        target: 'to the shoe store'
+        morphology:
+          kind: 'compound'
+          parts:
+            - 'kenkä'
+            - 'kauppa'
+          case: 'illative'
+          ending: '-an'
+        formation: 'kenkäkauppa → kenkäkauppa- + -an → kenkäkauppaan'
+        explanation: 'The Illative form, showing movement into the store.'
+        origin: source
+        status: valid
+        priority: high
+
+    applications:
+      - id: 'kenkakauppaan_destination'
+        type: contextual_choice
+        reasoning:
+          kind: compound
+          relationship: compound_plus_case
+        source:
+          text: 'He menevät kenkäkauppaan, koska Emma tarvitsee kesäkengät.'
+          literal: 'They go to-shoe-store, because Emma needs summer-shoes.'
+          target: 'They go to the shoe store because Emma needs summer shoes.'
+
+        prompt:
+          text: 'He menevät _____, koska Emma tarvitsee kesäkengät.'
+          meaning: 'They go to the shoe store because Emma needs summer shoes.'
+
+        base_word: 'kenkäkauppa'
+
+        answer:
+          word: 'kenkäkauppaan'
+
+        choices:
+          - 'kenkäkauppa'
+          - 'kenkäkauppaan'
+          - 'kaupassa'
+          - 'kauppaan'
+
+        grammar_refs:
+          - 'illative'
+
+        explanation:
+          why_it_fits: >
+            Menevät kenkäkauppaan describes movement into the shoe store,
+            so the compound takes its Illative form.
+
+        distractors:
+          - word: 'kenkäkauppa'
+            grammar:
+              case: 'nominative'
+            meaning: 'shoe store'
+            why_not: >
+              Kenkäkauppa is the plain dictionary form. Menevät needs a
+              destination, so the Illative form is required.
+
+          - word: 'kaupassa'
+            grammar:
+              case: 'inessive'
+            meaning: 'in a store'
+            why_not: >
+              Kaupassa means "in a store," a location, and drops the
+              kenkä- part. It also doesn't match the movement described by
+              menevät.
+
+          - word: 'kauppaan'
+            grammar:
+              case: 'illative'
+            meaning: 'into a store'
+            why_not: >
+              Kauppaan means "into a store" generally, dropping the kenkä-
+              part that specifies it's a shoe store.
+
+    vocabulary_ref: 'kenkäkauppa'
+
+    grammar_refs:
+      - 'illative'
+
+  - id: 'm015'
+
+    source:
+      entry_id: '031'
+      chunk_id: c1
+      text: 'Yhdeksältä lapset pesevät hampaat.'
+      literal: 'At-nine children wash teeth.'
+      target: 'At nine, the kids brush their teeth.'
+
+    word: 'yhdeksältä'
+    base_word: 'yhdeksän'
+    type: 'number'
+
+    target: "at nine o'clock"
+
+    morphology:
+      kind: 'case'
+      case: 'ablative'
+      ending: '-ltä'
+      stem: 'yhdeksä-'
+
+    hint: >
+      This is the number "nine," used to answer "at what time."
+
+    formation: 'yhdeksän → yhdeksä- + -ltä → yhdeksältä'
+
+    explanation: >
+      Yhdeksältä is the Ablative form of yhdeksän, used for a clock-time
+      answer to "at what time."
+
+    role: 'clock_time'
+
+    explorations:
+      - word: 'yhdeksän'
+        target: 'nine'
+        morphology:
+          kind: 'case'
+          case: 'nominative'
+          stem: 'yhdeksän-'
+        formation: 'yhdeksän'
+        explanation: 'This is the base word.'
+        origin: generated
+        status: valid
+
+      - word: 'yhdeksältä'
+        target: "at nine o'clock"
+        morphology:
+          kind: 'case'
+          case: 'ablative'
+          ending: '-ltä'
+          stem: 'yhdeksä-'
+        formation: 'yhdeksän → yhdeksä- + -ltä → yhdeksältä'
+        explanation: 'The clock-time answer to "at what time."'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'kahdeksalta'
+        target: "at eight o'clock"
+        morphology:
+          kind: 'case'
+          case: 'ablative'
+          ending: '-lta'
+          stem: 'kahdeksa-'
+        formation: 'kahdeksan → kahdeksa- + -lta → kahdeksalta'
+        explanation: 'The same pattern applied to kahdeksan, "eight," for comparison.'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'yhdeksalta_clock_time'
+        type: contextual_choice
+        reasoning:
+          kind: case
+          relationship: clock_time_expression
+        source:
+          text: 'Yhdeksältä lapset pesevät hampaat.'
+          literal: 'At-nine children wash teeth.'
+          target: 'At nine, the kids brush their teeth.'
+
+        prompt:
+          text: '_____ lapset pesevät hampaat.'
+          meaning: 'At nine, the kids brush their teeth.'
+
+        base_word: 'yhdeksän'
+
+        answer:
+          word: 'yhdeksältä'
+
+        choices:
+          - 'yhdeksän'
+          - 'yhdeksältä'
+          - 'yhdeksässä'
+          - 'kahdeksalta'
+
+        grammar_refs:
+          - 'ablative'
+
+        explanation:
+          why_it_fits: >
+            A clock-time answer to "at what time" uses the Ablative case,
+            so yhdeksän becomes yhdeksältä.
+
+        distractors:
+          - word: 'yhdeksän'
+            grammar:
+              case: 'nominative'
+            meaning: 'nine'
+            why_not: >
+              Yhdeksän is the plain number. A clock-time answer needs the
+              Ablative ending: yhdeksältä.
+
+          - word: 'yhdeksässä'
+            grammar:
+              case: 'inessive'
+            meaning: 'in nine (not a clock-time form)'
+            why_not: >
+              Yhdeksässä isn't how Finnish expresses clock time; the fixed
+              pattern for "at" a given hour uses the Ablative, not the
+              Inessive.
+
+          - word: 'kahdeksalta'
+            grammar:
+              case: 'ablative'
+            meaning: "at eight o'clock"
+            why_not: >
+              Kahdeksalta has the right case but the wrong number — it
+              means "at eight," not "at nine."
+
+    vocabulary_ref: 'yhdeksän'
+
+    grammar_refs:
+      - 'ablative'
+
+  - id: 'm016'
+
+    source:
+      entry_id: '032'
+      chunk_id: c4
+      text: 'Sitten sanomme "hyvää yötä" ja lapset menevät nukkumaan.'
+      literal: 'Then we-say "good night" and children go to-sleep.'
+      target: 'Then we say goodnight, and the kids go to bed.'
+
+    word: 'nukkumaan'
+    base_word: 'nukkua'
+    type: 'verb'
+
+    target: 'to sleep (as a purpose)'
+
+    morphology:
+      kind: 'case'
+      case: 'illative'
+      ending: '-maan'
+      stem: 'nukku-'
+      form_type: 'third_infinitive_illative'
+
+    hint: >
+      This comes from the verb "to sleep," used after mennä to show
+      purpose.
+
+    formation: 'nukkua → nukku- + -maan → nukkumaan'
+
+    explanation: >
+      Nukkumaan is the third infinitive of nukkua in the Illative case.
+      Mennä plus this form expresses "go to (do something)" — menevät
+      nukkumaan means "they go to sleep."
+
+    role: 'purpose'
+
+    explorations:
+      - word: 'nukkua'
+        target: 'to sleep'
+        morphology:
+          kind: 'base_word'
+        formation: 'nukkua'
+        explanation: 'This is the base verb.'
+        origin: generated
+        status: valid
+
+      - word: 'nukkumaan'
+        target: 'to sleep (as a purpose)'
+        morphology:
+          kind: 'case'
+          case: 'illative'
+          ending: '-maan'
+          stem: 'nukku-'
+          form_type: 'third_infinitive_illative'
+        formation: 'nukkua → nukku- + -maan → nukkumaan'
+        explanation: 'The goal of mennä: menevät nukkumaan, "they go to sleep."'
+        origin: source
+        status: valid
+        priority: high
+
+      - word: 'nukkumassa'
+        target: 'sleeping (ongoing)'
+        morphology:
+          kind: 'case'
+          case: 'inessive'
+          ending: '-massa'
+          stem: 'nukku-'
+          form_type: 'third_infinitive_inessive'
+        formation: 'nukkua → nukku- + -massa → nukkumassa'
+        explanation: 'Describes an ongoing state, such as "is sleeping."'
+        origin: generated
+        status: valid
+
+    applications:
+      - id: 'nukkumaan_purpose'
+        type: contextual_choice
+        reasoning:
+          kind: verb_form
+          relationship: purposive_third_infinitive
+        source:
+          text: 'Sitten sanomme "hyvää yötä" ja lapset menevät nukkumaan.'
+          literal: 'Then we-say "good night" and children go to-sleep.'
+          target: 'Then we say goodnight, and the kids go to bed.'
+
+        prompt:
+          text: 'Sitten sanomme "hyvää yötä" ja lapset menevät _____.'
+          meaning: 'Then we say goodnight, and the kids go to bed.'
+
+        base_word: 'nukkua'
+
+        answer:
+          word: 'nukkumaan'
+
+        choices:
+          - 'nukkua'
+          - 'nukkumaan'
+          - 'nukkumassa'
+          - 'nukkunut'
+
+        grammar_refs:
+          - 'illative'
+
+        explanation:
+          why_it_fits: >
+            Mennä plus the third infinitive Illative (nukkumaan) expresses
+            "go to (do something)": menevät nukkumaan, "they go to sleep."
+
+        distractors:
+          - word: 'nukkua'
+            grammar: {}
+            meaning: 'to sleep'
+            why_not: >
+              Nukkua is the plain infinitive. Mennä expressing purpose
+              needs the third infinitive Illative form: nukkumaan.
+
+          - word: 'nukkumassa'
+            grammar:
+              case: 'inessive'
+            meaning: 'sleeping (ongoing)'
+            why_not: >
+              Nukkumassa means "sleeping" as an ongoing state, not the
+              goal of going somewhere.
+
+          - word: 'nukkunut'
+            grammar: {}
+            meaning: 'slept'
+            why_not: >
+              Nukkunut is the past participle, describing a completed
+              action, not the purpose of going to bed.
+
+    vocabulary_ref: 'nukkua'
+
+    grammar_refs:
+      - 'illative'

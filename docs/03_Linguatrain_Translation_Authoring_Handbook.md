@@ -1432,6 +1432,94 @@ If the AI is not confident in a pronunciation guide, it should omit
 
 ---
 
+##Symbolic Values and Spoken Forms
+
+Source Text is Authoritative
+
+The source field is authoritative and must preserve the original text exactly as it appears in the source material.
+
+Do not replace symbolic values with lexical words.
+
+**Correct**
+```yaml
+source: kello 6
+```
+**Incorrect**
+```yaml
+source: kello kuusi
+```
+
+## Phonetic Represents the Spoken Source Language
+
+The phonetic field represents how the source text is naturally spoken, not how it is written.
+
+When the source contains symbolic values, such as numbers, times, dates, currency, percentages, measurements, or other symbolic notation. The phonetic field must expand those symbols into the words a native speaker would actually say.
+
+**Examples (Finnish)**
+```yaml
+source: kello 6
+phonetic: KEHL-loh KOO-see
+```
+
+```yaml
+source: kello 7.15
+phonetic: KEHL-loh SAYT-seh-mahn VEE-see-tois-tah
+```
+
+```yaml
+source: 15 €
+phonetic: VEE-see-tois-tah EUR-oh-ah
+```
+
+The learner should be able to read the phonetic aloud naturally even when the source contains symbols.
+
+## Vocabulary Extraction
+
+Symbolic values are never considered lexical vocabulary.
+
+Do not create vocabulary entries solely because a symbolic value appears.
+
+**Incorrect**
+```yaml
+source: kello 6
+
+vocabulary_refs:
+  - kuusi
+```
+**correct**
+```yaml
+source: kello 6
+
+vocabulary_refs:
+  - kello
+```
+**Important**: The lexical word kuusi does not occur in the source text and is not extracted as vocabulary. Do not infer lexical vocabulary from symbolic notation, even when the spoken pronunciation is known.
+
+## Translation Hints
+
+When the spoken form differs from the written form because of symbolic notation, explain the explain the relationship between the written symbolic form and its natural spoken form in the translation hint.
+
+**Example:**
+
+```yaml
+hint: >
+  Kello introduces clock time. Although the source uses the numeral "6",
+  Finnish speakers read it aloud as "kuusi".
+```
+The source field preserves what the learner sees. The phonetic field represents what the learner hears.
+
+The phonetic field is a pronunciation aid, not a transliteration. It should represent natural spoken source language even when doing so requires expanding symbols into their spoken lexical forms.
+
+### Design Invariant
+
+* The source field preserves what the learner sees.
+* The phonetic field represents what the learner hears.
+* The vocabulary pack contains only lexical items that actually appear in the source text (or their lemmas).
+
+These responsibilities are intentionally different and must not be merged.
+
+---
+
 ## Choosing Accepted Answers
 
 Accepted answers should improve the learner's experience without lowering educational standards.
@@ -1603,6 +1691,52 @@ Vocabulary entries should:
 - contain only dictionary lemmas as their canonical identity,
 - provide meaningful educational enrichment,
 - and support the learner's understanding of the translation.
+
+---
+
+### Creating a Vocabulary pack without Translation Using an LLM
+
+There may be times when you want to create your own vocabulary list. This can be done manually or using assistance from an LLM agent.
+When using an LLM agent you need to provide a proper prompt and provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your 
+vocabulary list.  
+
+---
+
+#### LLM prompt
+
+When trying to get only a vocabulary pack out of an LLM you need to be very explicit with it. The following prompt has been
+tested and will give you the best results. 
+
+```Text
+Attached:
+1. Linguatrain_LLM_Authoring_Specification.md — the authoring spec
+2. [canonical_example_vocabulary].yaml — a canonical Vocabulary pack, for style/structure reference
+3. [raw_word_list].txt — the raw word list to generate from
+
+Task: Using §2.1 and §5.0 of the attached specification (vocabulary-only
+mode — no Translation pack exists or is wanted here), generate a new
+canonical Vocabulary pack YAML file from the attached raw word list. Use
+the attached canonical example only as a structural/style reference — do
+not copy or reuse any of its lexical content.
+
+Lesson metadata for this pack:
+- id: '[name of txt file]'
+- title: '[Select a name for this YAML file]'
+- source_list: [raw_word_list filename]
+- version: 1
+- schema_version: 1
+
+Before producing the YAML, run the §5.0 preprocessing steps explicitly
+(case normalization, dedup, exclusion of non-lexical tokens, same-lemma
+collapsing, near-form disambiguation, metalinguistic-term flagging) and
+report anything you flagged under §5.0(e) or §5.0(f) — ambiguous lemmas or
+metalinguistic terms — as a short list before the YAML, so I can confirm
+those calls. Then run the §9 conformance checklist (including the
+vocabulary-only-mode subsection) and confirm it passes before presenting
+the final YAML in a single code block.
+```
+
+
 
 ---
 
@@ -2180,7 +2314,6 @@ metadata:
 entries:
   - id: 'tervetuloa'
     prompt: tervetuloa
-    answer: welcome
     type: phrase
     notes:
       - 'Often followed by the allative case: “kurssille” = “to the course”.'
@@ -2390,6 +2523,68 @@ Languages without dedicated negative verb forms should instead represent the gra
 Before generating a conjugation pack, authors SHALL identify the canonical verb lemmas referenced by the companion vocabulary pack.
 
 Conjugation packs are derived from the vocabulary pack—not directly from the translation text.
+
+---
+
+### Creating a Conjugation pack without Translation Using an LLM
+
+There may be times when you want to create your own conjugation list. This can be done manually or using assistance from an LLM agent.
+When using an LLM agent you need to provide a proper prompt and provide the `05_Linguatrain_LLM_Authoring_Specification.md` file along with your 
+verb text list. Use a single verb per line in the text file. 
+
+---
+
+#### LLM prompt
+
+When trying to get only a conjugation pack out of an LLM you need to be very explicit with the prompt to the LLM. The following prompt has been
+tested and will give you the best results. 
+
+```Text
+
+Attached:
+1. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec
+2. [canonical_example_conjugation].yaml — a canonical Conjugation pack, for style/structure reference
+3. [raw_verb_list].txt — the raw verb list to generate from
+
+Task: Using §2.2 and the applicable parts of §5.0 of the attached
+specification (conjugation-only mode — no Translation pack and no
+Vocabulary pack exist or are wanted here), generate a new canonical
+Conjugation pack YAML file from the attached raw verb list. Use the
+attached canonical example only as a structural/style reference — do not
+copy or reuse any of its lexical content or paradigm values.
+
+Lesson metadata for this pack:
+- id: [e.g. 'suomen_mestari_1_kappale_5_conjugation']
+- title: [e.g. Kappale 5 — Conjugation]
+- source_list: [raw_verb_list filename]
+- version: 1
+- schema_version: 1
+
+Before producing the YAML, run the applicable §5.0 preprocessing steps
+explicitly (case normalization, dedup, exclusion of non-lexical tokens,
+same-lemma collapsing, near-form disambiguation, metalinguistic-term
+flagging) and report anything you flagged as ambiguous lemmas or
+metalinguistic terms — as a short list before the YAML, so I can confirm
+those calls.
+
+Also report, as part of that same list:
+- Any token that was not already a citation/infinitive form and had to be
+  reduced to its dictionary lemma (§5.4).
+- Any raw-list line that already grouped multiple words, the §5.5
+  compositionality-test call you made on it, and whether it was kept as
+  one entry (§6.7) or split.
+- Any verb excluded as defective or impersonal (§6.3).
+
+State which grammatical categories (polarity, tense, mood, person, etc.)
+you intend to cover for this pack before generating entries, since §6.5
+requires that whatever categories are included for one verb must be
+included for every verb — flag this choice explicitly so I can confirm it
+before you generate the full paradigm set.
+
+Then run the §9 conformance checklist (including the conjugation-only-mode
+subsection) and confirm it passes before presenting the final YAML in a
+single code block.
+```
 
 ---
 
@@ -2675,6 +2870,75 @@ The exact structure of the conjugation data will vary by language, but every con
 
 The conjugation schema defines **how verbs inflect**. It does not redefine meaning, introduce new vocabulary, or duplicate information that belongs in the Translation or Vocabulary packs.
 
+---
+
+# Morpholgy -- aka Word Explorer -- work in progress 
+
+Word Explorer is not a grammar reference. It is a guide for understanding how individual words are formed and used in context. Each entry begins with a word encountered in authentic text and helps the learner discover its base word, meaning, formation, and purpose in the sentence.
+
+## YAML design
+
+v0.9 of the design
+
+```yaml
+metadata:
+  id: ''
+  title: ''
+  type: word_explorer
+  format: canonical
+  version: 1
+  schema_version: 1
+
+  category: ''
+  chapter: ''
+
+  source_pack: ''        # Optional: originating Translation pack
+
+dimensions:
+  features:
+    - base_word
+    - meaning
+    - formation
+    - explanation
+
+entries:
+
+  - id: ''
+
+    # Context (optional for standalone exploration)
+    source:
+      text: ''
+      literal: ''
+      target: ''
+
+    # The word being explored
+    word: ''
+    base_word: ''
+    type: ''
+
+    # Meaning of this word in this context
+    target: ''
+
+    # Language-specific analysis
+    morphology: {}
+
+    # Learning support
+    hint: ''
+
+    # How the word was formed
+    formation: ''
+
+    # Why this form is used
+    explanation: ''
+
+    # Optional semantic role
+    role: ''
+
+    # Cross references
+    vocabulary_ref: ''
+    grammar_refs: []
+
+```
 ---
 
 # Common Authoring Mistakes

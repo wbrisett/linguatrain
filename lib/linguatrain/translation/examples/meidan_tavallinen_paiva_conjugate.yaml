@@ -1,0 +1,1556 @@
+metadata:
+  id: suomen_mestari_1_meidan_tavallinen_paiva_conjugate
+  title: Meidän tavallinen päivä — Verb Conjugation Pack
+  type: conjugation
+  format: canonical
+  version: 10
+  schema_version: 1
+  source_pack: suomen_mestari_1_meidan_tavallinen_paiva_vocabulary
+  notes:
+  - Present positive and negative forms for verbs encountered in the passage.
+  - Each entry declares its verb category for category-drill mode.
+  - Corrected stem on gradating Type 1 verbs (pukea, lukea, loppua, nukkua) from the weak grade (incorrectly derived by stripping -n from minä-positive) to the citation-derived strong grade, per corrected spec §6.2.1a. The weak-grade alternation itself remains fully documented in each entry's notes.
+persons:
+- minä
+- sinä
+- hän
+- me
+- te
+- he
+entries:
+- id: '001'
+  lemma: olla
+  gloss: to be
+  category:
+    key: type_irregular
+    label: Irregular
+  stem: ole-
+  notes:
+  - Personal forms don't follow a predictable stem+ending pattern, e.g. olla → olen, on, ovat.
+  forms:
+    minä:
+      positive:
+        forms:
+        - olen
+        meaning: I am
+      negative:
+        forms:
+        - en ole
+        meaning: I am not
+    sinä:
+      positive:
+        forms:
+        - olet
+        meaning: you are
+      negative:
+        forms:
+        - et ole
+        meaning: you are not
+    hän:
+      positive:
+        forms:
+        - 'on'
+        meaning: he/she is
+      negative:
+        forms:
+        - ei ole
+        meaning: he/she is not
+    me:
+      positive:
+        forms:
+        - olemme
+        meaning: we are
+      negative:
+        forms:
+        - emme ole
+        meaning: we are not
+    te:
+      positive:
+        forms:
+        - olette
+        meaning: you are
+      negative:
+        forms:
+        - ette ole
+        meaning: you are not
+    he:
+      positive:
+        forms:
+        - ovat
+        meaning: they are
+      negative:
+        forms:
+        - eivät ole
+        meaning: they are not
+- id: '002'
+  lemma: herätä
+  gloss: to wake up
+  category:
+    key: type_4
+    label: Type 4
+  stem: herää-
+  notes:
+  - Infinitive -tä doubles the stem vowel before personal endings, e.g. herätä → herään.
+  forms:
+    minä:
+      positive:
+        forms:
+        - herään
+        meaning: I wake up
+      negative:
+        forms:
+        - en herää
+        meaning: I do not wake up
+    sinä:
+      positive:
+        forms:
+        - heräät
+        meaning: you wake up
+      negative:
+        forms:
+        - et herää
+        meaning: you do not wake up
+    hän:
+      positive:
+        forms:
+        - herää
+        meaning: he/she wakes up
+      negative:
+        forms:
+        - ei herää
+        meaning: he/she does not wake up
+    me:
+      positive:
+        forms:
+        - heräämme
+        meaning: we wake up
+      negative:
+        forms:
+        - emme herää
+        meaning: we do not wake up
+    te:
+      positive:
+        forms:
+        - heräätte
+        meaning: you wake up
+      negative:
+        forms:
+        - ette herää
+        meaning: you do not wake up
+    he:
+      positive:
+        forms:
+        - heräävät
+        meaning: they wake up
+      negative:
+        forms:
+        - eivät herää
+        meaning: they do not wake up
+- id: '003'
+  lemma: soida
+  gloss: to ring
+  category:
+    key: type_2
+    label: Type 2
+  stem: soi-
+  notes:
+  - Personal endings attach directly to a stem ending in a diphthong, e.g. soida → soin.
+  forms:
+    minä:
+      positive:
+        forms:
+        - soin
+        meaning: I ring / I sound
+      negative:
+        forms:
+        - en soi
+        meaning: I do not ring / I do not sound
+    sinä:
+      positive:
+        forms:
+        - soit
+        meaning: you ring / you sound
+      negative:
+        forms:
+        - et soi
+        meaning: you do not ring / you do not sound
+    hän:
+      positive:
+        forms:
+        - soi
+        meaning: he/she rings / he/she sounds
+      negative:
+        forms:
+        - ei soi
+        meaning: he/she does not ring / he/she does not sound
+    me:
+      positive:
+        forms:
+        - soimme
+        meaning: we ring / we sound
+      negative:
+        forms:
+        - emme soi
+        meaning: we do not ring / we do not sound
+    te:
+      positive:
+        forms:
+        - soitte
+        meaning: you ring / you sound
+      negative:
+        forms:
+        - ette soi
+        meaning: you do not ring / you do not sound
+    he:
+      positive:
+        forms:
+        - soivat
+        meaning: they ring / they sound
+      negative:
+        forms:
+        - eivät soi
+        meaning: they do not ring / they do not sound
+- id: '004'
+  lemma: käydä
+  gloss: to go
+  category:
+    key: type_2
+    label: Type 2
+  stem: käy-
+  notes:
+  - Personal endings attach directly to a stem ending in a long vowel, e.g. käydä → käyn.
+  forms:
+    minä:
+      positive:
+        forms:
+        - käyn
+        meaning: I go / I visit
+      negative:
+        forms:
+        - en käy
+        meaning: I do not go / I do not visit
+    sinä:
+      positive:
+        forms:
+        - käyt
+        meaning: you go / you visit
+      negative:
+        forms:
+        - et käy
+        meaning: you do not go / you do not visit
+    hän:
+      positive:
+        forms:
+        - käy
+        meaning: he/she goes / he/she visits
+      negative:
+        forms:
+        - ei käy
+        meaning: he/she does not go / he/she does not visit
+    me:
+      positive:
+        forms:
+        - käymme
+        meaning: we go / we visit
+      negative:
+        forms:
+        - emme käy
+        meaning: we do not go / we do not visit
+    te:
+      positive:
+        forms:
+        - käytte
+        meaning: you go / you visit
+      negative:
+        forms:
+        - ette käy
+        meaning: you do not go / you do not visit
+    he:
+      positive:
+        forms:
+        - käyvät
+        meaning: they go / they visit
+      negative:
+        forms:
+        - eivät käy
+        meaning: they do not go / they do not visit
+- id: '005'
+  lemma: pukea
+  gloss: to dress
+  category:
+    key: type_1
+    label: Type 1
+  stem: 'puke-'
+  notes:
+  - 'Consonant gradation: k → ∅ in weak-grade forms, e.g. pukea → puen.'
+  forms:
+    minä:
+      positive:
+        forms:
+        - puen
+        meaning: I dress / I put on
+      negative:
+        forms:
+        - en pue
+        meaning: I do not dress / I do not put on
+    sinä:
+      positive:
+        forms:
+        - puet
+        meaning: you dress / you put on
+      negative:
+        forms:
+        - et pue
+        meaning: you do not dress / you do not put on
+    hän:
+      positive:
+        forms:
+        - pukee
+        meaning: he/she dresses / he/she puts on
+      negative:
+        forms:
+        - ei pue
+        meaning: he/she does not dress / he/she does not put on
+    me:
+      positive:
+        forms:
+        - puemme
+        meaning: we dress / we put on
+      negative:
+        forms:
+        - emme pue
+        meaning: we do not dress / we do not put on
+    te:
+      positive:
+        forms:
+        - puette
+        meaning: you dress / you put on
+      negative:
+        forms:
+        - ette pue
+        meaning: you do not dress / you do not put on
+    he:
+      positive:
+        forms:
+        - pukevat
+        meaning: they dress / they put on
+      negative:
+        forms:
+        - eivät pue
+        meaning: they do not dress / they do not put on
+- id: '006'
+  lemma: tehdä
+  gloss: to do
+  category:
+    key: type_irregular
+    label: Irregular
+  stem: tee-
+  notes:
+  - The stem alternates between tee- and tek-, e.g. tehdä → teen, tekevät.
+  forms:
+    minä:
+      positive:
+        forms:
+        - teen
+        meaning: I do / I make
+      negative:
+        forms:
+        - en tee
+        meaning: I do not do / I do not make
+    sinä:
+      positive:
+        forms:
+        - teet
+        meaning: you do / you make
+      negative:
+        forms:
+        - et tee
+        meaning: you do not do / you do not make
+    hän:
+      positive:
+        forms:
+        - tekee
+        meaning: he/she does / he/she makes
+      negative:
+        forms:
+        - ei tee
+        meaning: he/she does not do / he/she does not make
+    me:
+      positive:
+        forms:
+        - teemme
+        meaning: we do / we make
+      negative:
+        forms:
+        - emme tee
+        meaning: we do not do / we do not make
+    te:
+      positive:
+        forms:
+        - teette
+        meaning: you do / you make
+      negative:
+        forms:
+        - ette tee
+        meaning: you do not do / you do not make
+    he:
+      positive:
+        forms:
+        - tekevät
+        meaning: they do / they make
+      negative:
+        forms:
+        - eivät tee
+        meaning: they do not do / they do not make
+- id: '007'
+  lemma: lukea
+  gloss: to read
+  category:
+    key: type_1
+    label: Type 1
+  stem: 'luke-'
+  notes:
+  - 'Consonant gradation: k → ∅ in weak-grade forms, e.g. lukea → luen.'
+  forms:
+    minä:
+      positive:
+        forms:
+        - luen
+        meaning: I read
+      negative:
+        forms:
+        - en lue
+        meaning: I do not read
+    sinä:
+      positive:
+        forms:
+        - luet
+        meaning: you read
+      negative:
+        forms:
+        - et lue
+        meaning: you do not read
+    hän:
+      positive:
+        forms:
+        - lukee
+        meaning: he/she reads
+      negative:
+        forms:
+        - ei lue
+        meaning: he/she does not read
+    me:
+      positive:
+        forms:
+        - luemme
+        meaning: we read
+      negative:
+        forms:
+        - emme lue
+        meaning: we do not read
+    te:
+      positive:
+        forms:
+        - luette
+        meaning: you read
+      negative:
+        forms:
+        - ette lue
+        meaning: you do not read
+    he:
+      positive:
+        forms:
+        - lukevat
+        meaning: they read
+      negative:
+        forms:
+        - eivät lue
+        meaning: they do not read
+- id: 008
+  lemma: syödä
+  gloss: to eat
+  category:
+    key: type_2
+    label: Type 2
+  stem: syö-
+  notes:
+  - Personal endings attach directly to a stem ending in a diphthong, e.g. syödä → syön.
+  forms:
+    minä:
+      positive:
+        forms:
+        - syön
+        meaning: I eat
+      negative:
+        forms:
+        - en syö
+        meaning: I do not eat
+    sinä:
+      positive:
+        forms:
+        - syöt
+        meaning: you eat
+      negative:
+        forms:
+        - et syö
+        meaning: you do not eat
+    hän:
+      positive:
+        forms:
+        - syö
+        meaning: he/she eats
+      negative:
+        forms:
+        - ei syö
+        meaning: he/she does not eat
+    me:
+      positive:
+        forms:
+        - syömme
+        meaning: we eat
+      negative:
+        forms:
+        - emme syö
+        meaning: we do not eat
+    te:
+      positive:
+        forms:
+        - syötte
+        meaning: you eat
+      negative:
+        forms:
+        - ette syö
+        meaning: you do not eat
+    he:
+      positive:
+        forms:
+        - syövät
+        meaning: they eat
+      negative:
+        forms:
+        - eivät syö
+        meaning: they do not eat
+- id: 009
+  lemma: juoda
+  gloss: to drink
+  category:
+    key: type_2
+    label: Type 2
+  stem: juo-
+  notes:
+  - Personal endings attach directly to a stem ending in a diphthong, e.g. juoda → juon.
+  forms:
+    minä:
+      positive:
+        forms:
+        - juon
+        meaning: I drink
+      negative:
+        forms:
+        - en juo
+        meaning: I do not drink
+    sinä:
+      positive:
+        forms:
+        - juot
+        meaning: you drink
+      negative:
+        forms:
+        - et juo
+        meaning: you do not drink
+    hän:
+      positive:
+        forms:
+        - juo
+        meaning: he/she drinks
+      negative:
+        forms:
+        - ei juo
+        meaning: he/she does not drink
+    me:
+      positive:
+        forms:
+        - juomme
+        meaning: we drink
+      negative:
+        forms:
+        - emme juo
+        meaning: we do not drink
+    te:
+      positive:
+        forms:
+        - juotte
+        meaning: you drink
+      negative:
+        forms:
+        - ette juo
+        meaning: you do not drink
+    he:
+      positive:
+        forms:
+        - juovat
+        meaning: they drink
+      negative:
+        forms:
+        - eivät juo
+        meaning: they do not drink
+- id: '010'
+  lemma: lähteä
+  gloss: to leave
+  category:
+    key: type_3
+    label: Type 3
+  stem: lähde-
+  notes:
+  - Infinitive -eä drops in favor of an -e- stem with t → d gradation in the weak grade, e.g. lähteä → lähden.
+  forms:
+    minä:
+      positive:
+        forms:
+        - lähden
+        meaning: I leave
+      negative:
+        forms:
+        - en lähde
+        meaning: I do not leave
+    sinä:
+      positive:
+        forms:
+        - lähdet
+        meaning: you leave
+      negative:
+        forms:
+        - et lähde
+        meaning: you do not leave
+    hän:
+      positive:
+        forms:
+        - lähtee
+        meaning: he/she leaves
+      negative:
+        forms:
+        - ei lähde
+        meaning: he/she does not leave
+    me:
+      positive:
+        forms:
+        - lähdemme
+        meaning: we leave
+      negative:
+        forms:
+        - emme lähde
+        meaning: we do not leave
+    te:
+      positive:
+        forms:
+        - lähdette
+        meaning: you leave
+      negative:
+        forms:
+        - ette lähde
+        meaning: you do not leave
+    he:
+      positive:
+        forms:
+        - lähtevät
+        meaning: they leave
+      negative:
+        forms:
+        - eivät lähde
+        meaning: they do not leave
+- id: '011'
+  lemma: kävellä
+  gloss: to walk
+  category:
+    key: type_3
+    label: Type 3
+  stem: kävele-
+  notes:
+  - Infinitive -llä drops in favor of an -le- stem before endings, e.g. kävellä → kävelee.
+  forms:
+    minä:
+      positive:
+        forms:
+        - kävelen
+        meaning: I walk
+      negative:
+        forms:
+        - en kävele
+        meaning: I do not walk
+    sinä:
+      positive:
+        forms:
+        - kävelet
+        meaning: you walk
+      negative:
+        forms:
+        - et kävele
+        meaning: you do not walk
+    hän:
+      positive:
+        forms:
+        - kävelee
+        meaning: he/she walks
+      negative:
+        forms:
+        - ei kävele
+        meaning: he/she does not walk
+    me:
+      positive:
+        forms:
+        - kävelemme
+        meaning: we walk
+      negative:
+        forms:
+        - emme kävele
+        meaning: we do not walk
+    te:
+      positive:
+        forms:
+        - kävelette
+        meaning: you walk
+      negative:
+        forms:
+        - ette kävele
+        meaning: you do not walk
+    he:
+      positive:
+        forms:
+        - kävelevät
+        meaning: they walk
+      negative:
+        forms:
+        - eivät kävele
+        meaning: they do not walk
+- id: '012'
+  lemma: ajaa
+  gloss: to drive
+  category:
+    key: type_1
+    label: Type 1
+  stem: aja-
+  notes:
+  - Personal endings attach directly to the stem, e.g. ajaa → ajan.
+  forms:
+    minä:
+      positive:
+        forms:
+        - ajan
+        meaning: I drive / I ride by vehicle / I go by vehicle
+      negative:
+        forms:
+        - en aja
+        meaning: I do not drive / I do not ride by vehicle / I do not go by vehicle
+    sinä:
+      positive:
+        forms:
+        - ajat
+        meaning: you drive / you ride by vehicle / you go by vehicle
+      negative:
+        forms:
+        - et aja
+        meaning: you do not drive / you do not ride by vehicle / you do not go by vehicle
+    hän:
+      positive:
+        forms:
+        - ajaa
+        meaning: he/she drives / he/she rides by vehicle / he/she goes by vehicle
+      negative:
+        forms:
+        - ei aja
+        meaning: he/she does not drive / he/she does not ride by vehicle / he/she does not go by vehicle
+    me:
+      positive:
+        forms:
+        - ajamme
+        meaning: we drive / we ride by vehicle / we go by vehicle
+      negative:
+        forms:
+        - emme aja
+        meaning: we do not drive / we do not ride by vehicle / we do not go by vehicle
+    te:
+      positive:
+        forms:
+        - ajatte
+        meaning: you drive / you ride by vehicle / you go by vehicle
+      negative:
+        forms:
+        - ette aja
+        meaning: you do not drive / you do not ride by vehicle / you do not go by vehicle
+    he:
+      positive:
+        forms:
+        - ajavat
+        meaning: they drive / they ride by vehicle / they go by vehicle
+      negative:
+        forms:
+        - eivät aja
+        meaning: they do not drive / they do not ride by vehicle / they do not go by vehicle
+- id: '013'
+  lemma: mennä
+  gloss: to go
+  category:
+    key: type_3
+    label: Type 3
+  stem: mene-
+  notes:
+  - Infinitive -nä drops in favor of an -e- stem before endings, e.g. mennä → menee.
+  forms:
+    minä:
+      positive:
+        forms:
+        - menen
+        meaning: I go
+      negative:
+        forms:
+        - en mene
+        meaning: I do not go
+    sinä:
+      positive:
+        forms:
+        - menet
+        meaning: you go
+      negative:
+        forms:
+        - et mene
+        meaning: you do not go
+    hän:
+      positive:
+        forms:
+        - menee
+        meaning: he/she goes
+      negative:
+        forms:
+        - ei mene
+        meaning: he/she does not go
+    me:
+      positive:
+        forms:
+        - menemme
+        meaning: we go
+      negative:
+        forms:
+        - emme mene
+        meaning: we do not go
+    te:
+      positive:
+        forms:
+        - menette
+        meaning: you go
+      negative:
+        forms:
+        - ette mene
+        meaning: you do not go
+    he:
+      positive:
+        forms:
+        - menevät
+        meaning: they go
+      negative:
+        forms:
+        - eivät mene
+        meaning: they do not go
+- id: '014'
+  lemma: loppua
+  gloss: to end
+  category:
+    key: type_1
+    label: Type 1
+  stem: 'loppu-'
+  notes:
+  - 'Consonant gradation: pp → p in weak-grade forms, e.g. loppua → lopun.'
+  forms:
+    minä:
+      positive:
+        forms:
+        - lopun
+        meaning: I end
+      negative:
+        forms:
+        - en lopu
+        meaning: I do not end
+    sinä:
+      positive:
+        forms:
+        - loput
+        meaning: you end
+      negative:
+        forms:
+        - et lopu
+        meaning: you do not end
+    hän:
+      positive:
+        forms:
+        - loppuu
+        meaning: he/she ends
+      negative:
+        forms:
+        - ei lopu
+        meaning: he/she does not end
+    me:
+      positive:
+        forms:
+        - lopumme
+        meaning: we end
+      negative:
+        forms:
+        - emme lopu
+        meaning: we do not end
+    te:
+      positive:
+        forms:
+        - loputte
+        meaning: you end
+      negative:
+        forms:
+        - ette lopu
+        meaning: you do not end
+    he:
+      positive:
+        forms:
+        - loppuvat
+        meaning: they end
+      negative:
+        forms:
+        - eivät lopu
+        meaning: they do not end
+- id: '015'
+  lemma: pelata
+  gloss: to play
+  category:
+    key: type_4
+    label: Type 4
+  stem: pelaa-
+  notes:
+  - Infinitive -ta doubles the stem vowel before personal endings, e.g. pelata → pelaan.
+  forms:
+    minä:
+      positive:
+        forms:
+        - pelaan
+        meaning: I play
+      negative:
+        forms:
+        - en pelaa
+        meaning: I do not play
+    sinä:
+      positive:
+        forms:
+        - pelaat
+        meaning: you play
+      negative:
+        forms:
+        - et pelaa
+        meaning: you do not play
+    hän:
+      positive:
+        forms:
+        - pelaa
+        meaning: he/she plays
+      negative:
+        forms:
+        - ei pelaa
+        meaning: he/she does not play
+    me:
+      positive:
+        forms:
+        - pelaamme
+        meaning: we play
+      negative:
+        forms:
+        - emme pelaa
+        meaning: we do not play
+    te:
+      positive:
+        forms:
+        - pelaatte
+        meaning: you play
+      negative:
+        forms:
+        - ette pelaa
+        meaning: you do not play
+    he:
+      positive:
+        forms:
+        - pelaavat
+        meaning: they play
+      negative:
+        forms:
+        - eivät pelaa
+        meaning: they do not play
+- id: '016'
+  lemma: uida
+  gloss: to swim
+  category:
+    key: type_2
+    label: Type 2
+  stem: ui-
+  notes:
+  - Personal endings attach directly to a stem ending in a diphthong, e.g. uida → uin.
+  forms:
+    minä:
+      positive:
+        forms:
+        - uin
+        meaning: I swim
+      negative:
+        forms:
+        - en ui
+        meaning: I do not swim
+    sinä:
+      positive:
+        forms:
+        - uit
+        meaning: you swim
+      negative:
+        forms:
+        - et ui
+        meaning: you do not swim
+    hän:
+      positive:
+        forms:
+        - ui
+        meaning: he/she swims
+      negative:
+        forms:
+        - ei ui
+        meaning: he/she does not swim
+    me:
+      positive:
+        forms:
+        - uimme
+        meaning: we swim
+      negative:
+        forms:
+        - emme ui
+        meaning: we do not swim
+    te:
+      positive:
+        forms:
+        - uitte
+        meaning: you swim
+      negative:
+        forms:
+        - ette ui
+        meaning: you do not swim
+    he:
+      positive:
+        forms:
+        - uivat
+        meaning: they swim
+      negative:
+        forms:
+        - eivät ui
+        meaning: they do not swim
+- id: '017'
+  lemma: tulla
+  gloss: to come
+  category:
+    key: type_3
+    label: Type 3
+  stem: tule-
+  notes:
+  - Infinitive -lla drops in favor of an -le- stem before endings, e.g. tulla → tulee.
+  forms:
+    minä:
+      positive:
+        forms:
+        - tulen
+        meaning: I come
+      negative:
+        forms:
+        - en tule
+        meaning: I do not come
+    sinä:
+      positive:
+        forms:
+        - tulet
+        meaning: you come
+      negative:
+        forms:
+        - et tule
+        meaning: you do not come
+    hän:
+      positive:
+        forms:
+        - tulee
+        meaning: he/she comes
+      negative:
+        forms:
+        - ei tule
+        meaning: he/she does not come
+    me:
+      positive:
+        forms:
+        - tulemme
+        meaning: we come
+      negative:
+        forms:
+        - emme tule
+        meaning: we do not come
+    te:
+      positive:
+        forms:
+        - tulette
+        meaning: you come
+      negative:
+        forms:
+        - ette tule
+        meaning: you do not come
+    he:
+      positive:
+        forms:
+        - tulevat
+        meaning: they come
+      negative:
+        forms:
+        - eivät tule
+        meaning: they do not come
+- id: 018
+  lemma: tarvita
+  gloss: to need
+  category:
+    key: type_5
+    label: Type 5
+  stem: tarvitse-
+  notes:
+  - Infinitive -itä becomes an -itse- stem before personal endings, e.g. tarvita → tarvitsen.
+  forms:
+    minä:
+      positive:
+        forms:
+        - tarvitsen
+        meaning: I need
+      negative:
+        forms:
+        - en tarvitse
+        meaning: I do not need
+    sinä:
+      positive:
+        forms:
+        - tarvitset
+        meaning: you need
+      negative:
+        forms:
+        - et tarvitse
+        meaning: you do not need
+    hän:
+      positive:
+        forms:
+        - tarvitsee
+        meaning: he/she needs
+      negative:
+        forms:
+        - ei tarvitse
+        meaning: he/she does not need
+    me:
+      positive:
+        forms:
+        - tarvitsemme
+        meaning: we need
+      negative:
+        forms:
+        - emme tarvitse
+        meaning: we do not need
+    te:
+      positive:
+        forms:
+        - tarvitsette
+        meaning: you need
+      negative:
+        forms:
+        - ette tarvitse
+        meaning: you do not need
+    he:
+      positive:
+        forms:
+        - tarvitsevat
+        meaning: they need
+      negative:
+        forms:
+        - eivät tarvitse
+        meaning: they do not need
+- id: 019
+  lemma: valita
+  gloss: to choose
+  category:
+    key: type_5
+    label: Type 5
+  stem: valitse-
+  notes:
+  - Infinitive -itä becomes an -itse- stem before personal endings, e.g. valita → valitsen.
+  forms:
+    minä:
+      positive:
+        forms:
+        - valitsen
+        meaning: I choose
+      negative:
+        forms:
+        - en valitse
+        meaning: I do not choose
+    sinä:
+      positive:
+        forms:
+        - valitset
+        meaning: you choose
+      negative:
+        forms:
+        - et valitse
+        meaning: you do not choose
+    hän:
+      positive:
+        forms:
+        - valitsee
+        meaning: he/she chooses
+      negative:
+        forms:
+        - ei valitse
+        meaning: he/she does not choose
+    me:
+      positive:
+        forms:
+        - valitsemme
+        meaning: we choose
+      negative:
+        forms:
+        - emme valitse
+        meaning: we do not choose
+    te:
+      positive:
+        forms:
+        - valitsette
+        meaning: you choose
+      negative:
+        forms:
+        - ette valitse
+        meaning: you do not choose
+    he:
+      positive:
+        forms:
+        - valitsevat
+        meaning: they choose
+      negative:
+        forms:
+        - eivät valitse
+        meaning: they do not choose
+- id: '020'
+  lemma: haluta
+  gloss: to want
+  category:
+    key: type_4
+    label: Type 4
+  stem: halua-
+  notes:
+  - Infinitive -ta doubles the stem vowel before personal endings, e.g. haluta → haluan.
+  forms:
+    minä:
+      positive:
+        forms:
+        - haluan
+        meaning: I want
+      negative:
+        forms:
+        - en halua
+        meaning: I do not want
+    sinä:
+      positive:
+        forms:
+        - haluat
+        meaning: you want
+      negative:
+        forms:
+        - et halua
+        meaning: you do not want
+    hän:
+      positive:
+        forms:
+        - haluaa
+        meaning: he/she wants
+      negative:
+        forms:
+        - ei halua
+        meaning: he/she does not want
+    me:
+      positive:
+        forms:
+        - haluamme
+        meaning: we want
+      negative:
+        forms:
+        - emme halua
+        meaning: we do not want
+    te:
+      positive:
+        forms:
+        - haluatte
+        meaning: you want
+      negative:
+        forms:
+        - ette halua
+        meaning: you do not want
+    he:
+      positive:
+        forms:
+        - haluavat
+        meaning: they want
+      negative:
+        forms:
+        - eivät halua
+        meaning: they do not want
+- id: '021'
+  lemma: katsoa
+  gloss: to watch
+  category:
+    key: type_1
+    label: Type 1
+  stem: katso-
+  notes:
+  - Personal endings attach directly to the stem, e.g. katsoa → katson.
+  forms:
+    minä:
+      positive:
+        forms:
+        - katson
+        meaning: I watch / I look
+      negative:
+        forms:
+        - en katso
+        meaning: I do not watch / I do not look
+    sinä:
+      positive:
+        forms:
+        - katsot
+        meaning: you watch / you look
+      negative:
+        forms:
+        - et katso
+        meaning: you do not watch / you do not look
+    hän:
+      positive:
+        forms:
+        - katsoo
+        meaning: he/she watches / he/she looks
+      negative:
+        forms:
+        - ei katso
+        meaning: he/she does not watch / he/she does not look
+    me:
+      positive:
+        forms:
+        - katsomme
+        meaning: we watch / we look
+      negative:
+        forms:
+        - emme katso
+        meaning: we do not watch / we do not look
+    te:
+      positive:
+        forms:
+        - katsotte
+        meaning: you watch / you look
+      negative:
+        forms:
+        - ette katso
+        meaning: you do not watch / you do not look
+    he:
+      positive:
+        forms:
+        - katsovat
+        meaning: they watch / they look
+      negative:
+        forms:
+        - eivät katso
+        meaning: they do not watch / they do not look
+- id: '022'
+  lemma: pestä
+  gloss: to wash
+  category:
+    key: type_3
+    label: Type 3
+  stem: pese-
+  notes:
+  - Infinitive -stä drops in favor of an -se- stem before endings, e.g. pestä → pesen.
+  forms:
+    minä:
+      positive:
+        forms:
+        - pesen
+        meaning: I wash
+      negative:
+        forms:
+        - en pese
+        meaning: I do not wash
+    sinä:
+      positive:
+        forms:
+        - peset
+        meaning: you wash
+      negative:
+        forms:
+        - et pese
+        meaning: you do not wash
+    hän:
+      positive:
+        forms:
+        - pesee
+        meaning: he/she washes
+      negative:
+        forms:
+        - ei pese
+        meaning: he/she does not wash
+    me:
+      positive:
+        forms:
+        - pesemme
+        meaning: we wash
+      negative:
+        forms:
+        - emme pese
+        meaning: we do not wash
+    te:
+      positive:
+        forms:
+        - pesette
+        meaning: you wash
+      negative:
+        forms:
+        - ette pese
+        meaning: you do not wash
+    he:
+      positive:
+        forms:
+        - pesevät
+        meaning: they wash
+      negative:
+        forms:
+        - eivät pese
+        meaning: they do not wash
+- id: '023'
+  lemma: sanoa
+  gloss: to say
+  category:
+    key: type_1
+    label: Type 1
+  stem: sano-
+  notes:
+  - Personal endings attach directly to the stem, e.g. sanoa → sanon.
+  forms:
+    minä:
+      positive:
+        forms:
+        - sanon
+        meaning: I say
+      negative:
+        forms:
+        - en sano
+        meaning: I do not say
+    sinä:
+      positive:
+        forms:
+        - sanot
+        meaning: you say
+      negative:
+        forms:
+        - et sano
+        meaning: you do not say
+    hän:
+      positive:
+        forms:
+        - sanoo
+        meaning: he/she says
+      negative:
+        forms:
+        - ei sano
+        meaning: he/she does not say
+    me:
+      positive:
+        forms:
+        - sanomme
+        meaning: we say
+      negative:
+        forms:
+        - emme sano
+        meaning: we do not say
+    te:
+      positive:
+        forms:
+        - sanotte
+        meaning: you say
+      negative:
+        forms:
+        - ette sano
+        meaning: you do not say
+    he:
+      positive:
+        forms:
+        - sanovat
+        meaning: they say
+      negative:
+        forms:
+        - eivät sano
+        meaning: they do not say
+- id: '024'
+  lemma: nukkua
+  gloss: to sleep
+  category:
+    key: type_1
+    label: Type 1
+  stem: 'nukku-'
+  notes:
+  - 'Consonant gradation: kk → k in weak-grade forms, e.g. nukkua → nukun.'
+  forms:
+    minä:
+      positive:
+        forms:
+        - nukun
+        meaning: I sleep
+      negative:
+        forms:
+        - en nuku
+        meaning: I do not sleep
+    sinä:
+      positive:
+        forms:
+        - nukut
+        meaning: you sleep
+      negative:
+        forms:
+        - et nuku
+        meaning: you do not sleep
+    hän:
+      positive:
+        forms:
+        - nukkuu
+        meaning: he/she sleeps
+      negative:
+        forms:
+        - ei nuku
+        meaning: he/she does not sleep
+    me:
+      positive:
+        forms:
+        - nukumme
+        meaning: we sleep
+      negative:
+        forms:
+        - emme nuku
+        meaning: we do not sleep
+    te:
+      positive:
+        forms:
+        - nukutte
+        meaning: you sleep
+      negative:
+        forms:
+        - ette nuku
+        meaning: you do not sleep
+    he:
+      positive:
+        forms:
+        - nukkuvat
+        meaning: they sleep
+      negative:
+        forms:
+        - eivät nuku
+        meaning: they do not sleep

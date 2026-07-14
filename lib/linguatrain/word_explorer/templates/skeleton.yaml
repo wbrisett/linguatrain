@@ -1,0 +1,93 @@
+metadata:
+  id: ''
+  title: ''
+  type: word_explorer
+  format: canonical
+  version: 1
+  schema_version: 1
+  category: ''
+  chapter: ''
+  source_pack: ''
+
+grammar:
+  - key: ''
+    name: ''
+    plain_english: ''
+    description: ''
+
+entries:
+  - id: ''
+    source:
+      text: ''
+      literal: ''
+      target: ''
+
+    # Word encountered or being explored
+    word: ''
+
+    # Dictionary / learner form
+    base_word: ''
+    type: ''
+
+    # Meaning of the encountered word
+    target: ''
+    morphology:
+      kind: ''
+      case: ''
+      ending: ''
+      stem: ''
+    formation: ''
+    explanation: ''
+    grammar_refs: []
+
+    # Forms related to this base word.
+    # Used by recognize and build modes.
+    explorations:
+      - word: ''
+        target: ''
+        morphology:
+          kind: ''
+          case: ''
+          ending: ''
+          stem: ''
+        formation: ''
+        explanation: ''
+        origin: source | generated
+        status: valid | limited | unsuitable
+        usage_note: ''
+        priority: ''
+
+    # Contextual usage.
+    # Used by apply mode.
+    applications:
+      - id: ''
+        type: contextual_choice
+        reasoning:
+          kind: ''
+          relationship: ''
+        source:
+          text: ''
+          literal: ''
+          target: ''
+        prompt:
+          text: ''
+          meaning: ''
+        base_word: ''
+        answer:
+          word: ''
+        # Minimum four choices for Apply mode whenever enough plausible
+        # distractors exist. Choices should be valid related forms or concepts,
+        # not arbitrary wrong answers.
+        choices:
+          - ''
+          - ''
+          - ''
+          - ''
+        grammar_refs: []
+        explanation:
+          why_it_fits: ''
+        distractors:
+          - word: ''
+            grammar: {}
+            meaning: ''
+            why_not: ''

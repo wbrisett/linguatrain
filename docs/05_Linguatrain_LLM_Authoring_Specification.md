@@ -633,6 +633,31 @@ only as a subject is not.
 **Never** generate an entry from a token that is only a case-ending or
   affix notation rather than a word (see the amended §4.5.1).
 
+**Transparent cognates and identical glosses (resolved):** Do not include a
+Vocabulary entry whose primary target-language answer is identical or
+near-identical to the source-language `prompt` unless that entry has a
+specific instructional reason in this source text. Lexical validity alone is
+not enough; a quiz item like `public → public` teaches little unless the pack
+also teaches something about pronunciation, agreement, inflection, register,
+false-friend risk, idiomatic use, or a required cross-pack relationship.
+
+Valid reasons to keep a transparent cognate or same-looking answer include:
+
+- the word is a false friend, partial cognate, or register trap;
+- the source form shows grammar the learner needs to notice, such as gender
+  agreement, plural marking, case/declension, conjugation, derivation, or
+  elision;
+- pronunciation guidance is included because the same-looking form is
+  predictably mispronounced by learners;
+- the entry is needed as the `vocabulary_ref` for a Word Explorer entry that
+  analyzes a real source form;
+- the source text explicitly uses the item as part of a meaningful closed set
+  being taught, such as warning colors or classification labels.
+
+If such an entry is kept, add a concise `notes` item explaining the
+instructional value. Otherwise, omit it from `vocabulary_refs` and from the
+Vocabulary pack, even though the word is a real lexical item in the source
+text.
 
 Cultural references remain translation/context material and do **not** become vocabulary.
 
@@ -2051,6 +2076,9 @@ final.
 - ☐ Inflectional-class and stem-alternation notes name the specific lemma
   in the descriptive clause itself, not just in the trailing example
   (§5.7.2a).
+- ☐ Transparent cognates or same-looking prompt/answer pairs are included
+  only when they have a specific instructional reason, and that reason is
+  stated in `notes` (§5.3).
 - ☐ Targets with common, equally natural rewordings include at least one
   `accepted` alternative.
 
@@ -2275,6 +2303,8 @@ Vocabulary
 - every id is a lemma
 - every vocabulary_ref resolves
 - no prohibited entries
+- no transparent cognate or identical/near-identical prompt-answer entry is
+  included without a specific instructional `notes` item (§5.3)
 - no duplicates
 - every verb entry has a `'Stem: X'` note (§5.7.2b) if the language's
   Conjugation pack uses a top-level `stem` field (§6.2.1a) — for every

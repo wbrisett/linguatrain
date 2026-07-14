@@ -814,6 +814,8 @@ class PackValidator
     validate_optional_string_list(entry, idx, "spoken")
     validate_optional_string(entry, idx, "phonetic")
     validate_optional_string(entry, idx, "speaker")
+    validate_optional_string(entry, idx, "type")
+    validate_vocab_forms(entry["forms"], idx) if entry.key?("forms")
 
     # Canonical keys plus compatibility aliases accepted by the runtime loader.
     allowed = %w[
@@ -824,6 +826,8 @@ class PackValidator
       spoken
       phonetic
       speaker
+      type
+      forms
       source
       target
       also_accepted
@@ -844,6 +848,31 @@ class PackValidator
         next unless v.is_a?(String) && v.strip.empty?
 
         error("entries[#{idx + 1}].#{k} is present but empty (strict mode)")
+      end
+    end
+  end
+
+  def validate_vocab_forms(forms, idx)
+    label = "entries[#{idx + 1}].forms"
+
+    unless forms.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{forms.class}")
+      return
+    end
+
+    forms.each do |key, value|
+      key_label = "#{label}[#{key.inspect}]"
+      if key.to_s.strip.empty?
+        error("#{label} contains an empty form label")
+      end
+
+      case value
+      when String
+        warn("#{key_label} is empty") if value.strip.empty?
+      when Array
+        validate_string_array(value, key_label, min: 1)
+      else
+        error("#{key_label} must be a String or list (Array) of Strings. Got: #{value.class}")
       end
     end
   end

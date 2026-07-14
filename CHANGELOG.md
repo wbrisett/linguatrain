@@ -7,6 +7,47 @@ version.
 
 ---
 
+## [1.2.0] - 2026-07-14
+
+This release introduces Word Explorer and completes a major pass over
+Linguatrain's content-authoring system. Linguatrain now has a clearer path from
+source material to structured Translation, Vocabulary, Conjugation, and Word
+Explorer packs, with documentation written for human authors and a dedicated
+specification for LLM-assisted content generation.
+
+### Added
+
+- Add the new Word Explorer module (`--word-explorer`) for exploring word forms
+  in context.
+- Add Word Explorer learning modes:
+  - `--recognize` for matching encountered forms to their base words.
+  - `--apply` for choosing the correct form in sentence context.
+  - `--build` for producing forms from base words and prompts.
+- Add Word Explorer YAML loading and exercise support.
+- Add a Word Explorer pack template and canonical Finnish Word Explorer example.
+- Add a generated Word Explorer Guide example.
+- Add Word Explorer validation support to `validate_pack.rb`.
+- Add the Linguatrain LLM Authoring Specification for generating Translation,
+  Vocabulary, Conjugation, Word Explorer, and Word Explorer Guide content.
+- Add a Word Explorer design specification documenting the feature philosophy,
+  schema decisions, modes, and guide behavior.
+- Add a subtitle-to-text helper tool for preparing source material.
+
+### Updated
+
+- Rewrite and expand the Translation Authoring Handbook so it works as a
+  practical human authoring guide.
+- Update the canonical Finnish Translation, Vocabulary, and Conjugation examples
+  so they form a coherent companion content set.
+- Update `build_yaml.rb` and its instructions for the current authoring
+  workflow.
+- Clarify the relationship between Translation, Vocabulary, Conjugation, Word
+  Explorer, and generated guides.
+- Update the README to describe Word Explorer and Linguatrain's content-first
+  learning philosophy.
+
+---
+
 ## [1.1.5] – 2026-07-08
 
 This release completes the first generation of the Translation authoring

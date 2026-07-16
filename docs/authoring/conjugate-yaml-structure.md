@@ -281,7 +281,7 @@ Use the negative form:
 
 #### conjugate_category_prompt
 
-Used by conjugation study/drill flows when `--drill-category` is enabled.
+Used by conjugation study/drill flows when `--identify-category` is enabled.
 
 Default fallback:
 

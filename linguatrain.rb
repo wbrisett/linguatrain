@@ -1893,10 +1893,11 @@ def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
 end
 
 def choose_conjugate_entries(entries, count)
-  return entries if count.nil? || count == "all"
+  shuffled = Array(entries).shuffle
+  return shuffled if count.nil? || count == "all"
 
   n = Integer(count)
-  entries.take([n, entries.length].min)
+  shuffled.take([n, shuffled.length].min)
 end
 
 def filter_conjugate_entries_by_category(entries, category_key)

@@ -1731,6 +1731,20 @@ def conjugate_stem(item)
   item[:stem].to_s.strip
 end
 
+def conjugate_stem_answers(item)
+  stem = conjugate_stem(item)
+  return [] if stem.empty?
+
+  answers = [stem]
+  if stem.end_with?("-")
+    answers << stem.delete_suffix("-")
+  else
+    answers << "#{stem}-"
+  end
+
+  answers.map { |x| x.to_s.strip }.reject(&:empty?).uniq
+end
+
 def conjugate_stem_prompt_label(ui)
   value = ui[:conjugate_stem_prompt].to_s.strip if ui.is_a?(Hash)
   value.nil? || value.empty? ? "Stem:" : value
@@ -1738,7 +1752,8 @@ end
 
 def drill_conjugate_stem(item, ui:, lenient: false, show_verb: true)
   expected = conjugate_stem(item)
-  return true if expected.empty?
+  expected_answers = conjugate_stem_answers(item)
+  return true if expected_answers.empty?
 
   if show_verb
     say render_cue_line(
@@ -1753,7 +1768,7 @@ def drill_conjugate_stem(item, ui:, lenient: false, show_verb: true)
     input = prompt("> ")
     _kind, ok, _matched = match_answer(
       input,
-      [expected],
+      expected_answers,
       lenient: lenient
     )
 

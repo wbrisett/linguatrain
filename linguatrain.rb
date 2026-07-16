@@ -2129,6 +2129,21 @@ def expected_answer_list(word, answer_variant)
   end
 end
 
+def normalize_match_options(value)
+  case value.to_s.strip.downcase
+  when "", "auto"
+    "auto"
+  when "source", "fi"
+    "source"
+  when "target", "en"
+    "target"
+  when "both"
+    "both"
+  else
+    raise "--match-options must be one of: auto, source, target, both"
+  end
+end
+
 
 def format_variants_for_display(word)
   written = (word[:answer] || []).first.to_s.strip
@@ -3047,8 +3062,8 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
           correct_list = w[:prompt]
           options_list = reverse_match_options
 
-          display_mode = match_options
-          display_mode = "en" if display_mode == "auto"
+          display_mode = normalize_match_options(match_options)
+          display_mode = "target" if display_mode == "auto"
 
           say "Hints:"
 
@@ -3065,7 +3080,7 @@ def run_quiz(selected, pool:, lenient:, match_game:, listen:, listen_no_english:
               fi_hint = prompt_to_answer[opt]
               say "  - #{fi_hint} → #{opt}"
             end
-          elsif display_mode == "fi"
+          elsif display_mode == "source"
             options_list.each do |opt|
               fi_hint = prompt_to_answer[opt]
               say "  - #{fi_hint}"
@@ -3507,6 +3522,19 @@ options = {
   word_explorer_mode_flags: [],
 }
 
+ARGV.map! do |arg|
+  case arg
+  when "-identify-category"
+    "--identify-category"
+  when "-drill-category"
+    "--drill-category"
+  when "-ask-category"
+    "--ask-category"
+  else
+    arg
+  end
+end
+
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: ruby linguatrain.rb <yaml_file> [count|all] [options]"
 
@@ -3634,7 +3662,12 @@ parser = OptionParser.new do |opts|
     options[:speech_duration] = v
   end
 
-  opts.on("--drill-category", "--ask-category", "With --conjugate, ask for the declared verb category before the conjugation") do
+  opts.on(
+    "--identify-category",
+    "--ask-category",
+    "--drill-category",
+    "With --conjugate, ask you to identify the verb category before conjugating"
+  ) do
     options[:drill_category] = true
   end
 
@@ -3645,7 +3678,7 @@ parser = OptionParser.new do |opts|
     options[:category_key] = key.to_s.strip
   end
 
-  opts.on("--match-options MODE", "Match-game options display: auto|fi|en|both (default: auto)") do |v|
+  opts.on("--match-options MODE", "Match-game options display: auto|source|target|both (default: auto)") do |v|
     options[:match_options] = v.to_s.strip.downcase
   end
 
@@ -3671,8 +3704,19 @@ end
 
 parser.parse!
 
+begin
+  options[:match_options] = normalize_match_options(options[:match_options])
+rescue RuntimeError => e
+  abort(e.message)
+end
+
 yaml_path = ARGV.shift or abort("Missing YAML file.")
 options[:count] = ARGV.shift
+
+if options[:conjugate] && options[:drill_category] && options[:count] &&
+   options[:count] != "all" && options[:count] !~ /\A\d+\z/
+  abort("--identify-category does not take a category key. Use --category #{options[:count]} --identify-category to filter and ask you to identify the category.")
+end
 
 word_explorer_mode_flags = options[:word_explorer_mode_flags].uniq
 if word_explorer_mode_flags.length > 1

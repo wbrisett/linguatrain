@@ -1,845 +1,537 @@
-# Complete Options Reference
+# Linguatrain Options Reference
 
-| Flag | Purpose | Default |
+This document lists the command-line options by learning area, rather than as a flat list.
+
+Command:
+
+```bash
+ruby bin/linguatrain.rb PACK.yaml [count|all] [options]
+```
+
+The positional value after the YAML path is the optional quiz size. For example, `pack.yaml 10` selects 10 entries, while `pack.yaml all` selects every available entry.
+If no size is entered, Linguatrain uses the default selection behavior for the active mode.
+
+## Complete Option Index
+
+### Setup And Configuration
+
+These options allow you to store your configuration files in locations other than the default location. This is useful when you have multiple configurations and do not want to keep modifying the same configuration file.
+
+
+| Option | Purpose | Default |
 |---|---|---:|
-| `--study` | Enable study mode | off |
-| `--reverse` | Swap direction | off |
-| `--match-game` | Add 3 hints | off |
-| `--match-options MODE` | Control hint source (`auto`, `source`, `target`) | `auto` |
-| `--listen` | Speak target (source shown) | off |
-| `--listen-no-source` | Speak target (source hidden) | off |
-| `--listen-no-english` | Alias for `--listen-no-source` | off |
-| `--transform` | Enable grammar transform drills (prompt + cue → transformed sentence) | off |
-| `--conjugate` | Enable verb conjugation drills (person + lemma) | off |
-| `--translate` | Enable translation exercises using translation learning packs | off |
-| `--negative` | With `--conjugate`, drill negative forms only | off |
-| `--both` | With `--conjugate`, drill both positive and negative forms | off |
-| `--conversation` | Enable conversation practice mode | off |
-| `--speak` | Speak answers and validate using Whisper speech recognition | off |
-| `--lenient-umlauts` | Allow simplified characters (`a`→`ä`, `o`→`ö`) | off |
-| `--tts-variant written\|spoken` | Choose what Piper speaks | `written` |
-| `--answer-variant written\|spoken\|either` | Choose which answers are accepted | `written` |
-| `--show-variants` | Display written and spoken variants together | off |
-| `--srs` | Enable spaced repetition | off |
-| `--due` | With SRS, quiz only due items | off |
-| `--new N` | With SRS, include up to N new items | `5` |
-| `--reset-srs` | Reset scheduling state | off |
-| `--srs-file PATH` | Override SRS state file path | pack-derived |
-
-
-  ----------------------------------------------------------------------------------
-
-# Mode Layering (How the Flags Work Together)
-
-With the exception of study mode, nearly all options can be used together. Study mode is not scored, so flags like `--srs` are not valid.
-
-Each of the modes are described in this section. 
-
-## Study Mode (`--study`)
-
-Study mode disables scoring and validation and turns the session into
-a guided review.
-
-Instead of:
-
-    prompt → validate → score
-
-Study mode behaves like:
-
-    show → reveal → optional audio → next
-
-This is ideal for:
-
-- Learning new vocabulary before testing
-- Passive exposure and repetition
-- Reviewing difficult material without pressure
-
-Example:
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --study         
-
-English → Finnish Quiz — 28 item(s) (mode: study, English→Finnish)
---------------------------------------------------
-
-[1/28]
-
-englanniksi: Now this is under control. / We have this under control now.
-
-                    (Enter to reveal; q to quit): 
-
-suomeksi: Nyt tämä on hallinnassa.
-(🗣 ääntämys: Newt TAH-muh on HAH-leen-nahs-sah)
-
-(Enter for next; q to quit): 
-
-```
-You may combine study mode with:
--	`--listen`
--	`--reverse`
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --study --listen
-```
-
-In study mode:
--	Answers are not graded
--	SRS is not updated
--	Missed packs are not generated
-
-## Base Typing Mode (default)
-
-Source shown → type target.
-
-``` bash
-ruby bin/linguatrain.rb pack.yaml 5
-```
-
-------------------------------------------------------------------------
-
-## Reverse Mode (`--reverse`)
-
-Target shown → type source.
-
-``` bash
-ruby bin/linguatrain.rb pack.yaml 5 --reverse
-```
-
-Direction swaps. Everything else stays the same.
-
-------------------------------------------------------------------------
-
-## Match‑Game (`--match-game`)
-
-Adds three distractor hints.
-
-You still type the full answer.
-
-``` bash
-ruby bin/linguatrain.rb pack.yaml 5 --match-game
-```
-
-Reverse + match‑game:
-
-``` bash
-ruby bin/linguatrain.rb pack.yaml 5 --reverse --match-game
-```
-
-Hints adapt to direction automatically.
-
-------------------------------------------------------------------------
-
-## Listening (`--listen`)
-
-Target language is spoken using Piper.
-
-Source remains visible.
-
-``` bash
-ruby bin/linguatrain.rb pack.yaml 5 --listen
-```
-
-Listening + reverse:
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --reverse --listen
-```
-
-------------------------------------------------------------------------
-
-## Listening Hard Mode (`--listen-no-source`)
-
-Target spoken. Source hidden.
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --listen-no-source
-```
-
-Alias: `--listen-no-english`
-
-------------------------------------------------------------------------
-
-## Listening + Match-Game (Recommended Beginner Mode)
-
-This combination layers listening with guided recall.\
-The learner hears the target language first, sees constrained hints, and
-must still type the full answer.
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --listen --match-game
-```
-
-Example:
-
-``` text
-English → Finnish Quiz — 5 word(s) (mode: match-game, listen, English→Finnish)
---------------------------------------------------
-
-[1/5]
-Audible Finnish: (listening…)
-Prompt: How are you?
-Hints:
-  - Mitä kuuluu?
-  - Kuinka voit?
-  - Mites menee?
-(Type 'r' to replay audio)
-Answer: mitä kuuluu
-✅ Correct!
-   Also accepted: kuinka voit? / mites menee?
-   (phonetic: MI-tah KOO-loo)
-```
-
-### Why This Mode Is Powerful
-
--   The word or phrase is heard first
--   Hints reduce cognitive overload
--   The learner must still type the full answer
--   Audio can be replayed
--   Encourages recognition → recall progression
-
-------------------------------------------------------------------------
-
-### Localized UI Example (Finnish)
-
-``` text
-Englanti → Suomi Harjoitus — 5 word(s) (mode: match-game, listen, Englanti→Suomi)
---------------------------------------------------
-
-[1/5]
-Audible Suomi: (kuuntelu…)
-englanniksi: How are you?
-Vihjeet:
-  - Mitä kuuluu?
-  - Kuinka voit?
-  - Mites menee?
-(Type 'r' to replay audio)
-suomeksi: mitä kuuluu
-✅ Oikein!
-   Hyväksytään myös: kuinka voit? / mites menee?
-   (ääntämys: MI-tah KOO-loo)
-```
-
-------------------------------------------------------------------------
-
-
----
-
-## Transform Mode (`--transform`)
-
-Transform mode enables **grammar transformation drills** based on a prompt and cue.
-
-Instead of simple translation, the learner must produce a grammatically transformed sentence.
-
-Typical exercises include:
-
-- Positive → Negative
-- Question → Statement
-- Person changes
-
-Example command:
+| `--config PATH` | Use a specific user config YAML file. | `LINGUATRAIN_CONFIG` or default config path |
+| `--localisation PATH` | Use a specific localisation YAML file. | config/default |
+| `--audio-player CMD` | Set the audio playback command. | config, usually `afplay` on macOS |
+
+### Core Quiz Controls
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--study` | Show/reveal study mode with no scoring. | off |
+| `--reverse` | Practice target to source instead of source to target. | off |
+| `--match-game` | Show multiple-choice style hints while still requiring typed answers. | off |
+| `--match-options MODE` | Control match-game hint display: `auto`, `source`, `target`, or `both`. | `auto` |
+| `--lenient-umlauts` | Accept `a` for `ä` and `o` for `ö`. Strongly discouraged except for temporary keyboard/accessibility issues. | off |
+
+### Grammar And Pack Modes
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--transform` | Run transform drills using prompt/cue grammar steps. | off |
+| `--conjugate` | Run verb conjugation drills. | off |
+| `--translation` | Run translation exercises. | off |
+| `--translate` | Alias for `--translation`. | off |
+| `--conversation` | Run conversation practice. | off |
+| `--word-explorer` | Run Word Explorer exercises. | off |
+
+### Conjugation Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--negative` | With `--conjugate`, drill negative forms only. | off |
+| `--both` | With `--conjugate`, drill positive and negative forms. | off |
+| `--category KEY` | With `--conjugate`, include only verbs whose category key matches `KEY`. | none |
+| `--identify-category` | With `--conjugate`, ask the learner to identify each verb's category before conjugating. | off |
+| `--ask-category` | Alias for `--identify-category`. | off |
+| `--drill-category` | Legacy alias for `--identify-category`. | off |
+
+### Translation Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--show-phonetic` | With `--translation`, show pronunciation guidance when available. | off |
+
+### Word Explorer Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--recognize` | With `--word-explorer`, recognize word relationships. Also enables `--match-game`. | default Word Explorer mode |
+| `--build` | With `--word-explorer`, build forms from base words. | off |
+| `--apply` | With `--word-explorer`, apply forms in context. | off |
+
+### Listening And TTS Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--listen` | Speak the target language with Piper while the learner types. | off |
+| `--listen-no-source` | Listening mode without showing the source prompt. | off |
+| `--listen-no-english` | Alias for `--listen-no-source`. | off |
+| `--listen-show-target` | With reverse listening, also show the written target-language text. | off |
+| `--listen-require-source` | With listening, require the source-language meaning after the heard answer. | off |
+| `--printed-voice` | Print the exact text sent to Piper. | off |
+| `--tts-variant VAR` | Choose what Piper speaks: `prompt`, `source`, `written`, or `spoken`. | `prompt` |
+| `--answer-variant VAR` | Choose accepted typed answers: `written`, `spoken`, or `either`. | `written` |
+| `--show-variants` | Display written and spoken variants together when available. | off |
+| `--piper-bin PATH` | Path to the Piper executable. | `PIPER_BIN` or config |
+| `--piper-model PATH` | Path to the Piper `.onnx` model. | `PIPER_MODEL` or config |
+| `--tts-template STR` | Template for text sent to Piper, for example `Suomeksi: {text}.` | config/default |
+
+### Speaking And Shadowing Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--speak` | Record the learner's spoken answer and score it with Whisper. | off |
+| `--shadow` | Play target audio with Piper, then record and score the learner's speech. | off |
+| `--speech-record-cmd CMD` | Shell command used to record audio. Supports `{output}` and `{duration}` placeholders. | `SPEECH_RECORD_CMD` or config |
+| `--speech-bin PATH` | Path to Whisper or speech recognition executable. | `WHISPER_BIN`, `SPEECH_BIN`, or config |
+| `--speech-model NAME` | Whisper model name. | `WHISPER_MODEL`, `SPEECH_MODEL`, or `base` |
+| `--speech-language NAME` | Speech recognition language. | `WHISPER_LANGUAGE`, `SPEECH_LANGUAGE`, or `Finnish` |
+| `--speech-duration N` | Seconds to record in speaking mode. | `SPEECH_DURATION` or mode default |
+
+### Spaced Repetition Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--srs` | Enable spaced repetition scheduling. | off |
+| `--due` | With `--srs`, quiz only due items. | off |
+| `--new N` | With `--srs`, include up to `N` new items. | `5` |
+| `--reset-srs` | With `--srs`, reset scheduling state for this pack. | off |
+| `--srs-file PATH` | Override the SRS state file path. | pack-derived |
+
+### Diagnostics
+
+Timing was originally designed for debugging and diagnostics. It can also help gauge recall speed. For example, if a learner times a vocabulary-style pack one week, then repeats the same pack a month later, the timing output can help show how quickly the material is being recalled and where practice should continue.
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--timing` | Show timing metrics for quiz runs. | off |
+
+## Core Concepts
+
+### Count
+
+The optional positional count is not an option flag:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/transform/sm_transform_kpt.yaml all --transform
+ruby bin/linguatrain.rb pack.yaml 10
 ```
 
-Example flow:
-
-```text
-Mitä Paula tekee viikonloppuna?
-
-[ soittaa pianoa ]
-
-Anna myönteinen vastaus:
-> Paula soittaa pianoa
-
-Anna kielteinen vastaus:
-> Paula ei soita pianoa
-```
-
-Transform packs use a structured YAML format containing:
-
-- `prompt`
-- `cue`
-- ordered `steps`
-
-See `transform-yaml-structure.md` for full documentation.
-
-
----
-
-## Translation Mode (`--translate`)
-
-Translation mode uses structured **translation learning packs** that present authentic content as a series of meaningful translation units.
-
-Unlike vocabulary packs, translation packs preserve the context of the original source material. Each unit may include:
-
-- Literal translations
-- Natural translations
-- Retrieval-oriented hints
-- Pronunciation guidance
-- Grammar references
-- Vocabulary references
-- Author notes
-
-Translation mode is designed to help learners move beyond isolated vocabulary and develop the skills needed to read authentic texts.
-
-Example command:
+This asks Linguatrain to quiz 10 entries. Use `all` to include every entry:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/translations/suomen_mestari_1_kappale_01_translation.yaml --translate
+ruby bin/linguatrain.rb pack.yaml all
 ```
 
-Example flow:
+### Study Mode
 
-```text
-Translation Exercise — Suomen Mestari 1
+`--study` changes the session from scored recall to guided review. The learner sees a prompt, reveals the answer, optionally hears audio, then moves to the next item.
 
---------------------------------------------------
-
-Source:
-Minulla on tavallinen päivä.
-
-Hint:
-tavallinen = ordinary
-
-Translation:
-> I have an ordinary day.
-
-✓ Correct!
-
-Literal:
-On me is an ordinary day.
-
-Notes:
-Finnish expresses possession using "to be" rather than the verb "to have".
+```bash
+ruby bin/linguatrain.rb pack.yaml --study
 ```
 
-Translation packs are designed to work alongside vocabulary and conjugation packs generated from the same source material.
+Study mode is useful before active drilling. It does not update SRS and cannot be combined with scoring-oriented modes such as `--match-game`, `--speak`, or SRS.
 
-See the **Authoring Handbook** for the translation pack format and authoring guidelines.
+### Reverse Mode
 
-------------
+`--reverse` swaps the direction of the quiz.
 
-## Conjugation Mode (`--conjugate`)
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --reverse
+```
 
-Conjugation mode drills **verb morphology** by combining a person and a verb lemma.
+For normal vocabulary packs, this means target to source instead of source to target. For example, if the source language is Spanish and the target language is English, reverse mode shows the vocabulary in English and asks for the Spanish item.
 
-The learner must produce the correct conjugated form.
+### Match Game
 
-Example command:
+`--match-game` shows hints while still requiring a typed answer.
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --match-game
+```
+
+`--match-options MODE` controls what hints are shown:
+
+| Mode | Behavior |
+|---|---|
+| `auto` | Choose the normal hint display for the current direction. |
+| `source` | Show source-side hints when available. |
+| `target` | Show target-side hints when available. |
+| `both` | Show paired hints when available. |
+
+### Lenient Umlauts
+
+`--lenient-umlauts` is available, but it is generally a bad idea for language learning. Umlauts and other diacritics are not decoration; in many languages they change pronunciation, grammar, and meaning. Treating `a` as close enough to `ä`, or `o` as close enough to `ö`, can teach the wrong spelling and weaken the learner's ability to recognize real words.
+
+Use this option only as a short-term workaround for keyboard or accessibility problems. For normal study, leave it off and learn the correct characters from the beginning.
+
+## Conjugate
+
+Conjugation mode drills verb morphology by combining a person and a verb lemma.
 
 ```bash
 ruby bin/linguatrain.rb packs/fi/conjugation/sm_conjugation_kpt.yaml all --conjugate
 ```
 
-Example flow:
-
-```text
-Conjugate the verb.
-
-[ minä ]
-[ lukea ]
-
-Anna myönteinen muoto:
-> Minä luen
-```
-
-Optional polarity drills:
-
-Positive only (default):
+Positive forms are the default:
 
 ```bash
---conjugate
+ruby bin/linguatrain.rb pack.yaml --conjugate
 ```
 
-Negative only:
+Negative-only drills:
 
 ```bash
---conjugate --negative
+ruby bin/linguatrain.rb pack.yaml --conjugate --negative
 ```
 
-Both forms:
+Positive and negative drills:
 
 ```bash
---conjugate --both
+ruby bin/linguatrain.rb pack.yaml --conjugate --both
 ```
 
-Example dual-form drill:
-
-```text
-[ te ]
-[ lukea ]
-
-Anna myönteinen muoto:
-> Te luette
-
-Anna kielteinen muoto:
-> Te ette lue
-```
-
-Conjugation packs define:
-
-- a verb `lemma`
-- supported `persons`
-- accepted `positive` and `negative` forms
-
-See `conjugate-yaml-structure.md` for the full YAML format.
-
----
-
-## Conversation Mode (`--conversation`)
-
-Conversation mode simulates **short dialogues** instead of isolated prompts.
-
-This mode is designed for practicing realistic conversational exchanges.
-
-Typical workflow:
-
-1. Linguatrain displays a conversational prompt.
-2. The learner responds with the appropriate phrase.
-3. The engine validates the response.
-
-Example command:
+Filter to one verb category:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/conversations/greetings.yaml --conversation
+ruby bin/linguatrain.rb pack.yaml --conjugate --category type_1
 ```
 
-Example interaction:
-
-```text
-Hei!
-
-> Hei!
-
-Mitä kuuluu?
-
-> Hyvää, kiitos.
-```
-
-Conversation packs allow multi-line dialogue structures and multiple accepted responses.
-
----
-
-## Speech Mode (`--speak`)
-
-Speech mode allows learners to **answer by speaking instead of typing**.
-
-Linguatrain records audio and uses **Whisper** speech recognition to transcribe the response.
-
-Example:
+Ask the learner to identify the verb category before conjugating:
 
 ```bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml --speak
+ruby bin/linguatrain.rb pack.yaml --conjugate --identify-category
 ```
 
-Typical flow:
-
-```text
-English: How are you?
-
-🎤 Speak now...
-🎙 Recording (5s window)...
-
-🟡 Close enough
-   Heard: Mita kuluu
-```
-
-Requirements:
-
-- Python
-- Whisper
-- FFmpeg
-
-See `whisper-installation.md` for installation instructions.
-
----
-
-### `--lenient-umlauts`
-
-**Warning:** This option is mainly for very early practice. In real Finnish, umlauts change meaning, so prefer learning the correct spelling as soon as you can.
-
-Allows `a` for `ä` and `o` for `ö` (useful early on). If you use the
-lenient spelling, you still get credit, but it reminds you that umlauts
-matter.
-
-------------------------------------------------------------------------
-
-# `--match-options MODE`
-
-`--match-options` is a fine-tuning control for edge cases, not a required setting for normal use.
-
-## When should you use --match-options?
-
-In most cases, you do not need to set this option. The default (auto) works well for typical packs and general drilling.
-
-You should consider using --match-options only when your pack contains:
-
-- Many entries with the same source prompt (for example, multiple translations of “Hi.” or “How are you?”)
-- Many near-synonymous target answers
-- Clusters of similar phrases where hints feel either too easy or unintentionally revealing
-- Large community-contributed packs where structure and consistency vary
-
-If match-game starts to feel “too obvious” or “too confusing,” that’s the signal to experiment with this flag.
-
-In short:
-
-- If hints feel too easy → try --match-options source
-- If hints feel unhelpful or misleading → try --match-options target
-- Otherwise → leave it on auto
-
-For most people and most packs, auto is the correct setting.
-
-— Real Examples Using `fi_everyday_phrases.yaml`
-
-The examples in this readme come from the included finnish pack:
-/packs/fi/finnish_everyday_phrases.yaml
-
-This pack contains useful edge cases for match-game behavior:
-
-- Multiple greetings ("Hi." → *Hei.*, *Moi.*)
-- Multiple “How are you?” variants
-- Near-synonymous phrases
-- Formal vs informal constructions
-
----
-
-# 1️⃣ Default: `--match-options auto`
+Filter and identify together:
 
 ```bash
-ruby bin/linguatrain.rb /packs/fi/finnish_everyday_phrases.yaml 5 --match-game
+ruby bin/linguatrain.rb pack.yaml --conjugate --category type_1 --identify-category
 ```
 
-### Behavior
+`--ask-category` and `--drill-category` still work as aliases, but new docs should prefer `--identify-category`.
 
-Hints are drawn from the side you are expected to type.
+## Transform
 
-## Example (Source → Target)
-
-Prompt:
-
-```
-How are you?
-```
-
-Possible hints:
-
-```
-  - Mitä kuuluu?
-  - Kuinka voit?
-  - Hyvin, kiitos.
-```
-
-Why this works:
-
-- Both entries 020 and 021 share the same English prompt.
-- The distractor is a plausible conversational response.
-- You still must type the full Finnish answer.
-
-This feels production-oriented while remaining supportive.
-
----
-
-# 2️⃣ Force Hints from `source`
+Transform mode uses prompt/cue grammar steps. It is for exercises such as positive to negative, statement to question, or person changes.
+The flexibility of transform allows YAML packs to mimic many different learning exercises without making huge modifications to the Linguatrain engine.
+This is especially useful when working from a textbook exercise that does not quite fit conjugation or matching.
 
 ```bash
-ruby bin/linguatrain.rb /packs/fi/finnish_everyday_phrases.yaml 5 --match-game --match-options source
+ruby bin/linguatrain.rb packs/fi/transform/sm_transform_kpt.yaml all --transform
 ```
 
-Hints are always drawn from the English prompt side.
+Transform mode can be used with `--study`. Listening is only supported for transform drills when used with study mode.
 
-## Example (Reverse Mode)
+## Translation
+
+Translation mode uses structured translation packs with source text, hints, literal translations, notes, and accepted natural translations.
 
 ```bash
-ruby bin/linguatrain.rb /packs/fi/finnish_everyday_phrases.yaml 5 --reverse --match-game --match-options source
+ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --translation
 ```
 
-You see:
-
-```
-Hyvä päätös.
-```
-
-Hints:
-
-```
-  - Good decision.
-  - Good thing.
-  - Good day.
-```
-
-Why this matters:
-
-- Entries 006 and 009 both begin with “Hyvä …”
-- Seeing similar English options forces semantic discrimination
-- Prevents simply recognizing Finnish shape patterns
-
-This mode strengthens meaning recall rather than pattern recognition.
-
----
-
-# 3️⃣ Force Hints from `target`
+`--translate` is an alias:
 
 ```bash
-ruby bin/linguatrain.rb /packs/fi/finnish_everyday_phrases.yaml 5 --match-game --match-options target
+ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --translate
 ```
 
-Hints always come from the Finnish answer side.
-
-## Example (Greetings cluster)
-
-Prompt:
-
-```
-Hi.
-```
-
-Possible hints:
-
-```
-  - Hei.
-  - Moi.
-  - Hyvää päivää.
-```
-
-Relevant entries:
-
-- 014 → Hei.
-- 018 → Moi.
-- 015 → Hyvää päivää.
-
-Why this is powerful:
-
-- All are plausible greetings.
-- Forces you to recall the exact register (casual vs formal).
-- Reduces accidental cueing from English synonyms.
-
-This mode is ideal for:
-
-- High-overlap vocabulary
-- Register drills
-- Early fluency building
-
----
-
-# 4️⃣ Listening + Match-Game + Target Hints
+Show pronunciation guidance when the pack provides it:
 
 ```bash
-ruby bin/linguatrain.rb /packs/fi/finnish_everyday_phrases.yaml 5 --listen --match-game --match-options target
+ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --translation --show-phonetic
 ```
 
-You hear:
+## Word Explorer
 
-```
-(Suomeksi: Mitä kuuluu?)
-```
+Word Explorer focuses on why a word has the form it has in a real sentence. It sits between vocabulary and full grammar study: vocabulary tells you what a word means, while Word Explorer helps you see how an encountered form relates to a base word, a grammar pattern, and the surrounding context.
 
-Visible hints:
-
-```
-  - Mitä kuuluu?
-  - Kuinka voit?
-  - Hyvin, kiitos.
+```bash
+ruby bin/linguatrain.rb pack.yaml --word-explorer
 ```
 
-Why this combination works:
+The modes form a learning ladder:
 
-- Audio first → recognition
-- Constrained Finnish hint list → reduces overload
-- Full typing required → active recall
-- Replay available
+| Mode | Main Question | What The Learner Practices |
+|---|---|---|
+| `--recognize` | What is this word related to? | Identifying the base word or word-family relationship behind an encountered form. |
+| `--build` | How do I create the form I need? | Starting from a base word and typing the correct related form for a given meaning or grammar cue. |
+| `--apply` | Which form belongs here? | Choosing or producing the correct form in sentence context, using meaning, grammar, and usage together. |
 
-This is an ideal beginner-to-intermediate bridge mode.
+Recognize mode is the default:
 
----
-
-# 5️⃣ Where `--match-options` Makes the Biggest Difference
-
-### Case A: Duplicate English Prompts
-
-Entries 020 and 021:
-
-```
-"How are you?"
-→ Mitä kuuluu?
-→ Kuinka voit?
+```bash
+ruby bin/linguatrain.rb pack.yaml --word-explorer --recognize
 ```
 
-Using `source` hints would not help here (same English string).
-Using `target` hints makes the contrast clear.
+Use this when the learner is still learning to see relationships between forms. For example, recognizing that `autolla` belongs to `auto`, or that an encountered word is a case form, compound, derivation, passive form, or another modeled word relationship.
 
----
+Build mode asks the learner to produce forms:
 
-### Case B: Greeting Density
-
-Your pack contains:
-
-- Hei.
-- Moi.
-- Moi moi.
-- Hyvää päivää.
-- Hyvästi.
-
-Target-side hints create meaningful discrimination.
-Source-side hints would collapse to similar English meanings.
-
----
-
-# Practical Guidance
-
-| Mode | Best Use |
-|------|----------|
-| auto | General drilling |
-| source | Meaning precision |
-| target | Register / production precision |
-| target + listen | Recognition → recall bridge |
-| source + reverse | Hard semantic discrimination |
-
----
-
-# Summary
-
-`--match-options` does not change validation logic.
-It changes *how cognitive load is shaped* during match-game.
-
-In packs like `fi_everyday_phrases.yaml`, where:
-
-- greetings overlap,
-- English prompts duplicate,
-- register matters,
-
-explicit control over hint origin meaningfully changes learning outcomes.
-
----
-
-## Stacking Example
-
-Full stacked drill:
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --reverse --listen --match-game --srs
+```bash
+ruby bin/linguatrain.rb pack.yaml --word-explorer --build
 ```
 
-Study with listening (no scoring or SRS updates):
+Use this when recognition is no longer enough and the learner should practice making the form from the base word. A typical prompt gives a base word, a target meaning, and a grammar cue, then asks for the transformed form.
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --study --listen
+Apply mode moves the form into context:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml --word-explorer --apply
 ```
 
-Each flag layers behavior independently.
+Use this when the learner is ready to decide which form belongs in a sentence. Apply is the most advanced Word Explorer mode because it requires context, meaning, and grammar to work together.
 
-------------------------------------------------------------------------
+If no Word Explorer mode is given, Linguatrain uses recognize mode. `--recognize` also enables `--match-game`. Match game is only supported with recognize mode.
 
+## Conversation
 
-# Listening & Spoken Variants
+Conversation mode plays through dialogue-style material instead of isolated prompts.
 
-By default:
-
--   `--listen` speaks the canonical `answer` form
--   Only `answer` is accepted as correct
-
-The engine does not automatically transform written forms into spoken variants.
-
-Piper reads exactly what is stored.
-
-## Speak colloquial forms
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --listen --tts-variant spoken
+```bash
+ruby bin/linguatrain.rb pack.yaml --conversation
 ```
 
-If `spoken` exists, it is spoken.\
-If missing, it falls back to `answer`.
+Conversation mode uses Piper audio settings because it speaks dialogue lines.
 
-## Practice spoken production
+This is designed so the learner has a partner when studying alone.
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 10 --listen --tts-variant spoken --answer-variant spoken
+## Listening And TTS
+
+Listening mode adds Piper text-to-speech to the normal quiz flow. It is useful for training comprehension because the learner has to connect what they hear with the written answer, the source meaning, or both.
+
+| Option | What It Changes | Best Used For |
+|---|---|---|
+| `--listen` | Speaks the target-language item while the learner answers. | Adding audio recognition to normal quiz practice. |
+| `--listen-no-source` | Hides the source prompt so the learner relies on audio first. | Harder listening comprehension drills. |
+| `--listen-no-english` | Older alias for `--listen-no-source`. | Backward compatibility. |
+| `--listen-require-source` | After the heard-answer step, also asks for the source-language meaning. | Checking comprehension, not just sound recognition. |
+| `--listen-show-target` | In reverse listening, also shows the written target-language text. | Bridging between heard language and written form. |
+| `--printed-voice` | Prints the exact text sent to Piper. | Debugging TTS output or confirming what is being spoken. |
+| `--tts-variant VAR` | Chooses which stored text Piper speaks. | Switching between prompt, written answer, and spoken variants. |
+| `--answer-variant VAR` | Chooses which written/spoken variants are accepted as typed answers. | Practicing formal written forms, spoken forms, or both. |
+| `--show-variants` | Displays written and spoken variants together when available. | Comparing written language with spoken usage. |
+| `--piper-bin PATH` | Uses a specific Piper executable. | Local Piper setup. |
+| `--piper-model PATH` | Uses a specific Piper voice model. | Selecting the target-language voice. |
+| `--tts-template STR` | Wraps text before sending it to Piper. | Adding context such as `Suomeksi: {text}.` |
+
+Basic listening:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen
 ```
 
-## Accept either form
+Harder listening without the source prompt:
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --answer-variant either
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen-no-source
 ```
 
-## Show both variants (display only)
+Comprehension check after the heard answer:
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml 5 --show-variants
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen --listen-require-source
 ```
 
-------------------------------------------------------------------------
+This mode is especially useful when the learner can recognize the sounds but still needs practice connecting them back to meaning.
 
-# About the Spaced Repetition System (SRS)
+Show the written target text in reverse listening:
 
-Inspired by SM‑2 (Anki / SuperMemo).
-
-**Note**: The implementation is a simplified SRS system and not as complex as a tool like Anki.
-
-Each word stores:
-
--   `reps`
--   `interval_days`
--   `ease`
--   `due_at`
--   `lapses`
-
-Performance rules:
-
--   Correct 1st try → larger interval growth
--   Correct 2nd try → smaller growth
--   Failure → reset + ~10 minute retry
-
-## Storage Location
-
-    ~/.config/linguatrain/srs/<pack>.yaml
-
-Override:
-
-    --srs-file PATH
-
-## Usage
-
-Enable:
-
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml all --srs
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --reverse --listen --listen-show-target
 ```
 
-Due only:
+Print exactly what is sent to Piper, which is helpful when checking templates or variant selection:
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml all --srs --due
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen --printed-voice
 ```
 
-Limit new words:
+Choose what Piper speaks with `--tts-variant`:
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml all --srs --new 10
+| Value | Behavior |
+|---|---|
+| `prompt` or `source` | Speak the source prompt. |
+| `written` | Speak the written answer form. |
+| `spoken` | Speak the spoken variant, falling back to written if missing. |
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen --tts-variant spoken
 ```
 
-Reset scheduling:
+Choose what typed answers are accepted with `--answer-variant`:
 
-``` bash
-ruby bin/linguatrain.rb packs/fi/finnish_everyday_phrases.yaml all --srs --reset-srs
+| Value | Behavior |
+|---|---|
+| `written` | Accept written answer forms. |
+| `spoken` | Accept spoken variants, falling back to written if missing. |
+| `either` | Accept either written or spoken variants. |
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --answer-variant either
 ```
 
-**Important**: When --srs is enabled, SRS state is updated as each entry is graded and is saved on exit. If the session ends early (quit, interrupt, or error), progress up to the last completed item is preserved.
+Display written and spoken variants for comparison:
 
-------------------------------------------------------------------------
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --show-variants
+```
 
-# Missed Pack Generation
+Piper setup can come from the config file, environment variables, or command-line options:
 
-At the end of a session, missed words are written to a timestamped YAML
-file containing:
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen --piper-bin /path/to/piper --piper-model /path/to/model.onnx
+```
 
--   Original metadata
--   Generation details
--   Session stats
--   Failed entries only
+Customize the text wrapped around each spoken item:
 
-This allows focused follow‑up drilling.
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --listen --tts-template 'Suomeksi: {text}.'
+```
 
-------------------------------------------------------------------------
+`--listen`, `--conversation`, and `--shadow` require Piper settings.
 
+## Speaking And Shadowing
+
+Speaking modes move practice from typing into pronunciation. They use a recorder command to capture the learner's voice, then Whisper attempts to recognize what was said.
+
+| Option | What It Changes | Best Used For |
+|---|---|---|
+| `--speak` | Records the learner's spoken answer and scores it with Whisper. | Practicing recall and pronunciation without typing. |
+| `--shadow` | Plays the target phrase or word with Piper first, then records the learner repeating it and scores the result with Whisper. | Pronunciation training: hear a native-like model, repeat it, and check whether your speech is recognizable. |
+| `--speech-record-cmd CMD` | Sets the shell command used to record learner audio. | Connecting Linguatrain to the local microphone/recording tool. |
+| `--speech-bin PATH` | Sets the Whisper or speech-recognition executable. | Choosing the speech recognizer. |
+| `--speech-model NAME` | Chooses the Whisper model. | Balancing speed and recognition quality. |
+| `--speech-language NAME` | Tells Whisper which language to listen for. | Improving recognition accuracy for the target language. |
+| `--speech-duration N` | Sets how many seconds to record. | Giving shorter or longer phrases enough time. |
+
+Basic speaking mode:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --speak
+```
+
+Shadow mode is especially useful because it gives the learner a model to use immediately before they speak. Piper plays the phrase or word as it should sound, the learner repeats it, and Whisper checks whether the pronunciation was close enough to be recognized.
+
+**Note**: Piper voices and Whisper models can behave differently by language, microphone, and phrase length. Test a few combinations to find the voice and recognition settings that work best for your learning setup.
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --shadow
+```
+
+Speech recording and recognition can be configured from the command line:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --speak \
+  --speech-record-cmd 'rec {output} trim 0 {duration}' \
+  --speech-bin /path/to/whisper \
+  --speech-model base \
+  --speech-language Finnish \
+  --speech-duration 3
+```
+
+`--speak` and `--shadow` require a speech recording command. `--shadow` also requires Piper settings because it plays the target audio before recording.
+
+## Spaced Repetition
+
+SRS tracks scheduling state for vocabulary-style quiz items. It helps turn a pack into an ongoing review loop by prioritizing due material while still introducing a controlled number of new items.
+
+| Option | What It Changes | Best Used For |
+|---|---|---|
+| `--srs` | Enables spaced repetition scheduling for the pack. | Long-term review instead of one-off drilling. |
+| `--due` | Limits the session to items that are currently due. | Daily review sessions. |
+| `--new N` | Allows up to `N` new items into an SRS session. | Controlling how much new material enters review. |
+| `--reset-srs` | Clears scheduling state for this pack. | Starting over after changing a pack or resetting practice history. |
+| `--srs-file PATH` | Uses a specific SRS state file. | Keeping separate schedules, testing, or storing state outside the default location. |
+
+Enable SRS:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --srs
+```
+
+Only quiz due items:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --srs --due
+```
+
+Limit new items:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --srs --new 10
+```
+
+Reset scheduling state for a pack:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --srs --reset-srs
+```
+
+Use a specific SRS file:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --srs --srs-file ~/.config/linguatrain/srs/custom.yaml
+```
+
+When SRS is enabled, progress is saved as entries are graded. If the session ends early, progress up to the last completed item is preserved.
+
+## Setup And Diagnostics
+
+Use a specific config file:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml --config ~/.config/linguatrain/config.yaml
+```
+
+Use a specific localisation file:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml --localisation localisation/en-US_fi-FI.yaml
+```
+
+Use a specific audio player:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml --audio-player afplay
+```
+
+Show per-run timing metrics:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml 10 --timing
+```
+
+## Common Compatibility Notes
+
+Some modes intentionally do not combine.
+
+| Combination | Status |
+|---|---|
+| `--study` with SRS | Not supported; study is not scored. |
+| `--study` with `--match-game`, `--lenient-umlauts`, `--speak`, `--conversation`, or `--translation` | Not supported. |
+| `--conjugate` with `--match-game`, `--speak`, `--shadow`, `--reverse`, `--conversation`, `--transform`, `--translation`, or SRS | Not supported. |
+| `--conjugate --listen` | Supported only with `--study`. |
+| `--transform --listen` | Supported only with `--study`. |
+| `--word-explorer` with `--listen`, `--speak`, `--shadow`, `--reverse`, `--conversation`, `--transform`, `--conjugate`, `--translation`, or SRS | Not supported. |
+| `--match-game` with Word Explorer | Supported only with recognize mode. |
+| `--speak` with `--listen`, `--match-game`, `--conversation`, `--translation`, or `--shadow` | Not supported. |
+| `--shadow` with `--listen`, `--match-game`, `--reverse`, `--conversation`, or `--translation` | Not supported. |
+| `--listen-require-source` with `--reverse`, `--speak`, or `--shadow` | Not supported. |
+| `--translation` with `--match-game`, `--conversation`, or `--reverse` | Not supported. |
+
+## Missed Pack Generation
+
+For scored vocabulary-style sessions, missed words are written to a timestamped YAML file at the end of the session. The missed pack contains the original metadata, generation details, session stats, and failed entries so the learner can run a focused follow-up drill.

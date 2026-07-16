@@ -3507,6 +3507,17 @@ options = {
   word_explorer_mode_flags: [],
 }
 
+ARGV.map! do |arg|
+  case arg
+  when "-drill-category"
+    "--drill-category"
+  when "-ask-category"
+    "--ask-category"
+  else
+    arg
+  end
+end
+
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: ruby linguatrain.rb <yaml_file> [count|all] [options]"
 
@@ -3634,8 +3645,13 @@ parser = OptionParser.new do |opts|
     options[:speech_duration] = v
   end
 
-  opts.on("--drill-category", "--ask-category", "With --conjugate, ask for the declared verb category before the conjugation") do
+  opts.on(
+    "--drill-category [KEY]",
+    "--ask-category [KEY]",
+    "With --conjugate, ask for the declared verb category before the conjugation; optionally filter by category key"
+  ) do |key|
     options[:drill_category] = true
+    options[:category_key] = key.to_s.strip unless key.nil? || key.to_s.strip.empty?
   end
 
   opts.on(

@@ -80,14 +80,14 @@ päivä,päivä,day,noun,PAI-vah,päivää
 ruby tools/build_yaml.rb --conjugate packs/fi/my_conjugation.yaml
 ```
 
-The builder prompts for pack metadata, a `persons` list, then each
+The builder prompts for pack metadata, a `subjects` list, then each
 conjugation entry:
 
 - `id`
 - `lemma`
 - optional `gloss`
-- positive forms for each person
-- negative forms for each person
+- positive forms for each subject
+- negative forms for each subject
 
 Generated conjugation packs include both:
 

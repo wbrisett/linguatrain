@@ -285,16 +285,19 @@ A cue does not need to be a single word. For workbook-style exercises, it can be
 Each step should include:
 
 - `transform`
+- optional `instruction`
 - `answer`
 
 Example:
 
 ```yaml
 - transform: "positive"
+  instruction: "Give the positive answer:"
   answer:
     - "Paula lähtee matkalle"
 
 - transform: "negative"
+  instruction: "Give the negative answer:"
   answer:
     - "Paula ei lähde matkalle"
 ```
@@ -328,6 +331,25 @@ ui:
 ```
 
 If no localisation key exists, Linguatrain falls back to a simple generated label:
+
+### `instruction`
+
+Optional learner-facing prompt text for this specific step.
+
+Use `instruction` when the generic transform label would be too vague. For
+example, a subject-reasoning drill can ask:
+
+```yaml
+- transform: "subject"
+  instruction: "Who or what performs the action?"
+  answer:
+    - "minun herätyskello"
+    - "herätyskello"
+```
+
+When `instruction` is present, Linguatrain displays it instead of resolving the
+label from `transform`. When it is omitted, the existing localisation/fallback
+behavior is unchanged.
 
 ```text
 Conditional:
@@ -812,6 +834,7 @@ The loader expects:
 - `cues`
 - `steps`
 - `transform`
+- optional `instruction`
 - `answer`
 
 The `notes` field is optional. Older transform packs without `notes` remain valid.
@@ -833,6 +856,7 @@ A well-formed transform pack should satisfy all of the following:
 - every cue has `cue`
 - every cue has `steps`
 - every step has `transform`
+- every step may optionally have `instruction`
 - every step has `answer`
 - each answer list contains at least one non-empty string
 

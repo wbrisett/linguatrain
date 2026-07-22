@@ -61,6 +61,7 @@ These options allow you to store your configuration files in locations other tha
 | Option | Purpose | Default |
 |---|---|---:|
 | `--show-phonetic` | With `--translation`, show pronunciation guidance when available. | off |
+| `--study --translation` | Walk through a translation pack without scoring, showing source text, chunks, literal renderings, natural translations, hints, and optional pronunciation. | off |
 
 ### Word Explorer Options
 
@@ -143,6 +144,14 @@ ruby bin/linguatrain.rb pack.yaml --study
 
 Study mode is useful before active drilling. It does not update SRS and cannot be combined with scoring-oriented modes such as `--match-game`, `--speak`, or SRS.
 
+Translation packs also support study mode:
+
+```bash
+ruby bin/linguatrain.rb translation_pack.yaml --study --translation
+```
+
+This is a read-through mode rather than a quiz. It walks through each translation entry and shows the source text, chunks, chunk-level literal and natural translations, hints, the full literal rendering, and the full natural answer. Add `--show-phonetic` to include pronunciation when the pack provides it.
+
 ### Reverse Mode
 
 `--reverse` swaps the direction of the quiz.
@@ -178,7 +187,7 @@ Use this option only as a short-term workaround for keyboard or accessibility pr
 
 ## Conjugate
 
-Conjugation mode drills verb morphology by combining a person and a verb lemma.
+Conjugation mode drills verb morphology by combining a subject and a verb lemma.
 
 ```bash
 ruby bin/linguatrain.rb packs/fi/conjugation/sm_conjugation_kpt.yaml all --conjugate
@@ -212,6 +221,21 @@ Ask the learner to identify the verb category before conjugating:
 
 ```bash
 ruby bin/linguatrain.rb pack.yaml --conjugate --identify-category
+```
+
+When a conjugation pack includes `category`, `stem`, and `notes` metadata,
+missed category, stem, or conjugated-form answers show a short explanation
+after the correct answer. This helps connect the mistake to the verb type
+pattern.
+
+Example:
+
+```text
+❌ Correct answer: kävele-
+Note:
+  Verb type: Type 3
+  Stem: kävele-
+  Stem changes before personal endings, e.g. kävellä → kävelen.
 ```
 
 Filter and identify together:
@@ -253,6 +277,20 @@ Show pronunciation guidance when the pack provides it:
 ```bash
 ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --translation --show-phonetic
 ```
+
+Read through a translation pack without scoring:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --study --translation
+```
+
+Read through with pronunciation:
+
+```bash
+ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --study --translation --show-phonetic
+```
+
+In translation study mode, press Enter to move to the next entry or `q` to quit.
 
 ## Word Explorer
 
@@ -521,7 +559,8 @@ Some modes intentionally do not combine.
 | Combination | Status |
 |---|---|
 | `--study` with SRS | Not supported; study is not scored. |
-| `--study` with `--match-game`, `--lenient-umlauts`, `--speak`, `--conversation`, or `--translation` | Not supported. |
+| `--study` with `--translation` | Supported as a read-through mode with no scoring. |
+| `--study` with `--match-game`, `--lenient-umlauts`, `--speak`, or `--conversation` | Not supported. |
 | `--conjugate` with `--match-game`, `--speak`, `--shadow`, `--reverse`, `--conversation`, `--transform`, `--translation`, or SRS | Not supported. |
 | `--conjugate --listen` | Supported only with `--study`. |
 | `--transform --listen` | Supported only with `--study`. |

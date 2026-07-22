@@ -7,6 +7,44 @@ version.
 
 ---
 
+## [1.2.1] 2026-07-22
+
+### Added
+
+- Add missed-answer explanations to conjugation drills when packs provide verb
+  type, stem, and notes metadata.
+- Add shuffled conjugation entry selection so drills no longer follow the YAML
+  file order by default.
+- Add `subjects` as the preferred conjugation pack field while retaining
+  backwards compatibility with legacy `persons` packs.
+- Add optional per-step `instruction` text for transform drills so packs can
+  show clearer prompts than the generic transform label.
+- Add translation study/read-through mode via `--study --translation`.
+  This walks through translation packs without scoring, showing source text,
+  chunks, literal renderings, natural translations, hints, and optional
+  pronunciation.
+
+### Updated
+
+- Expand and clarify the Linguatrain LLM Authoring Specification for
+  translation and companion-pack generation.
+- Accept conjugation stems with or without a trailing hyphen in stem drills.
+- Prefer `source` and `target` names for `--match-options`, while still
+  accepting the older `fi` and `en` aliases.
+- Accept transform entry `notes` in pack validation, matching the runtime and
+  authoring docs.
+- Document missed-answer conjugation explanations in the options reference and
+  conjugation authoring guide.
+- Document the `--study --translation` combination in the usage guide and
+  options reference.
+
+### Fixed
+
+- Fix conjugation category-identification option handling so legacy aliases are
+  normalized and category filtering uses `--category KEY`.
+
+---
+
 ## [1.2.0] - 2026-07-14
 
 This release introduces Word Explorer and completes a major pass over

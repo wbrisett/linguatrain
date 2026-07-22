@@ -28,6 +28,18 @@ module Linguatrain
       ).run
     end
 
+    def self.study(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil)
+      new(
+        entries,
+        scorer: scorer,
+        input: input,
+        output: output,
+        show_phonetic: show_phonetic,
+        listen: listen,
+        speaker: speaker
+      ).study
+    end
+
       def entry_source(entry)
         (entry["source"] || entry[:source]).to_s
       end
@@ -60,6 +72,21 @@ module Linguatrain
           break if quit_requested?
 
           run_entry(entry)
+        end
+      end
+
+      def study
+        total = entries.length
+
+        entries.each_with_index do |entry, index|
+          break if quit_requested?
+
+          display_study_entry(entry, index + 1, total)
+          output.puts
+          output.print "Press Enter for next, or q to quit: "
+
+          answer = read_answer
+          @quit_requested = true if answer.downcase == "q" || answer.downcase == "quit"
         end
       end
 
@@ -260,6 +287,51 @@ module Linguatrain
 
         output.puts
         output.print "> "
+      end
+
+      def display_study_entry(entry, index, total)
+        output.puts
+        output.puts "-" * 50
+        output.puts "Translation Study #{index}/#{total}"
+        output.puts "-" * 50
+        output.puts
+
+        if listen?
+          speak_source(entry)
+        else
+          output.puts "Source:"
+          output.puts entry_source(entry)
+        end
+
+        output.puts
+        display_study_chunks(entry)
+        display_answer(entry)
+      end
+
+      def display_study_chunks(entry)
+        chunks = Array(entry["chunks"] || entry[:chunks])
+        return if chunks.empty?
+
+        output.puts "Chunks:"
+
+        chunks.each_with_index do |chunk, index|
+          output.puts if index.positive?
+
+          source = chunk["source"] || chunk[:source]
+          literal = chunk["literal"] || chunk[:literal]
+          target = chunk["target"] || chunk[:target]
+          targets = chunk["targets"] || chunk[:targets]
+          hint = chunk["hint"] || chunk[:hint]
+          phonetic = chunk["phonetic"] || chunk[:phonetic] || chunk["phonetics"] || chunk[:phonetics]
+          target_text = target.to_s.strip
+          target_text = Array(targets).map { |item| item.to_s.strip }.reject(&:empty?).join(" / ") if target_text.empty?
+
+          output.puts "- #{source}"
+          output.puts "  literal: #{literal}" unless literal.to_s.strip.empty?
+          output.puts "  target: #{target_text}" unless target_text.empty?
+          output.puts "  pronunciation: #{phonetic}" if show_phonetic? && !phonetic.to_s.strip.empty?
+          output.puts "  hint: #{hint}" unless hint.to_s.strip.empty?
+        end
       end
 
       def display_remaining_chunks(entry)

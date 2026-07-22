@@ -4,8 +4,8 @@ metadata:
   name: Finnish 50 Common Verbs – Conjugation Pack (Full Schema)
   drill_type: conjugate
   schema_version: 1
-  shuffle_persons: true
-persons:
+  shuffle_subjects: true
+subjects:
 - key: minä
   gloss: I
 - key: sinä

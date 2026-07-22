@@ -397,7 +397,7 @@ entries:
 
 # Grammar Catalog
 
-The top-level `grammar` section works like `persons` in conjugation packs. It
+The top-level `grammar` section works like `subjects` in conjugation packs. It
 defines the grammar concepts the pack uses, while each entry references those
 concepts by key.
 

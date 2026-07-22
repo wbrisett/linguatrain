@@ -315,14 +315,14 @@ Controls whether glosses are shown in conjugation drills.
 When enabled:
 
 ```text
-[ Person: hän — he/she ]
+[ Subject: hän — he/she ]
 [ Verb: ajaa — to drive ]
 ```
 
 When disabled:
 
 ```text
-[ Person: hän ]
+[ Subject: hän ]
 [ Verb: ajaa ]
 ```
 
@@ -346,7 +346,7 @@ Finnish: ajaa (hän ajaa)
 
 #### show_conjugated_form
 
-Controls whether the full person + conjugated form is shown next to the answer.
+Controls whether the full subject + conjugated form is shown next to the answer.
 
 When enabled:
 

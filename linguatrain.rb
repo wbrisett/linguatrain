@@ -604,6 +604,20 @@ def pct(part, total)
   (part.to_f / total.to_f) * 100.0
 end
 
+def quiz_results_heading(results_label, match_game:, reverse:)
+  label = results_label.to_s.strip
+  mode_parts = []
+  mode_parts << "reverse" if reverse
+  mode_parts << "match-game" if match_game
+
+  unless mode_parts.empty?
+    mode = mode_parts.join(" ")
+    return label.empty? ? "Results using #{mode}" : "Results using #{mode} with #{label}"
+  end
+
+  label.empty? ? "Results" : "Results from #{label}"
+end
+
 def word_explorer_dimension_label(key)
   {
     base_word: "Base word",
@@ -1011,7 +1025,7 @@ def load_pack(path)
       #   conjugation packs:
       #     metadata.type: conjugation
       #     Legacy alias: metadata.drill_type: conjugate
-      #     persons: ["minä", "sinä", "hän", "me", "te", "he"]
+      #     subjects: ["minä", "sinä", "hän", "me", "te", "he"]
       pack_meta = data["metadata"] || data[:metadata] || {}
 
       # Back-compat: older packs used metadata.source_lang / metadata.target_lang.
@@ -1074,7 +1088,7 @@ def load_pack(path)
 
       entries = data["entries"] || data[:entries]
       turns = data["turns"] || data[:turns]
-      persons_v = data["persons"] || data[:persons]
+      subjects_v = data["subjects"] || data[:subjects] || data["persons"] || data[:persons]
       grammar_v = data["grammar"] || data[:grammar] || []
       drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
       conjugation_pack = conjugation_pack_metadata?(pack_meta)
@@ -1186,6 +1200,7 @@ def load_pack(path)
 
           {
             transform: transform_v.to_s.strip.downcase,
+            instruction: (step["instruction"] || step[:instruction] || "").to_s.strip,
             answer: answers
           }
         end
@@ -1209,12 +1224,12 @@ def load_pack(path)
     { meta: symbolize_keys_deep(pack_meta), transform_entries: transform_entries }
 
   elsif conjugation_pack
-    person_defs =
-      case persons_v
+    subject_defs =
+      case subjects_v
       when Array
-        persons_v.map do |x|
+        subjects_v.map do |x|
           if x.is_a?(Hash)
-            key = (x["key"] || x[:key] || x["person"] || x[:person]).to_s.strip
+            key = (x["key"] || x[:key] || x["subject"] || x[:subject] || x["person"] || x[:person]).to_s.strip
             next nil if key.empty?
             { key: key, gloss: (x["gloss"] || x[:gloss] || x["english"] || x[:english] || "").to_s.strip }
           else
@@ -1227,9 +1242,9 @@ def load_pack(path)
         []
       end
 
-    raise "Invalid conjugate pack: missing persons list" if person_defs.empty?
+    raise "Invalid conjugate pack: missing subjects list" if subject_defs.empty?
 
-    persons = person_defs.map { |p| p[:key] }
+    subjects = subject_defs.map { |p| p[:key] }
 
     conjugate_entries = raw_entries.map do |entry|
       entry_id = entry["id"] || entry[:id]
@@ -1254,9 +1269,9 @@ def load_pack(path)
       raise "Invalid conjugate entry: #{entry.inspect}" if lemma_text.empty?
       raise "Invalid conjugate entry: #{entry.inspect}" unless forms_v.is_a?(Hash)
 
-      forms = persons.each_with_object({}) do |person, out|
-        raw = forms_v[person] || forms_v[person.to_sym]
-        raise "Invalid conjugate entry for '#{lemma_text}': missing form for #{person}" if raw.nil?
+      forms = subjects.each_with_object({}) do |subject, out|
+        raw = forms_v[subject] || forms_v[subject.to_sym]
+        raise "Invalid conjugate entry for '#{lemma_text}': missing form for #{subject}" if raw.nil?
 
         normalize_polarity_value = lambda do |value|
           meaning = ""
@@ -1291,14 +1306,14 @@ def load_pack(path)
             pos_raw = raw["positive"] || raw[:positive]
             neg_raw = raw["negative"] || raw[:negative]
 
-            raise "Invalid conjugate entry for '#{lemma_text}': missing positive form for #{person}" if pos_raw.nil?
-            raise "Invalid conjugate entry for '#{lemma_text}': missing negative form for #{person}" if neg_raw.nil?
+            raise "Invalid conjugate entry for '#{lemma_text}': missing positive form for #{subject}" if pos_raw.nil?
+            raise "Invalid conjugate entry for '#{lemma_text}': missing negative form for #{subject}" if neg_raw.nil?
 
             positive = normalize_polarity_value.call(pos_raw)
             negative = normalize_polarity_value.call(neg_raw)
 
-            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{person}" if positive[:answers].empty?
-            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{person}" if negative[:answers].empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty positive form for #{subject}" if positive[:answers].empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty negative form for #{subject}" if negative[:answers].empty?
 
             meanings = {}
             meanings[:positive] = positive[:meaning] unless positive[:meaning].empty?
@@ -1313,7 +1328,7 @@ def load_pack(path)
             # Backward compatibility: flat list means positive-only legacy form.
             positive = normalize_polarity_value.call(raw)
 
-            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{person}" if positive[:answers].empty?
+            raise "Invalid conjugate entry for '#{lemma_text}': empty form for #{subject}" if positive[:answers].empty?
 
             {
               positive: positive[:answers],
@@ -1322,10 +1337,10 @@ def load_pack(path)
             }
           end
 
-        out[person] = normalized
+        out[subject] = normalized
       end
 
-      derived_id = Digest::SHA1.hexdigest("#{lemma_text}::#{persons.join('|')}")[0, 8]
+      derived_id = Digest::SHA1.hexdigest("#{lemma_text}::#{subjects.join('|')}")[0, 8]
 
       gloss_text = gloss_v.nil? ? "" : gloss_v.to_s.strip
       category = {}
@@ -1341,9 +1356,9 @@ def load_pack(path)
 
       phonetics =
         if phonetics_v.is_a?(Hash)
-          phonetics_v.each_with_object({}) do |(person, phonetic), out|
-            person_key = person.to_s.strip
-            next if person_key.empty?
+          phonetics_v.each_with_object({}) do |(subject, phonetic), out|
+            subject_key = subject.to_s.strip
+            next if subject_key.empty?
 
             if phonetic.is_a?(Hash)
               positive_phonetic = (phonetic["positive"] || phonetic[:positive]).to_s.strip
@@ -1352,10 +1367,10 @@ def load_pack(path)
               values = {}
               values[:positive] = positive_phonetic unless positive_phonetic.empty?
               values[:negative] = negative_phonetic unless negative_phonetic.empty?
-              out[person_key] = values unless values.empty?
+              out[subject_key] = values unless values.empty?
             else
               phonetic_text = phonetic.to_s.strip
-              out[person_key] = { positive: phonetic_text } unless phonetic_text.empty?
+              out[subject_key] = { positive: phonetic_text } unless phonetic_text.empty?
             end
           end
         else
@@ -1377,8 +1392,10 @@ def load_pack(path)
 
     {
       meta: symbolize_keys_deep(pack_meta),
-      conjugate_persons: persons,
-      conjugate_person_defs: person_defs,
+      conjugate_subjects: subjects,
+      conjugate_subject_defs: subject_defs,
+      conjugate_persons: subjects,
+      conjugate_person_defs: subject_defs,
       conjugate_entries: conjugate_entries
     }
 elsif translation_pack?(pack_meta, raw_entries)
@@ -1416,6 +1433,7 @@ elsif translation_pack?(pack_meta, raw_entries)
               chunk_target = chunk["target"] || chunk[:target]
               chunk_targets = chunk["targets"] || chunk[:targets]
               chunk_accepted = chunk["accepted"] || chunk[:accepted]
+              chunk_literal = chunk["literal"] || chunk[:literal]
 
               chunk_hint = chunk["hint"] || chunk[:hint]
               chunk_phonetic = chunk["phonetic"] || chunk[:phonetic] || chunk["phonetics"] || chunk[:phonetics]
@@ -1423,6 +1441,7 @@ elsif translation_pack?(pack_meta, raw_entries)
             else
               chunk_source = chunk
               chunk_target = nil
+              chunk_literal = nil
               chunk_phonetic = nil
               chunk_id = format("c%03d", cidx + 1)
             end
@@ -1451,6 +1470,8 @@ elsif translation_pack?(pack_meta, raw_entries)
               targets: normalized_targets
             }
 
+            literal_text = chunk_literal.to_s.strip
+            normalized_chunk[:literal] = literal_text unless literal_text.empty?
             hint_text = chunk_hint.to_s.strip
             normalized_chunk[:hint] = hint_text unless hint_text.empty?
             phonetic_text = chunk_phonetic.to_s.strip
@@ -1670,6 +1691,7 @@ def flatten_transform_items(transform_entries, shuffle_cues: false)
         steps: Array(cue_entry[:steps]).map do |step|
           {
             transform: step[:transform].to_s,
+            instruction: step[:instruction].to_s,
             answer: Array(step[:answer]).map { |x| x.to_s.strip }.reject(&:empty?)
           }
         end
@@ -1750,6 +1772,31 @@ def conjugate_stem_prompt_label(ui)
   value.nil? || value.empty? ? "Stem:" : value
 end
 
+def conjugate_explanation_lines(item)
+  lines = []
+
+  category_label = conjugate_category_label(item)
+  lines << "Verb type: #{category_label}" unless category_label.empty?
+
+  stem = conjugate_stem(item)
+  lines << "Stem: #{stem}" unless stem.empty?
+
+  lines.concat(normalize_notes(item[:notes]))
+  lines.uniq
+end
+
+def show_conjugate_explanation(item, ui)
+  return unless show_notes?(ui)
+
+  lines = conjugate_explanation_lines(item)
+  return if lines.empty?
+
+  say render_note_line(ui[:note_prefix] || "Note:")
+  lines.each do |line|
+    say render_note_line("  #{line}")
+  end
+end
+
 def drill_conjugate_stem(item, ui:, lenient: false, show_verb: true)
   expected = conjugate_stem(item)
   expected_answers = conjugate_stem_answers(item)
@@ -1781,6 +1828,7 @@ def drill_conjugate_stem(item, ui:, lenient: false, show_verb: true)
   end
 
   say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected}"
+  show_conjugate_explanation(item, ui)
   false
 end
 
@@ -1845,45 +1893,48 @@ def drill_conjugate_category(item, ui:, lenient: false, study: false)
     true
   else
     say "#{ui[:correct_answer_prefix] || 'Correct answer:'} #{label}"
+    show_conjugate_explanation(item, ui)
 
     false
   end
 end
 
-def flatten_conjugate_items(conjugate_entries, persons, shuffle_persons: false)
+def flatten_conjugate_items(conjugate_entries, subjects, shuffle_subjects: false)
   Array(conjugate_entries).flat_map do |entry|
-    ordered_persons = Array(persons).dup
-    ordered_persons = ordered_persons.shuffle if shuffle_persons
+    ordered_subjects = Array(subjects).dup
+    ordered_subjects = ordered_subjects.shuffle if shuffle_subjects
 
-    ordered_persons.map do |person|
-      # Support both string and hash person definitions
-      if person.is_a?(Hash)
-        person_key = (person[:key] || person["key"]).to_s.strip
-        person_gloss = (person[:gloss] || person["gloss"] || "").to_s.strip
+    ordered_subjects.map do |subject|
+      # Support both string and hash subject definitions
+      if subject.is_a?(Hash)
+        subject_key = (subject[:key] || subject["key"]).to_s.strip
+        subject_gloss = (subject[:gloss] || subject["gloss"] || "").to_s.strip
       else
-        person_key = person.to_s.strip
-        person_gloss = ""
+        subject_key = subject.to_s.strip
+        subject_gloss = ""
       end
 
-      person_forms = entry[:forms][person_key] || entry[:forms][person_key.to_sym] || {}
+      subject_forms = entry[:forms][subject_key] || entry[:forms][subject_key.to_sym] || {}
 
       {
         entry_id: entry[:id],
-        person: person_key,
-        person_gloss: person_gloss,
+        subject: subject_key,
+        subject_gloss: subject_gloss,
+        person: subject_key,
+        person_gloss: subject_gloss,
         category: entry[:category] || {},
         lemma: entry[:lemma].to_s,
         gloss: entry[:gloss].to_s,
         notes: entry[:notes],
         stem: entry[:stem].to_s,
-        meanings: person_forms[:meanings] || person_forms["meanings"] || {},
-        phonetics: (entry[:phonetics] || {})[person_key] || {},
+        meanings: subject_forms[:meanings] || subject_forms["meanings"] || {},
+        phonetics: (entry[:phonetics] || {})[subject_key] || {},
         lemma_phonetic: entry[:lemma_phonetic].to_s,
         forms: {
-          positive: Array(person_forms[:positive] || person_forms["positive"])
+          positive: Array(subject_forms[:positive] || subject_forms["positive"])
                       .map { |x| x.to_s.strip }
                       .reject(&:empty?),
-          negative: Array(person_forms[:negative] || person_forms["negative"])
+          negative: Array(subject_forms[:negative] || subject_forms["negative"])
                       .map { |x| x.to_s.strip }
                       .reject(&:empty?)
         }
@@ -2207,6 +2258,19 @@ def centered_prompt(indent, text)
   prompt("#{indent}#{text}")
 end
 
+def study_pair_lines(left_label, left_text, right_label, right_text, width)
+  left = "#{left_label}: #{left_text}"
+  right = "#{right_label}: #{right_text}"
+  gap = 4
+  min_right_col = 40
+  right_col = [left.length + gap, min_right_col].max
+  one_line = "#{left.ljust(right_col)}#{right}"
+
+  return [one_line] if one_line.length <= width
+
+  [left, "", right]
+end
+
 # ----------------------------
 # Study Engine
 # ----------------------------
@@ -2248,7 +2312,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
 
     if reverse
       # Target → Source: show target first, then reveal source.
-      say "#{answer_label_text}: #{answer_text}"
+      study_pair_lines(answer_label_text, answer_text, prompt_label_text, prompt_text, width).each { |line| say line }
 
       unless phon.empty?
         say
@@ -2256,8 +2320,6 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
         say render_note_line("  #{phon}")
       end
 
-      say
-      say "#{prompt_label_text}: #{prompt_text}"
       show_word_notes(w, ui)
       say
 
@@ -2274,7 +2336,9 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
       end
     else
       # Source → Target: show source first, then reveal target.
-      say "#{prompt_label_text}: #{prompt_text}" unless listen_no_english
+      unless listen_no_english
+        study_pair_lines(prompt_label_text, prompt_text, answer_label_text, answer_text, width).each { |line| say line }
+      end
 
       unless phon.empty?
         say
@@ -2282,8 +2346,7 @@ def run_study(selected, reverse:, listen:, listen_no_english:, piper_bin:, piper
         say render_note_line("  #{phon}")
       end
 
-      say
-      say "#{answer_label_text}: #{answer_text}"
+      say "#{answer_label_text}: #{answer_text}" if listen_no_english
       show_word_notes(w, ui)
       say
 
@@ -2364,11 +2427,11 @@ def run_transform_study(selected, ui:, listen: false, piper_bin: nil, piper_mode
   say "Done."
 end
 
-def conjugate_person_display(item, show_gloss: true)
-  person = item[:person].to_s.strip
-  gloss = item[:person_gloss].to_s.strip
-  return person unless show_gloss
-  gloss.empty? ? person : "#{person} — #{gloss}"
+def conjugate_subject_display(item, show_gloss: true)
+  subject = (item[:subject] || item[:person]).to_s.strip
+  gloss = (item[:subject_gloss] || item[:person_gloss]).to_s.strip
+  return subject unless show_gloss
+  gloss.empty? ? subject : "#{subject} — #{gloss}"
 end
 
 def conjugate_verb_display(item, show_gloss: true)
@@ -2483,7 +2546,7 @@ def run_conjugate_study(
       say
 
       say render_cue_line(
-            "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+            "Subject: #{conjugate_subject_display(item, show_gloss: show_gloss?(ui))}"
           )
 
       say render_cue_line(
@@ -2555,7 +2618,7 @@ def run_conjugate_study(
         say "[#{step_index}/#{total_steps}]"
         say
         say render_cue_line(
-              "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+              "Subject: #{conjugate_subject_display(item, show_gloss: show_gloss?(ui))}"
             )
 
         say render_cue_line(
@@ -2647,7 +2710,8 @@ def run_transform(selected, ui:, lenient:)
     say
 
     Array(item[:steps]).each do |step|
-      instruction = transform_instruction_label(ui, step[:transform])
+      instruction = step[:instruction].to_s.strip
+      instruction = transform_instruction_label(ui, step[:transform]) if instruction.empty?
       say render_instruction_line(instruction)
 
       answer_ok = false
@@ -2676,6 +2740,7 @@ def run_transform(selected, ui:, lenient:)
           prompt: item[:prompt].to_s,
           cue: item[:cue].to_s,
           transform: step[:transform].to_s,
+          instruction: instruction,
           answer: Array(step[:answer])
         }
       end
@@ -2723,7 +2788,7 @@ def conjugate_answer_display(item, answers, show_conjugated_form)
   return base unless show_conjugated_form
   return base if answers.empty?
 
-  "#{base} (#{item[:person]} #{answers.first})"
+  "#{base} (#{item[:subject] || item[:person]} #{answers.first})"
 end
 
 def conjugate_polarities_for_item(item, requested)
@@ -2872,7 +2937,7 @@ def run_conjugate(
         )
     say
     say render_cue_line(
-          "Person: #{conjugate_person_display(item, show_gloss: show_gloss?(ui))}"
+          "Subject: #{conjugate_subject_display(item, show_gloss: show_gloss?(ui))}"
         )
     say render_cue_line(
           "Verb: #{conjugate_verb_display(item, show_gloss: show_gloss?(ui))}"
@@ -2910,8 +2975,10 @@ def run_conjugate(
         say "#{ui[:correct_answer_prefix] || '❌ Correct answer:'} #{expected.join(' / ')}"
         phonetic = conjugate_phonetic_for(item, current_polarity)
         say "#{format_phonetic(ui, phonetic)}" if show_phonetic?(ui) && !phonetic.empty?
+        show_conjugate_explanation(item, ui)
         missed << {
-          person: item[:person],
+          subject: item[:subject] || item[:person],
+          person: item[:subject] || item[:person],
           lemma: item[:lemma],
           polarity: current_polarity,
           answer: expected
@@ -3638,7 +3705,7 @@ parser = OptionParser.new do |opts|
     options[:word_explorer_mode_flags] << "--apply"
   end
 
-  opts.on("--conjugate", "Conjugation mode: person + verb grammar drills") do
+  opts.on("--conjugate", "Conjugation mode: subject + verb grammar drills") do
     options[:conjugate] = true
   end
 
@@ -3751,7 +3818,6 @@ if options[:study]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
   abort("--study cannot be combined with --speak") if options[:speak]
   abort("--study cannot be combined with --conversation") if options[:conversation]
-  abort("--study cannot be combined with --translation") if options[:translation]
   abort("--study cannot be combined with --word-explorer") if options[:word_explorer]
   abort("--study cannot be combined with --reverse when used with --conjugate") if options[:conjugate] && options[:reverse]
 
@@ -3832,8 +3898,8 @@ words = pack[:words] || []
 transform_entries = pack[:transform_entries] || []
 translation_entries = pack[:translation_entries] || []
 conjugate_entries = pack[:conjugate_entries] || []
-conjugate_persons = pack[:conjugate_persons] || []
-conjugate_person_defs = pack[:conjugate_person_defs] || conjugate_persons
+conjugate_subjects = pack[:conjugate_subjects] || pack[:conjugate_persons] || []
+conjugate_subject_defs = pack[:conjugate_subject_defs] || pack[:conjugate_person_defs] || conjugate_subjects
 word_explorer_entries = pack[:word_explorer_entries] || []
 word_explorer_grammar = pack[:word_explorer_grammar] || []
 
@@ -3906,7 +3972,14 @@ if options[:transform]
   transform_items = flatten_transform_items(transform_entries, shuffle_cues: shuffle_cues)
   selected = choose_transform_items(transform_items, options[:count])
 elsif options[:conjugate]
-  shuffle_persons = !!pack_meta[:shuffle_persons]
+  shuffle_subjects =
+    if pack_meta.key?(:shuffle_subjects) || pack_meta.key?("shuffle_subjects")
+      pack_meta.fetch(:shuffle_subjects, pack_meta["shuffle_subjects"]) != false
+    elsif pack_meta.key?(:shuffle_persons) || pack_meta.key?("shuffle_persons")
+      pack_meta.fetch(:shuffle_persons, pack_meta["shuffle_persons"]) != false
+    else
+      true
+    end
 
   filtered_entries = filter_conjugate_entries_by_category(
     pack[:conjugate_entries],
@@ -3920,8 +3993,8 @@ elsif options[:conjugate]
 
   selected = flatten_conjugate_items(
     selected_entries,
-    conjugate_person_defs,
-    shuffle_persons: shuffle_persons
+    conjugate_subject_defs,
+    shuffle_subjects: shuffle_subjects
   )
 
 elsif options[:word_explorer]
@@ -3994,6 +4067,31 @@ begin
   if options[:translation]
 
     scorer = Linguatrain::Translation::Scorer.new
+
+    if options[:study]
+      Linguatrain::Translation::Exercise.study(
+        selected,
+        scorer: scorer,
+        show_phonetic: options[:show_phonetic],
+        listen: options[:listen],
+        speaker: lambda { |text|
+          maybe_printed_voice(
+            options[:ui] || DEFAULT_UI,
+            options[:printed_voice],
+            build_tts_spoken(text, options[:tts_template])
+          )
+
+          speak_target_prompt(
+            text,
+            piper_bin: options[:piper_bin],
+            piper_model: options[:piper_model],
+            template: options[:tts_template]
+          )
+        }
+      )
+
+      exit(0)
+    end
 
     Linguatrain::Translation::Exercise.run(
 
@@ -4074,7 +4172,9 @@ begin
       missed.each_with_index do |m, missed_idx|
         say "#{missed_idx + 1}. #{m[:prompt]}"
         say "   [ #{m[:cue]} ]"
-        say "   #{m[:transform]} → #{Array(m[:answer]).join(' / ')}"
+        review_label = m[:instruction].to_s.strip
+        review_label = m[:transform].to_s if review_label.empty?
+        say "   #{review_label} → #{Array(m[:answer]).join(' / ')}"
         say
       end
     else
@@ -4246,7 +4346,7 @@ begin
   say "-" * 50
   results_label = pack_meta[:id].to_s.strip
   results_label = pack_meta[:pack_name].to_s.strip if results_label.empty?
-  say(results_label.empty? ? "Results" : "Results from #{results_label}")
+  say quiz_results_heading(results_label, match_game: options[:match_game], reverse: options[:reverse])
   say "Total: #{stats[:total]}"
   say "Correct 1st: #{stats[:correct_1]} (#{pct(stats[:correct_1], stats[:total]).round(1)}%)"
   say "Correct 2nd: #{stats[:correct_2]} (#{pct(stats[:correct_2], stats[:total]).round(1)}%)"

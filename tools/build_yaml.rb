@@ -17,7 +17,7 @@ VERSION = 'dev_03'
 class BuildYaml
   DEFAULT_VERSION = 1
   DEFAULT_SCHEMA_VERSION = 1
-  DEFAULT_PERSONS = ['minä', 'sinä', 'hän', 'me', 'te', 'he'].freeze
+  DEFAULT_SUBJECTS = ['minä', 'sinä', 'hän', 'me', 'te', 'he'].freeze
 
   def initialize(argv)
     @options = {
@@ -406,12 +406,12 @@ class BuildYaml
 
   def build_conjugate_pack(output_path)
     metadata = collect_conjugate_metadata(output_path)
-    persons = collect_persons
-    entries = collect_conjugate_entries(persons)
+    subjects = collect_subjects
+    entries = collect_conjugate_entries(subjects)
 
     {
       'metadata' => metadata,
-      'persons' => persons,
+      'subjects' => subjects,
       'entries' => entries
     }
   end
@@ -424,28 +424,28 @@ class BuildYaml
     source_pack = prompt_optional('Source vocabulary pack id (optional)')
     metadata['source_pack'] = source_pack.strip unless blank?(source_pack)
 
-    shuffle = prompt_with_default('Shuffle persons? true/false', 'true')
-    metadata['shuffle_persons'] = boolean_text?(shuffle) if boolean_text?(shuffle)
+    shuffle = prompt_with_default('Shuffle subjects? true/false', 'true')
+    metadata['shuffle_subjects'] = boolean_text?(shuffle) if boolean_text?(shuffle)
 
     collect_optional_metadata(metadata)
     puts
     metadata
   end
 
-  def collect_persons
-    puts 'Persons'
-    puts '-------'
-    puts "Default: #{DEFAULT_PERSONS.join(', ')}"
-    raw = prompt('Persons, comma-separated (blank for default)')
-    return DEFAULT_PERSONS.dup if blank?(raw)
+  def collect_subjects
+    puts 'Subjects'
+    puts '--------'
+    puts "Default: #{DEFAULT_SUBJECTS.join(', ')}"
+    raw = prompt('Subjects, comma-separated (blank for default)')
+    return DEFAULT_SUBJECTS.dup if blank?(raw)
 
-    persons = raw.split(',').map(&:strip).reject(&:empty?)
-    raise ArgumentError, 'Conjugation packs require at least one person.' if persons.empty?
+    subjects = raw.split(',').map(&:strip).reject(&:empty?)
+    raise ArgumentError, 'Conjugation packs require at least one subject.' if subjects.empty?
 
-    persons
+    subjects
   end
 
-  def collect_conjugate_entries(persons)
+  def collect_conjugate_entries(subjects)
     puts
     puts 'Conjugation Entries'
     puts '-------------------'
@@ -475,7 +475,7 @@ class BuildYaml
 
       gloss = prompt_optional('Gloss (optional)')
       entry['gloss'] = gloss.strip unless blank?(gloss)
-      entry['forms'] = collect_conjugate_forms(lemma.strip, persons)
+      entry['forms'] = collect_conjugate_forms(lemma.strip, subjects)
 
       entries << entry
       index += 1
@@ -485,14 +485,14 @@ class BuildYaml
     entries
   end
 
-  def collect_conjugate_forms(lemma, persons)
+  def collect_conjugate_forms(lemma, subjects)
     puts "Forms for #{lemma}"
 
-    persons.each_with_object({}) do |person, forms|
-      puts person
+    subjects.each_with_object({}) do |subject, forms|
+      puts subject
       positive = collect_list_required('  Positive form')
       negative = collect_list_required('  Negative form')
-      forms[person] = {
+      forms[subject] = {
         'positive' => positive,
         'negative' => negative
       }

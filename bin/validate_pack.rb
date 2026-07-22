@@ -350,7 +350,7 @@ class PackValidator
       error("Missing required top-level key: #{key}. Expected `metadata:` and `entries:` at the top of the file.") unless data.key?(key)
     end
 
-    allowed = %w[metadata entries persons grammar]
+    allowed = %w[metadata entries subjects persons grammar]
     unknown = data.keys - allowed
     unknown.each { |k| warn("Unknown top-level key: #{k}") } unless unknown.empty?
   end
@@ -381,8 +381,10 @@ class PackValidator
       v = meta["version"]
       if v.is_a?(Integer)
         error("metadata.version must be >= 1") if v < 1
+      elsif v.is_a?(String)
+        warn("metadata.version is empty") if v.strip.empty?
       else
-        error("metadata.version must be an Integer. Got: #{v.class}")
+        error("metadata.version must be an Integer or String. Got: #{v.class}")
       end
     end
 
@@ -395,7 +397,7 @@ class PackValidator
       end
     end
 
-    %w[shuffle_persons shuffle_cues].each do |k|
+    %w[shuffle_subjects shuffle_persons shuffle_cues].each do |k|
       next unless meta.key?(k)
 
       val = meta[k]
@@ -509,12 +511,17 @@ class PackValidator
   end
 
   def validate_word_pack(data)
+    if data.key?("subjects")
+      warn("Top-level `subjects` is ignored for standard word packs")
+    end
+
     if data.key?("persons")
       warn("Top-level `persons` is ignored for standard word packs")
     end
 
     metadata = data["metadata"]
     if metadata.is_a?(Hash)
+      warn("metadata.shuffle_subjects is ignored for standard word packs") if metadata.key?("shuffle_subjects")
       warn("metadata.shuffle_persons is ignored for standard word packs") if metadata.key?("shuffle_persons")
       warn("metadata.shuffle_cues is ignored for standard word packs") if metadata.key?("shuffle_cues")
     end
@@ -619,11 +626,19 @@ class PackValidator
 
 
   def validate_transform_pack(data)
+    if data.key?("subjects")
+      warn("Top-level `subjects` is ignored for transform packs")
+    end
+
     if data.key?("persons")
       warn("Top-level `persons` is ignored for transform packs")
     end
 
     metadata = data["metadata"]
+    if metadata.is_a?(Hash) && metadata.key?("shuffle_subjects")
+      warn("metadata.shuffle_subjects is ignored for transform packs")
+    end
+
     if metadata.is_a?(Hash) && metadata.key?("shuffle_persons")
       warn("metadata.shuffle_persons is ignored for transform packs")
     end
@@ -637,11 +652,21 @@ class PackValidator
       warn("metadata.shuffle_cues is ignored for conjugate packs")
     end
 
-    persons = validate_persons(data["persons"])
-    validate_conjugate_entries(data["entries"], persons)
+    if data.key?("subjects") && data.key?("persons")
+      warn("Both top-level `subjects` and legacy `persons` are present; using `subjects`")
+    elsif data.key?("persons")
+      warn("Top-level `persons` is a legacy alias; prefer `subjects`")
+    end
+
+    subjects = validate_subjects(data.key?("subjects") ? data["subjects"] : data["persons"])
+    validate_conjugate_entries(data["entries"], subjects)
   end
 
   def validate_word_explorer_pack(data)
+    if data.key?("subjects")
+      warn("Top-level `subjects` is ignored for Word Explorer packs")
+    end
+
     if data.key?("persons")
       warn("Top-level `persons` is ignored for Word Explorer packs")
     end
@@ -696,36 +721,58 @@ class PackValidator
     end
   end
 
-  def validate_persons(persons)
-    unless persons.is_a?(Array)
-      error("Conjugation packs require a top-level `persons` list (Array). Got: #{persons.class}")
+  def validate_subjects(subjects)
+    unless subjects.is_a?(Array)
+      error("Conjugation packs require a top-level `subjects` list (Array). Got: #{subjects.class}")
       return []
     end
 
-    if persons.empty?
-      error("Conjugation packs require at least one person in the top-level `persons` list")
+    if subjects.empty?
+      error("Conjugation packs require at least one subject in the top-level `subjects` list")
       return []
     end
 
     normalized = []
     seen = {}
 
-    persons.each_with_index do |person, idx|
-      if person.is_a?(String)
-        text = person.strip
-        if text.empty?
-          error("persons[#{idx}] is empty")
+    subjects.each_with_index do |subject, idx|
+      text =
+        if subject.is_a?(String)
+          subject.strip
+        elsif subject.is_a?(Hash)
+          allowed = %w[key subject person gloss english]
+          unknown = subject.keys - allowed
+          unknown.each { |k| warn("subjects[#{idx}] unknown key: #{k}") } unless unknown.empty?
+
+          key = (subject["key"] || subject["subject"] || subject["person"]).to_s.strip
+          %w[gloss english].each do |field|
+            next unless subject.key?(field)
+
+            value = subject[field]
+            if value.nil?
+              warn("subjects[#{idx}].#{field} is nil (remove it or set a string)")
+            elsif value.is_a?(String)
+              warn("subjects[#{idx}].#{field} is empty") if value.strip.empty?
+            else
+              error("subjects[#{idx}].#{field} must be a String if present. Got: #{value.class}")
+            end
+          end
+          key
+        else
+          error("subjects[#{idx}] must be a String or mapping (Hash). Got: #{subject.class}")
           next
         end
 
-        if seen.key?(text)
-          error("Duplicate person #{text.inspect} at persons[#{idx}] (already used at persons[#{seen[text]}])")
-        else
-          seen[text] = idx
-          normalized << text
-        end
+      if text.empty?
+        error("subjects[#{idx}] is empty")
+        next
+      end
+
+      if seen.key?(text)
+        error("Duplicate subject #{text.inspect} at subjects[#{idx}] (already used at subjects[#{seen[text]}])")
       else
-        error("persons[#{idx}] must be a String. Got: #{person.class}")
+        seen[text] = idx
+        normalized << text
       end
     end
 
@@ -764,12 +811,12 @@ class PackValidator
     end
   end
 
-  def validate_conjugate_entries(entries, persons)
+  def validate_conjugate_entries(entries, subjects)
     return unless validate_entries_array(entries)
 
     ids = {}
     entries.each_with_index do |entry, idx|
-      validate_conjugate_entry(entry, idx, ids, persons)
+      validate_conjugate_entry(entry, idx, ids, subjects)
     end
   end
 
@@ -889,6 +936,7 @@ class PackValidator
     error("entries[#{idx + 1}] missing required field: cues") unless entry.key?("cues")
 
     validate_required_string(entry, idx, "prompt")
+    validate_optional_string(entry, idx, "notes")
 
     cues = entry["cues"]
     unless cues.is_a?(Array)
@@ -904,7 +952,7 @@ class PackValidator
       end
     end
 
-    allowed = %w[id prompt cues]
+    allowed = %w[id prompt notes cues]
     unknown = entry.keys - allowed
     unknown.each { |k| warn("entries[#{idx + 1}] unknown key: #{k}") } unless unknown.empty?
   end
@@ -949,14 +997,15 @@ class PackValidator
     error("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] missing required field: answer") unless step.key?("answer")
 
     validate_required_string(step, "entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}]", "transform")
+    validate_word_explorer_optional_label_string(step, "entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}]", "instruction")
     validate_required_string_list(step, "entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}]", "answer", min: 1)
 
-    allowed = %w[transform answer]
+    allowed = %w[transform instruction answer]
     unknown = step.keys - allowed
     unknown.each { |k| warn("entries[#{entry_idx + 1}].cues[#{cue_idx}].steps[#{step_idx}] unknown key: #{k}") } unless unknown.empty?
   end
 
-  def validate_conjugate_entry(entry, idx, ids, persons)
+  def validate_conjugate_entry(entry, idx, ids, subjects)
     unless entry.is_a?(Hash)
       error("entries[#{idx + 1}] must be a mapping (Hash). Got: #{entry.class}")
       return
@@ -977,26 +1026,26 @@ class PackValidator
       return
     end
 
-    persons.each do |person|
-      unless forms.key?(person)
-        error("entries[#{idx + 1}].forms missing person: #{person}")
+    subjects.each do |subject|
+      unless forms.key?(subject)
+        error("entries[#{idx + 1}].forms missing subject: #{subject}")
         next
       end
 
-      validate_conjugate_form(forms[person], idx, person)
+      validate_conjugate_form(forms[subject], idx, subject)
     end
 
-    extra_people = forms.keys.reject { |k| persons.include?(k) }
-    extra_people.each do |person|
-      warn("entries[#{idx + 1}].forms has person not listed in top-level persons: #{person.inspect}")
-      validate_conjugate_form(forms[person], idx, person)
+    extra_subjects = forms.keys.reject { |k| subjects.include?(k) }
+    extra_subjects.each do |subject|
+      warn("entries[#{idx + 1}].forms has subject not listed in top-level subjects: #{subject.inspect}")
+      validate_conjugate_form(forms[subject], idx, subject)
     end
 
     if entry.key?("verb") && !entry.key?("lemma")
       warn("entries[#{idx + 1}].verb is a legacy alias; prefer `lemma`")
     end
 
-    allowed = %w[id lemma verb gloss forms]
+    allowed = %w[id lemma verb prompt gloss category stem notes phonetic phonetics forms]
     unknown = entry.keys - allowed
     unknown.each { |k| warn("entries[#{idx + 1}] unknown key: #{k}") } unless unknown.empty?
   end
@@ -1285,15 +1334,15 @@ class PackValidator
     end
   end
 
-  def validate_conjugate_form(raw, entry_idx, person)
-    label = "entries[#{entry_idx + 1}].forms[#{person.inspect}]"
+  def validate_conjugate_form(raw, entry_idx, subject)
+    label = "entries[#{entry_idx + 1}].forms[#{subject.inspect}]"
 
     if raw.is_a?(Hash)
       error("#{label} missing required field: positive") unless raw.key?("positive")
       error("#{label} missing required field: negative") unless raw.key?("negative")
 
-      validate_required_string_list(raw, label, "positive", min: 1)
-      validate_required_string_list(raw, label, "negative", min: 0)
+      validate_conjugate_polarity(raw["positive"], "#{label}.positive", min: 1) if raw.key?("positive")
+      validate_conjugate_polarity(raw["negative"], "#{label}.negative", min: 0) if raw.key?("negative")
 
       allowed = %w[positive negative]
       unknown = raw.keys - allowed
@@ -1306,6 +1355,45 @@ class PackValidator
       warn("#{label} is empty") if raw.strip.empty?
     else
       error("#{label} must be a mapping (preferred), Array, or String. Got: #{raw.class}")
+    end
+  end
+
+  def validate_conjugate_polarity(value, label, min:)
+    case value
+    when Hash
+      error("#{label} missing required field: forms") unless value.key?("forms")
+      if value.key?("forms")
+        forms = value["forms"]
+        if forms.is_a?(Array)
+          validate_string_array(forms, "#{label}.forms", min: min)
+        elsif forms.is_a?(String)
+          warn("#{label}.forms is a String; prefer a list of accepted forms") if min.positive?
+          warn("#{label}.forms is empty") if min.positive? && forms.strip.empty?
+        else
+          error("#{label}.forms must be a list (Array) of Strings. Got: #{forms.class}")
+        end
+      end
+
+      if value.key?("meaning")
+        meaning = value["meaning"]
+        if meaning.nil?
+          warn("#{label}.meaning is nil (remove it or set a string)")
+        elsif meaning.is_a?(String)
+          warn("#{label}.meaning is empty") if meaning.strip.empty?
+        else
+          error("#{label}.meaning must be a String if present. Got: #{meaning.class}")
+        end
+      end
+
+      allowed = %w[forms meaning]
+      unknown = value.keys - allowed
+      unknown.each { |k| warn("#{label} unknown key: #{k}") } unless unknown.empty?
+    when Array
+      validate_string_array(value, label, min: min)
+    when String
+      warn("#{label} is empty") if min.positive? && value.strip.empty?
+    else
+      error("#{label} must be a mapping, list (Array), or String. Got: #{value.class}")
     end
   end
 

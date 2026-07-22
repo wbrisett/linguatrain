@@ -540,6 +540,9 @@ Attached:
 6. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec.
 7. New source material — a text file, or an image of the source text block.
 
+The source language is: 
+The target language is:
+
 Task: Using the attached specification and canonical examples as your
 reference, generate a complete set of five Linguatrain learning packs for
 the attached source material: a Translation pack, a Vocabulary pack, a
@@ -2475,7 +2478,7 @@ metadata:
   schema_version:
   source_pack:
 
-persons:
+subjects:
   - ...
 
 entries:
@@ -2528,9 +2531,9 @@ The exact structure depends on the target language, but should consistently repr
 
 ---
 
-### `persons`
+### `subjects`
 
-An optional top-level convenience list describing the grammatical persons represented throughout the conjugation pack.
+An optional top-level convenience list describing the subjects represented throughout the conjugation pack. Older packs may still use `persons`, but new packs should prefer `subjects`.
 
 Languages that organize conjugations differently may use an alternative structure while preserving consistency throughout the pack.
 

@@ -297,6 +297,44 @@ Verb category:
 ✅ Oikein!
 ```
 
+### Missed-answer explanations
+
+Conjugation quiz mode can show a short explanation after a missed category,
+stem, or conjugated-form answer. The explanation is assembled from the
+conjugation entry's structured metadata:
+
+- `category.label` becomes the displayed verb type.
+- `stem` becomes the displayed stem.
+- `notes` provide the human explanation of why the verb belongs to that type
+  or why the stem changes as it does.
+
+Example pack data:
+
+```yaml
+- id: kavella
+  lemma: kävellä
+  gloss: to walk
+  category:
+    key: type_3
+    label: Type 3
+  stem: kävele-
+  notes:
+    - Stem changes before personal endings, e.g. kävellä → kävelen.
+```
+
+Example missed-answer feedback:
+
+```text
+❌ Correct answer: kävele-
+Note:
+  Verb type: Type 3
+  Stem: kävele-
+  Stem changes before personal endings, e.g. kävellä → kävelen.
+```
+
+This feedback is controlled by the normal notes display setting. If
+`ui.show_notes` is false, these explanations are hidden.
+
 ### ui display controls
 
 Some UI keys control how much learning support is shown during drills. These are useful for adjusting difficulty without changing the underlying pack data.
@@ -315,14 +353,14 @@ Controls whether glosses are shown in conjugation drills.
 When enabled:
 
 ```text
-[ Person: hän — he/she ]
+[ Subject: hän — he/she ]
 [ Verb: ajaa — to drive ]
 ```
 
 When disabled:
 
 ```text
-[ Person: hän ]
+[ Subject: hän ]
 [ Verb: ajaa ]
 ```
 
@@ -346,7 +384,7 @@ Finnish: ajaa (hän ajaa)
 
 #### show_conjugated_form
 
-Controls whether the full person + conjugated form is shown next to the answer.
+Controls whether the full subject + conjugated form is shown next to the answer.
 
 When enabled:
 

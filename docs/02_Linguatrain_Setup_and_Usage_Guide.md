@@ -1035,7 +1035,7 @@ Target Conjugation Quiz — 20 verb(s) (120 items) (mode: conjugate, positive)
 
 Conjugate the verb.
 
-[ Person: te ]
+[ Subject: te ]
 [ Verb: ampua ]
 
 
@@ -1048,7 +1048,7 @@ Use the positive form:
 
 Conjugate the verb.
 
-[ Person: hän ]
+[ Subject: hän ]
 [ Verb: ampua ]
 
 
@@ -1069,7 +1069,7 @@ Target Conjugation Quiz — 20 verb(s) (120 items) (mode: conjugate, negative)
 
 Conjugate the verb.
 
-[ Person: he ]
+[ Subject: he ]
 [ Verb: ampua ]
 
 
@@ -1090,7 +1090,7 @@ Target Conjugation Quiz — 20 verb(s) (120 prompts, positive + negative) (mode:
 
 Conjugate the verb.
 
-[ Person: he ]
+[ Subject: he ]
 [ Verb: ampua ]
 
 
@@ -1195,13 +1195,27 @@ Translation mode works with multilingual translation packs. Source and target la
 ### Best used with
 
 ```text
-Vocabulary → Translation → Listen → Shadow
+Vocabulary → Translation Study → Translation Practice → Listen → Shadow
 ```
+
+Use Translation Study first when the material is new. It lets you read through the source text, chunks, literal rendering, natural translation, hints, and pronunciation without being scored. Then use Translation Practice when you are ready to produce the translation yourself.
 
 ### Command
 
 ```bash
 linguatrain.rb fr_de_translation_demo.yaml --translate
+```
+
+Read-through study mode:
+
+```bash
+linguatrain.rb fr_de_translation_demo.yaml --study --translation
+```
+
+Read-through study mode with pronunciation:
+
+```bash
+linguatrain.rb fr_de_translation_demo.yaml --study --translation --show-phonetic
 ```
 
 ### Example
@@ -1319,6 +1333,8 @@ MEE-nah OH-lehn LAU-ree MAH-keh-lah. OH-lehn SOO-oh-mah-lai-nehn MEE-ehs yah EE-
 
 - Translation mode is not limited to English.
 - Literal and natural translations can both be included.
+- Use `--study --translation` to walk through a translation pack without a text editor or scoring.
+- Add `--show-phonetic` when you want pronunciation during a translation read-through.
 - Combine Translation mode with Listen and Shadow for additional reinforcement.
 
 ---
@@ -1471,6 +1487,11 @@ rather than simply recalling isolated vocabulary.
 Unlike vocabulary drills, Translation Mode evaluates longer responses,
 provides meaningful feedback, and allows retries before revealing the
 correct translation.
+
+Translation packs can also be reviewed with `--study --translation`. This
+walk-through mode is useful before active translation practice because it
+shows the source text, chunks, literal renderings, natural translations,
+hints, and optional pronunciation without scoring the learner.
 
 Translation Mode is most effective after becoming reasonably familiar
 with the vocabulary and grammar used in the lesson.

@@ -5,10 +5,10 @@ metadata:
   author: "Wayne Brissette"
   description: "Starter conjugation drills for Finnish."
   schema_version: 1
-  # shuffle_persons: true
-  # Use shuffle_persons to randomize person order during practice.
+  # Subject order is shuffled by default.
+  # Set shuffle_subjects: false to keep the subjects list order during practice.
 
-persons:
+subjects:
   - "minä"
   - "sinä"
   - "hän"

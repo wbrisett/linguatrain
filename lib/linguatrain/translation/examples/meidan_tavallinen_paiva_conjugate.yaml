@@ -10,7 +10,7 @@ metadata:
   - Present positive and negative forms for verbs encountered in the passage.
   - Each entry declares its verb category for category-drill mode.
   - Corrected stem on gradating Type 1 verbs (pukea, lukea, loppua, nukkua) from the weak grade (incorrectly derived by stripping -n from minä-positive) to the citation-derived strong grade, per corrected spec §6.2.1a. The weak-grade alternation itself remains fully documented in each entry's notes.
-persons:
+subjects:
 - minä
 - sinä
 - hän

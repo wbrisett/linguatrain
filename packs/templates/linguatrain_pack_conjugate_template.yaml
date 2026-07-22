@@ -6,11 +6,12 @@
 #
 # Notes:
 # - Conjugation packs must set metadata.drill_type to "conjugate".
-# - The persons list defines the drill order unless shuffle_persons is enabled elsewhere.
+# - Subject order is shuffled by default during drills.
+# - Set metadata.shuffle_subjects: false to keep the subjects list order.
 # - Each entry has:
 #     - lemma: the dictionary form of the verb
-#     - forms: person-by-person accepted answers
-# - Each person can contain:
+#     - forms: subject-by-subject accepted answers
+# - Each subject can contain:
 #     - positive: YAML list of accepted positive forms
 #     - negative: YAML list of accepted negative forms
 
@@ -22,7 +23,7 @@ metadata:
   description: "Verb conjugation drills."  # Optional
   schema_version: 1
 
-persons:
+subjects:
   - "minä"
   - "sinä"
   - "hän"

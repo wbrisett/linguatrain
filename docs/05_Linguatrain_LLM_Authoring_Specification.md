@@ -5,6 +5,52 @@
 
 ---
 
+**Revision note (this version):** Added clarifications surfaced by
+cross-comparing three independent LLM authoring attempts and three
+independent evaluations of the same pack set. Changes, each marked "added
+clarification" or "added" inline at its location: a concrete heuristic for
+closed-class function-word candidate selection (§5.3); a worked verb+noun
+idiom example for the compositionality test (§5.5); a lemma-identity
+convention for reflexive/pronominal-only verbs (§5.4); an explicit ruling
+that whole-category omission of polarity is not a permitted scope choice,
+while other categories may still be legitimately scoped down (§6.5); a
+previously-missing worked schema for individual `explorations[]` items
+(§7.6); an explanation of the previously-unexplained `distractors[].grammar`
+field (§7.7); a concrete before/after example for the sequence-indentation
+rule, since common YAML library defaults do not satisfy it as written
+(§3.2); and a mandatory mechanical re-scan step for the YAML reserved-word
+quoting bug, added to the conformance pass (§10). No prior rule was
+loosened or reversed — every change either fills a previously-silent gap or
+makes an existing rule's boundary explicit where two careful readers had
+been reaching different conclusions from the same text.
+
+**Further clarification in this revision:** Added testable chunk-boundary
+criteria (§4.3); a minimum pedagogical vocabulary floor and explicit
+`answer` shape (§§5.2–5.3); Unicode-preserving identity and lexicalized-plural
+rules (§§5.4, 5.8); explicit typing of conjugatable multi-word expressions
+(§§5.9, 6.3, 6.7); exact, atomic Conjugation-form and accepted-variant rules
+(§6.5.1); contiguous-source and layered-morphology rules, including agreement
+and prefixes (§§7.4–7.5); consistent grammar-key reuse (§7.9); standalone
+Guide wording and complete Guide category mapping (§7.11); and a reproducible
+evaluation/scoring protocol (§11). These additions preserve the decisions
+above while closing gaps that previously required an evaluator to invent a
+rubric.
+
+**Additional clarification (this revision):** Added §6.6.1, resolving
+whether subject pronouns and clitics belong inside `forms` values. A
+proposed patch had suggested banning subject pronouns from paradigm cells
+outright; that blanket rule was rejected as linguistically incorrect for
+non-pro-drop languages (it would make French answers like `rencontre`
+stand in for a complete sentence, which they are not) and replaced with a
+language-appropriate test: pro-drop languages omit the subject (unchanged
+from the existing Finnish worked example), non-pro-drop languages include
+it as part of each accepted form, and ordinary object clitics remain
+out of scope for paradigm cells regardless of language, while an
+inherently reflexive lemma's own reflexive clitic is required, not
+optional. See §6.6.1 for the full rule and worked example.
+
+---
+
 ## 0. What this document is
 
 This document is written **for an LLM**, not for a human reader. It is the single
@@ -253,7 +299,25 @@ across every id in the pack** — do not mix conventions within one file.
 ### 3.2 Indentation and structure
 
 - Sequence items (`-`) are indented exactly two spaces beneath their parent
-  key.
+  key. This is a common point of drift because many YAML libraries'
+  *default* dump behavior produces the sequence item at the **same**
+  indentation as its parent key, not two spaces beneath it — that default
+  output does not satisfy this rule and must not be used as-is:
+
+  ```yaml
+  # Wrong — sequence item at the same indentation as its parent key
+  # (this is what many YAML libraries produce by default)
+  entries:
+  - id: '001'
+
+  # Correct — sequence item indented two spaces beneath its parent key
+  entries:
+    - id: '001'
+  ```
+
+  If generating YAML programmatically rather than writing it directly,
+  check the library's actual output against this example rather than
+  assuming a default configuration already complies.
 - Field order within an object should follow the canonical order shown in
   this document's schema blocks. Do not reorder fields without reason.
 - Equivalent content should serialize identically wherever it recurs
@@ -293,6 +357,35 @@ metadata:
 A `conversation`-format pack may still contain individual `narrative`-type
 entries (e.g. stage directions); `format` describes the whole pack, an
 entry's `type` describes that one entry.
+
+#### 4.1.2 Curated and full-coverage companion translation packs
+
+For long source texts such as subtitle files, it is valid to produce two
+translation packs with different learning purposes:
+
+```text
+*_translation.yaml       # curated study/gist translation
+*_full_translation.yaml  # complete source coverage
+```
+
+The curated `*_translation.yaml` remains the canonical study pack for
+Vocabulary, Conjugation, Word Explorer, and other derived companion packs. It
+may intentionally combine, omit, or foreground lines to teach the most useful
+structure and vocabulary.
+
+The optional `*_full_translation.yaml` is a coverage companion. Its purpose is
+to preserve every relevant source line in order, with a natural target-language
+reading translation, so a learner can look up any subtitle line that was not
+selected for the curated study pack. A full-coverage pack must:
+
+- Use the same source text as the curated pack.
+- Omit `source_language` and `target_language` from `metadata`.
+- Preserve source order.
+- State any intentional exclusions, such as a shared intro song that has its
+  own reusable translation pack or a final credits slate.
+- Avoid introducing new Vocabulary, Conjugation, or Word Explorer derivations
+  unless the user explicitly requests a second companion-pack set from the full
+  file.
 
 ### 4.2 Entry schema
 
@@ -344,6 +437,17 @@ Rules:
   Never reorder chunks to make the target reading more natural.
 - Do not split a fixed expression, idiom, or greeting across chunks.
 - Do not merge unrelated ideas into one chunk simply to reduce chunk count.
+
+**Operational boundary test (added clarification):** one chunk should express
+one independently reusable speech act, proposition, fixed expression, or
+tightly bound phrase. Split at a boundary when either side could be reused
+without the other and each side still carries a recognizable idea. In
+particular, separate two questions, two commands, a speech-reporting clause and
+its quoted speech, or two coordinated propositions unless the whole sequence is
+a lexicalized fixed expression. A whole sentence may be one chunk only when it
+is genuinely atomic under this test; sentence length alone never decides it.
+Repeated wording stays repeated: do not collapse two source occurrences into
+one chunk, because chunks must still cover the source in order.
 
 **How to apply this to any writing system, not just whitespace-segmented
 ones:** the guiding question is always "what is the smallest span of source
@@ -604,7 +708,8 @@ metadata:
 entries:
   - id:         # required — canonical dictionary lemma, stable identity
     prompt:     # required — learner-facing form, normally the surface form encountered
-    answer:     # required — one or more target-language meanings
+    answer:     # required — YAML sequence with one or more target-language meanings
+      - ...
     type:       # optional — noun, verb, adjective, phrase, etc.
     literal:    # optional
     phonetic:   # optional
@@ -619,6 +724,35 @@ Generate vocabulary entries **only** from lexical items that contribute to
 comprehension of the source text: ordinary words, inflected words,
 compounds, lexicalized fixed expressions, and grammatically meaningful items
 (interjections, discourse markers, fixed expressions, conjunctions).
+
+**Closed-class function words (added clarification):** subject pronouns,
+basic articles, and other closed-class function words are not automatically
+excluded, but default to *not* generating a standalone entry for one unless
+it does at least one of the following: shows an irregular or notable surface
+form (a contraction like `au`/`du`, a stem alternation, an exception to the
+language's own pattern); carries a genuine false-friend or register risk; or
+is needed as the anchor for a Word Explorer or Conjugation entry that
+otherwise has nothing to attach to. A closed-class word that behaves exactly
+as a learner would expect from the basic paradigm, with nothing notable to
+say about it, does not need its own entry merely because it appears in the
+source text. This keeps candidate selection anchored to instructional value
+rather than mechanical coverage of every token — the same principle already
+stated above, made concrete enough to apply consistently across authoring
+attempts.
+
+**Minimum pedagogical floor (added clarification):** candidate selection is
+curated, but it must not become arbitrary under-selection. Include at least:
+
+- every distinct lexical verb or fixed verbal predicate needed to understand a
+  source proposition;
+- every non-compositional expression needed to explain a natural translation;
+- every recurring question word, greeting, or discourse item that anchors the
+  same learnable formula at least twice in the source; and
+- any lexical item required as the target of a retained cross-pack reference.
+
+A single-use, transparent function word or content word may still be omitted
+under the rules above. Record such exclusions during the §10 conformance pass
+so “curated” does not become “silently discarded.”
 
 **Never** generate an entry from a purely symbolic token: digits,
 timestamps, dates, percentages, currency symbols, measurements,
@@ -684,6 +818,31 @@ forms:
   <case_or_tense_label>: encountered_surface_form
 ```
 
+**Reflexive/pronominal-only verbs (added clarification):** many languages
+(French, Spanish, Italian, German, Russian, and others) have verbs that
+exist only in reflexive/pronominal form — the citation form itself carries
+the reflexive marker (French `s'inquiéter`, Spanish `arrepentirse`, German
+`sich freuen`). For these, the stable lemma **includes** the reflexive
+marker — normalize it into the `id` the same way any other multi-word lemma
+is normalized (§5.8), e.g. `s_inquiéter`, not `inquiéter`. Do not drop the
+reflexive marker merely because the conjugated forms show it as a separate,
+subject-agreeing pronoun (`je m'inquiète`, `tu t'inquiètes`) — the paradigm
+varying the pronoun is exactly like any other verb varying its personal
+ending; it doesn't change what the dictionary citation form is. A verb that
+exists in *both* a plain and a reflexive form (e.g. a transitive verb that
+also has a distinct reflexive sense) is a different case and should be
+evaluated on whether the two senses are the same lemma or two lemmas in the
+target language's own dictionary tradition — but a verb with no non-reflexive
+form at all always keeps the marker in its `id`.
+
+**Unicode and lexicalized-number identity (added clarification):** preserve
+the lemma's letters and diacritics in Unicode NFC. ID normalization changes
+separators, not spelling: French `s'inquiéter` becomes `s_inquiéter`, never
+`s_inquieter`. Use a plural as the stable lemma only when the expression is
+lexicalized or conventionally dictionary-listed in the plural for the intended
+sense; otherwise use the singular dictionary lemma and record the encountered
+plural in `prompt`/`forms`.
+
 ### 5.5 Compositionality test for multi-word candidates (resolved)
 
 When a multi-word sequence could plausibly be one entry or several separate
@@ -697,6 +856,23 @@ entries, apply this test:
 
 This test applies equally to fixed idioms, greetings, and any collocational
 phrase the LLM is deciding whether to split.
+
+**Worked example — a verb + noun idiom of state (not just verb + verb):**
+A pattern that recurs across many languages is a literal-transitive-looking
+verb combined with a noun to express a state or feeling — French `avoir
+peur` ("to have fear" → "to be afraid"), `avoir faim` ("to be hungry"), or
+the equivalent pattern in other languages. This is harder to judge than a
+verb + verb idiom like `laisser tomber` because the noun half (`peur`,
+`faim`) still looks and behaves like an ordinary noun elsewhere in the
+source text. Apply the same test: if `avoir peur` means something other
+than the sum of "to have" + "fear" would predict in the target language
+(here, "to be afraid" rather than a literal possession of an emotion), and
+the pairing is fixed rather than freely substitutable, treat it as **one**
+entry (`avoir_peur`) — not as `avoir` and `peur` authored separately with a
+note on one of them describing the other. Do not split the pair and then
+separately document the idiom in prose; the compositionality test's outcome
+should be reflected directly in how many entries exist, not patched over
+with a note after the fact.
 
 ### 5.6 `forms`
 
@@ -909,6 +1085,12 @@ with underscores. Use that **same normalized string** consistently in
 human-readable form only for display fields such as `prompt`, never for
 `id` or for any field a companion pack must match against.
 
+Normalization must preserve the lemma's Unicode spelling in NFC. Replace
+separators such as spaces and apostrophes consistently, but never remove
+diacritics, transliterate letters, or silently change case beyond the
+language's dictionary convention. Cross-pack links compare the resulting
+string exactly; downstream tools must not be expected to repair a lossy id.
+
 ### 5.9 Controlled `type` vocabulary (resolved)
 
 Use one of the following canonical values for every entry's `type`. Do not
@@ -925,6 +1107,13 @@ this list itself (and note the addition at the pack level) rather than
 inventing a one-off value for a single entry. Two entries of the same part
 of speech within one pack, or across companion packs for the same language,
 must use the same `type` string.
+
+A fixed multi-word predicate that is eligible for a person/polarity paradigm
+has `type: verb`, even though it contains spaces in display form. Use
+`type: phrase` only for a non-verbal expression or fixed grammatical frame
+that is not independently conjugated. Thus French `avoir_peur` and
+`laisser_tomber` are verbs; their internal noun or particle does not turn the
+entry into a generic phrase.
 
 ---
 
@@ -946,7 +1135,7 @@ metadata:
                      # no Vocabulary pack)
 notes:               # optional — pack-level notes
   - ...
-persons:              # optional convenience list, language-appropriate
+subjects:             # optional convenience list, language-appropriate
   - ...
 ```
 
@@ -964,7 +1153,7 @@ entries:
     notes:      # optional — see §6.2.2
       - ...
     forms:      # required — language-specific paradigm, see §6.5
-      # <person>:
+      # <subject>:
       #   positive:
       #     forms:     # required — one or more accepted surface forms
       #       - ...
@@ -1038,6 +1227,12 @@ a functional break, not a cosmetic omission — both features depend on it.
   or leaving it empty. This mirrors §5.7.2's rule that the regular/default
   class still gets a real note, not a bare label standing in for one —
   here, no entry is exempted from `category` at all.
+- When a language's recognized classification already has a catch-all class
+  for irregular or residual verbs (for example, the French third group), use
+  that recognized class consistently. Do not split individual members into
+  ad hoc `irregular` subclasses unless the pack documents a real,
+  language-recognized subclass and applies it consistently; describe the
+  lemma-specific irregularity in `notes` instead.
 - If the target language genuinely has no named inflectional-class system
   for verbs, that is the one case `category` may be omitted — but this is
   a property of the language, decided once for the whole pack, not a
@@ -1157,7 +1352,7 @@ gloss: to disturb
   Vocabulary lists multiple senses (`to disturb`, `to bother`), `gloss`
   records only the first: `to disturb`. The full sense list is composed
   into the per-form `meaning` field instead (§6.5.1), not duplicated here.
-- This matters because the persons and polarities recorded in `forms`
+- This matters because the subjects and polarities recorded in `forms`
   (§6.5) are not different tenses of different ideas — they are the same
   present-tense verb, varying only by grammatical person and polarity.
   `gloss` states, once, what that one idea is.
@@ -1240,6 +1435,10 @@ pronouns, particles, conjunctions, or fixed expressions. Each verb lemma
 appears exactly once in the pack (one verb, one identity), regardless of how
 many surface forms of it appeared in the source text.
 
+Here “fixed expressions” means non-verbal expressions. A fixed multi-word
+predicate marked `type: verb` under §5.9 is a verb candidate and must not be
+excluded merely because its lemma contains more than one word.
+
 Do **not** generate conjugation entries for defective or impersonal verbs.
 
 In conjugation-only mode (§2.2), there is no companion Vocabulary pack;
@@ -1293,9 +1492,40 @@ covers that same category to the same depth. If it does not, either fill the
 gap or remove that category from the whole pack rather than leaving it
 partial.
 
-### 6.5.1 `forms`/`meaning` structure for each person and polarity (required, resolved)
+**Can a category be dropped for the whole pack, not just left partial
+(added clarification)?** The rule above forbids *partial* coverage — some
+entries having a category and others not. It does not by itself forbid
+omitting a category *entirely*, uniformly, across every entry. That
+omission is a separate decision with a different bar depending on the
+category:
 
-Each person's `positive` and `negative` value is not a bare list of
+- **Polarity (positive/negative) is not an optional category for any
+  language that grammaticalizes negation** — which is effectively every
+  language Linguatrain supports. A conjugation pack that never drills
+  negative forms is missing a baseline learner need, not skipping a
+  marginal refinement, and this is true regardless of how negation is
+  formed (a separate word as in French `ne...pas`, a suffix, an auxiliary
+  change, or something else). Omitting `negative` for the whole pack is a
+  conformance failure, not a permitted scope choice, unless the target
+  language has no productive way to negate a finite verb at all.
+- **Other categories — a specific tense, mood, or a fine-grained honorific
+  register — remain genuinely optional** in the sense that a pack scoped to
+  "present tense only," stated as such in `metadata.notes`, is a legitimate,
+  narrower pack rather than an incomplete one. The closure rule still
+  governs *within* whatever scope is declared: if the pack covers present
+  tense, it must cover present tense positive and negative for every verb,
+  per the polarity rule above.
+
+A pack-level note stating a scope decision (e.g. "present tense only") is
+useful and welcome documentation, but it cannot exempt the pack from a
+requirement — the same standard already stated in §0 for
+specification-vs-judgment conflicts applies here as well: a documented
+choice to skip a required category is still a conformance failure, not an
+authorized exception.
+
+### 6.5.1 `forms`/`meaning` structure for each subject and polarity (required, resolved)
+
+Each subject's `positive` and `negative` value is not a bare list of
 surface forms — it is an object with two required fields:
 
 ```yaml
@@ -1312,22 +1542,34 @@ forms:
 ```
 
 - The nested `forms` list is the same accepted-surface-form list this
-  field has always held — one or more accepted variants for this person
+  field has always held — one or more accepted variants for this subject
   and polarity.
+- Every item in that list is one complete, exact surface form. Never encode
+  alternatives inside one scalar with slash shorthand (`il/elle est`,
+  `parle/parles`) or parenthetical optionality. Put each accepted form in its
+  own list item, and use separate subject keys when the forms belong to
+  different grammatical subjects.
+- The accepted-form set is closed for the scope represented by that key: if
+  the pack recognizes an equally standard spelling, register, or optional-
+  particle variant for one applicable slot, include the corresponding valid
+  variants for every other applicable slot where that same distinction
+  exists. Do not add a lone convenience variant to one person while leaving
+  the same productive series unavailable elsewhere. Dialectal or deliberately
+  out-of-scope series may be omitted uniformly and documented at pack level.
 - `meaning` is the exact target-language meaning of this specific
-  person+polarity combination, in the same target language used throughout
+  subject+polarity combination, in the same target language used throughout
   the companion Vocabulary and Translation packs (English, in the worked
   examples throughout this spec). Compose it from every sense in the
   companion Vocabulary entry's `answer` list (§5.2 — contrast with
   `gloss`, §6.2.1b, which records the primary sense alone), joined with
-  `" / "`, inflected for this person, and — for negative polarity — using
-  the target language's own negation pattern for that person (English:
+  `" / "`, inflected for this subject, and — for negative polarity — using
+  the target language's own negation pattern for that subject (English:
   `do not`/`does not` + the bare verb).
 - This is a closure requirement in the same family as §6.5's paradigm
   coverage rule: if `meaning` is present for any form in the pack, it is
   present for every form in the pack. A pack does not mix the older
   bare-list style (`positive: [häiritsen]`) with this `{forms, meaning}`
-  style, and does not supply `meaning` for some persons/polarities while
+  style, and does not supply `meaning` for some subjects/polarities while
   omitting it for others.
 - English has no separate formal/informal or singular/plural second
   person; both `sinä` and `te` render as "you" in `meaning`. This is a
@@ -1342,17 +1584,91 @@ forms:
 be forced into a template built for a different language family. A language
 that marks person may organize `forms` by person; a language with rich
 tense/mood distinctions may nest tense and mood above person; a language
-without a dedicated negative verb form should represent whatever
-distinction *is* native to it instead of a positive/negative split that
-doesn't exist. The objective is internal consistency within one pack and
-fidelity to the language being taught — not uniformity across different
-languages' conjugation packs.
+without a dedicated negative verb inflection still records the required
+positive/negative semantic contrast (§6.5), but its negative `forms` must use
+the language's real native construction (particle, auxiliary, periphrasis,
+or other mechanism), not an invented synthetic “negative conjugation.” The
+objective is internal consistency within one pack and fidelity to the
+language being taught — not uniform surface morphology across languages.
+
+### 6.6.1 Subject pronouns and clitics in `forms` values (resolved)
+
+`forms` values are conjugated surface *answers*, not bare stems — the test
+for what belongs in each accepted string is not "the verb's ending" but
+"what a native speaker would actually write or say as a complete, correct
+answer for this subject and polarity."
+
+**Pro-drop languages** — those where a finite verb with no expressed
+subject is itself a complete, natural, grammatical utterance for that
+person (Finnish, Spanish, Italian, and many others) — should omit the
+subject pronoun from `forms`, exactly as the worked Finnish example
+throughout this document already does (`häiritsen`, not `minä
+häiritsen`). The subject is already represented structurally, by the key
+under which the form is filed (§6.5.1); repeating it inside the string
+makes the entry longer, not more complete or more correct.
+
+**Non-pro-drop languages** — those where the grammar requires an expressed
+subject for a bare finite verb to count as a complete, correct utterance
+outside the imperative (French, English, German, and others) — must
+include the subject as part of each accepted `forms` string. This is not
+primarily about disambiguating homophonous forms (though it often has that
+side effect — French `rencontre` alone is spelled identically for `je` and
+`il/elle`); it is about grammatical completeness. `rencontre` alone is not
+a correct French sentence-level answer to "how does *il* conjugate this
+verb?" — `il rencontre` is the complete, correct answer, and omitting the
+subject records an incomplete answer as if it were a complete one.
+
+When one subject key covers more than one distinct subject word (for
+example a combined `il_elle_on` key, used because these persons take an
+identical verb ending in French), do not collapse the distinct subject
+words into a single string and do not pick just one to stand in for all
+three. Each is a separate, complete, accepted form and belongs in its own
+list item, exactly per the existing rule against slash-shorthand and
+parenthetical optionality (§6.5.1):
+
+```yaml
+forms:
+  il_elle_on:
+    positive:
+      forms:
+        - il rencontre
+        - elle rencontre
+        - on rencontre
+      meaning: he/she/one meets
+```
+
+**Object and reflexive clitics are a separate question from subject
+pronouns, and are governed differently:**
+
+- An ordinary direct- or indirect-object clitic (French `me`, `te`, `le`,
+  `lui`, and equivalents in other languages) is never part of a base
+  paradigm cell. Object selection varies independently of the subject and
+  polarity a Conjugation pack's person/polarity paradigm exists to teach —
+  it belongs in Translation-pack sentence content or a dedicated Word
+  Explorer entry, not baked into every cell of every verb's paradigm.
+- A reflexive/pronominal clitic is different in kind. For a lemma that is
+  reflexive-only (§5.4's `s_inquiéter`-style identity), the agreeing
+  reflexive pronoun is an inseparable, subject-varying part of the verb's
+  own conjugation — exactly like a personal ending — and must appear in
+  every form (`je m'inquiète`, `tu t'inquiètes`, ...). It is not an
+  optional clitic to strip out; the verb does not exist without it.
+
+This resolves without contradicting this section's general principle:
+pro-drop and non-pro-drop languages are each modeled according to what
+that language's own grammar actually requires for a complete, correct
+answer — not according to a single rule ("always include the subject" or
+"never include the subject") imported wholesale from whichever language
+happened to produce the first worked example.
 
 ### 6.7 Multi-word expressions
 
 Where a language expresses a single idea as a fixed multi-word verb
 expression, keep it as one conjugation entry rather than splitting it into
 its component words — the same principle underlying §5.5.
+
+Such an entry must be `type: verb` in Vocabulary (§5.9), must use the same
+normalized identity in both packs (§6.4), and conjugates its verbal head under
+§6.8. A non-verbal `type: phrase` entry is not conjugation-eligible.
 
 ### 6.8 Conjugating the head, not the supporting word (resolved)
 
@@ -1476,7 +1792,7 @@ metadata:
 
 ### 7.3 Grammar catalog
 
-The top-level `grammar:` list works exactly like `persons:` in a Conjugation
+The top-level `grammar:` list works exactly like `subjects:` in a Conjugation
 pack (§6.1) or `grammar.refs` targets in a Translation pack (§4.8): it is
 the terminal set of grammar concepts this pack is allowed to reference, and
 it must be defined once and referenced by key everywhere else.
@@ -1539,7 +1855,9 @@ entries:
       voice: ''
       gender: ''
       parts: []
+      prefix: ''
       suffix: ''
+      derivational_base: ''
 
     hint: ''
     formation: ''
@@ -1565,7 +1883,14 @@ Field-by-field requirements beyond what's self-evident from the skeleton:
   the corresponding Translation pack values for that entry/chunk. This is
   the Word Explorer analogue of the lemma-identity rule (§5.4): the source
   context is copied, not re-derived or re-worded.
-- `word` is the exact encountered surface form from the source text.
+- `word` is the exact encountered surface form from the source text and must
+  be a contiguous substring of `source.text`. Never manufacture a normalized
+  or reordered “encountered” form from discontinuous words. For inversion,
+  clitics, separable particles, or other discontinuous constructions, choose
+  an exact contiguous span that contains the construction being analyzed, or
+  analyze one exact lexical component and explain the wider construction in
+  `explanation`. Generated normalized forms belong in `explorations`, not in
+  top-level `word`.
   `base_word` is its dictionary form — the value a learner would look up,
   which is also normally the companion Vocabulary entry's `id` when one
   exists (§7.9).
@@ -1578,7 +1903,7 @@ Field-by-field requirements beyond what's self-evident from the skeleton:
 - `hint` is optional assistance shown before the answer is revealed; see
   §7.8 for its conservatism rule.
 - `formation` is a short, learner-facing derivation string in the fixed
-  shape `base_word (+ stem/ending/suffix) → word`, e.g.
+  shape `base_word (+ stem/ending/prefix/suffix) → word`, e.g.
   `'suomi → suome- + -n → suomen'` or `'opettaa + -ja → opettaja'`. It must
   match what `morphology` actually encodes — don't show an ending in
   `formation` that isn't also recorded in `morphology.ending`/`suffix`.
@@ -1600,9 +1925,18 @@ Field-by-field requirements beyond what's self-evident from the skeleton:
 |---|---|---|
 | `case` | Case-marked inflection of a noun, pronoun, or adjective | `case`, `ending`, `stem` |
 | `compound` | Two or more whole words fused into one | `parts`, `number` (if the compound itself inflects, e.g. singular/plural) |
-| `derivation` | A suffix builds a new word/meaning from a base word (typically a different part of speech) | `suffix`, `source_type`, `result_type` |
+| `derivation` | A prefix and/or suffix builds a new word or meaning from a derivational base (often a different part of speech) | `prefix` and/or `suffix`, `derivational_base`, `source_type`, `result_type` |
+| `agreement` | An adjective, determiner, or participle changes to agree with its controller without changing lexeme | `gender`, `number`, `ending`, `stem` |
 | `verb_form` | A conjugated or non-finite verb form other than a plain personal paradigm slot already covered by Conjugation (passive, participle, infinitive, etc.) | `voice`, `tense`, `mood`, `form_type` |
 | `base_word` | The unmarked citation form itself, used only *inside* `explorations` to represent the starting point of a word family | (none required beyond `kind`) |
+
+For layered forms, top-level `kind` describes the relationship between the
+encountered `word` and its dictionary `base_word`. Ordinary finite inflection
+of a derived verb is therefore `verb_form` with the derived verb as
+`base_word`; record the earlier prefix/suffix relationship in an exploration
+or separate derivation entry only when that relationship is itself being
+taught from source evidence. Do not label the same transformation both
+`derivation` and `verb_form` merely because both occurred historically.
 
 Do not populate a field this table doesn't list for a given `kind` unless
 the language genuinely needs it (e.g. `gender` or `number` for a language
@@ -1633,6 +1967,31 @@ already established for Conjugation paradigms (§2, §6.3): a Word Explorer
 entry may expand one encountered word into several related forms that were
 never themselves in the source text, exactly as a Conjugation pack expands
 one encountered verb into a full personal paradigm.
+
+**Minimum required shape of one `explorations[]` item (added — this was
+previously undocumented and left to inference):**
+
+```yaml
+explorations:
+  - word: ''            # required — the surface form itself
+    origin: source       # required — 'source' or 'generated', see below
+    status: valid        # required — 'valid' | 'limited' | 'unsuitable'
+    usage_note: ''       # required whenever status is not 'valid'; omit otherwise
+    priority: ''         # optional — set only with a genuine pedagogical reason
+```
+
+This minimum shape is sufficient and is what most explorations should look
+like. Do **not** additionally require or expect a full copy of the parent
+entry's `target`/`morphology`/`formation`/`explanation` fields inside every
+exploration item merely because those fields exist one level up on the
+entry itself — that richer, per-exploration detail is optional elaboration,
+not part of the required shape, and its absence is not a conformance
+failure. If an author chooses to add `target` and/or a short `formation`
+string to an individual exploration for extra clarity, that is permitted
+enrichment, not a schema violation in either direction — but a validator
+checking for spec conformance must treat only `word`, `origin`, and `status`
+as unconditionally required; `usage_note` is conditionally required and
+`priority` is optional exactly as annotated above.
 
 - `origin: source` marks a form that is literally present in the Translation
   pack's source text (there should be exactly one such exploration per
@@ -1719,6 +2078,21 @@ applications:
   dismissed.
 - `explanation.why_it_fits` explains the correct answer the same way
   `entry.explanation` does — meaning plus reason, not meaning alone.
+- **`distractors[].grammar` (added clarification — previously shown in the
+  skeleton with no explanation of its content):** this is an optional,
+  free-form map of the grammatical features that make the distractor wrong
+  *when those features are the actual reason it's wrong* — e.g.
+  `{gender: masculine}` when a distractor fails on gender agreement, or
+  `{tense: present}` when a distractor fails because the context needs a
+  different tense. Populate it only when a structured feature (not just
+  prose) is genuinely useful for the engine to key off — for instance, to
+  group distractors by the specific feature they get wrong across many
+  entries. `grammar: {}` (empty) is a legitimate, conformant value when the
+  distractor's problem isn't well captured by a simple feature/value pair —
+  the prose in `why_not` is what's actually required to carry the
+  explanation in every case; `grammar` is a structured supplement to it, not
+  a replacement, and an empty `{}` is not itself a conformance failure as
+  long as `why_not` does the explanatory work.
 
 ### 7.8 Hint conservatism (resolved)
 
@@ -1744,6 +2118,10 @@ stylistic weakness.
   to a Translation pack's `grammar.refs` catalog — the two catalogs are
   independent even when they name overlapping concepts, because Word
   Explorer's catalog is scoped to what this pack's entries actually use.
+- Independence of authority does not justify gratuitous naming drift. When a
+  Translation `grammar.refs` label and a Word Explorer grammar concept denote
+  the same lesson-level concept, reuse the same normalized key where possible;
+  use a different key only when the scopes or meanings genuinely differ.
 - An entry with no applicable grammar concept (most `compound` and
   `derivation` entries) legitimately has an empty `grammar_refs: []` — do
   not force a grammar reference where none applies.
@@ -1797,10 +2175,10 @@ study and comparison, rather than following source order.
 #### 7.11.1 Document structure
 
 ```markdown
-# Finnish Morphology used in <title>
+# <Language> morphology used in <title>
 
-A running log of grammatical forms as they appear in actual course dialogues.
-Each lesson is broken into five categories: ...
+A standalone reference to the grammatical forms found in this text.
+The populated categories below are drawn from this pack: ...
 
 ---
 
@@ -1809,7 +2187,7 @@ Each lesson is broken into five categories: ...
 ### Cases
 
 **<Case name> (<ending>)**
-| Finnish form | Base word | Formation | Meaning | Where it appears |
+| Source-language form | Base word | Formation | Meaning | Where it appears |
 |---|---|---|---|---|
 | ... | ... | ... | ... | ... |
 
@@ -1818,11 +2196,11 @@ Each lesson is broken into five categories: ...
 |---|---|---|---|
 
 ### Derivations
-| Form | Base + suffix | Function | Where it appears |
+| Form | Base + affix | Function | Where it appears |
 |---|---|---|---|
 
 ### Passive forms
-| Finnish form | Base verb | Sense | Where it appears |
+| Source-language form | Base verb | Sense | Where it appears |
 |---|---|---|---|
 
 ### Irregular stems
@@ -1837,6 +2215,9 @@ Each lesson is broken into five categories: ...
   `metadata.title` with any generic pack-type suffix (e.g. "— Word
   Explorer") stripped, or equivalently the Translation pack's title. It
   names *this* pack's content, nothing more.
+- `<Language>` is the source language established by the pack metadata or
+  source material. Never copy “Finnish” from this illustrative template into
+  a pack for another language.
 - The `##` heading repeats `<title>` rather than numbering it. This looks
   redundant in a single-pack file, and that's fine — it exists as a
   stable, greppable anchor if a human later concatenates multiple
@@ -1849,10 +2230,9 @@ Each lesson is broken into five categories: ...
 - Do not invent a course name, series title, or textbook reference that
   isn't already established by the Translation/Vocabulary/Word Explorer
   metadata for this pack.
-- The word "lesson" may still appear as a generic noun in the boilerplate
-  intro text (e.g. "each lesson is broken into five categories") — that's
-  fine, it's describing what a Guide document is, not asserting a position
-  in a sequence. What's forbidden is a *numbered* reference (`Lesson 2`,
+- The word "lesson" may appear as a generic noun, but the preferred
+  boilerplate above describes the document as a standalone reference and
+  does not imply a sequence. What's forbidden is a *numbered* reference (`Lesson 2`,
   `Kappale 3`) anywhere in the document, including inside that same intro
   paragraph's own parenthetical about omitted categories (e.g. "see Lesson
   2's Passive forms, below" is exactly the mistake to avoid — write "see
@@ -1872,8 +2252,9 @@ determined by `morphology.kind`:
 | `case` | Cases |
 | `compound` | Compounds |
 | `derivation` | Derivations |
+| `agreement` | Agreement |
 | `verb_form` with `voice: passive` | Passive forms |
-| `verb_form` (other voices/moods) | Cases or a language-appropriate section, per the entry's actual grammatical function — state the mapping used if it isn't one of the above |
+| `verb_form` (other voices/moods) | Verb forms, or a more specific language-appropriate verb-form section stated by the pack |
 
 **Irregular stems is the one cross-cutting exception.** An entry also gets a
 row in the Irregular stems table, *in addition to* its primary table, when
@@ -1895,18 +2276,22 @@ happens to find it hard.
 Populate each table's columns directly from the corresponding Word Explorer
 entry — never re-derive or reword the underlying fact:
 
-- **Cases** — Finnish form = `word`; Base word = `base_word`; Formation =
+- **Cases** — Source-language form = `word`; Base word = `base_word`; Formation =
   `formation`; Meaning = `target`; Where it appears = a short italicized
   excerpt of `source.text` (the clause containing the form, not necessarily
   the full sentence).
 - **Compounds** — Compound = `word`; Parts = `morphology.parts` joined with
   `" + "`; Literal sense = `target`; Where it appears = excerpt of
   `source.text`.
-- **Derivations** — Form = `word`; Base + suffix = `"<base_word> + <suffix>"`
-  from `morphology.suffix`; Function = a short paraphrase of `explanation`
+- **Derivations** — Form = `word`; Base + affix = the recorded
+  `morphology.derivational_base` (or `base_word` when they are identical) plus
+  `morphology.prefix` and/or `morphology.suffix`; Function = a short paraphrase of `explanation`
   (not a verbatim copy — the Guide is a study aid, not a duplicate of the
   YAML prose); Where it appears = excerpt of `source.text`.
-- **Passive forms** — Finnish form = `word`; Base verb = `base_word`; Sense =
+- **Agreement** — Form = `word`; Base word = `base_word`; Features = the
+  populated `gender`/`number`/`ending` fields; Meaning = `target`; Where it
+  appears = excerpt of `source.text`.
+- **Passive forms** — Source-language form = `word`; Base verb = `base_word`; Sense =
   `target`; Where it appears = excerpt of `source.text`.
 - **Irregular stems** — Word = `base_word`; Nominative = `base_word`; Case
   stem = the `morphology.stem` recorded on the relevant case entry/entries
@@ -1999,9 +2384,9 @@ fact the source material never established.
   clause (see §5.7.2a).
 - **Omitting `gloss` on a Conjugation entry**, or letting it drift from
   the companion Vocabulary entry's primary sense (see §6.2.1b).
-- **Flattening `forms.<person>.<polarity>` back to a bare list of surface
+- **Flattening `forms.<subject>.<polarity>` back to a bare list of surface
   forms** instead of the required `{forms, meaning}` object, or supplying
-  `meaning` for some persons/polarities while omitting it for others (see
+  `meaning` for some subjects/polarities while omitting it for others (see
   §6.5.1).
 - **Deriving `stem` from minä-positive for a gradating Type 1 verb**
   instead of from the citation form — minä is a weak-grade form for these
@@ -2245,14 +2630,26 @@ final.
   by this mode, and none was silently fabricated to satisfy a rule written
   for the default pipeline.
   
-*Bijective Mapping Rule:** 
+**Coverage-accounting rule (clarified):**
 
-Every unique lexical entity identified in the source ingestion pass must map perfectly to exactly one target object identifier (id). 
-The system must enforce a strict 1:1 relational mapping:
+Every lexical entity that survives preprocessing and candidate selection must
+have exactly one documented destination. “Destination” does not always mean a
+standalone record: inflected forms may be recorded under one lemma, and
+components may be absorbed into one documented fixed expression under §5.5.
+The required conservation check is therefore:
+
 ```text
-{Count}{Unique Ingested Entities} = {Count}{Generated Records}
+surviving lexical entities
+  = standalone entries
+  + forms assigned to a lemma entry
+  + components explicitly absorbed into a fixed expression
 ```
-**Any** deviation (undercount or overcount) constitutes a critical validation failure.
+
+An entity intentionally excluded under §5.3 (for example, a transparent
+single-use article) belongs in an exclusion log with the applicable rule and
+is removed *before* this equation is checked. Any unexplained undercount,
+double assignment, or duplicate standalone record is a critical validation
+failure.
 
 ---
 
@@ -2264,7 +2661,7 @@ The system must enforce a strict 1:1 relational mapping:
     * become an entry,
     * become a recorded form of another entry, or
     * be explicitly absorbed into a documented fixed expression.
-* During §9 conformance, verify that every surviving token has exactly one destination.
+* During §10 conformance, verify that every surviving token has exactly one destination.
   
 ### Semantic consistency
 
@@ -2287,7 +2684,7 @@ fix it before presenting the result.
 
 ---
 
-# 10. Conformance Pass (MANDATORY)
+## 10. Conformance Pass (MANDATORY)
 
 After generating all packs, perform one complete validation pass before emitting any YAML.
 
@@ -2298,6 +2695,19 @@ Translation
 - phonetics present where required
 - accepted answers present where appropriate
 
+Global (all packs, before any pack-specific checks below)
+
+- every free-text value (`answer`, `prompt`, `target`, `literal`, `meaning`,
+  `notes`, and any other quoted-or-not string field) has been re-scanned,
+  as a distinct verification step separate from writing it, for a bare YAML
+  1.1 reserved word (`yes`, `no`, `true`, `false`, `on`, `off`, `null`, `~`,
+  in any case) per §3.1. This is not a rare edge case to watch for
+  opportunistically — every one of these tokens is also an ordinary English
+  word, so any `answer` value meaning "on," "off," "true," "false," "yes,"
+  or "no" **will** trigger this exact failure if left unquoted, regardless
+  of how unlikely it looks in context. Treat this as a mandatory scan of
+  every affected field, not a spot-check.
+
 Vocabulary
 
 - every id is a lemma
@@ -2306,6 +2716,8 @@ Vocabulary
 - no transparent cognate or identical/near-identical prompt-answer entry is
   included without a specific instructional `notes` item (§5.3)
 - no duplicates
+- every id preserves the lemma's NFC Unicode spelling and changes only the
+  permitted separators (§5.8)
 - every verb entry has a `'Stem: X'` note (§5.7.2b) if the language's
   Conjugation pack uses a top-level `stem` field (§6.2.1a) — for every
   verb entry if any, for none if the language has no bound-stem system
@@ -2329,12 +2741,18 @@ Conjugation
 - every person's `positive`/`negative` value is a `{forms, meaning}`
   object with `meaning` present for every person and polarity, or for
   none (§6.5.1)
+- every nested `forms` item is one exact surface form; no item contains slash
+  shorthand or parenthetical alternatives (§6.5.1)
 - every paradigm is valid
 - defective verbs handled correctly
 
-Value Homogeneity:
+**Value homogeneity:**
 
-All terminal string values within a specific paradigm block (e.g., a list of inflected forms) must strictly consist of valid linguistic graphemes belonging to the target language's orthography. Metadata, operational leakage, or cross-language semantic tokens are strictly prohibited.
+Every item in a nested Conjugation `forms` list must be an exact source-language
+surface form. Metadata, commentary, target-language glosses, or operational
+tokens are prohibited inside those lists. The sibling `meaning` field is
+explicitly target-language learner text and is not subject to this
+source-language-only restriction.
 
 
 Word Explorer
@@ -2355,13 +2773,17 @@ Word Explorer
   (§7.3)
 - no Word Explorer entry contradicts its sibling Translation or Vocabulary
   entry (§7.10)
+- every top-level `word` is an exact contiguous substring of its
+  `source.text`; discontinuous or normalized constructions were not invented
+  as encountered surface forms (§7.4)
 
 Word Explorer Guide
 
 - generated from the completed Word Explorer pack's YAML, not authored
   independently or drawn from the source text directly (§7.11)
-- every populated category (Cases, Compounds, Derivations, Passive forms,
-  Irregular stems) is represented; empty categories are omitted (§7.11.1)
+- every populated category (Cases, Compounds, Derivations, Agreement, Passive
+  forms, other Verb forms, and Irregular stems) is represented; empty
+  categories are omitted (§7.11.1)
 - category assignment follows §7.11.2, including the Irregular-stems
   cross-cutting rule
 - every table cell traces to a specific field on its source entry (§7.11.3)
@@ -2383,3 +2805,78 @@ Cross-pack
   claims to reference (§7.9)
 - the Word Explorer Guide introduces no fact absent from the Word Explorer
   pack (§7.11.5)
+
+---
+
+## 11. Evaluation and scoring protocol
+
+Use this section when evaluating an existing pack set. It makes evaluation
+reproducible; it does not add authoring fields.
+
+### 11.1 Evidence preflight
+
+Before assigning scores:
+
+1. Parse every YAML file and identify the specification revision used
+   (version, date, or document hash when supplied).
+2. Verify that every expected pack and Guide is present and that files are
+   complete rather than truncated.
+3. Build cross-reference maps for pack ids, entry ids, chunk ids,
+   `vocabulary_refs`, `vocabulary_ref`, and grammar keys.
+4. Separate findings into three evidence classes:
+   - **conformance** — a testable MUST/required/closure rule;
+   - **linguistic quality** — correctness or naturalness requiring language
+     knowledge; and
+   - **optional enrichment** — a permitted improvement whose absence is not a
+     violation.
+5. Cite every conformance finding by file, entry/chunk id (or line), field,
+   and specification section. If the source material needed to judge exact
+   coverage was not supplied, mark that check **not assessable** rather than
+   assuming failure or success.
+
+Optional enrichment may affect educational-value judgment modestly, but must
+never be reported as a schema violation or scored as though it were required.
+A validator must implement the required/optional boundary stated by this
+document; stricter legacy validator behavior is evidence of validator drift,
+not automatically evidence that the pack violates this specification.
+
+### 11.2 Score scale
+
+Score each applicable category from `0.0` to `10.0`, to one decimal place:
+
+| Band | Meaning |
+|---|---|
+| `9.0–10.0` | Excellent: accurate, complete, consistent; only negligible issues |
+| `7.0–8.9` | Good: usable and educational, with limited non-critical issues |
+| `5.0–6.9` | Mixed: useful core, but repeated errors or one material gap |
+| `3.0–4.9` | Poor: major omissions or errors substantially impair use |
+| `0.0–2.9` | Failing: absent, unusable, or pervasively incorrect |
+
+Start from evidence, not from `10` minus an arbitrary number of comments.
+Repeated instances of one systematic defect should weigh more than one typo,
+but should not be counted as unrelated defects. A critical structural failure
+caps the directly affected category at `4.9`; a missing required companion
+caps Companion integration and Pack consistency at `2.9`. Mark a category
+`N/A` only when the source legitimately contains no applicable material (for
+example, no conjugatable verb); do not convert `N/A` to zero. The overall score
+is the unweighted mean of applicable categories unless an evaluation brief
+states a different weighting in advance.
+
+### 11.3 Category boundaries
+
+| Category | Primary evidence |
+|---|---|
+| Translation quality | Fidelity of `source`, structural usefulness of `literal`, fluency and meaning of `target`/`accepted` |
+| Chunking | Complete ordered coverage and the operational semantic-boundary test in §4.3 |
+| Grammar hints | Accuracy, contextual usefulness, non-duplication, and not revealing the answer |
+| Vocabulary quality | Candidate floor/exclusions, lemma identity, meanings, types, forms, and notes |
+| Pack consistency | Cross-file identities, shared meanings/classifications, and absence of contradictions |
+| Metadata | Required fields, correct types/source links, stable ids, and no invented course context |
+| Companion integration | Resolved references and faithful Conjugation/Word Explorer/Guide derivation |
+| Educational value | Scaffolding, useful contrasts, concision, coverage accounting, and learner-facing clarity |
+| Conjugation accuracy | Candidate eligibility, class, paradigm forms, polarity, meanings, variants, and multi-word head behavior |
+
+For each score, provide a one- or two-sentence evidence summary plus the most
+important cited finding. Also report at least five strengths and five
+weaknesses for the set as a whole; strengths must be evidenced features, and
+weaknesses must distinguish violations from optional improvements.

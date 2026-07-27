@@ -62,6 +62,7 @@ class PackValidator
     if mode.nil? && metadata.is_a?(Hash)
       type = metadata["type"].to_s.strip.downcase
       mode = "word_explorer" if type == "word_explorer"
+      mode = "translation" if type == "translation"
     end
 
     case mode
@@ -71,6 +72,8 @@ class PackValidator
       validate_conjugate_pack(data)
     when "word_explorer"
       validate_word_explorer_pack(data)
+    when "translation"
+      validate_translation_pack(data)
     else
       validate_word_pack(data)
     end
@@ -673,6 +676,48 @@ class PackValidator
 
     grammar_keys = validate_word_explorer_grammar(data["grammar"])
     validate_word_explorer_entries(data["entries"], grammar_keys)
+  end
+
+  def validate_translation_pack(data)
+    return unless validate_entries_array(data["entries"])
+
+    ids = {}
+    data["entries"].each_with_index do |entry, idx|
+      label = "entries[#{idx + 1}]"
+      unless entry.is_a?(Hash)
+        error("#{label} must be a mapping (Hash). Got: #{entry.class}")
+        next
+      end
+
+      validate_optional_id(entry, idx, ids)
+      %w[source target].each do |key|
+        error("#{label} missing required field: #{key}") unless entry.key?(key)
+        validate_required_string(entry, label, key) if entry.key?(key)
+      end
+      validate_required_string(entry, label, "literal") if entry.key?("literal")
+      validate_translation_chunks(entry["chunks"], "#{label}.chunks") if entry.key?("chunks")
+    end
+  end
+
+  def validate_translation_chunks(chunks, label)
+    unless chunks.is_a?(Array) && !chunks.empty?
+      error("#{label} must be a non-empty list (Array). Got: #{chunks.class}")
+      return
+    end
+
+    chunks.each_with_index do |chunk, index|
+      chunk_label = "#{label}[#{index}]"
+      unless chunk.is_a?(Hash)
+        error("#{chunk_label} must be a mapping (Hash). Got: #{chunk.class}")
+        next
+      end
+
+      validate_required_string(chunk, chunk_label, "source")
+      has_target = chunk["target"].is_a?(String) && !chunk["target"].strip.empty?
+      has_targets = chunk["targets"].is_a?(Array) && chunk["targets"].any? { |value| value.is_a?(String) && !value.strip.empty? }
+      error("#{chunk_label} requires target or targets") unless has_target || has_targets
+      validate_string_array(chunk["targets"], "#{chunk_label}.targets", min: 1) if chunk.key?("targets")
+    end
   end
 
   def validate_word_explorer_grammar(grammar)

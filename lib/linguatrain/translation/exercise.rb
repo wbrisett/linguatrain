@@ -5,7 +5,7 @@ require_relative "scorer"
 module Linguatrain
   module Translation
     class Exercise
-      def initialize(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil)
+    def initialize(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil, embedded: false, guidance: nil)
       @entries = entries
       @scorer = scorer
       @input = input
@@ -13,10 +13,12 @@ module Linguatrain
       @show_phonetic = show_phonetic
       @listen = listen
       @speaker = speaker
+      @embedded = embedded
+      @guidance_mode = guidance.to_s.strip.downcase
       @quit_requested = false
     end
 
-    def self.run(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil)
+    def self.run(entries, scorer:, input: $stdin, output: $stdout, show_phonetic: false, listen: false, speaker: nil, embedded: false, guidance: nil)
       new(
         entries,
         scorer: scorer,
@@ -24,7 +26,9 @@ module Linguatrain
         output: output,
         show_phonetic: show_phonetic,
         listen: listen,
-        speaker: speaker
+        speaker: speaker,
+        embedded: embedded,
+        guidance: guidance
       ).run
     end
 
@@ -73,6 +77,9 @@ module Linguatrain
 
           run_entry(entry)
         end
+
+
+        quit_requested? ? :quit : :complete
       end
 
       def study
@@ -93,6 +100,10 @@ module Linguatrain
       private
 
       attr_reader :entries, :scorer, :input, :output
+
+      def embedded?
+        @embedded
+      end
 
 
 
@@ -123,6 +134,7 @@ module Linguatrain
       end
 
       def run_entry(entry)
+        return run_guided_entry(entry) if progressive_guidance?
 
         loop do
           display_prompt(entry)
@@ -184,6 +196,8 @@ module Linguatrain
 
           if fully_correct?(result)
             display_answer(entry)
+            return if embedded?
+
             follow_up_action = prompt_after_answer(result)
 
             case follow_up_action
@@ -255,6 +269,385 @@ module Linguatrain
             return
           end
         end
+      end
+
+      def progressive_guidance?
+        @guidance_mode == "progressive"
+      end
+
+      def run_guided_entry(entry)
+        display_prompt(entry)
+        answer = read_answer
+
+        if quit_answer?(answer)
+          @quit_requested = true
+          return
+        end
+
+        result = scorer.score(answer, entry)
+        display_guided_result(result)
+
+        unresolved = result.fetch(:matches).reject { |match| match[:matched] }
+        unresolved.sort_by! { |match| match[:status] == :near ? 0 : 1 }
+        initial_partial = unresolved.find do |match|
+          exact_guided_partial?(answer, guided_chunk_from_match(match))
+        end
+
+        independent = result.fetch(:correct)
+        corrected = 0
+        revealed = 0
+        completed = result.fetch(:matches).each_with_object({}) do |match, memo|
+          next unless match[:matched]
+
+          memo[guided_completion_key(match)] = match[:matched_text]
+        end
+
+        unresolved.each_with_index do |match, index|
+          partial_answer = match.equal?(initial_partial) ? answer : nil
+          outcome = coach_guided_chunk(match, remaining: unresolved.length - index, initial_partial: partial_answer)
+
+          case outcome.fetch(:status)
+          when :independent
+            independent += 1
+            completed[guided_completion_key(match)] = outcome.fetch(:answer)
+          when :corrected
+            corrected += 1
+            completed[guided_completion_key(match)] = outcome.fetch(:answer)
+          when :revealed
+            revealed += 1
+            completed[guided_completion_key(match)] = outcome.fetch(:answer)
+          when :quit
+            @quit_requested = true
+            return
+          end
+        end
+
+        output.puts
+        output.puts "Completed:"
+        guided_chunks(entry).each do |chunk|
+          answer = completed[guided_completion_key(chunk)]
+          next if answer.to_s.empty?
+
+          output.puts "✓ #{chunk["source"] || chunk[:source]} : #{answer}"
+        end
+        output.puts
+        output.puts "Correct independently: #{independent}"
+        output.puts "Correct after guidance: #{corrected}"
+        output.puts "Answers revealed: #{revealed}"
+      end
+
+      def display_guided_result(result)
+        output.puts
+        output.puts "-" * 50
+        output.puts "Guided results"
+        output.puts "-" * 50
+        output.puts
+
+        result.fetch(:matches).each do |match|
+          case match[:status]
+          when :correct
+            output.puts "✓ #{match[:source]} : #{match[:matched_text]}"
+          when :near
+            output.puts "△ #{match[:source]} — almost correct"
+          else
+            output.puts "○ #{match[:source]} — not answered yet"
+          end
+        end
+      end
+
+      def coach_guided_chunk(match, remaining:, initial_partial: nil)
+        chunk = guided_chunk_from_match(match)
+        current_match = match
+        hint_index = 0
+        displayed_diagnostic = nil
+        revealed_correction = false
+        require_complete_action = false
+        guidance_used = false
+
+        output.puts
+        output.puts remaining > 1 ? "Let’s repair this action first." : "Let’s finish the remaining action."
+        unless initial_partial.to_s.empty?
+          output.puts "✅ #{initial_partial.strip}"
+          require_complete_action = true
+        end
+
+        loop do
+          diagnostic = guided_error_signature(current_match)
+          if current_match[:status] == :near && diagnostic != displayed_diagnostic
+            display_near_diagnostic(current_match)
+            guidance_used = true
+            displayed_diagnostic = diagnostic
+          end
+          output.puts
+          prompt = if require_complete_action
+                     "Now write the complete sentence (action) in Finnish:"
+                   elsif current_match[:status] == :near
+                     "Correct this word in Finnish:"
+                   else
+                     "Write this action in Finnish:"
+                   end
+          output.puts prompt
+          output.print "> "
+          answer = read_answer
+
+          return { status: :quit } if quit_answer?(answer)
+
+          if %w[h hint].include?(answer.downcase) || answer.empty?
+            hints = guided_hints_for(chunk, current_match)
+            if hint_index < hints.length
+              output.puts "Hint: #{hints[hint_index]}"
+              guidance_used = true
+              hint_index += 1
+            else
+              output.puts "No more hints are available. Type s to reveal the answer."
+            end
+            next
+          end
+
+          if %w[s show answer].include?(answer.downcase)
+            correction = focused_guided_correction(current_match)
+            unless correction
+              revealed_answer = canonical_chunk_target(chunk)
+              output.puts "Answer: #{revealed_answer}"
+              return { status: :revealed, answer: revealed_answer }
+            end
+
+            answer = correction[:expected]
+            revealed_correction = true
+            output.puts "Answer: #{answer}"
+          end
+
+          correction = focused_guided_correction(current_match)
+          if correction && guided_words(answer).length == 1
+            if normalize_guided_text(answer) == normalize_guided_text(correction[:expected])
+              output.puts "✅ #{answer.strip}"
+              repaired_answer = apply_guided_correction(current_match, correction)
+              attempt = score_guided_chunk(repaired_answer, chunk)
+              attempted_match = attempt.fetch(:matches).first
+
+              if attempted_match[:matched]
+                current_match = attempted_match
+                require_complete_action = true
+                hint_index = 0
+                displayed_diagnostic = nil
+                next
+              end
+
+              current_match = attempted_match
+              hint_index = 0
+              displayed_diagnostic = nil
+              next
+            end
+
+            current_match = guided_word_retry_match(current_match, correction, answer)
+            hint_index = 0
+            displayed_diagnostic = nil
+            next
+          end
+
+          attempt = score_guided_chunk(answer, chunk)
+          attempted_match = attempt.fetch(:matches).first
+
+          if attempted_match[:matched]
+            output.puts "✅ #{attempted_match[:matched_text]}"
+            status = if revealed_correction
+                       :revealed
+                     elsif guidance_used
+                       :corrected
+                     else
+                       :independent
+                     end
+            return { status: status, answer: attempted_match[:matched_text] }
+          end
+
+          if exact_guided_partial?(answer, chunk)
+            output.puts "✅ #{answer.strip}"
+            require_complete_action = true
+            current_match = attempted_match
+            hint_index = 0
+            displayed_diagnostic = nil
+            next
+          end
+
+          require_complete_action = false
+          current_match = attempted_match
+          hint_index = 0
+          displayed_diagnostic = nil
+          if current_match[:status] == :missing
+            output.puts "Not quite. Type h for a hint, or try again."
+          end
+        end
+      end
+
+      def display_near_diagnostic(match)
+        output.puts "Almost correct:"
+
+        Array(match[:corrections]).first(1).each do |correction|
+          output.puts "  You wrote: #{correction[:actual]}"
+
+          component = guidance_component_for(match[:guidance], correction[:expected])
+          unless component
+            output.puts "- This word is close, but its form is not correct."
+            next
+          end
+
+          role = guidance_value(component, :role)
+          lemma = guidance_value(component, :lemma)
+          grammatical_case = guidance_value(component, :case)
+          person = guidance_value(component, :person)
+          number = guidance_value(component, :number)
+
+          base_label = role == "verb" ? "Base verb" : "Base noun"
+          output.puts "- #{base_label}: #{lemma}" unless lemma.empty?
+          grammatical_form = [person, number].reject(&:empty?).join("-person ")
+          output.puts "- Required form: #{grammatical_form}" unless grammatical_form.empty?
+          output.puts "- Required case: #{grammatical_case}" unless grammatical_case.empty?
+        end
+      end
+
+      def guided_chunk_from_match(match)
+        {
+          "id" => match[:id],
+          "source" => match[:source],
+          "targets" => match[:targets],
+          "hint" => match[:hint],
+          "guidance" => match[:guidance]
+        }.reject { |_key, value| value.nil? }
+      end
+
+      def guided_hints_for(chunk, match = nil)
+        guidance = chunk["guidance"] || {}
+        corrections = Array(match && match[:corrections])
+
+        unless corrections.empty?
+          targeted = corrections.flat_map do |correction|
+            component = guidance_component_for(guidance, correction[:expected])
+            Array(guidance_value_raw(component || {}, :hints))
+          end.map { |hint| hint.to_s.strip }.reject(&:empty?).uniq
+          return targeted unless targeted.empty?
+        end
+
+        authored = Array(guidance_value_raw(guidance, :hints)).map { |hint| hint.to_s.strip }.reject(&:empty?)
+        return authored unless authored.empty?
+
+        components = Array(guidance_value_raw(guidance, :components))
+        verb = components.find { |component| guidance_value(component, :role) == "verb" }
+        subject = components.find { |component| guidance_value(component, :role) == "subject" }
+        hints = [chunk["source"].to_s.strip]
+        hints << "Base verb: #{guidance_value(verb, :lemma)}." if verb
+        if subject
+          subject_form = guidance_value(subject, :form)
+          hints << "Subject: #{subject_form}; use the matching verb form." unless subject_form.empty?
+        end
+        hints.reject(&:empty?)
+      end
+
+      def guided_error_signature(match)
+        return "missing" unless match[:status] == :near
+
+        Array(match[:corrections]).map do |correction|
+          [correction[:index], correction[:actual], correction[:expected]].join(":")
+        end.join("|")
+      end
+
+      def guidance_component_for(guidance, expected_form)
+        components = Array(guidance_value_raw(guidance || {}, :components))
+        components.find do |component|
+          guidance_value(component, :form).downcase == expected_form.to_s.downcase
+        end
+      end
+
+      def guidance_value(hash, key)
+        guidance_value_raw(hash || {}, key).to_s.strip
+      end
+
+      def guidance_value_raw(hash, key)
+        return nil unless hash.is_a?(Hash)
+
+        hash[key] || hash[key.to_s]
+      end
+
+      def canonical_chunk_target(chunk)
+        Array(chunk["targets"] || chunk[:targets]).first.to_s
+      end
+
+      def score_guided_chunk(answer, chunk)
+        scorer.score(
+          answer,
+          { "chunks" => [chunk], "source" => chunk["source"], "target" => canonical_chunk_target(chunk) }
+        )
+      end
+
+      def focused_guided_correction(match)
+        return nil unless match[:status] == :near
+
+        Array(match[:corrections]).first
+      end
+
+      def apply_guided_correction(match, correction)
+        words = guided_words(match[:near_text])
+        words[correction[:index]] = correction[:expected]
+        words.join(" ")
+      end
+
+      def guided_word_retry_match(match, correction, answer)
+        retry_correction = correction.merge(actual: normalize_guided_text(answer))
+        match.merge(corrections: [retry_correction])
+      end
+
+      def guided_words(text)
+        normalize_guided_text(text).split
+      end
+
+      def exact_guided_partial?(answer, chunk)
+        answer_words = guided_words(answer)
+        return false if answer_words.empty?
+
+        is_target_subset = Array(chunk["targets"] || chunk[:targets]).any? do |target|
+          target_words = guided_words(target)
+          next false if answer_words.length >= target_words.length
+
+          target_words.each_cons(answer_words.length).any? { |words| words == answer_words }
+        end
+        return false unless is_target_subset
+
+        return true if answer_words.length > 1
+
+        components = Array(guidance_value_raw(chunk["guidance"] || {}, :components))
+        components.any? do |component|
+          guidance_value(component, :role) != "subject" &&
+            normalize_guided_text(guidance_value(component, :form)) == answer_words.first
+        end
+      end
+
+      def guided_chunks(entry)
+        chunks = Array(entry["chunks"] || entry[:chunks])
+        return chunks unless chunks.empty?
+
+        [{
+          "source" => entry["source"] || entry[:source],
+          "targets" => [entry["target"] || entry[:target]]
+        }]
+      end
+
+      def guided_completion_key(item)
+        id = item["id"] || item[:id]
+        return "id:#{id}" unless id.to_s.empty?
+
+        source = item["source"] || item[:source]
+        "source:#{source}"
+      end
+
+      def normalize_guided_text(text)
+        text.to_s
+            .downcase
+            .gsub(/[[:punct:]]/, " ")
+            .gsub(/\s+/, " ")
+            .strip
+      end
+
+      def quit_answer?(answer)
+        %w[q quit].include?(answer.to_s.downcase)
       end
 
       def display_prompt(entry)

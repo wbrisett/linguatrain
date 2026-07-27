@@ -1439,12 +1439,14 @@ elsif translation_pack?(pack_meta, raw_entries)
 
               chunk_hint = chunk["hint"] || chunk[:hint]
               chunk_phonetic = chunk["phonetic"] || chunk[:phonetic] || chunk["phonetics"] || chunk[:phonetics]
+              chunk_guidance = chunk["guidance"] || chunk[:guidance]
               chunk_id = chunk["id"] || chunk[:id] || format("c%03d", cidx + 1)
             else
               chunk_source = chunk
               chunk_target = nil
               chunk_literal = nil
               chunk_phonetic = nil
+              chunk_guidance = nil
               chunk_id = format("c%03d", cidx + 1)
             end
 
@@ -1478,6 +1480,7 @@ elsif translation_pack?(pack_meta, raw_entries)
             normalized_chunk[:hint] = hint_text unless hint_text.empty?
             phonetic_text = chunk_phonetic.to_s.strip
             normalized_chunk[:phonetic] = phonetic_text unless phonetic_text.empty?
+            normalized_chunk[:guidance] = symbolize_keys_deep(chunk_guidance) if chunk_guidance.is_a?(Hash)
             normalized_chunk
 
           end.compact.reject { |c| c[:source].empty? }
@@ -4119,6 +4122,8 @@ begin
       show_phonetic: options[:show_phonetic],
 
       listen: options[:listen],
+
+      guidance: pack_meta.dig(:translation, :guidance),
 
       speaker: lambda { |text|
 

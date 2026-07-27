@@ -13,6 +13,7 @@ require "fileutils"
 require "json"
 require "pathname"
 require_relative "lib/linguatrain/translation/exercise"
+require_relative "lib/linguatrain/media"
 require_relative "lib/linguatrain/word_explorer/pack"
 require_relative "lib/linguatrain/word_explorer/exercise"
 
@@ -1410,6 +1411,7 @@ elsif translation_pack?(pack_meta, raw_entries)
       vocabulary_refs_v = entry["vocabulary_refs"] || entry[:vocabulary_refs] || []
       vocabulary_v = entry["vocabulary"] || entry[:vocabulary] || []
       grammar_v = entry["grammar"] || entry[:grammar]
+      focus_ref_v = entry["focus_ref"] || entry[:focus_ref]
 
       raise "Invalid translation entry: #{entry.inspect}" if source_v.nil? || target_v.nil?
 
@@ -1512,7 +1514,8 @@ elsif translation_pack?(pack_meta, raw_entries)
         chunks: chunks,
         vocabulary_refs: Array(vocabulary_refs_v).map { |x| x.to_s.strip }.reject(&:empty?),
         vocabulary: Array(vocabulary_v),
-        grammar: grammar
+        grammar: grammar,
+        focus_ref: (focus_ref_v.nil? ? "" : focus_ref_v.to_s.strip)
       }
     end
 
@@ -3572,6 +3575,7 @@ options = {
   timing: false,
   conjugate: false,
   conjugate_polarity: "positive",
+  open_media: true,
   drill_category: false,
   category_key: nil,
   match_options: "auto",
@@ -3624,6 +3628,7 @@ parser = OptionParser.new do |opts|
   opts.on("--config PATH", "Path to user config YAML (or set LINGUATRAIN_CONFIG)") { |v| options[:config] = v }
   opts.on("--localisation PATH", "Path to localisation YAML (overrides config.yaml localisation)") { |v| options[:localisation] = v }
   opts.on("--audio-player CMD", "Audio player command (default from config; macOS: afplay)") { |v| options[:audio_player] = v }
+  opts.on("--no-open-media", "Do not open image media declared by the pack") { options[:open_media] = false }
 
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
@@ -3921,6 +3926,18 @@ options[:localisation_ui] = localisation[:ui] || {}
 
 # Effective meta includes localisation languages + (optional) localisation TTS template.
 effective_pack_meta = effective_meta(pack_meta, localisation)
+
+begin
+  resolved_pack_image = Linguatrain::Media.image_from(effective_pack_meta, pack_path: yaml_path)
+  Linguatrain::Media.validate_focus_references!(resolved_pack_image, translation_entries)
+  Linguatrain::Media.open_pack_image(
+    effective_pack_meta,
+    pack_path: yaml_path,
+    enabled: options[:open_media]
+  )
+rescue Linguatrain::Media::MediaError => e
+  abort(e.message)
+end
 
 resolve_settings!(options, user_cfg, effective_pack_meta)
 pack_meta = effective_pack_meta

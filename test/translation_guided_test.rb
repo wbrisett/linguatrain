@@ -19,7 +19,7 @@ class TranslationGuidedTest < Minitest::Test
           "guidance" => {
             "components" => [
               { "role" => "subject", "form" => "He", "meaning" => "they" },
-              { "role" => "verb", "lemma" => "juoda", "form" => "juovat", "person" => "third", "number" => "plural", "build" => "juo- + -vat → juovat", "hints" => ["Use the third-person plural ending -vat."] },
+              { "role" => "verb", "lemma" => "juoda", "verb_type" => 2, "form" => "juovat", "person" => "third", "number" => "plural", "build" => "juo- + -vat → juovat", "hints" => ["Use the third-person plural ending -vat."] },
               { "role" => "object", "lemma" => "kahvi", "form" => "kahvia", "case" => "partitive", "hints" => ["Use the partitive singular ending -a."] }
             ],
             "hints" => [
@@ -37,7 +37,7 @@ class TranslationGuidedTest < Minitest::Test
           "guidance" => {
             "components" => [
               { "role" => "subject", "form" => "He", "meaning" => "they" },
-              { "role" => "verb", "lemma" => "puhua", "form" => "puhuvat", "person" => "third", "number" => "plural", "build" => "puhu- + -vat → puhuvat", "hints" => ["Use the third-person plural ending -vat."] }
+              { "role" => "verb", "lemma" => "puhua", "verb_type" => 1, "form" => "puhuvat", "person" => "third", "number" => "plural", "build" => "puhu- + -vat → puhuvat", "hints" => ["Use the third-person plural ending -vat."] }
             ],
             "hints" => ["They talk.", "Base verb: puhua."]
           }
@@ -67,12 +67,57 @@ class TranslationGuidedTest < Minitest::Test
     assert_equal :missing, result[:matches].last[:status]
   end
 
+  def test_fuzzy_action_assignment_uses_the_complete_phrase_not_chunk_order
+    answer = "he juotvat kahvai"
+
+    normal = @scorer.score(answer, @entry)
+    reversed = @scorer.score(answer, @entry.merge("chunks" => @entry["chunks"].reverse))
+
+    normal_by_id = normal[:matches].to_h { |match| [match[:id], match] }
+    reversed_by_id = reversed[:matches].to_h { |match| [match[:id], match] }
+
+    assert_equal :near, normal_by_id.fetch("drink_coffee")[:status]
+    assert_equal :missing, normal_by_id.fetch("talk")[:status]
+    assert_equal :near, reversed_by_id.fetch("drink_coffee")[:status]
+    assert_equal :missing, reversed_by_id.fetch("talk")[:status]
+    assert_equal [%w[juotvat juovat], %w[kahvai kahvia]],
+                 normal_by_id.fetch("drink_coffee")[:corrections].map { |correction| [correction[:actual], correction[:expected]] }
+  end
+
   def test_completed_action_words_are_not_reused_as_a_fuzzy_match
     coffee_only = @scorer.score("he juovat kahvia", @entry)
     talk_only = @scorer.score("he puhuvat", @entry)
 
     assert_equal %i[correct missing], coffee_only[:matches].map { |match| match[:status] }
     assert_equal %i[missing correct], talk_only[:matches].map { |match| match[:status] }
+  end
+
+  def test_multiple_targets_in_one_chunk_are_alternative_interpretations
+    entry = {
+      "source" => "What are they doing?",
+      "target" => "He kävelevät rannalla.",
+      "chunks" => [
+        {
+          "id" => "walk",
+          "source" => "They walk on the beach or into the water.",
+          "targets" => [
+            "He kävelevät rannalla.",
+            "He kävelevät veteen."
+          ]
+        }
+      ]
+    }
+
+    beach = @scorer.score("he kävelevät rannalla", entry)
+    water = @scorer.score("he kävelevät veteen", entry)
+
+    assert_equal 1, beach[:total]
+    assert_equal 1, beach[:correct]
+    assert_equal [:correct], beach[:matches].map { |match| match[:status] }
+
+    assert_equal 1, water[:total]
+    assert_equal 1, water[:correct]
+    assert_equal [:correct], water[:matches].map { |match| match[:status] }
   end
 
   def test_completed_first_action_moves_to_second_without_error_feedback
@@ -111,6 +156,171 @@ class TranslationGuidedTest < Minitest::Test
     assert_includes output.string, "Correct independently: 2"
     assert_includes output.string, "Correct after guidance: 0"
     assert_includes output.string, "Answers revealed: 0"
+  end
+
+  def test_focus_marker_is_shown_before_the_question
+    entry = @entry.merge("focus_marker" => "A")
+    input = StringIO.new("q\n")
+    output = StringIO.new
+
+    Linguatrain::Translation::Exercise.run(
+      [entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    assert_match(/Look at marker A\.\n\nTop left: What are they doing\?/, output.string)
+  end
+
+  def test_guided_prompts_show_available_commands
+    input = StringIO.new("he juovat kahvia\nq\n")
+    output = StringIO.new
+
+    Linguatrain::Translation::Exercise.run(
+      [@entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    controls = "[h - help]  [s - show answer]  [q - quit]"
+    assert_match(/Top left: What are they doing\?\n\n#{Regexp.escape(controls)}\n> /, output.string)
+    assert_match(/Write this action in Finnish:\n#{Regexp.escape(controls)}\n> /, output.string)
+  end
+
+  def test_help_command_works_at_the_initial_guided_prompt
+    input = StringIO.new("h\nq\n")
+    output = StringIO.new
+
+    result = Linguatrain::Translation::Exercise.run(
+      [@entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    assert_equal :quit, result
+    assert_includes output.string, "Hint: They drink coffee."
+  end
+
+  def test_second_verb_miss_offers_conjugation_practice_and_returns_to_action
+    entry = Marshal.load(Marshal.dump(@entry))
+    verb = entry.fetch("chunks").last.dig("guidance", "components").find do |component|
+      component["role"] == "verb"
+    end
+    verb["conjugation"] = {
+      "forms" => {
+        "minä" => "puhun",
+        "sinä" => "puhut",
+        "hän" => "puhuu",
+        "me" => "puhumme",
+        "te" => "puhutte",
+        "he" => "puhuvat"
+      }
+    }
+
+    input = StringIO.new(<<~ANSWERS)
+      he puhavat
+      puhavat
+      yes
+      puhun
+      puhut
+      puhuu
+      puhumme
+      puhutte
+      puhuvat
+      puhuvat
+      he puhuvat
+      q
+    ANSWERS
+    output = StringIO.new
+
+    result = Linguatrain::Translation::Exercise.run(
+      [entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    assert_equal :quit, result
+    assert_includes output.string, "Would you like to practice conjugating puhua before continuing?"
+    assert_includes output.string, "Conjugation practice — puhua"
+    assert_includes output.string, "Subject: minä"
+    assert_includes output.string, "Subject: he"
+    assert_includes output.string, "Conjugation practice complete. Return to the image action."
+    assert_match(/Conjugation practice complete.*Correct this word in Finnish:.*✅ puhuvat.*Now write the complete sentence/m, output.string)
+    assert_equal 1, output.string.scan("Would you like to practice conjugating puhua").length
+  end
+
+  def test_second_incomplete_sentence_with_plausible_verb_offers_conjugation_help
+    entry = {
+      "source" => "What are they doing?",
+      "target" => "He kävelevät rannalla.",
+      "chunks" => [
+        {
+          "id" => "walk",
+          "source" => "They are walking.",
+          "targets" => ["He kävelevät rannalla."],
+          "guidance" => {
+            "components" => [
+              { "role" => "subject", "form" => "He" },
+              {
+                "role" => "verb",
+                "lemma" => "kävellä",
+                "form" => "kävelevät",
+                "conjugation" => {
+                  "forms" => { "minä" => "kävelen", "he" => "kävelevät" }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+    input = StringIO.new("he k\nhe kävellavat\nhe kävellavat\nno\nq\n")
+    output = StringIO.new
+
+    result = Linguatrain::Translation::Exercise.run(
+      [entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    assert_equal :quit, result
+    assert_equal 1, output.string.scan("Would you like to practice conjugating kävellä").length
+    refute_includes output.string, "Conjugation practice — kävellä"
+  end
+
+  def test_misspelled_lemma_attempts_trigger_second_miss_conjugation_offer
+    entry = Marshal.load(Marshal.dump(@entry))
+    entry["chunks"] = [entry.fetch("chunks").first]
+    verb = entry.dig("chunks", 0, "guidance", "components").find do |component|
+      component["role"] == "verb"
+    end
+    verb["conjugation"] = {
+      "forms" => { "minä" => "juon", "he" => "juovat" }
+    }
+
+    input = StringIO.new("he\nh\nh\njoda\njuta\nno\nq\n")
+    output = StringIO.new
+
+    result = Linguatrain::Translation::Exercise.run(
+      [entry],
+      scorer: @scorer,
+      input: input,
+      output: output,
+      guidance: "progressive"
+    )
+
+    assert_equal :quit, result
+    assert_equal 1, output.string.scan("Would you like to practice conjugating juoda").length
   end
 
   def test_corrected_word_completes_action_and_summary_lists_each_action
@@ -230,6 +440,7 @@ class TranslationGuidedTest < Minitest::Test
     assert_includes output.string, "○ They talk. — not answered yet"
     assert_includes output.string, "You wrote: jovat"
     assert_includes output.string, "Base verb: juoda"
+    assert_includes output.string, "- Verb type: 2"
     assert_includes output.string, "Required form: third-person plural"
     assert_includes output.string, "Hint: They talk."
     assert_includes output.string, "Correct independently: 0"
@@ -328,7 +539,7 @@ class TranslationGuidedTest < Minitest::Test
 
     refute_includes output.string, "juovat"
     refute_includes output.string, "kahvia"
-    assert_includes output.string, "Base verb: juoda."
+    assert_includes output.string, "Hint: Base verb: juoda. Type 2 verb."
     assert_includes output.string, "Use the third-person plural ending -vat."
     assert_includes output.string, "No more hints are available. Type s to reveal the answer."
   end

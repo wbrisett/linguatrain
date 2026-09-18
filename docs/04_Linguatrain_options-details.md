@@ -23,6 +23,10 @@ These options allow you to store your configuration files in locations other tha
 | `--config PATH` | Use a specific user config YAML file. | `LINGUATRAIN_CONFIG` or default config path |
 | `--localisation PATH` | Use a specific localisation YAML file. | config/default |
 | `--audio-player CMD` | Set the audio playback command. | config, usually `afplay` on macOS |
+| `--image-viewer CMD` | Use a particular executable to open image-backed lessons. | config or operating-system default |
+| `--no-open-media` | Do not automatically open an image declared by the pack. | off |
+| `--image-view` | Open an image-backed translation pack as an interactive browser lesson. | off |
+| `--export-image-view PATH` | Export the interactive image lesson to a local HTML file. | off |
 
 ### Core Quiz Controls
 
@@ -261,6 +265,8 @@ Transform mode can be used with `--study`. Listening is only supported for trans
 ## Translation
 
 Translation mode uses structured translation packs with source text, hints, literal translations, notes, and accepted natural translations.
+
+An image-backed translation pack can also open a scene beside the terminal and direct the learner to numbered or lettered markers. Linguatrain uses the normal image launcher on macOS, Linux, and Windows. Set `runtime.image_viewer` in the user configuration to choose a particular viewer, use `--image-viewer CMD` for a one-time override, or add `--no-open-media` when the image is already open or no graphical desktop is available. See [Image-backed packs](authoring/image-backed-packs.md) and [Configuration File Setup](configuration/config-file-setup.md).
 
 ```bash
 ruby bin/linguatrain.rb packs/fi/translations/sm_translation.yaml --translation

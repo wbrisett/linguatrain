@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Coordinate Picker</title>
+<style>
+  :root {
+    --surface-2: #ffffff;
+    --surface-1: #f4f3ee;
+    --surface-0: #ebe9e2;
+    --text-primary: #1c1c1a;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --border: #d3d1c7;
+    --border-strong: #b4b2a9;
+    --radius: 8px;
+    --font-mono: SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-2: #2c2c2a;
+      --surface-1: #232321;
+      --surface-0: #1a1a19;
+      --text-primary: #f1efe8;
+      --text-secondary: #b4b2a9;
+      --text-muted: #888780;
+      --border: #444441;
+      --border-strong: #5f5e5a;
+    }
+  }
+  body {
+    background: var(--surface-0);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 2rem;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  button, input[type="file"], select {
+    font-family: inherit;
+    font-size: 14px;
+  }
+  button {
+    background: transparent;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--surface-1);
+  }
+  button:active {
+    transform: scale(0.98);
+  }
+  select {
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 6px 8px;
+  }
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  #hint {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+  }
+  #canvasWrap {
+    position: relative;
+    display: none;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 100%;
+    background: var(--surface-2);
+  }
+  canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    cursor: crosshair;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 1rem;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    padding: 4px 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  td {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  input.labelInput, textarea.descInput {
+    width: 100%;
+    font-size: 13px;
+    font-family: inherit;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px 6px;
+    box-sizing: border-box;
+  }
+  textarea.descInput {
+    resize: vertical;
+    min-height: 32px;
+    line-height: 1.4;
+  }
+  .mono {
+    font-family: var(--font-mono);
+  }
+  #copyMsg {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Image coordinate picker</h1>
+  <div class="toolbar">
+    <input type="file" id="fileInput" accept="image/*" />
+    <label for="csvInput">Coordinates</label>
+    <input type="file" id="csvInput" accept=".csv,text/csv" />
+    <label for="markerStyle">Markers</label>
+    <select id="markerStyle">
+      <option value="numbers">1, 2, 3</option>
+      <option value="letters">A, B, C</option>
+    </select>
+    <button id="clearBtn">Clear points</button>
+    <button id="copyBtn">Copy list</button>
+    <button id="exportTxtBtn">Export .txt</button>
+    <button id="exportCsvBtn">Export .csv</button>
+    <button id="exportImageBtn">Export marked image</button>
+    <span id="copyMsg"></span>
+  </div>
+
+  <div id="canvasWrap">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <p id="hint">Choose an image file, then click anywhere on it to drop a labeled point. Coordinates are in the image's native pixel space.</p>
+
+  <div id="pointsWrap"></div>
+</div>
+
+<script>
+(function() {
+  const fileInput = document.getElementById('fileInput');
+  const csvInput = document.getElementById('csvInput');
+  const canvas = document.getElementById('canvas');
+  const canvasWrap = document.getElementById('canvasWrap');
+  const ctx = canvas.getContext('2d');
+  const pointsWrap = document.getElementById('pointsWrap');
+  const clearBtn = document.getElementById('clearBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const copyMsg = document.getElementById('copyMsg');
+  const hint = document.getElementById('hint');
+  const markerStyle = document.getElementById('markerStyle');
+  const exportImageBtn = document.getElementById('exportImageBtn');
+
+  let img = new Image();
+  let points = [];
+  let naturalW = 0, naturalH = 0;
+  let sourceBaseName = 'image';
+
+  fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    sourceBaseName = file.name.replace(/\.[^.]+$/, '') || 'image';
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      img = new Image();
+      img.onload = function() {
+        naturalW = img.naturalWidth;
+        naturalH = img.naturalHeight;
+        canvas.width = naturalW;
+        canvas.height = naturalH;
+        canvasWrap.style.display = 'block';
+        drawAll();
+        renderPoints();
+        hint.textContent = 'Image loaded at ' + naturalW + ' x ' + naturalH + ' px. Load a coordinate CSV or click to drop points.';
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function drawAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, naturalW, naturalH);
+    points.forEach(function(p) {
+      const scale = Math.max(1, naturalW / 1600);
+      const targetRadius = 5 * scale;
+      const badgeRadius = 22 * scale;
+      const offset = 42 * scale;
+      const badgeX = Math.min(naturalW - badgeRadius - 3, Math.max(badgeRadius + 3, p.x + offset));
+      const badgeY = Math.min(naturalH - badgeRadius - 3, Math.max(badgeRadius + 3, p.y - offset));
+
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(badgeX, badgeY);
+      ctx.strokeStyle = '#7A271A';
+      ctx.lineWidth = Math.max(2, 3 * scale);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, targetRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#D85A30';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(badgeX, badgeY, badgeRadius, 0, Math.PI * 2);
+      ctx.fillStyle = '#D85A30';
+      ctx.fill();
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = Math.max(2, 3 * scale);
+      ctx.stroke();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold ' + Math.round(24 * scale) + 'px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.marker, badgeX, badgeY + scale);
+    });
+  }
+
+  function lettersFor(index) {
+    let value = index + 1;
+    let result = '';
+    while (value > 0) {
+      value -= 1;
+      result = String.fromCharCode(65 + (value % 26)) + result;
+      value = Math.floor(value / 26);
+    }
+    return result;
+  }
+
+  function markerFor(index) {
+    return markerStyle.value === 'letters' ? lettersFor(index) : String(index + 1);
+  }
+
+  function nextPointNumber() {
+    return points.reduce(function(maximum, point) {
+      const match = String(point.id || '').match(/^point_(\d+)$/);
+      return match ? Math.max(maximum, Number(match[1])) : maximum;
+    }, 0) + 1;
+  }
+
+  function refreshMarkers() {
+    points.forEach(function(p, index) {
+      p.marker = markerFor(index);
+    });
+    drawAll();
+    renderPoints();
+  }
+
+  markerStyle.addEventListener('change', refreshMarkers);
+
+  function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let field = '';
+    let quoted = false;
+
+    for (let i = 0; i < text.length; i += 1) {
+      const char = text[i];
+      const next = text[i + 1];
+
+      if (quoted) {
+        if (char === '"' && next === '"') {
+          field += '"';
+          i += 1;
+        } else if (char === '"') {
+          quoted = false;
+        } else {
+          field += char;
+        }
+      } else if (char === '"') {
+        quoted = true;
+      } else if (char === ',') {
+        row.push(field);
+        field = '';
+      } else if (char === '\n') {
+        row.push(field.replace(/\r$/, ''));
+        if (row.some(function(value) { return value !== ''; })) rows.push(row);
+        row = [];
+        field = '';
+      } else {
+        field += char;
+      }
+    }
+
+    if (quoted) throw new Error('The CSV ends inside a quoted field.');
+    row.push(field.replace(/\r$/, ''));
+    if (row.some(function(value) { return value !== ''; })) rows.push(row);
+    return rows;
+  }
+
+  function importCsv(text) {
+    const rows = parseCsv(text);
+    if (rows.length < 2) throw new Error('The CSV does not contain any coordinate rows.');
+
+    const headers = rows[0].map(function(value) { return value.trim().toLowerCase(); });
+    const indexFor = function(name) { return headers.indexOf(name); };
+    const xIndex = indexFor('x');
+    const yIndex = indexFor('y');
+    if (xIndex < 0 || yIndex < 0) throw new Error('The CSV must contain x and y columns.');
+
+    const idIndex = indexFor('id');
+    const markerIndex = indexFor('marker');
+    const labelIndex = indexFor('label');
+    const descriptionIndex = indexFor('description');
+
+    const imported = rows.slice(1).map(function(values, index) {
+      const sequence = index + 1;
+      const x = Number(values[xIndex]);
+      const y = Number(values[yIndex]);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        throw new Error('Row ' + (index + 2) + ' has invalid coordinates.');
+      }
+      if (naturalW && (x < 0 || y < 0 || x > naturalW || y > naturalH)) {
+        throw new Error('Row ' + (index + 2) + ' is outside the loaded image.');
+      }
+
+      const id = idIndex >= 0 && values[idIndex] ? values[idIndex].trim() : 'point_' + sequence;
+      const marker = markerIndex >= 0 && values[markerIndex] ? values[markerIndex].trim() : markerFor(index);
+      const label = labelIndex >= 0 && values[labelIndex] ? values[labelIndex] : 'point ' + sequence;
+      const description = descriptionIndex >= 0 && values[descriptionIndex] ? values[descriptionIndex] : '';
+      return { id: id, marker: marker, x: Math.round(x), y: Math.round(y), label: label, description: description };
+    });
+
+    const markers = {};
+    imported.forEach(function(point) {
+      if (!point.marker) throw new Error('Every coordinate needs a marker.');
+      if (markers[point.marker]) throw new Error('Duplicate marker: ' + point.marker);
+      markers[point.marker] = true;
+    });
+
+    points = imported;
+    if (naturalW) drawAll();
+    renderPoints();
+    hint.textContent = 'Loaded ' + points.length + ' coordinate points' + (naturalW ? ' onto the image.' : '. Choose the image to preview them.');
+  }
+
+  csvInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        importCsv(String(event.target.result || ''));
+        flashMsg('Coordinates loaded');
+      } catch (error) {
+        hint.textContent = 'Could not load coordinates: ' + error.message;
+        flashMsg('CSV error');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = Math.round((e.clientX - rect.left) * scaleX);
+    const y = Math.round((e.clientY - rect.top) * scaleY);
+    const sequence = nextPointNumber();
+    const label = 'point ' + sequence;
+    points.push({ id: 'point_' + sequence, marker: markerFor(points.length), x: x, y: y, label: label, description: '' });
+    drawAll();
+    renderPoints();
+  });
+
+  function renderPoints() {
+    if (points.length === 0) {
+      pointsWrap.innerHTML = '';
+      return;
+    }
+    let rows = points.map(function(p, i) {
+      return '<tr>' +
+        '<td class="mono" style="color:var(--text-secondary);">' + p.marker + '</td>' +
+        '<td><input data-idx="' + i + '" class="labelInput" value="' + p.label.replace(/"/g, '&quot;') + '" /></td>' +
+        '<td class="mono">' + p.x + '</td>' +
+        '<td class="mono">' + p.y + '</td>' +
+        '<td><textarea data-idx="' + i + '" class="descInput" rows="1" placeholder="e.g. they drink coffee, they talk">' + p.description.replace(/</g, '&lt;') + '</textarea></td>' +
+        '<td><button data-idx="' + i + '" class="delBtn" aria-label="Delete point">&times;</button></td>' +
+        '</tr>';
+    }).join('');
+    pointsWrap.innerHTML =
+      '<table>' +
+      '<colgroup><col style="width:32px;"><col style="width:110px;"><col style="width:60px;"><col style="width:60px;"><col><col style="width:40px;"></colgroup>' +
+      '<tr><th>Marker</th><th>Label</th><th>X</th><th>Y</th><th>Description</th><th></th></tr>' +
+      rows + '</table>';
+
+    pointsWrap.querySelectorAll('.labelInput').forEach(function(inp) {
+      inp.addEventListener('input', function() {
+        points[Number(inp.dataset.idx)].label = inp.value;
+      });
+    });
+    pointsWrap.querySelectorAll('.descInput').forEach(function(ta) {
+      ta.addEventListener('input', function() {
+        points[Number(ta.dataset.idx)].description = ta.value;
+      });
+    });
+    pointsWrap.querySelectorAll('.delBtn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        points.splice(Number(btn.dataset.idx), 1);
+        refreshMarkers();
+      });
+    });
+  }
+
+  clearBtn.addEventListener('click', function() {
+    points = [];
+    if (naturalW) drawAll();
+    renderPoints();
+    copyMsg.textContent = '';
+  });
+
+  function flashMsg(msg) {
+    copyMsg.textContent = msg;
+    setTimeout(function() { copyMsg.textContent = ''; }, 1500);
+  }
+
+  function buildTxt() {
+    return points.map(function(p) {
+      return p.marker + ' (' + p.id + '): x=' + p.x + ', y=' + p.y +
+        (p.description ? ', description=' + p.description : '');
+    }).join('\n');
+  }
+
+  function csvEscape(val) {
+    val = String(val == null ? '' : val);
+    if (/[",\n]/.test(val)) {
+      val = '"' + val.replace(/"/g, '""') + '"';
+    }
+    return val;
+  }
+
+  function buildCsv() {
+    const header = 'id,marker,label,x,y,description';
+    const rows = points.map(function(p) {
+      return [csvEscape(p.id), csvEscape(p.marker), csvEscape(p.label), p.x, p.y, csvEscape(p.description)].join(',');
+    });
+    return [header].concat(rows).join('\n');
+  }
+
+  function downloadFile(filename, content, mime) {
+    const blob = new Blob([content], { type: mime });
+    downloadBlob(filename, blob);
+  }
+
+  function downloadBlob(filename, blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  copyBtn.addEventListener('click', function() {
+    const text = buildTxt();
+    if (!text) {
+      flashMsg('No points yet');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+      flashMsg('Copied');
+    }, function() {
+      // Fallback for browsers/contexts where clipboard API is blocked
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      flashMsg('Copied');
+    });
+  });
+
+  document.getElementById('exportTxtBtn').addEventListener('click', function() {
+    const text = buildTxt();
+    if (!text) {
+      flashMsg('No points yet');
+      return;
+    }
+    downloadFile(sourceBaseName + '_coordinates.txt', text, 'text/plain');
+    flashMsg('Downloaded');
+  });
+
+  document.getElementById('exportCsvBtn').addEventListener('click', function() {
+    if (points.length === 0) {
+      flashMsg('No points yet');
+      return;
+    }
+    downloadFile(sourceBaseName + '_coordinates.csv', buildCsv(), 'text/csv');
+    flashMsg('Downloaded');
+  });
+
+  exportImageBtn.addEventListener('click', function() {
+    if (!naturalW || points.length === 0) {
+      flashMsg(points.length === 0 ? 'No points yet' : 'Choose an image first');
+      return;
+    }
+    canvas.toBlob(function(blob) {
+      if (!blob) {
+        flashMsg('Could not create image');
+        return;
+      }
+      downloadBlob(sourceBaseName + '_marked.png', blob);
+      flashMsg('Marked image downloaded');
+    }, 'image/png');
+  });
+})();
+</script>
+</body>
+</html>

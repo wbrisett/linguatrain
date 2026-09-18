@@ -284,7 +284,10 @@ module Linguatrain
           return
         end
 
-        result = scorer.score(answer, entry)
+        guided_commands = ["h", "hint", "s", "show", "show answer", "answer"]
+        initial_command = answer.downcase if guided_commands.include?(answer.downcase)
+        scored_answer = initial_command ? "" : answer
+        result = scorer.score(scored_answer, entry)
         display_guided_result(result)
 
         unresolved = result.fetch(:matches).reject { |match| match[:matched] }
@@ -303,8 +306,14 @@ module Linguatrain
         end
 
         unresolved.each_with_index do |match, index|
-          partial_answer = match.equal?(initial_partial) ? answer : nil
-          outcome = coach_guided_chunk(match, remaining: unresolved.length - index, initial_partial: partial_answer)
+          partial_answer = match.equal?(initial_partial) ? scored_answer : nil
+          queued_command = index.zero? ? initial_command : nil
+          outcome = coach_guided_chunk(
+            match,
+            remaining: unresolved.length - index,
+            initial_partial: partial_answer,
+            initial_command: queued_command
+          )
 
           case outcome.fetch(:status)
           when :independent
@@ -355,7 +364,7 @@ module Linguatrain
         end
       end
 
-      def coach_guided_chunk(match, remaining:, initial_partial: nil)
+      def coach_guided_chunk(match, remaining:, initial_partial: nil, initial_command: nil)
         chunk = guided_chunk_from_match(match)
         current_match = match
         hint_index = 0
@@ -363,6 +372,9 @@ module Linguatrain
         revealed_correction = false
         require_complete_action = false
         guidance_used = false
+        queued_command = initial_command
+        verb_misses = verb_correction?(current_match) ? 1 : 0
+        conjugation_help_offered = false
 
         output.puts
         output.puts remaining > 1 ? "Let’s repair this action first." : "Let’s finish the remaining action."
@@ -378,17 +390,23 @@ module Linguatrain
             guidance_used = true
             displayed_diagnostic = diagnostic
           end
-          output.puts
-          prompt = if require_complete_action
-                     "Now write the complete sentence (action) in Finnish:"
-                   elsif current_match[:status] == :near
-                     "Correct this word in Finnish:"
-                   else
-                     "Write this action in Finnish:"
-                   end
-          output.puts prompt
-          output.print "> "
-          answer = read_answer
+          if queued_command
+            answer = queued_command
+            queued_command = nil
+          else
+            output.puts
+            prompt = if require_complete_action
+                       "Now write the complete sentence (action) in Finnish:"
+                     elsif current_match[:status] == :near
+                       "Correct this word in Finnish:"
+                     else
+                       "Write this action in Finnish:"
+                     end
+            output.puts prompt
+            display_guided_controls
+            output.print "> "
+            answer = read_answer
+          end
 
           return { status: :quit } if quit_answer?(answer)
 
@@ -404,7 +422,7 @@ module Linguatrain
             next
           end
 
-          if %w[s show answer].include?(answer.downcase)
+          if ["s", "show", "show answer", "answer"].include?(answer.downcase)
             correction = focused_guided_correction(current_match)
             unless correction
               revealed_answer = canonical_chunk_target(chunk)
@@ -439,6 +457,15 @@ module Linguatrain
               next
             end
 
+            if verb_correction?(current_match)
+              verb_misses += 1
+              if verb_misses >= 2 && !conjugation_help_offered
+                conjugation_help_offered = true
+                help_status = offer_guided_conjugation_help(current_match)
+                return { status: :quit } if help_status == :quit
+                guidance_used = true if help_status == :completed
+              end
+            end
             current_match = guided_word_retry_match(current_match, correction, answer)
             hint_index = 0
             displayed_diagnostic = nil
@@ -471,6 +498,23 @@ module Linguatrain
 
           require_complete_action = false
           current_match = attempted_match
+          attempted_verb = if verb_correction?(current_match)
+                             guidance_component_for(
+                               current_match[:guidance],
+                               focused_guided_correction(current_match)[:expected]
+                             )
+                           else
+                             attempted_guided_verb_component(current_match, answer)
+                           end
+          if attempted_verb
+            verb_misses += 1
+            if verb_misses >= 2 && !conjugation_help_offered
+              conjugation_help_offered = true
+              help_status = offer_guided_conjugation_help(current_match, component: attempted_verb)
+              return { status: :quit } if help_status == :quit
+              guidance_used = true if help_status == :completed
+            end
+          end
           hint_index = 0
           displayed_diagnostic = nil
           if current_match[:status] == :missing
@@ -493,12 +537,14 @@ module Linguatrain
 
           role = guidance_value(component, :role)
           lemma = guidance_value(component, :lemma)
+          verb_type = guidance_value(component, :verb_type)
           grammatical_case = guidance_value(component, :case)
           person = guidance_value(component, :person)
           number = guidance_value(component, :number)
 
           base_label = role == "verb" ? "Base verb" : "Base noun"
           output.puts "- #{base_label}: #{lemma}" unless lemma.empty?
+          output.puts "- Verb type: #{verb_type.sub(/\Atype\s+/i, '')}" if role == "verb" && !verb_type.empty?
           grammatical_form = [person, number].reject(&:empty?).join("-person ")
           output.puts "- Required form: #{grammatical_form}" unless grammatical_form.empty?
           output.puts "- Required case: #{grammatical_case}" unless grammatical_case.empty?
@@ -517,6 +563,8 @@ module Linguatrain
 
       def guided_hints_for(chunk, match = nil)
         guidance = chunk["guidance"] || {}
+        components = Array(guidance_value_raw(guidance, :components))
+        verb = components.find { |component| guidance_value(component, :role) == "verb" }
         corrections = Array(match && match[:corrections])
 
         unless corrections.empty?
@@ -528,10 +576,8 @@ module Linguatrain
         end
 
         authored = Array(guidance_value_raw(guidance, :hints)).map { |hint| hint.to_s.strip }.reject(&:empty?)
-        return authored unless authored.empty?
+        return add_verb_type_to_base_hint(authored, verb) unless authored.empty?
 
-        components = Array(guidance_value_raw(guidance, :components))
-        verb = components.find { |component| guidance_value(component, :role) == "verb" }
         subject = components.find { |component| guidance_value(component, :role) == "subject" }
         hints = [chunk["source"].to_s.strip]
         hints << "Base verb: #{guidance_value(verb, :lemma)}." if verb
@@ -539,7 +585,21 @@ module Linguatrain
           subject_form = guidance_value(subject, :form)
           hints << "Subject: #{subject_form}; use the matching verb form." unless subject_form.empty?
         end
-        hints.reject(&:empty?)
+        add_verb_type_to_base_hint(hints.reject(&:empty?), verb)
+      end
+
+      def add_verb_type_to_base_hint(hints, verb)
+        raw_type = guidance_value(verb || {}, :verb_type)
+        return hints if raw_type.empty?
+
+        verb_type = raw_type.sub(/\Atype\s+/i, "")
+        hints.map do |hint|
+          next hint unless hint.match?(/\Abase verb:/i)
+          next hint if hint.match?(/\btype\s+#{Regexp.escape(verb_type)}\s+verb\b/i)
+
+          punctuated = hint.end_with?(".") ? hint : "#{hint}."
+          "#{punctuated} Type #{verb_type} verb."
+        end
       end
 
       def guided_error_signature(match)
@@ -593,6 +653,125 @@ module Linguatrain
       def guided_word_retry_match(match, correction, answer)
         retry_correction = correction.merge(actual: normalize_guided_text(answer))
         match.merge(corrections: [retry_correction])
+      end
+
+      def verb_correction?(match)
+        correction = focused_guided_correction(match)
+        return false unless correction
+
+        component = guidance_component_for(match[:guidance], correction[:expected])
+        guidance_value(component || {}, :role) == "verb"
+      end
+
+      def attempted_guided_verb_component(match, answer)
+        components = Array(guidance_value_raw(match[:guidance] || {}, :components))
+        verbs = components.select { |component| guidance_value(component, :role) == "verb" }
+        words = guided_words(answer).select { |word| word.length >= 3 }
+        return nil if verbs.empty? || words.empty?
+
+        candidates = verbs.product(words).filter_map do |component, word|
+          expected_forms = [
+            guidance_value(component, :form),
+            guidance_value(component, :lemma)
+          ].map { |value| normalize_guided_text(value) }.reject { |value| value.length < 3 }.uniq
+
+          distances = expected_forms.filter_map do |expected|
+            next unless word[0] == expected[0]
+
+            distance = guided_edit_distance(word, expected)
+            threshold = [2, (expected.length * 0.45).floor].max
+            distance if distance <= threshold
+          end
+          next if distances.empty?
+
+          [component, distances.min]
+        end
+
+        candidates.min_by { |_component, distance| distance }&.first
+      end
+
+      def guided_edit_distance(left, right)
+        previous = (0..right.length).to_a
+
+        left.each_char.with_index(1) do |left_char, row|
+          current = [row]
+          right.each_char.with_index(1) do |right_char, column|
+            substitution = previous[column - 1] + (left_char == right_char ? 0 : 1)
+            insertion = current[column - 1] + 1
+            deletion = previous[column] + 1
+            current << [substitution, insertion, deletion].min
+          end
+          previous = current
+        end
+
+        previous.last
+      end
+
+      def offer_guided_conjugation_help(match, component: nil)
+        correction = focused_guided_correction(match)
+        component ||= guidance_component_for(match[:guidance], correction && correction[:expected])
+        aid = guidance_value_raw(component || {}, :conjugation)
+        forms = guidance_value_raw(aid || {}, :forms)
+        return :unavailable unless forms.is_a?(Hash) && !forms.empty?
+
+        lemma = guidance_value(component, :lemma)
+        output.puts
+        loop do
+          output.puts "Would you like to practice conjugating #{lemma} before continuing? [y - yes]  [n - no]  [q - quit]"
+          output.print "> "
+          choice = read_answer.downcase
+          return :quit if quit_answer?(choice)
+          return :declined if %w[n no].include?(choice)
+          break if %w[y yes].include?(choice)
+
+          output.puts "Please enter y, n, or q."
+        end
+
+        run_guided_conjugation_help(lemma, forms)
+      end
+
+      def run_guided_conjugation_help(lemma, forms)
+        output.puts
+        output.puts "Conjugation practice — #{lemma}"
+        output.puts "Practice each present-tense form."
+
+        forms.each do |subject, raw_form|
+          expected = if raw_form.is_a?(Hash)
+                       guidance_value_raw(raw_form, :form) || guidance_value_raw(raw_form, :positive)
+                     else
+                       raw_form
+                     end
+          expected = Array(expected).first.to_s.strip
+          next if expected.empty?
+
+          output.puts
+          output.puts "Subject: #{subject}"
+          correct = false
+
+          2.times do |attempt|
+            output.puts "[q - quit]"
+            output.print "> "
+            answer = read_answer
+            if quit_answer?(answer)
+              @quit_requested = true
+              return :quit
+            end
+
+            if normalize_guided_text(answer) == normalize_guided_text(expected)
+              output.puts "✅ Correct!"
+              correct = true
+              break
+            end
+
+            output.puts "Try again." if attempt.zero?
+          end
+
+          output.puts "Answer: #{expected}" unless correct
+        end
+
+        output.puts
+        output.puts "Conjugation practice complete. Return to the image action."
+        :completed
       end
 
       def guided_words(text)
@@ -658,6 +837,7 @@ module Linguatrain
         output.puts(retry_prompt ? "Remaining Translations" : "Translation Exercise")
         output.puts "-" * 50
         output.puts
+        display_focus_cue(entry)
         completed_matches_displayed = display_completed_matches(entry)
 
         if retry_prompt || completed_matches_displayed
@@ -679,7 +859,20 @@ module Linguatrain
         end
 
         output.puts
+        display_guided_controls if progressive_guidance?
         output.print "> "
+      end
+
+      def display_guided_controls
+        output.puts "[h - help]  [s - show answer]  [q - quit]"
+      end
+
+      def display_focus_cue(entry)
+        marker = (entry["focus_marker"] || entry[:focus_marker]).to_s.strip
+        return if marker.empty?
+
+        output.puts "Look at marker #{marker}."
+        output.puts
       end
 
       def display_study_entry(entry, index, total)

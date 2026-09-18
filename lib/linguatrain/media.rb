@@ -24,6 +24,15 @@ module Linguatrain
                File.expand_path(file, File.dirname(File.expand_path(pack_path)))
              end
 
+      interactive_file = (image[:interactive_file] || image["interactive_file"]).to_s.strip
+      interactive_path = if interactive_file.empty?
+                           path
+                         elsif absolute_path?(interactive_file)
+                           File.expand_path(interactive_file)
+                         else
+                           File.expand_path(interactive_file, File.dirname(File.expand_path(pack_path)))
+                         end
+
       coordinate_space = hash_value(image, :coordinate_space)
       width = integer_value(coordinate_space, :width)
       height = integer_value(coordinate_space, :height)
@@ -36,6 +45,7 @@ module Linguatrain
 
       {
         path: path,
+        interactive_path: interactive_path,
         title: (image[:title] || image["title"] || File.basename(path)).to_s.strip,
         instruction: (image[:instruction] || image["instruction"]).to_s.strip,
         auto_open: boolean_value(image, :auto_open, default: true),
@@ -61,14 +71,20 @@ module Linguatrain
       Array(entries).each do |entry|
         reference = (entry[:focus_ref] || entry["focus_ref"]).to_s.strip
         next if reference.empty?
-        next if focus_for(image, reference)
+
+        focus = focus_for(image, reference)
+        if focus
+          entry[:focus_marker] = focus[:marker]
+          entry[:focus_label] = focus[:label]
+          next
+        end
 
         entry_id = (entry[:id] || entry["id"]).to_s.strip
         raise MediaError, "Entry '#{entry_id}' references unknown image focus '#{reference}'"
       end
     end
 
-    def open_pack_image(metadata, pack_path:, enabled: true, output: $stdout, launcher: nil)
+    def open_pack_image(metadata, pack_path:, enabled: true, output: $stdout, launcher: nil, image_viewer: nil)
       image = image_from(metadata, pack_path: pack_path)
       return nil unless enabled && image && image[:auto_open]
 
@@ -77,7 +93,7 @@ module Linguatrain
       if launcher
         launcher.call(image[:path])
       else
-        launch_image(image[:path])
+        launch_image(image[:path], image_viewer: image_viewer)
       end
 
       output.puts
@@ -86,23 +102,42 @@ module Linguatrain
       image
     end
 
-    def launch_image(path)
-      command = launcher_command(path)
+    def launch_image(path, image_viewer: nil)
+      command = launcher_command(path, image_viewer: image_viewer)
       pid = Process.spawn(*command, out: File::NULL, err: File::NULL)
       Process.detach(pid)
     rescue Errno::ENOENT
       raise MediaError, "Could not open image source: the system image viewer is unavailable"
     end
 
-    def launcher_command(path)
-      host = RbConfig::CONFIG["host_os"].to_s
+    def launcher_command(path, image_viewer: nil, host_os: RbConfig::CONFIG["host_os"].to_s)
+      custom_command = custom_launcher_command(path, image_viewer)
+      return custom_command if custom_command
 
-      if host.match?(/darwin/i)
+      if host_os.match?(/darwin/i)
         ["open", path]
-      elsif host.match?(/mswin|mingw|cygwin/i)
+      elsif host_os.match?(/mswin|mingw|cygwin/i)
         ["cmd", "/c", "start", "", path]
       else
         ["xdg-open", path]
+      end
+    end
+
+    def custom_launcher_command(path, image_viewer)
+      parts =
+        case image_viewer
+        when Array
+          image_viewer.map(&:to_s)
+        else
+          executable = image_viewer.to_s.strip
+          executable.empty? ? [] : [executable]
+        end
+      return nil if parts.empty?
+
+      if parts.any? { |part| part.include?("{path}") }
+        parts.map { |part| part.gsub("{path}", path) }
+      else
+        parts + [path]
       end
     end
 
@@ -144,6 +179,7 @@ module Linguatrain
       end
 
       merged = file_points.merge(inline_points)
+      assign_focus_markers!(merged)
       merged.each_value do |point|
         raise MediaError, "Image focus '#{point[:id]}' x=#{point[:x]} is outside image width #{width}" if width && point[:x] >= width
         raise MediaError, "Image focus '#{point[:id]}' y=#{point[:y]} is outside image height #{height}" if height && point[:y] >= height
@@ -170,6 +206,7 @@ module Linguatrain
         raw = {
           "x" => row["x"],
           "y" => row["y"],
+          "marker" => row["marker"],
           "label" => label,
           "description" => row["description"]
         }
@@ -192,9 +229,40 @@ module Linguatrain
         id: id,
         x: x,
         y: y,
+        marker: (raw[:marker] || raw["marker"]).to_s.strip,
         label: (raw[:label] || raw["label"]).to_s.strip,
         description: (raw[:description] || raw["description"]).to_s.strip
       }
+    end
+
+    def assign_focus_markers!(points)
+      used = {}
+
+      points.each_value do |point|
+        marker = point[:marker].to_s.strip
+        marker = marker_from_label(point[:label]) if marker.empty?
+        next if marker.empty?
+
+        raise MediaError, "Duplicate image focus marker '#{marker}'" if used[marker]
+
+        point[:marker] = marker
+        used[marker] = true
+      end
+
+      next_number = 1
+      points.each_value do |point|
+        next unless point[:marker].to_s.empty?
+
+        next_number += 1 while used[next_number.to_s]
+        point[:marker] = next_number.to_s
+        used[next_number.to_s] = true
+        next_number += 1
+      end
+    end
+
+    def marker_from_label(label)
+      match = label.to_s.strip.match(/\Apoint\s+([[:alnum:]]+)\z/i)
+      match ? match[1] : ""
     end
 
     def coordinate_value(hash, key)

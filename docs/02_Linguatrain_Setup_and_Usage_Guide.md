@@ -205,6 +205,7 @@ Linguatrain stores its settings in a YAML configuration file.
 The configuration file controls application behavior such as:
 
 - audio playback
+- image viewer selection for image-backed lessons
 - speech recognition
 - text-to-speech
 - review settings
@@ -228,7 +229,7 @@ Because the configuration file uses YAML, it can be edited using any text editor
 ### Windows
 
 ```text
-%APPDATA%\Linguatrain\config.yaml
+%APPDATA%\linguatrain\config.yaml
 ```
 
 Create the directory if it doesn't exist.
@@ -238,6 +239,8 @@ Example:
 ```yaml
 runtime:
   audio_player: "afplay"
+  # Optional: omit this to use the operating-system default viewer.
+  image_viewer: ["open", "-a", "Preview", "{path}"]
 
 piper:
   bin: "/path/to/piper"
@@ -274,16 +277,49 @@ runtime:
 
   audio_player: "afplay"
 
+  image_viewer: ["open", "-a", "Preview", "{path}"]
+
   missed_output_dir: "/Users/example/Documents/linguatrain/missed"
 ```
 
 Common settings include:
 
 - preferred audio player
+- preferred image viewer
 - directory used to store missed question/answer pairs
 - runtime behaviour
 
 Most users will never need to modify these values.
+
+### Image viewer
+
+Image-backed lessons open their image automatically. Linguatrain uses the normal platform launcher when `image_viewer` is omitted:
+
+- macOS: `open`
+- Linux: `xdg-open`
+- Windows: `cmd /c start`
+
+Use `runtime.image_viewer` only when you want a particular application. The safest form is a YAML list; `{path}` is replaced with the lesson image path.
+
+```yaml
+# macOS
+runtime:
+  image_viewer: ["open", "-a", "Preview", "{path}"]
+```
+
+```yaml
+# Linux
+runtime:
+  image_viewer: ["feh", "{path}"]
+```
+
+```yaml
+# Windows
+runtime:
+  image_viewer: ["C:\\Program Files\\IrfanView\\i_view64.exe", "{path}"]
+```
+
+The command-line option `--image-viewer CMD` provides a one-run executable override. Use `--no-open-media` if the image is already visible, or when running in a headless or non-GUI environment. Full configuration details are in [Configuration File Setup](configuration/config-file-setup.md).
 
 ---
 

@@ -100,7 +100,8 @@ Linguatrain includes extensive documentation for users, content authors, and con
 
 ### Getting Started
 
-See the documents under `docs/`.
+- [Setup and Usage Guide](docs/02_Linguatrain_Setup_and_Usage_Guide.md)
+- [Configuration File Setup](docs/configuration/config-file-setup.md)
 
 ### Content Authoring
 
@@ -111,6 +112,7 @@ content, including:
 - Translation templates
 - Canonical Translation example
 - Pack authoring guides
+- [Image-backed Pack Guide](docs/authoring/image-backed-packs.md)
 - Validation tools
 
 ### Additional Documentation

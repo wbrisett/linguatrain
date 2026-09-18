@@ -7,6 +7,24 @@ require "tmpdir"
 require_relative "../lib/linguatrain/media"
 
 class MediaTest < Minitest::Test
+  def test_uses_platform_image_launchers
+    path = "/lessons/scene.png"
+
+    assert_equal ["open", path], Linguatrain::Media.launcher_command(path, host_os: "darwin23")
+    assert_equal ["xdg-open", path], Linguatrain::Media.launcher_command(path, host_os: "linux-gnu")
+    assert_equal ["cmd", "/c", "start", "", path], Linguatrain::Media.launcher_command(path, host_os: "mingw32")
+  end
+
+  def test_custom_image_viewer_can_be_an_executable_or_argument_list
+    path = "/lessons/scene.png"
+
+    assert_equal ["feh", path], Linguatrain::Media.launcher_command(path, image_viewer: "feh")
+    assert_equal ["open", "-a", "Preview", path], Linguatrain::Media.launcher_command(
+      path,
+      image_viewer: ["open", "-a", "Preview", "{path}"]
+    )
+  end
+
   def test_resolves_image_relative_to_pack
     Dir.mktmpdir do |dir|
       pack_path = File.join(dir, "lesson.yaml")
@@ -22,6 +40,23 @@ class MediaTest < Minitest::Test
       assert_equal image_path, image[:path]
       assert image[:auto_open]
     end
+  end
+
+  def test_resolves_a_separate_interactive_image_relative_to_pack
+    image = Linguatrain::Media.image_from(
+      {
+        media: {
+          image: {
+            file: "scans/scene_marked.png",
+            interactive_file: "scans/scene.jpg"
+          }
+        }
+      },
+      pack_path: "/lessons/lesson.yaml"
+    )
+
+    assert_equal "/lessons/scans/scene_marked.png", image[:path]
+    assert_equal "/lessons/scans/scene.jpg", image[:interactive_path]
   end
 
   def test_opens_declared_image_with_injected_launcher
@@ -96,7 +131,7 @@ class MediaTest < Minitest::Test
     )
 
     focus = Linguatrain::Media.focus_for(image, "cafe_women")
-    assert_equal({ id: "cafe_women", x: 547, y: 880, label: "Women at the café", description: "" }, focus)
+    assert_equal({ id: "cafe_women", x: 547, y: 880, marker: "1", label: "Women at the café", description: "" }, focus)
     assert_equal 3024, image.dig(:coordinate_space, :width)
     assert_equal "top_left", image.dig(:coordinate_space, :origin)
   end
@@ -137,6 +172,20 @@ class MediaTest < Minitest::Test
     assert_includes error.message, "unknown image focus 'unknown'"
   end
 
+  def test_attaches_focus_marker_and_label_to_translation_entry
+    image = {
+      focus_points: {
+        "cafe" => { id: "cafe", x: 10, y: 20, marker: "A", label: "Café terrace" }
+      }
+    }
+    entry = { id: "scene_1", focus_ref: "cafe" }
+
+    Linguatrain::Media.validate_focus_references!(image, [entry])
+
+    assert_equal "A", entry[:focus_marker]
+    assert_equal "Café terrace", entry[:focus_label]
+  end
+
   def test_loads_multiline_focus_descriptions_from_csv
     Dir.mktmpdir do |dir|
       csv_path = File.join(dir, "coordinates.csv")
@@ -163,8 +212,29 @@ class MediaTest < Minitest::Test
       first = Linguatrain::Media.focus_for(image, "point_1")
       second = Linguatrain::Media.focus_for(image, "point_2")
       assert_equal [553, 930], [first[:x], first[:y]]
+      assert_equal "1", first[:marker]
+      assert_equal "2", second[:marker]
       assert_equal "They drink coffee\nThey talk", first[:description]
       assert_equal "They wait", second[:description]
+    end
+  end
+
+  def test_loads_explicit_letter_markers_from_csv
+    Dir.mktmpdir do |dir|
+      csv_path = File.join(dir, "coordinates.csv")
+      File.write(csv_path, <<~CSV)
+        id,marker,label,x,y,description
+        cafe,A,Café terrace,10,20,They talk
+        queue,B,Café entrance,30,40,They wait
+      CSV
+
+      image = Linguatrain::Media.image_from(
+        { media: { image: { file: "scene.jpg", focus_points_file: "coordinates.csv" } } },
+        pack_path: File.join(dir, "lesson.yaml")
+      )
+
+      assert_equal "A", Linguatrain::Media.focus_for(image, "cafe")[:marker]
+      assert_equal "B", Linguatrain::Media.focus_for(image, "queue")[:marker]
     end
   end
 end

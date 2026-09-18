@@ -11,6 +11,7 @@ The following is a minimal configuration template:
 ```yaml
 runtime:
   audio_player:
+  image_viewer:
 
 piper:
   bin:
@@ -34,6 +35,8 @@ The following locations are where you should install the config.yaml file for li
 Default location:
 
     ~/.config/linguatrain/config.yaml
+
+If `XDG_CONFIG_HOME` is set, Linguatrain uses `$XDG_CONFIG_HOME/linguatrain/config.yaml` instead.
 
 Create the directory:
 
@@ -86,6 +89,39 @@ Since Windows does not ship with a simple CLI WAV player like macOS or Linux. Th
 runtime:
   audio_player: "powershell -c (New-Object Media.SoundPlayer '%s').PlaySync();"
 ```
+
+#### runtime: image_viewer
+
+Image-backed lessons open automatically with the operating system's normal mechanism:
+
+- macOS: `open`
+- Linux: `xdg-open`
+- Windows: `cmd /c start`
+
+Most users do not need to configure this setting. To choose a particular application, provide either its executable or a command argument list. In an argument list, `{path}` is replaced with the lesson image path.
+
+macOS example:
+
+```yaml
+runtime:
+  image_viewer: ["open", "-a", "Preview", "{path}"]
+```
+
+Linux example:
+
+```yaml
+runtime:
+  image_viewer: ["feh", "{path}"]
+```
+
+Windows example:
+
+```yaml
+runtime:
+  image_viewer: ["C:\\Program Files\\IrfanView\\i_view64.exe", "{path}"]
+```
+
+For a headless machine, WSL session without GUI integration, or an image that is already open, run Linguatrain with `--no-open-media`.
 
 #### `piper.bin`
 

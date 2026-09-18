@@ -30,16 +30,33 @@ module Linguatrain
           matches[index] = result_for(item, matched_target: exact[:target])
         end
 
-        prepared.each_with_index do |item, index|
-          next if matches[index]
+        # Compare fuzzy candidates across every unanswered chunk before assigning
+        # one. Otherwise YAML order can make a misspelled phrase attach to the
+        # wrong action merely because that action was inspected first.
+        loop do
+          candidates = prepared.each_with_index.filter_map do |item, index|
+            next if matches[index]
 
-          near = best_near_match(answer_words, item[:targets], claimed_positions)
-          if near
-            claim_range!(claimed_positions, near[:start], near[:length])
-            matches[index] = result_for(item, near_match: near)
-          else
-            matches[index] = result_for(item)
+            near = best_near_match(answer_words, item[:targets], claimed_positions)
+            next unless near
+
+            { index: index, item: item, near: near }
           end
+          break if candidates.empty?
+
+          selected = candidates.min_by do |candidate|
+            near = candidate[:near]
+            uncovered_words = answer_words.length - near[:length]
+            [near[:distance] + uncovered_words, near[:distance], -near[:length], candidate[:index]]
+          end
+
+          near = selected[:near]
+          claim_range!(claimed_positions, near[:start], near[:length])
+          matches[selected[:index]] = result_for(selected[:item], near_match: near)
+        end
+
+        prepared.each_with_index do |item, index|
+          matches[index] ||= result_for(item)
         end
 
         correct = matches.count { |match| match[:matched] }
@@ -139,17 +156,19 @@ module Linguatrain
             exact_words = expected_words.length - differences.length
             next if differences.empty? || exact_words < 1
 
+            total_distance = differences.sum { |difference| difference[:distance] }
+
             plausible =
               if differences.length == 1
                 expected_words.length >= 3 || differences.first[:distance] <= 3
               elsif differences.length == 2
-                expected_words.length >= 3 && differences.all? { |difference| difference[:distance] == 1 }
+                expected_words.length >= 3 &&
+                  differences.all? { |difference| difference[:distance] <= 2 } &&
+                  total_distance <= 3
               else
                 false
               end
             next unless plausible
-
-            total_distance = differences.sum { |difference| difference[:distance] }
 
             {
               actual: window.join(" "),

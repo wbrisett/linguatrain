@@ -14,6 +14,7 @@ require "json"
 require "pathname"
 require_relative "lib/linguatrain/translation/exercise"
 require_relative "lib/linguatrain/media"
+require_relative "lib/linguatrain/image_lesson_viewer"
 require_relative "lib/linguatrain/word_explorer/pack"
 require_relative "lib/linguatrain/word_explorer/exercise"
 
@@ -73,11 +74,16 @@ end
 # Configuration (user config + pack metadata)
 # -----------------------------
 
+config_home = ENV["XDG_CONFIG_HOME"].to_s.strip
+config_home = File.join(Dir.home, ".config") if config_home.empty?
+appdata = ENV["APPDATA"].to_s.strip
+
 DEFAULT_USER_CONFIG_PATHS = [
-  File.join(Dir.home, ".config", "linguatrain", "config.yaml"),
+  (File.join(appdata, "linguatrain", "config.yaml") unless appdata.empty?),
+  File.join(config_home, "linguatrain", "config.yaml"),
   # Back-compat with earlier naming/location
-  File.join(Dir.home, ".config", "finn_quiz", "config.yaml")
-].freeze
+  File.join(config_home, "finn_quiz", "config.yaml")
+].compact.uniq.freeze
 
 DEFAULT_UI = {
   language_name: "Language",
@@ -274,6 +280,7 @@ end
 def resolve_settings!(options, user_cfg, pack_meta)
   # Runtime
   options[:audio_player] ||= user_cfg.dig(:runtime, :audio_player) || DEFAULT_AUDIO_PLAYER
+  options[:image_viewer] ||= user_cfg.dig(:runtime, :image_viewer)
 
   # Piper
   options[:piper_bin] ||= user_cfg.dig(:piper, :bin)
@@ -1412,6 +1419,7 @@ elsif translation_pack?(pack_meta, raw_entries)
       vocabulary_v = entry["vocabulary"] || entry[:vocabulary] || []
       grammar_v = entry["grammar"] || entry[:grammar]
       focus_ref_v = entry["focus_ref"] || entry[:focus_ref]
+      hint_v = entry["hint"] || entry[:hint]
 
       raise "Invalid translation entry: #{entry.inspect}" if source_v.nil? || target_v.nil?
 
@@ -1518,7 +1526,8 @@ elsif translation_pack?(pack_meta, raw_entries)
         vocabulary_refs: Array(vocabulary_refs_v).map { |x| x.to_s.strip }.reject(&:empty?),
         vocabulary: Array(vocabulary_v),
         grammar: grammar,
-        focus_ref: (focus_ref_v.nil? ? "" : focus_ref_v.to_s.strip)
+        focus_ref: (focus_ref_v.nil? ? "" : focus_ref_v.to_s.strip),
+        hint: (hint_v.nil? ? "" : hint_v.to_s.strip)
       }
     end
 
@@ -3579,6 +3588,9 @@ options = {
   conjugate: false,
   conjugate_polarity: "positive",
   open_media: true,
+  image_view: false,
+  export_image_view: nil,
+  image_viewer: nil,
   drill_category: false,
   category_key: nil,
   match_options: "auto",
@@ -3631,7 +3643,10 @@ parser = OptionParser.new do |opts|
   opts.on("--config PATH", "Path to user config YAML (or set LINGUATRAIN_CONFIG)") { |v| options[:config] = v }
   opts.on("--localisation PATH", "Path to localisation YAML (overrides config.yaml localisation)") { |v| options[:localisation] = v }
   opts.on("--audio-player CMD", "Audio player command (default from config; macOS: afplay)") { |v| options[:audio_player] = v }
+  opts.on("--image-viewer CMD", "Image viewer executable (overrides config and OS default)") { |v| options[:image_viewer] = v }
   opts.on("--no-open-media", "Do not open image media declared by the pack") { options[:open_media] = false }
+  opts.on("--image-view", "Open an interactive browser view for an image-backed pack") { options[:image_view] = true }
+  opts.on("--export-image-view PATH", "Write an interactive image lesson to an HTML file") { |v| options[:export_image_view] = v }
 
   opts.on("--lenient-umlauts", "Allow a for ä and o for ö") { options[:lenient] = true }
   opts.on("--match-game", "Enable multiple choice mode") { options[:match_game] = true }
@@ -3929,6 +3944,7 @@ options[:localisation_ui] = localisation[:ui] || {}
 
 # Effective meta includes localisation languages + (optional) localisation TTS template.
 effective_pack_meta = effective_meta(pack_meta, localisation)
+resolve_settings!(options, user_cfg, effective_pack_meta)
 
 begin
   resolved_pack_image = Linguatrain::Media.image_from(effective_pack_meta, pack_path: yaml_path)
@@ -3936,13 +3952,47 @@ begin
   Linguatrain::Media.open_pack_image(
     effective_pack_meta,
     pack_path: yaml_path,
-    enabled: options[:open_media]
+    enabled: options[:open_media] && !options[:image_view] && options[:export_image_view].nil?,
+    image_viewer: options[:image_viewer]
   )
 rescue Linguatrain::Media::MediaError => e
   abort(e.message)
 end
 
-resolve_settings!(options, user_cfg, effective_pack_meta)
+if options[:image_view] || options[:export_image_view]
+  abort("--image-view requires an image-backed translation pack.") unless resolved_pack_image
+  abort("--image-view requires translation entries.") if translation_entries.empty?
+
+  output_path = if options[:export_image_view]
+                  File.expand_path(options[:export_image_view])
+                else
+                  Linguatrain::ImageLessonViewer.temporary_path(
+                    pack_path: yaml_path,
+                    metadata: effective_pack_meta
+                  )
+                end
+
+  begin
+    Linguatrain::ImageLessonViewer.write(
+      output_path,
+      image: resolved_pack_image,
+      entries: translation_entries,
+      metadata: effective_pack_meta
+    )
+    Linguatrain::ImageLessonViewer.open(output_path) if options[:image_view]
+  rescue Linguatrain::ImageLessonViewer::ViewerError => e
+    abort(e.message)
+  end
+
+  if options[:image_view]
+    say "Opened interactive image lesson: #{output_path}"
+  else
+    say "Interactive image lesson written to: #{output_path}"
+    say "Open that HTML file in a browser, or use --image-view to generate and open it automatically."
+  end
+  exit
+end
+
 pack_meta = effective_pack_meta
 if options[:ui].is_a?(Hash) && pack_meta.is_a?(Hash)
   source_code = pack_meta[:source_language] || pack_meta["source_language"]

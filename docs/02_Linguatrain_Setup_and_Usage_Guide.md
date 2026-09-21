@@ -460,6 +460,7 @@ Examples include:
 - Translation Packs
 - Conjugation Packs
 - Transform Packs
+- Locative Cases sentence-production packs
 
 Each pack type is designed for a different style of learning, but they all follow the same overall philosophy: present meaningful question/answer pairs that can be reinforced using multiple study modes.
 
@@ -1112,6 +1113,94 @@ Use the negative form:
 
 ---
 
+## Locative Cases Mode
+
+### Purpose
+
+Locative Cases mode teaches the mechanics of Finnish location forms by asking
+for complete Finnish sentences. It is a standalone module, not a Translation,
+Transform, Word Explorer, Sentence Explorer, or Conjugation sub-mode.
+
+Related sentence productions are grouped around a location lemma in the YAML,
+in a pattern similar to a conjugation paradigm:
+
+```text
+Lehtelä
+  mihin?  → Lehtelään
+  missä?  → Lehtelässä
+  mistä?  → Lehtelästä
+```
+
+Each form has its own natural English prompt and complete Finnish answer.
+
+### Best used with
+
+```text
+Study the pattern → Mixed Locative Cases → Focused case/family review
+```
+
+### Command
+
+```bash
+linguatrain.rb pack.yaml all --locative-cases
+```
+
+### Example
+
+```text
+Locative Cases — 3 question(s)
+Produce the complete Finnish sentence.
+
+--------------------------------------------------
+[1/3]
+
+Location: Lehtelä
+
+A train goes to Lehtelä.
+
+> Juna menee Lehtelään.
+✅ Correct!
+
+Lehtelään — mihin / illative / S
+```
+
+Type `h` for progressively stronger hints, `r` to reveal the complete answer,
+or `q` to quit.
+
+### Focused Practice
+
+```bash
+# Direction or relationship
+linguatrain.rb pack.yaml all --locative-cases --locative-question mihin
+
+# Grammatical case
+linguatrain.rb pack.yaml all --locative-cases --locative-case elative
+
+# Internal or external family
+linguatrain.rb pack.yaml all --locative-cases --locative-family S
+linguatrain.rb pack.yaml all --locative-cases --locative-family L
+```
+
+Repeat a filter to include alternatives. Combine different filter types to
+narrow the exercise further.
+
+### Diacritics
+
+Correct Finnish diacritics are required. `--lenient-umlauts` is not supported
+with this mode because diacritics can change meaning and grammatical form.
+
+### Tips
+
+- Begin with one family and one question before mixing all six cases.
+- Always answer with the complete sentence, not only the inflected location.
+- Use the result summary to identify which sentence groups need more review.
+- Keep generated or adapted practice sentences in YAML so they can be reviewed
+  before the learner encounters them.
+
+See `lib/linguatrain/locative_cases/README.md` for authoring and validation.
+
+---
+
 ## Transform Mode
 
 ### Purpose
@@ -1469,12 +1558,14 @@ memorization.
 
 Use **Transform Mode** for sentence transformations and structured
 grammar exercises. Use **Conjugation Mode** to practice verb forms and
-reinforce grammatical patterns.
+reinforce grammatical patterns. Use **Locative Cases Mode** when the learner
+needs focused Finnish sentence-production practice across `mihin`, `missä`,
+and `mistä` relationships.
 
 ### Recommended progression
 
 1.  Study Mode
-2.  Transform or Conjugation Mode
+2.  Transform, Conjugation, or Locative Cases Mode
 3.  Review difficult items as needed
 
 ------------------------------------------------------------------------

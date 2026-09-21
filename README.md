@@ -49,28 +49,59 @@ Instead of immediately grading a complete sentence, Linguatrain progressively gu
 - Human-friendly authoring
 - Content-first architecture
 
-## What's New in Version 1.2.0
+## What's New in Version 1.3.0
 
+Version **1.3.0** introduces Linguatrain's new **Locative Cases** module.
 
-Version **1.2.0** introduces Linguatrain's new **word-explorer** module.
+The Finnish language uses different word endings to express location and
+movement. These endings distinguish whether something is inside a place or at
+an external location, and whether someone or something is moving to it, staying
+there, or moving away from it. Together, these meanings are expressed through
+six locative cases: illative, inessive, elative, allative, adessive, and
+ablative.
 
-Word-explorer is the user-friendly way of saying morphology. All languages can benefit from the 
-word-explorer module, but some benefit more than others. Finnish for example takes a base and depending
-on direction (inside, outside, to, or from) changes word endings. A lot of language study tools simply 
-have you study these as individual words, or in some cases just start using them without really explaining
-why `talolta` was used instead of `talo`. Word-explorer takes a very different approach. Instead in conjunction 
-with translated material, a word-explorer YAML pack is generated from the translation text and Linguatrain
-allows you study and explore the base word in different modes. 
+The Locative Cases module is designed to help learners practise these forms in
+complete, natural Finnish sentences. Given an English prompt, the learner must
+produce the whole Finnish sentence and choose the correct location form from
+the meaning and context. This trains the mechanics of the cases without
+reducing the exercise to filling in a suffix.
 
-* `--recognize` : Recognize is designed to show you the word as it's used in the text and match it to its base. 
-* `--apply` : Uses the base and asks you to pick the correct form of the base to fit into a sentence. 
-* `--build` : Uses the base and asks you to change the form to match the question. 
+Practice material is prepared in YAML files and includes useful grammatical
+information such as the location word, locative family, directional question,
+and case. Exercises can therefore be focused on `mihin`, `missä`, or `mistä`,
+on an individual grammatical case, or on the internal or external family.
 
-Linguatrain itself is the learning engine; the YAML files contain the structured content that drives each module. To make Word Explorer useful in practice, I have spent a great deal of time developing strict LLM authoring guidelines for Linguatrain content packs.
+As with Linguatrain's other modules, the learning engine is separate from the
+content. Teachers, learners, and content authors can create targeted sentence
+sets from real study material while keeping the module independent of
+Translation, Word Explorer, Sentence Explorer, and Conjugation.
 
-The `05_Linguatrain_LLM_Authoring_Specification.md` file can be given to an LLM to generate high-quality draft material for the translation, vocabulary, conjugation, and word-explorer modules. The goal is not to replace live teachers, but to make it easier to turn existing course materials, textbooks, handouts, and real study needs into structured practice.
+## Locative Cases Module
 
-I know this workflow is useful because I am using Linguatrain while studying a language myself, and my language teacher has been impressed with the results.
+Locative Cases is a standalone Finnish sentence-production module. It groups
+natural sentence variants around one location lemma, then asks the learner to
+produce complete Finnish sentences for `mihin`, `missä`, and `mistä` meanings.
+
+```text
+A train goes to Lehtelä.
+> Juna menee Lehtelään.
+```
+
+The module supports the three internal cases (illative, inessive, elative) and
+the three external cases (allative, adessive, ablative). Exercises are authored
+in YAML before practice; the runtime does not generate sentences or reduce the
+task to suffix blanks.
+
+Run the bundled example with:
+
+```bash
+ruby bin/linguatrain.rb \
+  lib/linguatrain/locative_cases/examples/suomen_mestari_1_kappale_6_locative_cases.yaml \
+  all --locative-cases
+```
+
+See `lib/linguatrain/locative_cases/README.md` for the schema, filters,
+authoring rules, and validation instructions.
 
 
 ## Educational Philosophy
@@ -108,6 +139,7 @@ Linguatrain includes comprehensive documentation for creating reusable learning
 content, including:
 
 - Translation Authoring Guide
+- Locative Cases authoring and usage guide
 - Translation templates
 - Canonical Translation example
 - Pack authoring guides

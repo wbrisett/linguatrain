@@ -278,6 +278,65 @@ question and grammatical case. Source provenance, semantic grounding,
 explanation specificity, and candidate coverage still require the manual
 authoring audits above.
 
+## Development and Automated Tests
+
+The files in the repository's top-level `test/` directory are automated
+development tests for the Locative Cases module. They are not practice packs
+or commands that learners need during ordinary use. They exist to catch
+regressions when the module, command-line interface, validator, or canonical
+example is changed.
+
+The test files cover different parts of the module:
+
+| Test file | What it verifies |
+|---|---|
+| `test/locative_cases_pack_test.rb` | YAML normalization, stable production identifiers, inherited entry metadata, filtering, and rejection of malformed entries. |
+| `test/locative_cases_scorer_test.rb` | Complete-sentence matching, normalization of capitalization and punctuation, and strict Finnish diacritics. |
+| `test/locative_cases_exercise_test.rb` | First-attempt and retry scoring, progressive hints, answer reveal with `r`, and quitting with `q`. |
+| `test/locative_cases_cli_test.rb` | End-to-end command-line behavior, mode selection, filters, count limits, and rejection of `--lenient-umlauts`. |
+| `test/locative_cases_validator_test.rb` | Acceptance of valid packs and detection of invalid family, question, and grammatical-case combinations. |
+
+### Running the Complete Suite
+
+From the repository root, run:
+
+```bash
+ruby -Itest -e 'Dir["test/locative_cases_*_test.rb"].sort.each { |file| require_relative file }'
+```
+
+Minitest prints the number of runs and assertions. A successful run ends with
+zero failures, zero errors, and zero skipped tests. Any failure includes the
+test name, the expected behavior, and the observed result.
+
+### Running One Test File
+
+Run a single file while working on one area. For example, after changing answer
+comparison or diacritic handling, run:
+
+```bash
+ruby -Itest test/locative_cases_scorer_test.rb
+```
+
+Replace the filename with any of the five test files listed above. Running one
+file gives faster, more focused feedback, but the complete suite should still
+be run before publishing or committing a change.
+
+### When to Run the Tests
+
+Run the suite after:
+
+- changing code under `lib/linguatrain/locative_cases/`;
+- changing Locative Cases options or routing in `linguatrain.rb`;
+- changing Locative Cases validation in `bin/validate_pack.rb`;
+- updating the canonical example pack used by the tests; or
+- fixing a bug, so the corresponding test can demonstrate that it does not
+  return later.
+
+Pack validation and automated tests serve different purposes. Run
+`bin/validate_pack.rb` to check the structure of a particular authored YAML
+pack. Run the automated tests to check that Linguatrain itself continues to
+load, filter, validate, score, and present Locative Cases exercises correctly.
+
 ## Module Boundary
 
 Locative Cases owns this sentence-production workflow. It does not call or

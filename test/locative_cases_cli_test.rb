@@ -19,9 +19,13 @@ class LocativeCasesCliTest < Minitest::Test
   def test_runs_the_example_through_the_real_cli
     stdout, stderr, status = run_cli(
       EXAMPLE,
-      "all",
+      "3",
       "--locative-cases",
-      stdin_data: "Juna menee Lehtelään.\nJuna on Lehtelässä.\nJuna lähtee Lehtelästä.\n"
+      stdin_data: <<~ANSWERS
+        Pedro ja Hanna menevät Lehtelään katsomaan asuntoa.
+        Tämä on Lehtelässä.
+        Lehtelästä menee juna keskustaan.
+      ANSWERS
     )
 
     assert status.success?, stderr
@@ -52,7 +56,7 @@ class LocativeCasesCliTest < Minitest::Test
       EXAMPLE,
       "1",
       "--locative-cases",
-      stdin_data: "Juna menee Lehtelään.\n"
+      stdin_data: "Pedro ja Hanna menevät Lehtelään katsomaan asuntoa.\n"
     )
 
     assert status.success?, stderr
@@ -63,33 +67,33 @@ class LocativeCasesCliTest < Minitest::Test
   def test_filters_by_question
     stdout, stderr, status = run_cli(
       EXAMPLE,
-      "all",
+      "1",
       "--locative-cases",
       "--locative-question",
       "mistä",
-      stdin_data: "Juna lähtee Lehtelästä.\n"
+      stdin_data: "Lehtelästä menee juna keskustaan.\n"
     )
 
     assert status.success?, stderr
     assert_includes stdout, "Locative Cases — 1 question(s)"
-    assert_includes stdout, "A train leaves from Lehtelä."
-    refute_includes stdout, "A train goes to Lehtelä."
+    assert_includes stdout, "A train goes from Lehtelä to the city centre."
+    refute_includes stdout, "Pedro and Hanna go to Lehtelä"
   end
 
   def test_combines_case_and_family_filters
     stdout, stderr, status = run_cli(
       EXAMPLE,
-      "all",
+      "1",
       "--locative-cases",
       "--locative-case",
       "inessive",
       "--locative-family",
       "S",
-      stdin_data: "Juna on Lehtelässä.\n"
+      stdin_data: "Tämä on Lehtelässä.\n"
     )
 
     assert status.success?, stderr
-    assert_includes stdout, "A train is in Lehtelä."
+    assert_includes stdout, "This one is in Lehtelä."
     assert_includes stdout, "Correct 1st: 1 (100.0%)"
   end
 
@@ -98,12 +102,15 @@ class LocativeCasesCliTest < Minitest::Test
       EXAMPLE,
       "--locative-cases",
       "--locative-family",
-      "L"
+      "L",
+      "--locative-case",
+      "illative"
     )
 
     refute status.success?
     assert_includes stderr, "No locative-case productions match the requested filters"
     assert_includes stderr, "family=L"
+    assert_includes stderr, "case=illative"
   end
 
   def test_filter_options_require_locative_cases_mode

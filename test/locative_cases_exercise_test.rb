@@ -14,7 +14,8 @@ class LocativeCasesExerciseTest < Minitest::Test
 
   def setup
     data = YAML.safe_load_file(EXAMPLE, aliases: false)
-    @item = Linguatrain::LocativeCases::Pack.normalize(entries: data.fetch("entries")).first
+    items = Linguatrain::LocativeCases::Pack.normalize(entries: data.fetch("entries"))
+    @item = items.find { |item| item[:id] == "train_lehtela_to_lehtela" }
   end
 
   def test_accepts_a_complete_sentence_on_the_first_attempt
@@ -22,7 +23,7 @@ class LocativeCasesExerciseTest < Minitest::Test
 
     stats, missed = Linguatrain::LocativeCases::Exercise.run(
       [@item],
-      input: StringIO.new("Juna menee Lehtelään.\n"),
+      input: StringIO.new("Pedro ja Hanna menevät Lehtelään katsomaan asuntoa.\n"),
       output: output
     )
 
@@ -32,7 +33,7 @@ class LocativeCasesExerciseTest < Minitest::Test
     assert_equal 0, stats[:revealed]
     assert_empty missed
     assert_includes output.string, "Location: Lehtelä"
-    assert_includes output.string, "A train goes to Lehtelä."
+    assert_includes output.string, "Pedro and Hanna go to Lehtelä to view the apartment."
     assert_includes output.string, "Lehtelään — mihin / illative / S"
   end
 
@@ -41,7 +42,7 @@ class LocativeCasesExerciseTest < Minitest::Test
 
     stats, missed = Linguatrain::LocativeCases::Exercise.run(
       [@item],
-      input: StringIO.new("Lehtelään\nJuna menee Lehtelään.\n"),
+      input: StringIO.new("Lehtelään\nPedro ja Hanna menevät Lehtelään katsomaan asuntoa.\n"),
       output: output
     )
 
@@ -67,7 +68,7 @@ class LocativeCasesExerciseTest < Minitest::Test
     question_hint = text.index("Hint: Ask yourself: mihin?")
     family_hint = text.index("Hint: Use the internal family (S), illative.")
     form_hint = text.index("Hint: The target form is Lehtelään.")
-    answer = text.index("Answer: Juna menee Lehtelään.")
+    answer = text.index("Answer: Pedro ja Hanna menevät Lehtelään katsomaan asuntoa.")
 
     refute_nil question_hint
     assert_operator question_hint, :<, family_hint

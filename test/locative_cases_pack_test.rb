@@ -12,7 +12,8 @@ class LocativeCasesPackTest < Minitest::Test
 
   def setup
     data = YAML.safe_load_file(EXAMPLE, aliases: false)
-    @items = Linguatrain::LocativeCases::Pack.normalize(entries: data.fetch("entries"))
+    all_items = Linguatrain::LocativeCases::Pack.normalize(entries: data.fetch("entries"))
+    @items = all_items.select { |item| item[:group_id] == "train_lehtela" }
   end
 
   def test_flattens_grouped_productions_into_practice_items
@@ -42,8 +43,8 @@ class LocativeCasesPackTest < Minitest::Test
   def test_preserves_complete_sentence_prompts_and_answers
     first = @items.first
 
-    assert_equal "A train goes to Lehtelä.", first[:prompt]
-    assert_equal ["Juna menee Lehtelään."], first[:answers]
+    assert_equal "Pedro and Hanna go to Lehtelä to view the apartment.", first[:prompt]
+    assert_equal ["Pedro ja Hanna menevät Lehtelään katsomaan asuntoa."], first[:answers]
   end
 
   def test_filters_by_question_case_and_family

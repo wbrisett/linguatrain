@@ -526,9 +526,11 @@ This allows translation documents to grow in educational value over time while r
 
 ## Copy-Ready Full-Pack Prompt
 
-Use this request when you're starting from new source material and want the full pipeline — Translation, Vocabulary, Conjugation, Word Explorer, and the Word Explorer Guide — in one pass. The narrower requests for generating just one pack type live in their own sections ([Vocabulary](#creating-a-vocabulary-pack-without-translation-using-an-llm), [Conjugation](#creating-a-conjugation-pack-without-translation-using-an-llm), [Word Explorer](#creating-a-word-explorer-pack-and-guide-with-an-llm)).
+Use this request when you're starting from new source material and want the full pipeline — Translation, Vocabulary, Conjugation, Word Explorer, the Word Explorer Guide, and, for Finnish, Locative Cases — in one pass. The narrower requests for generating just one pack type live in their own sections ([Vocabulary](#creating-a-vocabulary-pack-without-translation-using-an-llm), [Conjugation](#creating-a-conjugation-pack-without-translation-using-an-llm), [Word Explorer](#creating-a-word-explorer-pack-and-guide-with-an-llm)).
 
 Copy the following prompt into the LLM after attaching the listed files. Edit the lesson identifiers, title, and source material description before sending it.
+
+> **Note:** If you are not producing Finnish learning material, you can remove attachment 6, the canonical Locative Cases YAML file.
 
 ```Text
 Attached:
@@ -537,18 +539,21 @@ Attached:
 3. The canonical Conjugation YAML example.
 4. The canonical Word Explorer YAML example.
 5. The canonical Word Explorer Guide (Markdown) example.
-6. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec.
-7. New source material — a text file, or an image of the source text block.
+6. The canonical Locative Cases YAML file.
+7. 05_Linguatrain_LLM_Authoring_Specification.md — the authoring spec.
+8. New source material — a text file, or an image of the source text block.
 
 The source language is: 
 The target language is:
 
 Task: Using the attached specification and canonical examples as your
-reference, generate a complete set of five Linguatrain learning packs for
-the attached source material: a Translation pack, a Vocabulary pack, a
-Conjugation pack, a Word Explorer pack, and a Word Explorer Guide. Use the
-canonical examples only as a structural/style reference — do not copy or
-reuse any of their lexical content.
+reference, generate a complete set of Linguatrain learning packs for the
+attached source material: a Translation pack, a Vocabulary pack, a
+Conjugation pack, a Word Explorer pack, and a Word Explorer Guide. If the
+studied language is Finnish and the source provides suitable location
+material, also generate a Locative Cases pack. Use the canonical examples
+only as a structural/style reference — do not copy or reuse any of their
+lexical content.
 
 If the source material is an image rather than plain text, first
 transcribe it exactly as it appears, preserving original spelling,
@@ -577,7 +582,12 @@ Follow this order of operations:
    passive forms, and irregular stems. Report the list of words you
    selected, with a brief reason for each, before generating full entries,
    so I can confirm the selection.
-5. Generate the Word Explorer Guide from that finished YAML, grouped by
+5. For Finnish material, evaluate every source-attested location for Locative
+   Cases practice. If suitable location material exists, author a Locative
+   Cases pack of complete, natural Finnish sentence-production exercises in
+   accordance with the specification. Omit this pack for non-Finnish material
+   and for Finnish material without useful location content.
+6. Generate the Word Explorer Guide from that finished YAML, grouped by
    category. The Guide is scoped to this one pack only: no invented
    chapter or lesson numbering, and no reference to any other pack's
    content, unless the source material itself states that relationship as
@@ -586,7 +596,7 @@ Follow this order of operations:
 Lesson identifiers for this set of packs:
 - id: '[e.g. suomen_mestari_1_kappale_5]' — used as the base for each
   pack's own id (`..._translation`, `..._vocabulary`, `..._conjugation`,
-  `..._word_explorer`)
+  `..._word_explorer`, and, when applicable, `..._locative_cases`)
 - title: '[e.g. Kappale 5]'
 - version: 1
 - schema_version: 1
@@ -598,9 +608,10 @@ Every note, hint, and explanation should either be quoted or emitted as a
 block scalar.
 
 Before presenting the final output, run the conformance checklist from the
-attached spec — including the Word Explorer pack quality and Word Explorer
-Guide quality subsections — and confirm it passes. Then present all five
-files, each in its own labeled code block.
+attached spec — including the Word Explorer pack quality, Word Explorer Guide
+quality, and, when applicable, Locative Cases quality subsections — and confirm
+it passes. Then present every generated file, each in its own labeled code
+block.
 ```
 
 ---

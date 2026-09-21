@@ -44,6 +44,7 @@ These options allow you to store your configuration files in locations other tha
 | `--translate` | Alias for `--translation`. | off |
 | `--conversation` | Run conversation practice. | off |
 | `--word-explorer` | Run Word Explorer exercises. | off |
+| `--locative-cases` | Produce complete Finnish sentences using authored locative-case variants. | off |
 
 ### Conjugation Options
 
@@ -70,6 +71,14 @@ These options allow you to store your configuration files in locations other tha
 | `--recognize` | With `--word-explorer`, recognize word relationships. Also enables `--match-game`. | default Word Explorer mode |
 | `--build` | With `--word-explorer`, build forms from base words. | off |
 | `--apply` | With `--word-explorer`, apply forms in context. | off |
+
+### Locative Cases Options
+
+| Option | Purpose | Default |
+|---|---|---:|
+| `--locative-question QUESTION` | Include `mihin`, `missä`, or `mistä` productions. Repeat to include alternatives. | all |
+| `--locative-case CASE` | Include one grammatical case, such as `illative` or `adessive`. Repeat to include alternatives. | all |
+| `--locative-family FAMILY` | Include family `S`/`internal` or `L`/`external`. Repeat to include alternatives. | all |
 
 ### Listening And TTS Options
 
@@ -184,6 +193,10 @@ ruby bin/linguatrain.rb pack.yaml 10 --match-game
 `--lenient-umlauts` is available, but it is generally a bad idea for language learning. Umlauts and other diacritics are not decoration; in many languages they change pronunciation, grammar, and meaning. Treating `a` as close enough to `ä`, or `o` as close enough to `ö`, can teach the wrong spelling and weaken the learner's ability to recognize real words.
 
 Use this option only as a short-term workaround for keyboard or accessibility problems. For normal study, leave it off and learn the correct characters from the beginning.
+
+Locative Cases is deliberately stricter: `--lenient-umlauts` cannot be used
+with `--locative-cases` because diacritics can change meaning and grammatical
+form.
 
 ## Conjugate
 
@@ -333,6 +346,48 @@ ruby bin/linguatrain.rb pack.yaml --word-explorer --apply
 Use this when the learner is ready to decide which form belongs in a sentence. Apply is the most advanced Word Explorer mode because it requires context, meaning, and grammar to work together.
 
 If no Word Explorer mode is given, Linguatrain uses recognize mode. `--recognize` also enables `--match-game`. Match game is only supported with recognize mode.
+
+## Locative Cases
+
+Locative Cases practices Finnish location forms through complete-sentence
+production. Each YAML entry groups related sentence variants around one
+location lemma and one family:
+
+| Family | `mihin` | `missä` | `mistä` |
+|---|---|---|---|
+| Internal (`S`) | illative | inessive | elative |
+| External (`L`) | allative | adessive | ablative |
+
+Run all authored productions:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --locative-cases
+```
+
+The English prompt changes with the intended relationship, and the learner
+must type the complete Finnish sentence. The case name is not displayed before
+the first answer. Type `h` for progressively stronger help, `r` to reveal the
+answer, or `q` to quit.
+
+Filter by question, case, or family:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --locative-cases --locative-question mihin
+ruby bin/linguatrain.rb pack.yaml all --locative-cases --locative-case inessive
+ruby bin/linguatrain.rb pack.yaml all --locative-cases --locative-family L
+```
+
+Repeated filters within the same dimension are alternatives. Filters from
+different dimensions are combined. For example, this selects internal
+`missä` productions:
+
+```bash
+ruby bin/linguatrain.rb pack.yaml all --locative-cases \
+  --locative-family S --locative-question missä
+```
+
+See `lib/linguatrain/locative_cases/README.md` for the YAML schema and authoring
+rules.
 
 ## Conversation
 
@@ -566,6 +621,7 @@ Some modes intentionally do not combine.
 | `--transform --listen` | Supported only with `--study`. |
 | `--word-explorer` with `--listen`, `--speak`, `--shadow`, `--reverse`, `--conversation`, `--transform`, `--conjugate`, `--translation`, or SRS | Not supported. |
 | `--match-game` with Word Explorer | Supported only with recognize mode. |
+| `--locative-cases` with `--lenient-umlauts`, `--study`, `--listen`, `--speak`, `--shadow`, `--reverse`, `--conversation`, `--match-game`, another pack mode, or SRS | Not supported. |
 | `--speak` with `--listen`, `--match-game`, `--conversation`, `--translation`, or `--shadow` | Not supported. |
 | `--shadow` with `--listen`, `--match-game`, `--reverse`, `--conversation`, or `--translation` | Not supported. |
 | `--listen-require-source` with `--reverse`, `--speak`, or `--shadow` | Not supported. |

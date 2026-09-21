@@ -1,7 +1,7 @@
 # Linguatrain LLM Authoring Specification
 
 ## A language-agnostic guide for generating Translation, Vocabulary, Conjugation,
-## Word Explorer, and Word Explorer Guide packs
+## Word Explorer, Word Explorer Guide, and focused sentence-production packs
 
 ---
 
@@ -49,6 +49,16 @@ out of scope for paradigm cells regardless of language, while an
 inherently reflexive lemma's own reflexive clitic is required, not
 optional. See §6.6.1 for the full rule and worked example.
 
+**Locative Cases grounding clarification (this revision):** Strengthened
+§12 so grammatical correctness alone is no longer sufficient evidence of a
+well-authored production. The new rules distinguish exact attestation from
+authored variation, require every authored sentence to preserve a coherent
+source-established semantic frame and lexical inventory, prohibit unsupported
+attestation claims and canonical-example carryover, define a three-part test
+for source-specific explanations, and require explicit candidate coverage
+accounting. Matching checks were added to the mandatory conformance pass
+(§10) and evaluation categories (§11).
+
 ---
 
 ## 0. What this document is
@@ -56,8 +66,9 @@ optional. See §6.6.1 for the full rule and worked example.
 This document is written **for an LLM**, not for a human reader. It is the single
 reference an LLM should consult when asked to generate Linguatrain learning packs
 from a new source text, in any language. This includes the Translation,
-Vocabulary, and Conjugation packs, and their generative companions, the Word
-Explorer pack and the Word Explorer Guide (§7).
+Vocabulary, and Conjugation packs, their generative companions, the Word
+Explorer pack and Word Explorer Guide (§7), and focused sentence-production
+packs such as Finnish Locative Cases (§12).
 
 It supersedes ambiguities left open by the original Linguatrain Translation
 Authoring Handbook. That handbook used Finnish as its only worked example, and
@@ -136,11 +147,14 @@ Translation Pack   (canonical, authored first, always from the source text)
         │       │
         │       └── Conjugation Pack   (derived from verb lemmas in the Vocabulary pack)
         │
-        ├── Word Explorer Pack    (derived from entries/chunks in the Translation pack,
-        │       │                  cross-referencing the Vocabulary pack where it exists)
+        ├── Word Explorer Pack    (generated when the language and source provide
+        │       │                  pedagogically useful word-form relationships)
         │       │
         │       └── Word Explorer Guide (word-explorer.md — generated FROM the
         │                                Word Explorer pack, never authored independently)
+        │
+        ├── Locative Cases Pack   (generated for Finnish when the source provides
+        │                          pedagogically useful location material)
         │
         └── other future companion packs (derived the same way)
 ```
@@ -152,6 +166,12 @@ is the one exception to "every pack derives from the Translation pack" — it
 derives from the Word Explorer pack instead, and must never introduce a fact
 that isn't already present in that pack's YAML. See §7 for the full authoring
 rules for both.
+
+Word Explorer is a **conditional standard companion** when an LLM is generating
+a full pack set for any language: generate it whenever the language and source
+offer useful modeled word relationships. Locative Cases follows the same
+conditional rule specifically for Finnish. Neither is an opt-in extra that may
+be silently omitted when its applicability conditions are met.
 
 Order of operations for an LLM generating a full set of packs from a source
 text:
@@ -167,13 +187,23 @@ text:
    **Conjugation pack** from that exact list — no more, no fewer. Carry
    forward each entry's stem-alternation or inflectional-class note from
    its Vocabulary counterpart per §6.2.2.
-5. If a **Word Explorer pack** is requested, author it from the Translation
-   pack's entries and chunks per §7, cross-referencing the Vocabulary pack's
-   ids via `vocabulary_ref` wherever one exists.
-6. If a **Word Explorer Guide** is requested, generate it from the Word
+5. Evaluate **Word Explorer applicability**. If the language and source contain
+   pedagogically useful morphology, compounds, derivations, inflection, or
+   other modeled word relationships, generate the Word Explorer pack from the
+   Translation pack's entries and chunks per §7. Cross-reference Vocabulary
+   ids via `vocabulary_ref` wherever one exists. Omit the pack only when there
+   is no meaningful material for the module.
+6. Evaluate **Locative Cases applicability** for Finnish material. If the
+   studied language is Finnish and the source supplies suitable locations or
+   sentence contexts, generate the Locative Cases pack per §12. Select natural
+   location lemmas, author and verify the complete production variants, and
+   store them before practice. Omit the pack for non-Finnish languages and for
+   Finnish material with no useful location content; do not wait for a separate
+   request naming the pack when the Finnish applicability test is met.
+7. If a **Word Explorer Guide** is requested, generate it from the Word
    Explorer pack per §7.11 — never author it directly from the source text
    or Translation pack.
-7. If a discrepancy is later found between a companion pack and the
+8. If a discrepancy is later found between a companion pack and the
    Translation pack, **the Translation pack wins**. Fix the companion pack.
    If the discrepancy is between the Word Explorer Guide and the Word
    Explorer pack, **the Word Explorer pack wins**.
@@ -2792,6 +2822,56 @@ Word Explorer Guide
   content, unless the Translation pack's own metadata establishes it as
   fact (§7.2, §7.11.1)
 
+Locative Cases
+
+- for a Finnish full pack set whose source provides useful location contexts,
+  the companion pack is present; omission is allowed for non-Finnish languages
+  or Finnish material without suitable locative content
+- every entry groups one location lemma and one natural locative family
+- `internal` always uses family code `S`; `external` always uses `L`
+- every production has a distinct English prompt whose meaning matches its
+  `mihin`, `missä`, or `mistä` relationship
+- every `case` matches both the family and question
+- every `answer` item is a complete verified Finnish sentence, never a bare
+  suffix or isolated location form
+- every `target_form` occurs correctly in its accepted sentence
+- authored alternatives are natural complete sentences, not mechanical
+  permutations added merely to fill a paradigm
+- before finalization, every production has been classified during the
+  authoring audit as either **source-attested** (the complete accepted sentence
+  occurs in the supplied source) or **authored** (a verified new sentence
+  derived from it); authored sentences are never described as attested
+- every authored production preserves a coherent semantic frame established
+  by the source: its people, objects, identities, roles, and relationships are
+  source-supported rather than borrowed from an unrelated proposition or
+  invented for convenience
+- every content lemma in an authored answer is present in the supplied source
+  or a canonical companion pack derived from that source; any unavoidable new
+  content lemma has been explicitly justified during review rather than added
+  silently
+- when the source already contains a proposition that directly models the
+  requested location relationship, that proposition is preferred over a more
+  weakly inferred authored scenario
+- claims such as "exactly as attested," "as the text states," or "used by the
+  characters" have been checked against the exact source wording and speaker
+  or narrator attribution
+- every explanation states the form's contextual meaning, why the selected
+  family/case fits, and the production-specific action or spatial relationship;
+  an explanation that could be reused by changing only the form and case is a
+  conformance failure, not merely a style weakness
+- every authored production is mapped in the provenance audit to the exact
+  attested fact from which its character, object, location, or relationship is
+  derived; grammatical plausibility alone is not accepted as evidence
+- every noun in the companion Vocabulary pack whose `forms` records a locative
+  case is included in the Locative Cases candidate inventory by default, and
+  every exclusion from that inventory has a logged pedagogical or naturalness
+  reason
+- canonical examples were used only for structure; any substantially matching
+  production was independently re-justified from the current source
+- every useful source location was included or recorded in the authoring
+  exclusion log with a reason, so scope is an explicit editorial decision
+- Finnish diacritics are preserved exactly
+
 Cross-pack
 
 - Translation is authoritative
@@ -2805,6 +2885,9 @@ Cross-pack
   claims to reference (§7.9)
 - the Word Explorer Guide introduces no fact absent from the Word Explorer
   pack (§7.11.5)
+- every generated Locative Cases pack is grounded in the supplied source
+  material, and every authored sentence variant has been linguistically
+  verified before delivery (§12.1, §12.4)
 
 ---
 
@@ -2872,11 +2955,252 @@ states a different weighting in advance.
 | Vocabulary quality | Candidate floor/exclusions, lemma identity, meanings, types, forms, and notes |
 | Pack consistency | Cross-file identities, shared meanings/classifications, and absence of contradictions |
 | Metadata | Required fields, correct types/source links, stable ids, and no invented course context |
-| Companion integration | Resolved references and faithful Conjugation/Word Explorer/Guide derivation |
+| Companion integration | Resolved references and faithful Conjugation/Word Explorer/Locative Cases/Guide derivation |
 | Educational value | Scaffolding, useful contrasts, concision, coverage accounting, and learner-facing clarity |
 | Conjugation accuracy | Candidate eligibility, class, paradigm forms, polarity, meanings, variants, and multi-word head behavior |
+| Locative Cases accuracy | Family/case mapping, sentence naturalness, source grounding, attestation claims, explanation specificity, and candidate coverage |
 
 For each score, provide a one- or two-sentence evidence summary plus the most
 important cited finding. Also report at least five strengths and five
 weaknesses for the set as a whole; strengths must be evidenced features, and
 weaknesses must distinguish violations from optional improvements.
+
+---
+
+## 12. Finnish Locative Cases sentence-production pack
+
+Locative Cases is a Finnish-specific module whose learning task is complete
+sentence production. It is not a Translation pack, a suffix-fill exercise, or
+a Word Explorer application. Its `S`/`L` families, `mihin`/`missä`/`mistä`
+questions, schema, and validation rules are Finnish-specific.
+
+### 12.1 Authoring source and scope
+
+When generating a full set of Linguatrain packs, a Locative Cases pack is
+required if all of the following are true:
+
+1. the studied language is Finnish; and
+2. the supplied material contains suitable locations or sentence contexts
+   from which useful, natural practice variants can be authored and verified.
+
+This is an applicability decision, not an opt-in request. If the conditions
+are met, generate the pack. For non-Finnish languages, omit it. For Finnish
+material without useful location content, omit it rather than inventing
+ungrounded examples merely to produce a file.
+
+Begin with real Finnish lesson material containing useful location forms.
+Select a location lemma and verify which locative family is natural for that
+place and meaning. Author related complete sentences before practice so the
+learner can contrast movement to, presence in/at, and movement from.
+
+Before selecting entries, inventory every distinct source-attested location
+lemma. When a companion Vocabulary pack exists, also enumerate every noun whose
+`forms` records an inessive, illative, elative, adessive, allative, ablative, or
+other clearly locative form. Those Vocabulary nouns are Locative Cases
+candidates by default; they may not disappear merely because a different
+author happened to notice fewer source sentences. The candidate inventory is
+the union of the source scan and this Vocabulary-derived list, with duplicate
+lemmas collapsed.
+
+Include each candidate that meets at least one of these conditions:
+
+- its locative form is central to a source proposition;
+- it demonstrates a different natural family, stem behavior, or high-value
+  spatial contrast; or
+- it supports three natural, source-grounded production relationships.
+
+Record every intentionally excluded useful candidate and the reason for its
+exclusion during the conformance pass. This exclusion log is authoring evidence,
+not a required YAML field, but it must exist long enough for the final coverage
+review. The objective is not exhaustive extraction of every possible location;
+it is to make scope deliberate and reproducible rather than silently dependent
+on whichever examples the author noticed first.
+
+In an interactive authoring workflow, report the candidate list and proposed
+exclusions before generating the full pack so the human author can confirm the
+scope. In a non-interactive workflow, retain the same list and exclusion reasons
+in the conformance record. This is the Locative Cases counterpart to
+Vocabulary's minimum pedagogical floor (§5.3): curation is permitted, silent
+under-selection is not.
+
+### 12.1.1 Source-attested and authored productions
+
+Every production must be classified during authoring and review as one of:
+
+- **source-attested** — the complete Finnish sentence in `answer` occurs
+  verbatim in the supplied source; or
+- **authored** — the complete sentence is a new, linguistically verified
+  variant derived from source-established material.
+
+This classification is part of the mandatory provenance audit even though the
+current YAML schema does not serialize it as a field. A target form appearing
+somewhere in the source does **not** make a newly written sentence
+source-attested. For example, if a source contains `Lehtelästä menee juna
+keskustaan`, the form `Lehtelästä` is attested, but a new sentence such as
+`Juna on Lehtelässä` remains authored.
+
+For every authored production, the provenance audit must name the exact
+attested fact from which the new sentence derives its participants, object,
+location, and relationship. A minimal internal record is:
+
+```text
+production id → source entry/chunk or exact quotation → preserved fact
+```
+
+For example, `in_lehtela → "Asunnossa ... Lehtelässä" → the apartment is in
+Lehtelä` is grounded. `in_lehtela → "Lehtelästä menee juna keskustaan" → a
+train is in Lehtelä` is only an inference from departure and must not be chosen
+when the source already provides the directly attested apartment proposition.
+The evidence must support the authored proposition's semantic frame closely
+enough to make the transformation transparent. The newly practiced direction
+may be a clearly pedagogical hypothetical — a `mihin` source can generate
+`missä`/`mistä` contrasts — but the author must not present that hypothetical
+event as something the story says happened. If the source does not establish
+the participants, object, location, or relevant spatial relationship closely
+enough, choose a different sentence rather than accepting a merely grammatical
+invention.
+
+Wording that claims provenance — `exactly as attested`, `as the text states`,
+`used by the characters`, and equivalent phrases — is permitted only when the
+exact source evidence supports the whole claim, including who says or narrates
+it. Otherwise describe only the grammatical relationship without claiming
+attestation.
+
+### 12.1.2 Semantic-frame and lexical grounding
+
+An authored production may change the locative relationship and the grammar
+needed to express it, but it must preserve a coherent semantic frame supported
+by the source. Its people, objects, identities, roles, and relationships must
+be explicitly established in the supplied material. Do not combine a
+participant from one proposition with a location or role from an unrelated
+proposition merely because the resulting Finnish sentence is grammatical.
+
+Every content lemma in an authored answer must be present in the source or in a
+canonical companion pack derived from that source. Function words and
+inflectional machinery needed to form the sentence are not new content lemmas.
+If a genuinely necessary content lemma is absent, prefer a different sentence;
+if no grounded alternative exists, document the addition for human review
+rather than introducing it silently. In particular, never assign an identity
+or category the source does not establish — named people do not become
+`lapset`, `opiskelijat`, `työntekijät`, or another convenient group merely
+because that description seems plausible.
+
+When the source already supplies a proposition directly modeling one of the
+three requested relationships, prefer that proposition over a weaker
+inference. If the source states that an apartment is in a district and a train
+departs from that district, use the apartment proposition for the `missä`
+production unless there is independent evidence that the train-presence
+sentence is the intended teaching context.
+
+### 12.1.3 Canonical examples are not sentence banks
+
+Canonical Locative Cases examples define schema and style only. They are not a
+source of participants, objects, sentences, or explanations for a new pack.
+Lexical overlap is legitimate when the same word independently occurs in the
+new source, but every substantially matching production must still be
+re-authored and justified against the new source. During conformance, compare
+the draft against the canonical example and re-check any sentence whose wording
+is identical or nearly identical; similarity is a review trigger, not proof of
+plagiarism or proof of correctness.
+
+Do not force one lemma through both internal and external families to create
+artificial coverage. If both families need practice, choose another lemma for
+which the other family is natural.
+
+### 12.2 Case relationships
+
+| Family | Code | `mihin` | `missä` | `mistä` |
+|---|---|---|---|---|
+| internal | `S` | illative | inessive | elative |
+| external | `L` | allative | adessive | ablative |
+
+These mappings are required. A production whose question, family, and case do
+not agree is invalid.
+
+### 12.3 Required schema
+
+```yaml
+metadata:
+  id: "example_locative_cases"
+  title: "Example Locative Cases"
+  type: "locative_cases"
+  practice: "sentence_production"
+  version: 1
+  schema_version: 1
+
+entries:
+  - id: "train_lehtela"
+    lemma: "Lehtelä"
+    family: "internal"
+    family_code: "S"
+    source:
+      text: "Juna menee Lehtelään."
+      reference: "Lesson reference"
+    productions:
+      - id: "to_lehtela"
+        question: "mihin"
+        case: "illative"
+        prompt: "A train goes to Lehtelä."
+        answer:
+          - "Juna menee Lehtelään."
+        target_form: "Lehtelään"
+        explanation: "Lehtelään means 'to Lehtelä'; the illative marks the train's destination in this sentence."
+```
+
+Every entry requires `id`, `lemma`, `family`, `family_code`, and a non-empty
+`productions` list. Every production requires `id`, `question`, `case`,
+`prompt`, `answer`, and `target_form`. `answer` is always a YAML sequence of
+one or more complete Finnish sentences. The entry-level `source` records the
+real sentence or lesson context that motivated the location family; it does not
+by itself prove that every generated production is source-attested. Apply the
+production-by-production provenance audit in §12.1.1.
+
+### 12.4 Sentence-production rules
+
+1. Change the English prompt when the locative relationship changes.
+2. Keep each prompt natural and unambiguous enough to select the intended
+   relationship.
+3. Require the entire Finnish sentence; never accept only `target_form`.
+4. Add an accepted alternative only when it is a natural complete rendering
+   of the same prompt.
+5. Preserve `ä` and `ö` exactly. Do not author ASCII fallbacks.
+6. Keep explanations short and specific to the form used in that production.
+   Every explanation must state all three of the following:
+   - what `target_form` means in this sentence;
+   - why the selected locative family and case fit the prompt; and
+   - how that relationship connects to this production's particular action,
+     participant, object, or spatial scene.
+7. Apply the **substitution test** to every explanation: if it could be reused
+   for another entry by changing only the form, family, and case name, it is too
+   generic and is a conformance failure, not a permitted style choice. Rewrite
+   it with a source-specific action or spatial relationship.
+   For example, `Pihalle is the external mihin form for movement to the
+   location` is structurally correct but insufficiently specific; prefer
+   `Pihalle means “into the yard”; piha uses the external family, and the
+   allative marks the van's movement into the open yard area.`
+8. Classify each production as source-attested or authored per §12.1.1, and do
+   not make an attestation or speaker-attribution claim that exceeds the exact
+   source evidence.
+9. For every authored production, record the exact source entry/chunk or
+   quotation and the attested fact it preserves. A changed directional event
+   may be a transparent pedagogical hypothetical, but its semantic frame must
+   remain source-supported and it must not be described as an event attested in
+   the story. If a more direct source proposition is available, use it.
+10. For authored productions, preserve a source-established semantic frame and
+   enforce the content-lemma boundary in §12.1.2. Grammatical Finnish is not
+   sufficient when the sentence invents a person, identity, object, role, or
+   relationship absent from the source.
+11. Prefer a directly attested proposition for the requested relationship over
+    a merely plausible recombination of source elements.
+12. Compare the finished draft with the canonical example and independently
+    re-justify every identical or near-identical production per §12.1.3.
+13. Complete the source scan plus the companion-Vocabulary locative-form scan,
+    and record an explicit reason for every excluded candidate before declaring
+    coverage complete.
+14. Validate the finished pack with `validate_pack.rb --locative-cases`. The
+    validator checks structural relationships; it does not replace the manual
+    provenance, semantic-grounding, explanation-specificity, or coverage
+    audits above.
+
+The module-specific authoring and usage guide is
+`lib/linguatrain/locative_cases/README.md`.

@@ -6,6 +6,8 @@ This script validates pack structure, metadata, and entries across all supported
 - Standard (word) packs
 - Transform packs
 - Conjugation packs
+- Word Explorer packs
+- Locative Cases packs
 
 It can also optionally generate a corrected version of a pack using the `--update` flag.
 
@@ -77,6 +79,22 @@ ruby validate_pack.rb --all=./packs --csv=report.csv
 ruby validate_pack.rb --strict path/to/pack.yaml
 ```
 
+### Validate a Locative Cases Pack
+
+```bash
+ruby validate_pack.rb --locative-cases path/to/pack.yaml
+```
+
+`metadata.type: locative_cases` also enables this validation mode
+automatically.
+
+This mode validates the serialized pack structure and case-family
+relationships. It cannot determine whether an authored sentence is entailed by
+the lesson source, whether an explanation is merely templated, or whether a
+useful location candidate was silently omitted. Those mandatory manual audits
+are defined in §§12.1–12.4 of
+`docs/05_Linguatrain_LLM_Authoring_Specification.md`.
+
 ---
 
 ## Output Example
@@ -131,6 +149,45 @@ Requires:
 metadata:
   drill_type: conjugate
 ```
+
+### Word Explorer Pack
+
+Requires `metadata.type: word_explorer` or `metadata.drill_type:
+word_explorer`.
+
+### Locative Cases Pack
+
+Requires:
+
+```yaml
+metadata:
+  type: "locative_cases"
+```
+
+The validator checks grouped entries and their productions, including:
+
+- stable entry and production IDs;
+- `internal`/`S` and `external`/`L` consistency;
+- complete-sentence answer lists;
+- `mihin`, `missä`, and `mistä` relationships;
+- the correct grammatical case for each family and question.
+
+For example, an internal (`S`) `mihin` production must use the illative. An
+external (`L`) `mistä` production must use the ablative.
+
+Passing validation is necessary but not sufficient for authoring conformance.
+Before delivery, the author must also:
+
+- classify every production as source-attested or authored;
+- map every authored production to an exact source entry/chunk or quotation
+  and the fact preserved;
+- verify that no unsupported identity, object, role, or relationship was
+  introduced;
+- reject explanations that differ only by substituted forms and case names;
+  and
+- build the location candidate inventory from both the source and locative
+  forms recorded in the companion Vocabulary pack, with reasons for every
+  exclusion.
 
 ---
 

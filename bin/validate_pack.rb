@@ -8,7 +8,23 @@ require "pathname"
 
 class PackValidator
   ISO_639_1 = /\A[a-z]{2}\z/
-  KNOWN_DRILL_TYPES = %w[transform conjugate word_explorer].freeze
+  KNOWN_DRILL_TYPES = %w[transform conjugate word_explorer locative_cases].freeze
+  LOCATIVE_CASE_RULES = {
+    "internal" => {
+      "S" => {
+        "mihin" => "illative",
+        "missä" => "inessive",
+        "mistä" => "elative"
+      }
+    },
+    "external" => {
+      "L" => {
+        "mihin" => "allative",
+        "missä" => "adessive",
+        "mistä" => "ablative"
+      }
+    }
+  }.freeze
 
   def initialize(path:, strict: false, warn_integer_ids: true, forced_mode: nil, update: false)
     @path = path
@@ -62,6 +78,7 @@ class PackValidator
     if mode.nil? && metadata.is_a?(Hash)
       type = metadata["type"].to_s.strip.downcase
       mode = "word_explorer" if type == "word_explorer"
+      mode = "locative_cases" if type == "locative_cases"
     end
 
     case mode
@@ -71,6 +88,8 @@ class PackValidator
       validate_conjugate_pack(data)
     when "word_explorer"
       validate_word_explorer_pack(data)
+    when "locative_cases"
+      validate_locative_cases_pack(data)
     else
       validate_word_pack(data)
     end
@@ -673,6 +692,136 @@ class PackValidator
 
     grammar_keys = validate_word_explorer_grammar(data["grammar"])
     validate_word_explorer_entries(data["entries"], grammar_keys)
+  end
+
+  def validate_locative_cases_pack(data)
+    return unless validate_entries_array(data["entries"])
+
+    ids = {}
+    production_ids = {}
+
+    data["entries"].each_with_index do |entry, entry_index|
+      label = "entries[#{entry_index + 1}]"
+      unless entry.is_a?(Hash)
+        error("#{label} must be a mapping (Hash). Got: #{entry.class}")
+        next
+      end
+
+      %w[id lemma family family_code productions].each do |key|
+        error("#{label} missing required field: #{key}") unless entry.key?(key)
+      end
+
+      validate_optional_id(entry, entry_index, ids)
+      %w[id lemma family family_code].each do |key|
+        validate_required_string(entry, label, key) if entry.key?(key)
+      end
+
+      family = entry["family"].to_s.strip.downcase
+      family_code = entry["family_code"].to_s.strip.upcase
+      validate_locative_family(family, family_code, label)
+      validate_locative_source(entry["source"], "#{label}.source") if entry.key?("source")
+      validate_locative_productions(
+        entry["productions"],
+        "#{label}.productions",
+        entry["id"].to_s.strip,
+        family,
+        family_code,
+        production_ids
+      )
+
+      allowed = %w[id lemma family family_code source productions]
+      (entry.keys - allowed).each { |key| warn("#{label} unknown key: #{key}") }
+    end
+  end
+
+  def validate_locative_family(family, family_code, label)
+    unless LOCATIVE_CASE_RULES.key?(family)
+      error("#{label}.family must be internal or external. Got: #{family.inspect}")
+      return
+    end
+
+    expected_code = LOCATIVE_CASE_RULES.fetch(family).keys.first
+    return if family_code == expected_code
+
+    error("#{label}.family_code must be #{expected_code.inspect} for family #{family.inspect}. Got: #{family_code.inspect}")
+  end
+
+  def validate_locative_source(source, label)
+    unless source.is_a?(Hash)
+      error("#{label} must be a mapping (Hash). Got: #{source.class}")
+      return
+    end
+
+    %w[text reference].each do |key|
+      validate_required_string(source, label, key) if source.key?(key)
+    end
+
+    (source.keys - %w[text reference]).each { |key| warn("#{label} unknown key: #{key}") }
+  end
+
+  def validate_locative_productions(productions, label, entry_id, family, family_code, production_ids)
+    unless productions.is_a?(Array) && !productions.empty?
+      error("#{label} must be a non-empty list (Array). Got: #{productions.class}")
+      return
+    end
+
+    local_ids = {}
+
+    productions.each_with_index do |production, production_index|
+      item_label = "#{label}[#{production_index}]"
+      unless production.is_a?(Hash)
+        error("#{item_label} must be a mapping (Hash). Got: #{production.class}")
+        next
+      end
+
+      %w[id question case prompt answer target_form].each do |key|
+        error("#{item_label} missing required field: #{key}") unless production.key?(key)
+      end
+
+      %w[id question case prompt target_form].each do |key|
+        validate_required_string(production, item_label, key) if production.key?(key)
+      end
+      validate_required_string_list(production, item_label, "answer", min: 1) if production.key?("answer")
+      validate_required_string(production, item_label, "explanation") if production.key?("explanation")
+
+      production_id = production["id"].to_s.strip
+      unless production_id.empty?
+        if local_ids.key?(production_id)
+          error("Duplicate production id #{production_id.inspect} at #{item_label}")
+        else
+          local_ids[production_id] = true
+        end
+
+        flattened_id = "#{entry_id}_#{production_id}"
+        if production_ids.key?(flattened_id)
+          error("Duplicate flattened production id #{flattened_id.inspect} at #{item_label}")
+        else
+          production_ids[flattened_id] = true
+        end
+      end
+
+      validate_locative_case_relationship(production, item_label, family, family_code)
+
+      allowed = %w[id question case prompt answer target_form explanation]
+      (production.keys - allowed).each { |key| warn("#{item_label} unknown key: #{key}") }
+    end
+  end
+
+  def validate_locative_case_relationship(production, label, family, family_code)
+    question = production["question"].to_s.strip.downcase
+    grammatical_case = production["case"].to_s.strip.downcase
+    family_rules = LOCATIVE_CASE_RULES.dig(family, family_code)
+    return unless family_rules
+
+    unless family_rules.key?(question)
+      error("#{label}.question must be one of: #{family_rules.keys.join(', ')}. Got: #{question.inspect}")
+      return
+    end
+
+    expected_case = family_rules.fetch(question)
+    return if grammatical_case == expected_case
+
+    error("#{label}.case must be #{expected_case.inspect} for #{family_code}/#{question}. Got: #{grammatical_case.inspect}")
   end
 
   def validate_word_explorer_grammar(grammar)
@@ -1571,6 +1720,13 @@ parser = OptionParser.new do |opts|
       raise OptionParser::InvalidOption, "--word-explorer cannot be combined with another forced mode"
     end
     options[:forced_mode] = "word_explorer"
+  end
+
+  opts.on("--locative-cases", "Validate the pack as a Locative Cases pack") do
+    if options[:forced_mode] && options[:forced_mode] != "locative_cases"
+      raise OptionParser::InvalidOption, "--locative-cases cannot be combined with another forced mode"
+    end
+    options[:forced_mode] = "locative_cases"
   end
 
   opts.on("-aDIR", "--all=DIR", "Validate all .yaml/.yml files under DIR (recursively)") do |dir|

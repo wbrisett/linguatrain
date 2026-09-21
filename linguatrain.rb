@@ -15,6 +15,8 @@ require "pathname"
 require_relative "lib/linguatrain/translation/exercise"
 require_relative "lib/linguatrain/word_explorer/pack"
 require_relative "lib/linguatrain/word_explorer/exercise"
+require_relative "lib/linguatrain/locative_cases/pack"
+require_relative "lib/linguatrain/locative_cases/exercise"
 
 require "open3"
 
@@ -1005,12 +1007,22 @@ def word_explorer_pack_metadata?(meta)
   type == "word_explorer" || drill_type == "word_explorer"
 end
 
+def locative_cases_pack_metadata?(meta)
+  return false unless meta.is_a?(Hash)
+
+  type = (meta[:type] || meta["type"]).to_s.strip.downcase
+  drill_type = (meta[:drill_type] || meta["drill_type"]).to_s.strip.downcase
+
+  type == "locative_cases" || drill_type == "locative_cases"
+end
+
 def load_pack(path)
   data = load_yaml_preserving_clock_strings(path)
   pack_meta = {}
   grammar_v = []
   drill_type = ""
   word_explorer_pack = false
+  locative_cases_pack = false
 
   raw_entries =
     if data.is_a?(Array)
@@ -1093,6 +1105,7 @@ def load_pack(path)
       drill_type = (pack_meta["drill_type"] || pack_meta[:drill_type]).to_s.strip.downcase
       conjugation_pack = conjugation_pack_metadata?(pack_meta)
       word_explorer_pack = word_explorer_pack_metadata?(pack_meta)
+      locative_cases_pack = locative_cases_pack_metadata?(pack_meta)
 
       if entries.is_a?(Array)
         entries
@@ -1148,7 +1161,13 @@ def load_pack(path)
     end
   pack_meta ||= {}
 
-  if word_explorer_pack
+  if locative_cases_pack
+    {
+      meta: symbolize_keys_deep(pack_meta),
+      locative_case_items: Linguatrain::LocativeCases::Pack.normalize(entries: raw_entries)
+    }
+
+  elsif word_explorer_pack
     normalized = Linguatrain::WordExplorer::Pack.normalize(
       entries: raw_entries,
       grammar: grammar_v
@@ -3569,6 +3588,10 @@ options = {
   show_phonetic: false,
   transform: false,
   word_explorer: false,
+  locative_cases: false,
+  locative_question_filters: [],
+  locative_case_filters: [],
+  locative_family_filters: [],
   timing: false,
   conjugate: false,
   conjugate_polarity: "positive",
@@ -3684,6 +3707,22 @@ parser = OptionParser.new do |opts|
 
   opts.on("--word-explorer", "Word Explorer mode: explore word forms and word families") do
     options[:word_explorer] = true
+  end
+
+  opts.on("--locative-cases", "Locative Cases mode: produce complete sentences using location forms") do
+    options[:locative_cases] = true
+  end
+
+  opts.on("--locative-question QUESTION", "With --locative-cases, include mihin, missä, or mistä") do |question|
+    options[:locative_question_filters] << question
+  end
+
+  opts.on("--locative-case CASE", "With --locative-cases, include a grammatical case") do |grammatical_case|
+    options[:locative_case_filters] << grammatical_case
+  end
+
+  opts.on("--locative-family FAMILY", "With --locative-cases, include S/L or internal/external") do |family|
+    options[:locative_family_filters] << family
   end
 
   opts.on("--recognize", "With --word-explorer, recognize word relationships") do
@@ -3813,6 +3852,27 @@ if options[:word_explorer]
   end
 end
 
+if options[:locative_cases]
+  abort("--lenient-umlauts is not supported with --locative-cases because diacritics can change meaning and grammatical form.") if options[:lenient]
+  abort("--locative-cases cannot be combined with --match-game") if options[:match_game]
+  abort("--locative-cases cannot be combined with --study") if options[:study]
+  abort("--locative-cases cannot be combined with --listen") if options[:listen]
+  abort("--locative-cases cannot be combined with --speak") if options[:speak]
+  abort("--locative-cases cannot be combined with --shadow") if options[:shadow]
+  abort("--locative-cases cannot be combined with --reverse") if options[:reverse]
+  abort("--locative-cases cannot be combined with --conversation") if options[:conversation]
+  abort("--locative-cases cannot be combined with --transform") if options[:transform]
+  abort("--locative-cases cannot be combined with --conjugate") if options[:conjugate]
+  abort("--locative-cases cannot be combined with --word-explorer") if options[:word_explorer]
+  abort("--locative-cases cannot be combined with --translation") if options[:translation]
+
+  if options[:srs] || options[:srs_due_only] || options[:srs_reset] || options[:srs_file]
+    abort("--locative-cases does not support SRS yet. Remove --srs/--due/--new/--reset-srs/--srs-file.")
+  end
+elsif options[:locative_question_filters].any? || options[:locative_case_filters].any? || options[:locative_family_filters].any?
+  abort("--locative-question, --locative-case, and --locative-family require --locative-cases")
+end
+
 if options[:study]
   abort("--study cannot be combined with --match-game") if options[:match_game]
   abort("--study cannot be combined with --lenient-umlauts") if options[:lenient]
@@ -3902,6 +3962,7 @@ conjugate_subjects = pack[:conjugate_subjects] || pack[:conjugate_persons] || []
 conjugate_subject_defs = pack[:conjugate_subject_defs] || pack[:conjugate_person_defs] || conjugate_subjects
 word_explorer_entries = pack[:word_explorer_entries] || []
 word_explorer_grammar = pack[:word_explorer_grammar] || []
+locative_case_items = pack[:locative_case_items] || []
 
 user_cfg_path = resolve_user_config_path(options[:config])
 user_cfg = load_yaml_hash(user_cfg_path)
@@ -3952,7 +4013,9 @@ srs_path = options[:srs_file] || default_srs_path(yaml_path, pack_meta)
 
 srs = srs_enabled ? load_srs(srs_path) : { "meta" => {}, "items" => {} }
 
-if options[:transform]
+if options[:locative_cases]
+  abort("This pack does not contain locative-case productions.") if locative_case_items.empty?
+elsif options[:transform]
   abort("This pack does not contain transform entries.") if transform_entries.empty?
 elsif options[:conjugate]
   abort("This pack does not contain conjugate entries.") if conjugate_entries.empty?
@@ -3965,9 +4028,32 @@ else
   abort("This pack is a transform pack. Use --transform.") if drill_type == "transform"
   abort("This pack is a conjugation pack. Use --conjugate.") if conjugation_pack_metadata?(pack_meta)
   abort("This pack is a Word Explorer pack. Use --word-explorer.") if word_explorer_pack_metadata?(pack_meta)
+  abort("This pack is a Locative Cases pack. Use --locative-cases.") if locative_cases_pack_metadata?(pack_meta)
 end
 
-if options[:transform]
+if options[:locative_cases]
+  filtered_locative_items = Linguatrain::LocativeCases::Pack.filter(
+    locative_case_items,
+    questions: options[:locative_question_filters],
+    cases: options[:locative_case_filters],
+    families: options[:locative_family_filters]
+  )
+
+  if filtered_locative_items.empty?
+    criteria = []
+    criteria << "question=#{options[:locative_question_filters].join(',')}" if options[:locative_question_filters].any?
+    criteria << "case=#{options[:locative_case_filters].join(',')}" if options[:locative_case_filters].any?
+    criteria << "family=#{options[:locative_family_filters].join(',')}" if options[:locative_family_filters].any?
+    abort("No locative-case productions match the requested filters: #{criteria.join(' ')}")
+  end
+
+  selected =
+    if options[:count].nil? || options[:count] == "all"
+      filtered_locative_items
+    else
+      filtered_locative_items.take([Integer(options[:count]), filtered_locative_items.length].min)
+    end
+elsif options[:transform]
   shuffle_cues = !!pack_meta[:shuffle_cues]
   transform_items = flatten_transform_items(transform_entries, shuffle_cues: shuffle_cues)
   selected = choose_transform_items(transform_items, options[:count])
@@ -4063,6 +4149,33 @@ if srs_enabled
   say
 end
 begin
+
+  if options[:locative_cases]
+    stats, missed = Linguatrain::LocativeCases::Exercise.run(selected)
+
+    say
+    say "-" * 50
+    results_label = pack_meta[:id].to_s.strip
+    say(results_label.empty? ? "Results" : "Results from #{results_label}")
+    say "Total: #{stats[:total]}"
+    say "Correct 1st: #{stats[:correct_first]} (#{pct(stats[:correct_first], stats[:total]).round(1)}%)"
+    say "Correct after retry: #{stats[:correct_retry]} (#{pct(stats[:correct_retry], stats[:total]).round(1)}%)"
+    say "Revealed: #{stats[:revealed]} (#{pct(stats[:revealed], stats[:total]).round(1)}%)"
+
+    if missed.any?
+      say
+      say "Items to review:"
+      missed.each_with_index do |item, index|
+        say "#{index + 1}. #{item[:prompt]}"
+        say "   #{item[:answers].join(' / ')}"
+      end
+    else
+      say
+      puts $UI[:no_mistakes] || "😊 No mistakes — nice work!"
+    end
+
+    exit(0)
+  end
 
   if options[:translation]
 

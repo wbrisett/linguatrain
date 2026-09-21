@@ -1,0 +1,249 @@
+# Authoring audit (comments only; not part of the runtime schema)
+# Candidate inventory from the source and companion Vocabulary forms:
+# selected: Lehtelä, kellari, keittiö, piha, katu, pöytä
+# excluded: Puistotie — named-place adessive repeats external-family practice
+#   already supplied by piha, katu, and pöytä.
+# excluded: kerrostalo — regular internal forms add little beyond the stronger
+#   apartment, basement, and kitchen scenes.
+# excluded: asunto — its location is retained as evidence for Lehtelä rather
+#   than duplicated as a second entry teaching the same scene.
+# excluded: alue — a generic area gives a weaker three-way spatial scene than
+#   the concrete yard and street.
+# excluded: ruokapöytä — overlaps pöytä, whose shorter forms are more useful
+#   for first-pass production practice.
+# excluded: etupiha — overlaps piha and occurs only in a listing fragment.
+# excluded: keskusta — only the destination form is central; Lehtelä retains
+#   the complete train proposition.
+# excluded: ikkuna — the source models viewpoint from a window, but the other
+#   internal locations support clearer three-way movement contrasts.
+# excluded: auto — the source uses it as a container/source, while pakettiauto
+#   is the active vehicle; neither adds a stronger case family contrast.
+# excluded: talo — appears only as the endpoint of carrying the boxes inside.
+# excluded: olohuone — overlaps the kitchen as a room-based internal location.
+# excluded: numero — numerossa identifies an apartment number rather than a
+#   useful physical-location paradigm.
+# Provenance ledger:
+# to_lehtela — authored from "Tämä on Lehtelässä" plus "mennäänkö silti
+#   katsomaan?" / "Mennään vaan": Pedro and Hanna plan to view it there.
+# in_lehtela — source-attested: "Tämä on Lehtelässä."
+# from_lehtela — source-attested: "Lehtelästä menee juna keskustaan."
+# to_kellari — authored from "Käyn ensin kellarissa ja tulen sitten": the
+#   speaker goes to the basement first.
+# in_kellari — source-attested: "Sauna ja pesutupa ovat kellarissa."
+# from_kellari — authored from the same quotation as the return direction from
+#   the basement visit.
+# to_keittio — authored from "ota tuo pieni laatikko ja vie se keittiöön": the
+#   small box is carried into the kitchen.
+# in_keittio — source-attested: "Mäkelät istuvat keittiössä ja syövät lounasta."
+# from_keittio — authored from that exact kitchen-location sentence as a
+#   transparent reversal of the family's location.
+# to_piha — source-attested: "Pihalle ajaa iso pakettiauto."
+# in_piha — authored from that quotation as the immediate result of entry.
+# from_piha — authored from that quotation as the reverse van/yard direction.
+# to_katu — source-attested: "Mies nostaa autosta monta ruskeaa laatikkoa kadulle."
+# in_katu — authored from the two attested box movements to and from the street.
+# from_katu — source-attested: "Nainen kantaa laatikot kadulta sisään taloon."
+# to_poyta — source-attested: "Vie vaikka tämä lamppu pöydälle olohuoneeseen."
+# in_poyta — authored from that quotation as the result of placing the lamp.
+# from_poyta — authored from that quotation as the reverse lamp/table direction.
+metadata:
+  id: 'suomen_mestari_1_kappale_6_locative_cases'
+  title: 'Kappale 6 — Locative Cases'
+  type: 'locative_cases'
+  practice: 'sentence_production'
+  version: 2
+  schema_version: 1
+  description: 'Complete-sentence production practice for Finnish locative cases.'
+entries:
+  - id: 'train_lehtela'
+    lemma: 'Lehtelä'
+    family: 'internal'
+    family_code: 'S'
+    source:
+      text: 'Lehtelästä menee juna keskustaan.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_lehtela'
+        question: 'mihin'
+        case: 'illative'
+        prompt: 'Pedro and Hanna go to Lehtelä to view the apartment.'
+        answer:
+          - 'Pedro ja Hanna menevät Lehtelään katsomaan asuntoa.'
+        target_form: 'Lehtelään'
+        explanation: 'Lehtelään means “to Lehtelä”; the illative marks Pedro and Hanna’s destination when they go to view the apartment advertised there.'
+      - id: 'in_lehtela'
+        question: 'missä'
+        case: 'inessive'
+        prompt: 'This one is in Lehtelä.'
+        answer:
+          - 'Tämä on Lehtelässä.'
+        target_form: 'Lehtelässä'
+        explanation: 'Lehtelässä means “in Lehtelä”; the inessive identifies the district where the advertised apartment is located.'
+      - id: 'from_lehtela'
+        question: 'mistä'
+        case: 'elative'
+        prompt: 'A train goes from Lehtelä to the city centre.'
+        answer:
+          - 'Lehtelästä menee juna keskustaan.'
+        target_form: 'Lehtelästä'
+        explanation: 'Lehtelästä means “from Lehtelä”; the elative marks the train’s point of departure before it travels to the city centre.'
+  - id: 'train_kellari'
+    lemma: 'kellari'
+    family: 'internal'
+    family_code: 'S'
+    source:
+      text: 'Sauna ja pesutupa ovat kellarissa.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_kellari'
+        question: 'mihin'
+        case: 'illative'
+        prompt: 'I go to the basement.'
+        answer:
+          - 'Menen kellariin.'
+        target_form: 'kellariin'
+        explanation: 'Kellariin means “to the basement”; the illative marks the basement as the destination of the speaker’s movement.'
+      - id: 'in_kellari'
+        question: 'missä'
+        case: 'inessive'
+        prompt: 'The sauna and laundry room are in the basement.'
+        answer:
+          - 'Sauna ja pesutupa ovat kellarissa.'
+        target_form: 'kellarissa'
+        explanation: 'Kellarissa means “in the basement”; the inessive locates both the sauna and the laundry room inside that part of the building.'
+      - id: 'from_kellari'
+        question: 'mistä'
+        case: 'elative'
+        prompt: 'I come from the basement.'
+        answer:
+          - 'Tulen kellarista.'
+        target_form: 'kellarista'
+        explanation: 'Kellarista means “from the basement”; the elative marks the basement as the starting point when the speaker returns.'
+  - id: 'train_keittio'
+    lemma: 'keittiö'
+    family: 'internal'
+    family_code: 'S'
+    source:
+      text: 'No, ota tuo pieni laatikko ja vie se keittiöön.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_keittio'
+        question: 'mihin'
+        case: 'illative'
+        prompt: 'Take that small box into the kitchen.'
+        answer:
+          - 'Ota tuo pieni laatikko ja vie se keittiöön.'
+        target_form: 'keittiöön'
+        explanation: 'Keittiöön means “into the kitchen”; the illative marks the room where the small box is to be carried.'
+      - id: 'in_keittio'
+        question: 'missä'
+        case: 'inessive'
+        prompt: 'The Mäkelä family are sitting in the kitchen and eating lunch.'
+        answer:
+          - 'Mäkelät istuvat keittiössä ja syövät lounasta.'
+        target_form: 'keittiössä'
+        explanation: 'Keittiössä means “in the kitchen”; the inessive locates the Mäkelä family there while they sit and eat lunch.'
+      - id: 'from_keittio'
+        question: 'mistä'
+        case: 'elative'
+        prompt: 'The Mäkelä family come out of the kitchen.'
+        answer:
+          - 'Mäkelät tulevat keittiöstä.'
+        target_form: 'keittiöstä'
+        explanation: 'Keittiöstä means “out of the kitchen”; the elative turns the family’s attested kitchen location into the starting point of this movement contrast.'
+  - id: 'train_piha'
+    lemma: 'piha'
+    family: 'external'
+    family_code: 'L'
+    source:
+      text: 'Pihalle ajaa iso pakettiauto.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_piha'
+        question: 'mihin'
+        case: 'allative'
+        prompt: 'A large van drives into the yard.'
+        answer:
+          - 'Pihalle ajaa iso pakettiauto.'
+        target_form: 'Pihalle'
+        explanation: 'Pihalle means “into the yard”; piha uses the external family, and the allative marks the large van’s destination in the narrative.'
+      - id: 'in_piha'
+        question: 'missä'
+        case: 'adessive'
+        prompt: 'The van is in the yard.'
+        answer:
+          - 'Pakettiauto on pihalla.'
+        target_form: 'pihalla'
+        explanation: 'Pihalla means “in the yard”; the adessive presents the open yard as the van’s location after it has driven in.'
+      - id: 'from_piha'
+        question: 'mistä'
+        case: 'ablative'
+        prompt: 'The van drives out of the yard.'
+        answer:
+          - 'Pakettiauto ajaa pihalta.'
+        target_form: 'pihalta'
+        explanation: 'Pihalta means “out of the yard”; the ablative marks the open yard as the van’s starting point in the reverse-direction contrast.'
+  - id: 'train_katu'
+    lemma: 'katu'
+    family: 'external'
+    family_code: 'L'
+    source:
+      text: 'Nainen kantaa laatikot kadulta sisään taloon.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_katu'
+        question: 'mihin'
+        case: 'allative'
+        prompt: 'A man lifts many brown boxes out of the vehicle and onto the street.'
+        answer:
+          - 'Mies nostaa autosta monta ruskeaa laatikkoa kadulle.'
+        target_form: 'kadulle'
+        explanation: 'Kadulle means “onto the street”; the allative marks the street as the destination when the man unloads the brown boxes.'
+      - id: 'in_katu'
+        question: 'missä'
+        case: 'adessive'
+        prompt: 'The boxes are in the street.'
+        answer:
+          - 'Laatikot ovat kadulla.'
+        target_form: 'kadulla'
+        explanation: 'Kadulla means “on the street”; the adessive describes the boxes’ intermediate location after unloading and before they are carried inside.'
+      - id: 'from_katu'
+        question: 'mistä'
+        case: 'ablative'
+        prompt: 'A woman carries the boxes from the street into the building.'
+        answer:
+          - 'Nainen kantaa laatikot kadulta sisään taloon.'
+        target_form: 'kadulta'
+        explanation: 'Kadulta means “from the street”; the ablative marks where the woman picks up the boxes before carrying them into the building.'
+  - id: 'train_poyta'
+    lemma: 'pöytä'
+    family: 'external'
+    family_code: 'L'
+    source:
+      text: 'Vie vaikka tämä lamppu pöydälle olohuoneeseen.'
+      reference: 'Kappale 6'
+    productions:
+      - id: 'to_poyta'
+        question: 'mihin'
+        case: 'allative'
+        prompt: 'Take this lamp to the table in the living room, for example.'
+        answer:
+          - 'Vie vaikka tämä lamppu pöydälle olohuoneeseen.'
+        target_form: 'pöydälle'
+        explanation: 'Pöydälle means “onto the table”; the allative marks the table surface as the lamp’s destination in the moving instructions.'
+      - id: 'in_poyta'
+        question: 'missä'
+        case: 'adessive'
+        prompt: 'The lamp is on the table.'
+        answer:
+          - 'Lamppu on pöydällä.'
+        target_form: 'pöydällä'
+        explanation: 'Pöydällä means “on the table”; the adessive describes the lamp’s resulting position on the table surface.'
+      - id: 'from_poyta'
+        question: 'mistä'
+        case: 'ablative'
+        prompt: 'I take the lamp off the table.'
+        answer:
+          - 'Otan lampun pöydältä.'
+        target_form: 'pöydältä'
+        explanation: 'Pöydältä means “off the table”; the ablative marks the table surface as the starting point when the lamp is picked up again.'
